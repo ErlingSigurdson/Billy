@@ -5,6 +5,7 @@
 + По Wi-Fi как локальному TCP-серверу, например, с помощью классической Unix-утилиты `netcat` или приложения для Android [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   
 + По Bluetooth Classic как ведомому устройству, например с помощью приложения для Android [Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android). Не работает для ESP8266.
 + По Wi-Fi как TCP-клиенту (в том числе через Интернет). Для этого Билли направляет запросы специально запрограммированному серверу и получает от него команды.
+
 Билли предназначен для работы в локальной сети Wi-Fi в режиме клиента (station, STA). Доступ в Интернет Билли получает через точку доступа, к которой он подключен в рамках сети Wi-Fi.
 
 # Быстрый старт
