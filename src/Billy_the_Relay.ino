@@ -654,11 +654,6 @@ void loop()
         handle_cmd_err_prefix();
         ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     }
-
-    /* Заметка: могло бы понадобиться в случае, если бы буфер был объявлен
-     * как static или как глобальная переменная (в ранних версиях так и было).
-     */
-    //terminal_input[strlen(terminal_input)] = '\0';
     
     
     /*--- Завершение коммуникации ---*/
