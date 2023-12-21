@@ -191,7 +191,7 @@ String ESP_HTTP_send_HTML(uint32_t previous_cmd)
             if (previous_cmd) site+= prev_text;
 
             site+= "<div>";
-                site+= "<form action=\"/control\" method=\"POST\">";
+                site+= "<form action=\"/ctrl\" method=\"POST\">";
                     site+= "<label for=\"AT\">Issue a command</label>";
                     site+= "<p>";
                         site+= "<select name=\"AT\" id=\"AT\">";
