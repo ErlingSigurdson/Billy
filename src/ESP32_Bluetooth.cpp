@@ -80,7 +80,7 @@ uint32_t ESP32_BT_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeo
     return i;
 }
 
-void ESP32_BT_send_msg(char *msg)
+void ESP32_BT_send_msg(const char *msg)
 {
     if (BT_Serial.connected()) {
         BT_Serial.println(msg);

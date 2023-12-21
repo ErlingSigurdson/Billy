@@ -101,7 +101,7 @@ uint32_t ESP_TCP_server_read_line(char *buf, uint32_t str_max_len, uint32_t conn
     return i;
 }
 
-void ESP_TCP_server_send_msg(char *msg)
+void ESP_TCP_server_send_msg(const char *msg)
 {
     if (TCP_remote_client.connected()) {
         TCP_remote_client.println(msg);
@@ -126,7 +126,7 @@ bool ESP_TCP_client_get_server(char *target_IP, uint32_t target_port)
     }
 }
 
-void ESP_TCP_client_send_msg(char *msg)
+void ESP_TCP_client_send_msg(const char *msg)
 {
     if (TCP_local_client.connected()) {
        TCP_local_client.println(msg);

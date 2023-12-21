@@ -207,7 +207,7 @@ void handle_cmd_helper_set(char *cmd, const char *topic, int32_t addr, bool echo
 void handle_cmd_helper_print(const char *topic, int32_t addr);
 
 // Вспомогательная функция для отправки сообщений обработчиками.
-void handle_cmd_helper_send(char *msg);
+void handle_cmd_helper_send(const char *msg);
 
 
 /*--- Прочие функции ---*/
@@ -992,7 +992,7 @@ void handle_cmd_helper_print(const char *topic, int32_t addr)
 }
 
 // Вспомогательная функция для отправки сообщений обработчиками.
-void handle_cmd_helper_send(char *msg)
+void handle_cmd_helper_send(const char *msg)
 {
     Serial.println(msg);
     ESP_TCP_server_send_msg(msg);

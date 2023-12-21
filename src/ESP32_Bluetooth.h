@@ -27,7 +27,7 @@
 void ESP32_BT_start(char *dev_name);
 bool ESP32_BT_check_connection();
 uint32_t ESP32_BT_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout);
-void ESP32_BT_send_msg(char *msg);
+void ESP32_BT_send_msg(const char *msg);
 void ESP32_BT_disconnect(uint32_t shutdown_downtime);
 void ESP32_BT_stop(uint32_t shutdown_downtime);
 
