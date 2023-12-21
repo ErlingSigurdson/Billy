@@ -291,16 +291,16 @@ void setup()
 
     //#define SET_IOT_SERVER_PORT_AT_UPLOAD
     #ifdef SET_IOT_SERVER_PORT_AT_UPLOAD
-        inbuilt_storage_write("80",
-                              strlen("80"),
+        inbuilt_storage_write("451",
+                              strlen("451"),
                               INBUILT_STORAGE_STR_MAX_LEN,
                               INBUILT_STORAGE_ADDR_IOT_SERVER_PORT);
     #endif
 
     //#define SET_IOT_REQ_MSG_AT_UPLOAD
     #ifdef SET_IOT_REQ_MSG_AT_UPLOAD
-        inbuilt_storage_write("GET_TARGET_LOAD_STATUS",
-                              strlen("GET_TARGET_LOAD_STATUS"),
+        inbuilt_storage_write("UPD_REQ",
+                              strlen("UPD_REQ"),
                               INBUILT_STORAGE_STR_MAX_LEN,
                               INBUILT_STORAGE_ADDR_IOT_REQ_MSG);
     #endif
