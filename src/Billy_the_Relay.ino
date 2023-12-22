@@ -201,10 +201,10 @@ void handle_cmd_set_RSSI_print_flag(char *cmd);
 /*--- Помощники функций-обработчиков ---*/
 
 // Вспомогательная функция для set-обработчиков.
-void handle_cmd_helper_set(char *cmd, const char *topic, int32_t addr, bool echo);
+void handle_cmd_helper_set(char *cmd, const char *topic, uint32_t addr, bool echo);
 
 // Вспомогательная функция для print-обработчиков.
-void handle_cmd_helper_print(const char *topic, int32_t addr);
+void handle_cmd_helper_print(const char *topic, uint32_t addr);
 
 // Вспомогательная функция для отправки сообщений обработчиками.
 void handle_cmd_helper_send(const char *msg);
@@ -957,7 +957,7 @@ void handle_cmd_set_RSSI_print_flag(char *cmd)
 /*--- Помощники функций-обработчиков ---*/
 
 // Вспомогательная функция для set-обработчиков.
-void handle_cmd_helper_set(char *cmd, const char *topic, int32_t addr, bool echo)
+void handle_cmd_helper_set(char *cmd, const char *topic, uint32_t addr, bool echo)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
@@ -977,7 +977,7 @@ void handle_cmd_helper_set(char *cmd, const char *topic, int32_t addr, bool echo
 }
 
 // Вспомогательная функция для print-обработчиков.
-void handle_cmd_helper_print(const char *topic, int32_t addr)
+void handle_cmd_helper_print(const char *topic, uint32_t addr)
 {
     char msg[STR_MAX_LEN * 2 + 1] = {0};
     strcpy(msg, topic);
