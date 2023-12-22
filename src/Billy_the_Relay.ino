@@ -34,7 +34,7 @@
 #include "ESP_TCP.h"
 #include "ESP_HTTP.h"
 
-#if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+#if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
     #include "ESP32_Bluetooth.h"
 #endif
 
@@ -381,7 +381,7 @@ void setup()
     Serial.println("");
 
     // Запуск Bluetooth.
-    #if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+    #if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
         if (strd_vals.BT_flag) {
             ESP32_BT_start(strd_vals.BT_dev_name);
         }
@@ -407,7 +407,7 @@ void setup()
     }
 
     // Проверка флага работы Bluetooth.
-    #if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+    #if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
         Serial.print("Bluetooth: ");
         if (strd_vals.BT_flag) {
             Serial.println("ON");
@@ -537,7 +537,7 @@ void loop()
     }
 
     // Приём данных через Bluetooth.
-    #if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+    #if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
         bool BT_was_connected = 0;
         if (strd_vals.BT_flag && ESP32_BT_check_connection()) {
             BT_was_connected = 1;
@@ -662,7 +662,7 @@ void loop()
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
 
     // Отключение Bluetooth-соединения.
-    #if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+    #if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
         if (BT_was_connected) {  /* Если повторно вызывать метод connected(),
                                   * то крашится RTOS. Поэтому пришлось ввести
                                   * дополнительный флаг.
@@ -791,7 +791,7 @@ void handle_cmd_rst_local_conn()
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
 
-    #if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+    #if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
         ESP32_BT_stop(CONN_SHUTDOWN_DOWNTIME);
     #endif
 
@@ -882,7 +882,7 @@ void handle_cmd_set_IoT_req_period(char *cmd)
 // Команда #16
 void handle_cmd_set_BT_flag(char *cmd)
 {
-    #if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+    #if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
         char *cmd_val = strstr(cmd, "=") + 1;
 
         if (!strcmp(cmd_val, "ON")) {
@@ -910,7 +910,7 @@ void handle_cmd_set_BT_flag(char *cmd)
 // Команда #17
 void handle_cmd_set_BT_dev_name(char *cmd)
 {
-    #if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+    #if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
         handle_cmd_helper_set(cmd,
                               "Bluetooth device name changed successfully! New name is: ",
                               INBUILT_STORAGE_ADDR_BT_DEV_NAME,
@@ -923,7 +923,7 @@ void handle_cmd_set_BT_dev_name(char *cmd)
 // Команда #18
 void handle_cmd_print_BT_dev_name()
 {
-    #if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+    #if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
         handle_cmd_helper_print("Current Bluetooth device name is: ",
                                 INBUILT_STORAGE_ADDR_BT_DEV_NAME);
     #endif
@@ -997,7 +997,7 @@ void handle_cmd_helper_send(const char *msg)
     Serial.println(msg);
     ESP_TCP_server_send_msg(msg);
 
-    #if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+    #if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
         char val[INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
         inbuilt_storage_read(val,
                              sizeof(val),
@@ -1093,7 +1093,7 @@ void strd_vals_read(strd_vals_t *_strd_vals)
     // Периодичность отправки запросов удалённому серверу.
     _strd_vals->IoT_req_period = strtol(strd_vals_str[INDEX_IOT_REQ_PERIOD], NULL, 10);
 
-    #if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+    #if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
         // Флаг Bluetooth.
         if (!strcmp(strd_vals_str[INDEX_BT_FLAG], "ON")) {
             _strd_vals->BT_flag = 1;

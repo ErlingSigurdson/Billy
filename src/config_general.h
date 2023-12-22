@@ -24,11 +24,11 @@
     #define THIS_IS_ESP32
 #endif
 
-/* Для модулей ESP32 без функционала Bluetooth 
- * (например, ESP32-S2) следует закомментировать.
+/* Для модулей ESP32 без функционала Bluetooth Classic
+ * (например, ESP32-S2 и ESP32-C3) следует закомментировать.
  */
 #ifdef THIS_IS_ESP32
-    #define BLUETOOTH_PROVIDED
+    #define BT_CLASSIC_PROVIDED
 #endif
 
 
