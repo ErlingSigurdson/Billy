@@ -39,7 +39,7 @@ void inbuilt_storage_init(uint32_t emulated_EEPROM_size)
 }
 
 // Чтение строки.
-void inbuilt_storage_read(char *buf, uint32_t buf_size, uint32_t str_max_len, uint32_t addr)
+void inbuilt_storage_read(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr)
 {
     if (buf_size < str_max_len + 1) {
         Serial.println("Error reading from inbuilt storage.");
