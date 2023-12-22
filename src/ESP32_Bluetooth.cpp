@@ -18,7 +18,7 @@
 #include "ESP32_Bluetooth.h"
 
 // Условная компиляция.
-#if defined THIS_IS_ESP32 && defined BLUETOOTH_PROVIDED
+#if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
 
 // Дополнительные библиотеки для Arduino IDE.
 #include <BluetoothSerial.h>
