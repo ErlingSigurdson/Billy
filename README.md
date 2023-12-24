@@ -4,7 +4,7 @@
 - По UART через провод.
 - По Wi-Fi как локальному TCP-серверу, например, с помощью классической Unix-утилиты `netcat` или приложения для Android [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   
 - По Wi-Fi как локальному HTTP-серверу, например, с помощью браузера (скетч предоставляет минималистичный веб-интерфейс) или иного приложения для отправки HTTP-запросов.
-- По Bluetooth Classic как ведомому устройству, например, с помощью Bluetooth-терминала для рабочего стола или приложения для Android [Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android). Не работает для ESP8266 и чипов ESP32 без поддержки Bluetooth (например, ESP32-S2).
+- По Bluetooth Classic как ведомому устройству, например, с помощью Bluetooth-терминала для рабочего стола или приложения для Android [Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android). Не работает для ESP8266 и чипов ESP32 без поддержки Bluetooth Classic (например, ESP32-S2 и ESP32-C3).
 - По Wi-Fi как TCP-клиенту (в том числе через Интернет). Для этого Билли направляет запросы специально настроенному TCP-серверу и в ответ получает от него команды (этот способ отдельно описан ниже).
 
 Билли предназначен для работы в локальной сети Wi-Fi в режиме клиента (station, STA). Доступ в Интернет Билли получает через точку доступа, к которой он подключен в рамках сети Wi-Fi.
