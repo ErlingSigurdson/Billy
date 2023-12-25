@@ -56,7 +56,7 @@ void ESP_TCP_server_start()
 
 bool ESP_TCP_server_get_client()
 {
-    TCP_remote_client = TCP_local_server.accept();  // Раньше этот метод назывался available().
+    TCP_remote_client = TCP_local_server.accept();  // Раньше использовался метод available().
 
     if (TCP_remote_client) {
         return 1;
