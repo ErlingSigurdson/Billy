@@ -19,10 +19,10 @@
 #include "ESP_WiFi.h"
 
 // Дополнительные библиотеки для Arduino IDE.
-#ifdef THIS_IS_ESP32
+#ifdef ESP32
     #include <WiFi.h>         // Вариант для ESP32.
 #endif
-#ifdef THIS_IS_ESP8266
+#ifdef ESP8266
     #include <ESP8266WiFi.h>  // Вариант для ESP8266.
 #endif
 

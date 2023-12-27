@@ -19,7 +19,7 @@
 #include "config_general.h"
 
 // Условная компиляция.
-#if defined THIS_IS_ESP32 && defined BT_CLASSIC_PROVIDED
+#if defined ESP32 && defined BT_CLASSIC_PROVIDED
 
 
 /*************** ПРОТОТИПЫ ФУНКЦИЙ **************/
