@@ -16,9 +16,6 @@
 #ifndef ESP_WIFI_H
 #define ESP_WIFI_H
 
-// Настройки проекта.
-#include "config_general.h"
-
 // Прочее.
 #define DEFAULT_WIFI_RSSI_PRINT_PERIOD 2000
 

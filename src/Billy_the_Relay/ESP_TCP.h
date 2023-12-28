@@ -15,9 +15,6 @@
 #ifndef ESP_TCP_H
 #define ESP_TCP_H
 
-// Настройки проекта.
-#include "config_general.h"
-
 // Прочее.
 #define DEFAULT_IOT_REQ_PERIOD 500
 
