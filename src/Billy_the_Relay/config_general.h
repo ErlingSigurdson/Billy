@@ -16,18 +16,12 @@
 #define CONFIG_GENERAL_H
 
 
-/*--- Модуль ESP32/ESP8266 ---*/
-
-// Выбор модуля.
-//#define THIS_IS_ESP8266
-#ifndef THIS_IS_ESP8266
-    #define THIS_IS_ESP32
-#endif
+/*--- Bluetooth ---*/
 
 /* Для модулей ESP32 без функционала Bluetooth Classic
  * (например, ESP32-S2 и ESP32-C3) следует закомментировать.
  */
-#ifdef THIS_IS_ESP32
+#ifdef ESP32
     #define BT_CLASSIC_PROVIDED
 #endif
 

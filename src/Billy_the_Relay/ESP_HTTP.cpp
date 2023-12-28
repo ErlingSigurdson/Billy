@@ -18,10 +18,10 @@
 #include "ESP_HTTP.h"
 
 // Дополнительные библиотеки для Arduino IDE.
-#ifdef THIS_IS_ESP32
+#ifdef ESP32
     #include <WebServer.h>         // Вариант для ESP32.
 #endif
-#ifdef THIS_IS_ESP8266
+#ifdef ESP8266
     #include <ESP8266WebServer.h>  // Вариант для ESP8266.
 #endif
 
@@ -33,10 +33,10 @@
 
 /************* ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ************/
 
-#ifdef THIS_IS_ESP32
+#ifdef ESP32
     WebServer HTTP_server(HTTP_PORT);         // Вариант для ESP32.
 #endif
-#ifdef THIS_IS_ESP8266
+#ifdef ESP8266
     ESP8266WebServer HTTP_server(HTTP_PORT);  // Вариант для ESP8266.
 #endif
 
