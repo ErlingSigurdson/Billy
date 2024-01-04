@@ -9,9 +9,9 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Защита от повторного включения заголовочного файла.
+// Include guards.
 #ifndef CONFIG_ASCII_CMD_HANDLER_H
 #define CONFIG_ASCII_CMD_HANDLER_H
 
@@ -203,4 +203,4 @@
 #endif
 
 
-#endif  // Завершающая директива защиты от повторного включения заголовочного файла.
+#endif  // Include guards.

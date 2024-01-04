@@ -9,18 +9,18 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-/*--- Включения ---*/
+/*--- Includes ---*/
 
-// Основная библиотека Arduino.
+// General Arduino library.
 #include <Arduino.h>
 
-// Локальные модули.
+// Local modules.
 #include "utilities.h"
 
 
-/******************** ФУНКЦИИ *******************/
+/******************* FUNCTIONS ******************/
 
 bool utilities_remove_CR_and_LF(char *buf)
 {

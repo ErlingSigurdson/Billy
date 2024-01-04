@@ -9,9 +9,9 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Защита от повторного включения заголовочного файла.
+// Include guards.
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
@@ -20,7 +20,7 @@
 #define INTERMEDIATE_STRINGIFY(x) #x
 
 
-/*************** ПРОТОТИПЫ ФУНКЦИЙ **************/
+/************** FUNCTION PROTOTYPES *************/
 
 bool utilities_remove_CR_and_LF(char *buf);
 bool utilities_append_CR_and_LF(char *buf, size_t buf_size);
@@ -29,4 +29,4 @@ bool utilities_append_LF_if_absent(char *buf, size_t buf_size);
 bool utilities_force_2xLF(char *buf, size_t buf_size);
 
 
-#endif  // Завершающая директива защиты от повторного включения заголовочного файла.
+#endif  // Include guards.

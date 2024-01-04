@@ -9,17 +9,17 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-/*--- Включения ---*/
+/*--- Includes ---*/
 
-// Основная библиотека Arduino.
+// General Arduino library.
 #include <Arduino.h>
 
-// Локальные модули.
+// Local modules.
 #include "ESP_TCP.h"
 
-// Дополнительные библиотеки для Arduino IDE.
+// Additional libraries for Arduino IDE.
 #ifdef ESP32
     #include <WiFi.h>         // Вариант для ESP32.
 #endif
@@ -27,11 +27,13 @@
     #include <ESP8266WiFi.h>  // Вариант для ESP8266.
 #endif
 
-// Прочее.
+
+/*--- Misc ---*/
+
 #define ESP_TCP_PORT_DUMMY 0
 
 
-/************* ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ************/
+/*************** GLOBAL VARIABLES ***************/
 
 WiFiServer TCP_local_server(ESP_TCP_PORT_DUMMY);
 
@@ -39,9 +41,9 @@ WiFiClient TCP_remote_client;
 WiFiClient TCP_local_client;
 
 
-/******************** ФУНКЦИИ *******************/
+/******************* FUNCTIONS ******************/
 
-/*--- Сервер ---*/
+/*--- Local server ---*/
 
 void ESP_TCP_server_port_update(uint32_t port)
 {
@@ -56,8 +58,8 @@ void ESP_TCP_server_start()
 
 bool ESP_TCP_server_get_client()
 {
-    TCP_remote_client = TCP_local_server.accept();  // Раньше использовался метод available().
-
+    TCP_remote_client = TCP_local_server.accept();  /* Previously available() method was used,
+                                                     * but nowadays it's deprecated.
     if (TCP_remote_client) {
         return 1;
     } else {
@@ -67,7 +69,7 @@ bool ESP_TCP_server_get_client()
 
 uint32_t ESP_TCP_server_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
 {
-    // Счётчик таймаута подключения.
+    // Connection timeout counter.
     uint64_t current_millis = millis();
     uint64_t previous_millis = current_millis;
 
@@ -115,7 +117,7 @@ void ESP_TCP_server_stop(uint32_t shutdown_downtime)
 }
 
 
-/*--- Клиент ---*/
+/*--- Local client ---*/
 
 bool ESP_TCP_client_get_server(char *target_IP, uint32_t target_port)
 {
@@ -135,7 +137,7 @@ void ESP_TCP_client_send_msg(const char *msg)
 
 uint32_t ESP_TCP_client_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
 {
-    // Счётчик таймаута подключения.
+    // Connection timeout counter.
     uint64_t current_millis = millis();
     uint64_t previous_millis = current_millis;
 

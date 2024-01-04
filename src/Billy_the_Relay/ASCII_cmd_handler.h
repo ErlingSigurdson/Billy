@@ -9,17 +9,17 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Защита от повторного включения заголовочного файла.
+// Include guards.
 #ifndef ASCII_CMD_HANDLER_H
 #define ASCII_CMD_HANDLER_H
 
 
-/*************** ПРОТОТИПЫ ФУНКЦИЙ **************/
+/************** FUNCTION PROTOTYPES *************/
 
 bool ASCII_cmd_handler_check_prefix(char *buf, const char *prefix);
 int32_t ASCII_cmd_handler_check_cmd(char *buf, const char *cmd_list[], uint32_t cmd_list_len);
 
 
-#endif  // Завершающая директива защиты от повторного включения заголовочного файла.
+#endif  // Include guards.

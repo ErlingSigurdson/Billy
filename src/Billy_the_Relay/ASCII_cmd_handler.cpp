@@ -9,16 +9,16 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Основная библиотека Arduino.
+// General Arduino library.
 #include <Arduino.h>
 
-// Локальные модули.
+// Local modules.
 #include "ASCII_cmd_handler.h"
 
 
-/******************** ФУНКЦИИ *******************/
+/******************* FUNCTIONS ******************/
 
 bool ASCII_cmd_handler_check_prefix(char *buf, const char *prefix)
 {

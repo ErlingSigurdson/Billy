@@ -9,16 +9,16 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Основная библиотека Arduino.
+// General Arduino library.
 #include <Arduino.h>
 
-// Локальные модули.
+// Local modules.
 #include "HW_UART.h"
 
 
-/******************** ФУНКЦИИ *******************/
+/******************* FUNCTIONS ******************/
 
 uint32_t HW_UART_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout, uint32_t read_slowdown)
 {

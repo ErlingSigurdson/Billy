@@ -13,17 +13,17 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Защита от повторного включения заголовочного файла.
+// Include guards.
 #ifndef INBUILT_STORAGE_H
 #define INBUILT_STORAGE_H
 
-// Настройки проекта.
+// Project configs.
 #include "config_inbuilt_storage.h"
 
 
-/*************** ПРОТОТИПЫ ФУНКЦИЙ **************/
+/************** FUNCTION PROTOTYPES *************/
 
 // Инициализация хранилища. Требуется для ESP32, ESP8266 и STM32. Не требуется для AVR.
 void inbuilt_storage_init(uint32_t emulated_EEPROM_size);
@@ -35,4 +35,4 @@ void inbuilt_storage_read(char *buf, size_t buf_size, uint32_t str_max_len, uint
 void inbuilt_storage_write(char *str, uint32_t str_len, uint32_t str_max_len, uint32_t addr);
 
 
-#endif  // Завершающая директива защиты от повторного включения заголовочного файла.
+#endif  // Include guards.

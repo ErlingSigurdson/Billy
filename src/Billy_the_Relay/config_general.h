@@ -9,9 +9,9 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Защита от повторного включения заголовочного файла.
+// Include guards.
 #ifndef CONFIG_GENERAL_H
 #define CONFIG_GENERAL_H
 
@@ -76,11 +76,11 @@
 #define HTTP_PORT 80
 
 
-/*--- Прочее ---*/
+/*--- Misc ---*/
 
 #define STR_MAX_LEN 100
 #define CONN_TIMEOUT 8000
 #define CONN_SHUTDOWN_DOWNTIME 100
 
 
-#endif  // Завершающая директива защиты от повторного включения заголовочного файла.
+#endif  // Include guards.

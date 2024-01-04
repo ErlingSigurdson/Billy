@@ -3,24 +3,24 @@
 /**
  * Filename: ESP_HTTP.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: простой HTTP-сервер для модулей ESP32 и ESP8266.
+ * Purpose: a simplistic HTTP-server for ESP32/ESP8266.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Защита от повторного включения заголовочного файла.
+// Include guards.
 #ifndef ESP_HTTP_H
 #define ESP_HTTP_H
 
-// Настройки проекта.
+// Project configs.
 #include "config_general.h"
 #include "config_ASCII_cmd_handler.h"
 
 
-/*************** ПРОТОТИПЫ ФУНКЦИЙ **************/
+/************** FUNCTION PROTOTYPES *************/
 
 void ESP_HTTP_server_start();
 void ESP_HTTP_handle_client_in_loop();
@@ -32,4 +32,4 @@ String ESP_HTTP_send_HTML(uint32_t previous_cmd);
 void ESP_HTTP_set_handlers();
 
 
-#endif  // Завершающая директива защиты от повторного включения заголовочного файла.
+#endif  // Include guards.

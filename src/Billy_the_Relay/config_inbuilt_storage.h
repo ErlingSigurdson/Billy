@@ -10,9 +10,9 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Защита от повторного включения заголовочного файла.
+// Include guards.
 #ifndef CONFIG_INBUILT_STORAGE_H
 #define CONFIG_INBUILT_STORAGE_H
 
@@ -48,7 +48,7 @@
 #define INBUILT_STORAGE_ADDR_RSSI_PRINT_FLAG 1010
 
 
-/*--- Прочее ---*/
+/*--- Misc ---*/
 
 /* Указание на то, что в проекте используется устройство,
  * работа с флеш-памятью которого требует вызова ряда
@@ -57,4 +57,4 @@
 #define THIS_IS_ESP32_OR_ESP8266_OR_STM32
 
 
-#endif  // Завершающая директива защиты от повторного включения заголовочного файла.
+#endif  // Include guards.

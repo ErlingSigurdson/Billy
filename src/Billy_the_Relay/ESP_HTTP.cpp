@@ -3,47 +3,47 @@
 /**
  * Filename: ESP_HTTP.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: простой HTTP-сервер для модулей ESP32 и ESP8266.
+ * Purpose: a simplistic HTTP-server for ESP32/ESP8266.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Основная библиотека Arduino.
+// General Arduino library.
 #include <Arduino.h>
 
-// Локальные модули.
+// Local modules.
 #include "ESP_HTTP.h"
 
-// Дополнительные библиотеки для Arduino IDE.
+// Additional libraries for Arduino IDE.
 #ifdef ESP32
-    #include <WebServer.h>         // Вариант для ESP32.
+    #include <WebServer.h>
 #endif
 #ifdef ESP8266
-    #include <ESP8266WebServer.h>  // Вариант для ESP8266.
+    #include <ESP8266WebServer.h>
 #endif
 
-// Модификация веб-страницы в зависимости от предыдущей команды.
+// Modifying the web page according to a previous command.
 #define NO_PREVIOUS_CMD  0
 #define PREVIOUS_CMD_ON  1
 #define PREVIOUS_CMD_OFF 2
 
 
-/************* ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ************/
+/*************** GLOBAL VARIABLES ***************/
 
 #ifdef ESP32
-    WebServer HTTP_server(HTTP_PORT);         // Вариант для ESP32.
+    WebServer HTTP_server(HTTP_PORT);
 #endif
 #ifdef ESP8266
-    ESP8266WebServer HTTP_server(HTTP_PORT);  // Вариант для ESP8266.
+    ESP8266WebServer HTTP_server(HTTP_PORT);
 #endif
 
 char ESP_HTTP_current_val[STR_MAX_LEN + 1] = {0};
 
 
-/******************** ФУНКЦИИ *******************/
+/******************* FUNCTIONS ******************/
 
 void ESP_HTTP_server_start()
 {
@@ -52,7 +52,7 @@ void ESP_HTTP_server_start()
 
 void ESP_HTTP_handle_client_in_loop()
 {
-    // Приём и обработка HTTP-запросов.
+    // Receive and handle HTTP requests.
     HTTP_server.handleClient();
 }
 
@@ -80,7 +80,7 @@ void ESP_HTTP_handle_ctrl()
         char cmd_buf[STR_MAX_LEN + 1] = CMD_PREFIX;
         strcat(cmd_buf, Str_cmd_buf.c_str());
 
-        // Если команда следует сразу за префиксом.
+        // If a command immediately follows the prefix.
         if (strstr(cmd_buf, CMD_0) == cmd_buf + strlen(CMD_PREFIX)) {
             if (strstr(cmd_buf, "=") == NULL) {
                 HTTP_server.send(200, "text/plain", "No valid command issued.");
@@ -125,29 +125,29 @@ void ESP_HTTP_copy_value(char *buf, uint32_t str_max_len)
 
 String ESP_HTTP_send_HTML(uint32_t previous_cmd)
 {
-    // Вставка упоминания о предыдущей команде.
+    // Mention of previous command.
     String prev_style;
     String prev_text;
 
     if (previous_cmd == PREVIOUS_CMD_ON) {
         prev_style+= "#prev {";
-            prev_style+= "color: red;";        // Разница здесь.
+            prev_style+= "color: red;";        // Difference is here.
             prev_style+= "text-align: left;";
             prev_style+= "font-size: 20px;";
         prev_style+= "}";
 
         prev_text+= "<p id=\"prev\">";
-            prev_text+= "Load ON";             // Разница здесь.
+            prev_text+= "Load ON";             // Difference is here.
         prev_text+= "</p>";
     } else if (previous_cmd == PREVIOUS_CMD_OFF) {
         prev_style+= "#prev {";
-            prev_style+= "color: blue;";       // Разница здесь.
+            prev_style+= "color: blue;";       // Difference is here.
             prev_style+= "text-align: left;";
             prev_style+= "font-size: 20px;";
         prev_style+= "}";
 
         prev_text+= "<p id=\"prev\">";
-            prev_text+= "Load OFF";            // Разница здесь.
+            prev_text+= "Load OFF";            // Difference is here.
         prev_text+= "</p>";
     }
 
@@ -211,7 +211,7 @@ String ESP_HTTP_send_HTML(uint32_t previous_cmd)
 
 void ESP_HTTP_set_handlers()
 {
-    // Назначение функций, обрабатывающих HTTP-запросы при обращении к определённому адресу.
+    // Assigning HTTP request handler functions to particular URIs.
     HTTP_server.on("/", ESP_HTTP_handle_root);
     HTTP_server.onNotFound(ESP_HTTP_handle_not_found);
     HTTP_server.on("/ctrl", ESP_HTTP_handle_ctrl);

@@ -3,29 +3,29 @@
 /**
  * Filename: Billy_the_Relay.ino
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: Ардуино-проект на базе модуля ESP32 или ESP8266.
- * Дистанционное управление простой (ВКЛ./ВЫКЛ.) нагрузкой.
+ * Purpose: base file of an Arduino sketch written for ESP32 или ESP8266 SoCs.
+ * Provides a remote control of a simple ON/OFF load via ASCII commands set
+ * via UART, TCP, HTTP and Bluetooth Classic.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:
+ * Notes: project homepage https://github.com/ErlingSigurdson/Billy_the_Relay
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-/*--- Включения ---*/
+/*--- Includes ---*/
 
-// Настройки проекта.
-#include "config_general.h"            // Помимо файла .ino включается в заголовочные файлы некоторых локальных модулей.
+// Project configs.
+#include "config_general.h"            // Aside from .ino file included into some local modules.
 
-#include "config_ASCII_cmd_handler.h"  /* Помимо файла .ino включается в заголовочный файл модуля ESP_HTTP,
-                                        * поскольку тому необходимо "знать" тексты команд.
+#include "config_ASCII_cmd_handler.h"  /* Aside from .ino file included into ESP_HTTP.h
+                                        * because the local module needs to "know" commands' syntax.
                                         */
 
-#include "config_inbuilt_storage.h"    /* Помимо файла .ino включается в заголовочный файл модуля inbuilt_storage,
-                                        * поскольку тому необходимо "знать", что он имеет дело с ESP32/ESP8266.
-                                        */
+#include "config_inbuilt_storage.h"    /* Aside from .ino file included into inbuilt_storage.h
+                                        * because the local module needs to "know" it works with ESP32/ESP8266.
 
-// Локальные модули.
+// Local modules.
 #include "utilities.h"
 #include "ASCII_cmd_handler.h"
 #include "inbuilt_storage.h"
@@ -38,14 +38,12 @@
     #include "ESP32_Bluetooth.h"
 #endif
 
-// Дополнительные библиотеки для Arduino IDE включаются в локальных модулях.
+// Additional Arduino libraries are included into local modules' files.
 
 
-/****************** ТИПЫ ДАННЫХ *****************/
+/****************** DATA TYPES ******************/
 
-/* Структура, в которую записываются значения настроек,
- * считываемые со встроенного накопителя устройства.
- */
+// Struct to store values read from the inbuilt storage.
 typedef struct strd_vals_t {
     char SSID[STR_MAX_LEN + 1];
     char pswd[STR_MAX_LEN + 1];
@@ -61,199 +59,196 @@ typedef struct strd_vals_t {
 } strd_vals_t;
 
 
-/************* ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ************/
+/*************** GLOBAL VARIABLES ***************/
 
 bool time_to_refresh_strd_vals = 1;
 
 
-/*************** ПРОТОТИПЫ ФУНКЦИЙ **************/
+/************** FUNCTION PROTOTYPES *************/
 
-/*--- Функции-обработчики ---*/
+/*--- Command handler functions ---*/
 
-/* Функции, вызываемые в ответ на поступившие команды и на ошибки обработки
- * команд. Ниже указано, при каких условиях вызывается та или иная функция.
+/* Functions called as a response to commands received
+ * and command processing errors.
  */
 
-// Отсутствует корректный префикс команды.
+// Absent correct command prefix.
 void handle_cmd_err_prefix();
 
-// После корректного префикса команды отсутствует корректная команда.
+// Absent correct command after the prefix.
 void handle_cmd_err_cmd();
 
-/* После корректной команды, требующей ввода значения,
- * отсутствует корректное значение.
- */
+// Absent correct value after the command which requires it.
 void handle_cmd_err_val();
 
-// Длина команды превышает установленный лимит.
+// Command string is too long.
 void handle_cmd_err_len();
 
-/* Введена команда #0:
- * включение или выключение нагрузки. Основная "рабочая лошадка".
+/* Inserted command #0:
+ * turn load ON of OFF. Primary "daily driver".
  */
 void handle_cmd_set_load(char *cmd);
 
-/* Введена команда #1:
- * изменение SSID точки доступа локальной сети Wi-Fi, хранящегося
- * во встроенном накопителе устройства.
+/* Inserted command #1:
+ * change the SSID of a local Wi-Fi access point
+ * stored in the inbuilt storage.
  */
 void handle_cmd_set_local_SSID(char *cmd);
 
-/* Введена команда #2:
- * вывод SSID точки доступа локальной сети Wi-Fi, хранящегося
- * во встроенном накопителе устройства.
+/* Inserted command #2:
+ * print the SSID of a local Wi-Fi access point
+ * stored in the inbuilt storage.
  */
 void handle_cmd_print_local_SSID();
 
-/* Введена команда #3:
+/* Inserted command #3:
  * изменение пароля точки доступа локальной сети Wi-Fi, хранящегося
  * во встроенном накопителе устройства.
  */
 void handle_cmd_set_local_pswd(char *cmd);
 
-/* Введена команда #4:
+/* Inserted command #4:
  * изменение номера порта, используемого устройством как локальным TCP-сервером,
  * хранящегося во встроенном накопителе устройства.
  */
 void handle_cmd_set_local_port(char *cmd);
 
-/* Введена команда #5:
+/* Inserted command #5:
  * вывод номера порта, используемого устройством как локальным TCP-сервером,
  * хранящегося во встроенном накопителе устройства.
  */
 void handle_cmd_print_local_port();
 
-/* Введена команда #6:
+/* Inserted command #6:
  * вывод локального IP-адреса, присвоенного устройству в текущей сети Wi-Fi.
  */
 void handle_cmd_print_local_IP();
 
-/* Введена команда #7:
- * перезапуск локальных соединений.
+/* Inserted command #7:
+ * reset local connections.
  */
 void handle_cmd_rst_local_conn();
 
-/* Введена команда #8:
+/* Inserted command #8:
  * включение или выключение связи с удалённым сервером (сервером IoT).
  */
 void handle_cmd_set_IoT_flag(char *cmd);
 
-/* Введена команда #9:
+/* Inserted command #9:
  * изменение IP-адреса удалённого сервера, хранящегося
  * во встроенном накопителе устройства.
  */
 void handle_cmd_set_IoT_server_IP(char *cmd);
 
-/* Введена команда #10:
+/* Inserted command #10:
  * вывод IP-адреса удалённого сервера, хранящегося
  * во встроенном накопителе устройства.
  */
 void handle_cmd_print_IoT_server_IP();
 
-/* Введена команда #11:
+/* Inserted command #11:
  * изменение номера порта, в который устройство будет стучаться
  * к удалённому серверу, хранящегося во встроенном накопителе устройства.
  */
 void handle_cmd_set_IoT_server_port(char *cmd);
 
-/* Введена команда #12:
+/* Inserted command #12:
  * вывод номера порта, в который устройство будет стучаться
  * к удалённому серверу, хранящегося во встроенном накопителе устройства.
  */
 void handle_cmd_print_IoT_server_port();
 
-/* Введена команда #13:
+/* Inserted command #13:
  * изменение текста запроса, направляемого устройством удалённому серверу,
  * хранящегося во встроенном накопителе устройства.
  */
 void handle_cmd_set_IoT_req_msg(char *cmd);
 
-/* Введена команда #14:
+/* Inserted command #14:
  * вывод текста запроса, направляемого устройством удалённому серверу,
  * хранящегося во встроенном накопителе устройства.
  */
 void handle_cmd_print_IoT_req_msg();
 
-/* Введена команда #15:
+/* Inserted command #15:
  * изменение периодичности (в миллисекундах) направления запросов
  * удалённому серверу, хранящейся во встроенном накопителе устройства.
  */
 void handle_cmd_set_IoT_req_period(char *cmd);
 
-/* Введена команда #16:
- * включение или выключение Bluetooth.
+/* Inserted command #16:
+ * set Bluetooth Classic functionality ON or OFF.
  */
 void handle_cmd_set_BT_flag(char *cmd);
 
-/* Введена команда #17:
+/* Inserted command #17:
  * изменение имени устройства как ведомого устройства Bluetooth,
  * хранящегося во встроенном накопителе устройства.
  */
 void handle_cmd_set_BT_dev_name(char *cmd);
 
-/* Введена команда #18:
+/* Inserted command #18:
  * вывод имени устройства как ведомого устройства Bluetooth,
  * хранящегося во встроенном накопителе устройства.
  */
 void handle_cmd_print_BT_dev_name();
 
-/* Введена команда #19:
+/* Inserted command #19:
  * включение или выключение периодического вывода текущего значения RSSI.
  */
 void handle_cmd_set_RSSI_print_flag(char *cmd);
 
 
-/*--- Помощники функций-обработчиков ---*/
+/*--- Helpers for handler functions ---*/
 
-// Вспомогательная функция для set-обработчиков.
+// Helper for "set" handlers.
 void handle_cmd_helper_set(char *cmd, const char *topic, uint32_t addr, bool echo);
 
-// Вспомогательная функция для print-обработчиков.
+// Helper for "print" handlers.
 void handle_cmd_helper_print(const char *topic, uint32_t addr);
 
-// Вспомогательная функция для отправки сообщений обработчиками.
+// Helper for sending messages by handlers
 void handle_cmd_helper_send(const char *msg);
 
 
-/*--- Прочие функции ---*/
+/*--- Misc functions ---*/
 
-// Чтение настроек со встроенного накопителя устройства в структуру.
+// Read values from the inbuilt storage 
 void strd_vals_read(strd_vals_t *_strd_vals);
 
 
-/******************** ФУНКЦИИ *******************/
+/******************* FUNCTIONS ******************/
 
-/*--- Основные функции ---*/
+/*--- Basic functions ---*/
 
 void setup()
 {
-    /*--- Установка режима работы задействованных выводов устройства ---*/
+    /*--- GPIO configuration ---*/
 
     pinMode(LOAD_PIN, OUTPUT);
     pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
 
 
-    /*--- Взаимодействие со встроенным накопителем ---*/
+    /*--- Interactions with the inbult storage ---*/
 
-    /* У ESP32 и ESP8266, в отличие от устройств на базе микроконтроллеров AVR,
-     * встроенный накопитель перед использованием необходимо инициализировать.
+    /* In contrast to AVR-based devices, ESP32 и ESP8266 inbuilt storage
+     * must be initialized before use.
      */
     inbuilt_storage_init(INBUILT_STORAGE_SIZE);
 
-    // Чтение настроек со встроенного накопителя устройства в структуру.
+    // Read the stored configs from the inbuilt storage into the struct.
     strd_vals_t strd_vals;
     strd_vals_read(&strd_vals);
 
-    /* При необходимости любую настройку можно первоначально сохранить
-     * во встроенном накопителе устройства, указав её прямо в коде перед
-     * компиляцией. Для этого требуется раскомментировать соответствующие
-     * директивы #define и указать желаемые значения среди параметров
-     * функции, после чего загрузить скетч в устройство и запустить его.
-     * После этого следует вновь закомментировать директивы и повторно
-     * загрузить скетч в устройство, поскольку иначе настройки будут
-     * сбрасываться к исходным значениям при каждом запуске устройства.
+    /* If necessary, you can put any config value into the inbuilt storage
+     * at the same time with  uploading the sketch. To achieve this,
+     * uncomment respective #define directive and specify the desired value
+     * right in the code, pre-compile-time. Then upload the sketch. After that
+     * comment out the same directives you've uncommented before and upload
+     * the sketch once again. Without that last step a config value will always
+     * be reverted to the hardcoded value upon every device startup. 
      */
-
+    
     //#define SET_SSID_AT_UPLOAD
     #ifdef SET_SSID_AT_UPLOAD
         inbuilt_storage_write("NEWSSID",
@@ -343,25 +338,24 @@ void setup()
     #endif
 
 
-    /*--- Запуск коммуникаций ---*/
+    /*--- Starting communications ---*/
 
-    // Запуск аппаратного интерфейса UART.
+    // Starting hardware UART.
     Serial.begin(HW_UART_BAUD_RATE);
-    delay(HW_UART_STARTUP_PAUSE);    // Небольшая пауза, дающая устройству время на запуск интерфейса.
+    delay(HW_UART_STARTUP_PAUSE);    // Tiny pause for interface startup.
 
     Serial.println("");
     Serial.println("*** HELLO, HUMAN! ***");
 
-    /* Для инициализации некоторых объектов требуется указать их настройки
-     * до компиляции, поскольку те передаются в конструктор в качестве
-     * параметров. Чтобы инициализировать такие глобальные объекты в файлах
-     * модулей и не тащить их в файл .ino, указываем в качестве параметров
-     * конструктора заглушку, а затем уже при выполнении setup() передаём
-     * в эти объекты нужные нам значения, считанные со встроенного накопителя.
+    /* Initializing of certain objects (class instances) requires specifying
+     * their parameters compile-time, since the latter are to be passed
+     * to a constructor function. However, to avoid mentioning such objects
+     * in an .ino file, they are initialized with dummy values and then get
+     * updated with the values read from the inbuilt storage.
      */
     ESP_TCP_server_port_update(strd_vals.local_server_port);
 
-    // Подключение к сети Wi-Fi.
+    // Connecting to Wi-Fi network.
     bool WiFi_connected = ESP_WiFi_set_connection(strd_vals.SSID,
                                                   strd_vals.pswd,
                                                   CONN_TIMEOUT);
@@ -385,7 +379,7 @@ void setup()
     }
     Serial.println("");
 
-    // Запуск Bluetooth.
+    // Bluetooth startup.
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         if (strd_vals.BT_flag) {
             ESP32_BT_start(strd_vals.BT_dev_name);
@@ -393,9 +387,9 @@ void setup()
     #endif
 
 
-    /*--- Вывод значений соответствующих настроек ---*/
+    /*--- Respective config values printout ---*/
 
-    // Проверка флага связи с удалённым сервером (сервером IoT).
+    // Check for IoT connection mode flag.
     Serial.print("Requests to IoT server: ");
     if (strd_vals.IoT_flag) {
         Serial.println("ON");
@@ -411,7 +405,7 @@ void setup()
         Serial.println("OFF");
     }
 
-    // Проверка флага работы Bluetooth.
+    // Check for Bluetooth functionality flag.
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         Serial.print("Bluetooth: ");
         if (strd_vals.BT_flag) {
@@ -423,7 +417,7 @@ void setup()
         }
     #endif
 
-    // Проверка флага периодического вывода текущего значения RSSI через UART.
+    // Check for RSSI printout flag.
     Serial.print("Print RSSI: ");
     if (strd_vals.RSSI_print_flag) {
         Serial.println("ON");
@@ -435,14 +429,14 @@ void setup()
 
 void loop()
 {
-    // Чтение данных со встроенного накопителя в структуру.
+    // Reading config values from the inbuilt storage into the struct.
     static strd_vals_t strd_vals;
     if (time_to_refresh_strd_vals) {
         strd_vals_read(&strd_vals);
         time_to_refresh_strd_vals = 0;
     }
 
-    // Массив строк с командами.
+    // Valid commands' array
     static const char *cmd_list[] = {
         CMD_0,
         CMD_1,
@@ -467,11 +461,11 @@ void loop()
     };
 
 
-    /*--- Вывод текущего значения RSSI ---*/
+    /*--- Current RSSI printout ---*/
     
     uint32_t WiFi_RSSI_print_period = WIFI_RSSI_PRINT_PERIOD;
     if (WiFi_RSSI_print_period == 0) {
-        WiFi_RSSI_print_period = DEFAULT_WIFI_RSSI_PRINT_PERIOD;  // Защита от деления на ноль.
+        WiFi_RSSI_print_period = DEFAULT_WIFI_RSSI_PRINT_PERIOD;  // Divide by zero prevention.
     }
 
     static bool RSSI_print_loaded = 0;
@@ -485,12 +479,12 @@ void loop()
     }
 
 
-    /*--- Приём команд ---*/
+    /*--- Receiving commands ---*/
 
-    // Буфер для записи команд.
+    // Command buffer.
     char terminal_input[STR_MAX_LEN + 1] = {0};
 
-    // Приём данных через аппаратный UART.
+    // Reading data received by hardware UART.
     uint32_t HW_UART_bytes_read = HW_UART_read_line(terminal_input,
                                                     STR_MAX_LEN,
                                                     CONN_TIMEOUT,
@@ -500,7 +494,7 @@ void loop()
         handle_cmd_err_len();
     }
 
-    // Приём локальным сервером данных по TCP.
+    // Local TCP server reads data from a remote client.
     if (ESP_TCP_server_get_client()) {
         uint32_t TCP_server_bytes_read = ESP_TCP_server_read_line(terminal_input,
                                                                   STR_MAX_LEN,
@@ -511,15 +505,15 @@ void loop()
         }
     }
 
-    // Обработка HTTP-запросов и запись значения из тела запроса в буфер.
+    // Handling HTTP requests and writing request body values into a buffer.
     ESP_HTTP_handle_client_in_loop();
     ESP_HTTP_copy_value(terminal_input, STR_MAX_LEN);
 
-    /* Направление локальным TCP-клиентом запроса
-     * удалённому серверу и приём ответа.
+    /* Local TCP client sends the request to a remote server
+     * and reads the response.
      */
     if (strd_vals.IoT_req_period == 0) {
-        strd_vals.IoT_req_period = DEFAULT_IOT_REQ_PERIOD;  // Защита от деления на ноль.
+        strd_vals.IoT_req_period = DEFAULT_IOT_REQ_PERIOD;  // Divide by zero prevention.
     }
 
     if (strd_vals.IoT_flag && millis() % strd_vals.IoT_req_period == 0) {
@@ -544,7 +538,7 @@ void loop()
         }
     }
 
-    // Приём данных через Bluetooth.
+    // Reading data from a Bluetooth master device.
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         bool BT_was_connected = 0;
         if (strd_vals.BT_flag && ESP32_BT_check_connection()) {
@@ -560,15 +554,15 @@ void loop()
     #endif
 
 
-    /*--- Обработка записанных в буфер ASCII-команд ---*/
+    /*--- Handling text commands ---*/
     
-    // По сути это центральный узел всего скетча.
+    // Essentially it's a central hub of the whole sketch.
 
-    // Проверка заполненности буфера и наличия префикса в буфере.
+    // Check for non-empty buffer string and correct command prefix.
     if (terminal_input[0] != '\0' && ASCII_cmd_handler_check_prefix(terminal_input, CMD_PREFIX)) {
         utilities_remove_CR_and_LF(terminal_input);
 
-        // Проверка наличия команд в буфере.
+        // Check for valid commands.
         int32_t func_to_call = ASCII_cmd_handler_check_cmd(terminal_input, cmd_list, CMD_LIST_LEN);
         switch (func_to_call) {
             case -1:
@@ -656,7 +650,7 @@ void loop()
                 break;
 
             default:
-                break;  // Ничего не делаем, отдаём дань MISRA.
+                break;  // Do nothing and hail MISRA.
         }
     } else if (terminal_input[0] != '\0') {
         handle_cmd_err_prefix();
@@ -664,16 +658,16 @@ void loop()
     }
     
     
-    /*--- Завершение коммуникации ---*/
+    /*--- Finishing communications ---*/
 
-    // Отключение TCP-клиентов.
+    // TCP clients' disconnection.
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
 
-    // Отключение Bluetooth-соединения.
+    // Bluetooth disconnection.
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
-        if (BT_was_connected) {  /* Если повторно вызывать метод connected(),
-                                  * то крашится RTOS. Поэтому пришлось ввести
-                                  * дополнительный флаг.
+        if (BT_was_connected) {  /* Another call for connected() method
+                                  * caused RTOS crash, hence additional
+                                  * flag was introduced.
                                   */
             ESP32_BT_disconnect(CONN_SHUTDOWN_DOWNTIME);
         }
@@ -703,7 +697,7 @@ void handle_cmd_err_len()
     handle_cmd_helper_send("Command buffer overflow.");
 }
 
-// Команда #0
+// Command #0
 void handle_cmd_set_load(char *cmd)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
@@ -733,13 +727,13 @@ void handle_cmd_set_load(char *cmd)
     handle_cmd_err_val();
 }
 
-/* Выводить или не выводить новое значение изменённой настройки.
- * Для пароля не выводим, для всего остального выводим.
+/* To print or not to print new value of an updated config.
+ * OFF for password, ON for other cases.
  */
 #define ECHO_ON 1
 #define ECHO_OFF 0
 
-// Команда #1
+// Command #1
 void handle_cmd_set_local_SSID(char *cmd)
 {
     handle_cmd_helper_set(cmd,
@@ -748,14 +742,14 @@ void handle_cmd_set_local_SSID(char *cmd)
                           ECHO_ON);
 }
 
-// Команда #2
+// Command #2
 void handle_cmd_print_local_SSID()
 {
     handle_cmd_helper_print("Current SSID is: ",
                             INBUILT_STORAGE_ADDR_SSID);
 }
 
-// Команда #3
+// Command #3
 void handle_cmd_set_local_pswd(char *cmd)
 {
     handle_cmd_helper_set(cmd,
@@ -764,7 +758,7 @@ void handle_cmd_set_local_pswd(char *cmd)
                           ECHO_OFF);
 }
 
-// Команда #4
+// Command #4
 void handle_cmd_set_local_port(char *cmd)
 {
     handle_cmd_helper_set(cmd,
@@ -775,14 +769,14 @@ void handle_cmd_set_local_port(char *cmd)
     handle_cmd_helper_send("Please reboot your device or reset local connection to put changes into effect.");
 }
 
-// Команда #5
+// Command #5
 void handle_cmd_print_local_port()
 {
     handle_cmd_helper_print("Current local server port is: ",
                             INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT);
 }
 
-// Команда #6
+// Command #6
 void handle_cmd_print_local_IP()
 {
     char msg[STR_MAX_LEN * 2 + 1] = {0};
@@ -792,7 +786,7 @@ void handle_cmd_print_local_IP()
     handle_cmd_helper_send(msg);
 }
 
-// Команда #7
+// Command #7
 void handle_cmd_rst_local_conn()
 {
     handle_cmd_helper_send("Resetting local connections...");
@@ -806,7 +800,7 @@ void handle_cmd_rst_local_conn()
     setup();
 }
 
-// Команда #8
+// Command #8
 void handle_cmd_set_IoT_flag(char *cmd)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
@@ -821,7 +815,7 @@ void handle_cmd_set_IoT_flag(char *cmd)
     }
 }
 
-// Команда #9
+// Command #9
 void handle_cmd_set_IoT_server_IP(char *cmd)
 {
     handle_cmd_helper_set(cmd,
@@ -830,14 +824,14 @@ void handle_cmd_set_IoT_server_IP(char *cmd)
                           ECHO_ON);
 }
 
-// Команда #10
+// Command #10
 void handle_cmd_print_IoT_server_IP()
 {
     handle_cmd_helper_print("Current IoT server target IP is: ",
                             INBUILT_STORAGE_ADDR_IOT_SERVER_IP);
 }
 
-// Команда #11
+// Command #11
 void handle_cmd_set_IoT_server_port(char *cmd)
 {
     handle_cmd_helper_set(cmd,
@@ -846,14 +840,14 @@ void handle_cmd_set_IoT_server_port(char *cmd)
                           ECHO_ON);
 }
 
-// Команда #12
+// Command #12
 void handle_cmd_print_IoT_server_port()
 {
     handle_cmd_helper_print("Current IoT server target port is: ",
                             INBUILT_STORAGE_ADDR_IOT_SERVER_PORT);
 }
 
-// Команда #13
+// Command #13
 void handle_cmd_set_IoT_req_msg(char *cmd)
 {
     handle_cmd_helper_set(cmd,
@@ -862,14 +856,14 @@ void handle_cmd_set_IoT_req_msg(char *cmd)
                           ECHO_ON);
 }
 
-// Команда #14
+// Command #14
 void handle_cmd_print_IoT_req_msg()
 {
     handle_cmd_helper_print("Current IoT server request text is: ",
                             INBUILT_STORAGE_ADDR_IOT_REQ_MSG);
 }
 
-// Команда #15
+// Command #15
 void handle_cmd_set_IoT_req_period(char *cmd)
 {
     handle_cmd_helper_set(cmd,
@@ -878,7 +872,7 @@ void handle_cmd_set_IoT_req_period(char *cmd)
                           ECHO_ON);
 }
 
-// Команда #16
+// Command #16
 void handle_cmd_set_BT_flag(char *cmd)
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
@@ -896,7 +890,7 @@ void handle_cmd_set_BT_flag(char *cmd)
     #endif
 }
 
-// Команда #17
+// Command #17
 void handle_cmd_set_BT_dev_name(char *cmd)
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
@@ -909,7 +903,7 @@ void handle_cmd_set_BT_dev_name(char *cmd)
     #endif
 }
 
-// Команда #18
+// Command #18
 void handle_cmd_print_BT_dev_name()
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
@@ -918,7 +912,7 @@ void handle_cmd_print_BT_dev_name()
     #endif
 }
 
-// Команда #19
+// Command #19
 void handle_cmd_set_RSSI_print_flag(char *cmd)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
@@ -934,9 +928,9 @@ void handle_cmd_set_RSSI_print_flag(char *cmd)
 }
 
 
-/*--- Помощники функций-обработчиков ---*/
+/*--- Helpers for handler functions ---*/
 
-// Вспомогательная функция для set-обработчиков.
+// Helper for "set" handlers.
 void handle_cmd_helper_set(char *cmd, const char *topic, uint32_t addr, bool echo)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
@@ -957,7 +951,7 @@ void handle_cmd_helper_set(char *cmd, const char *topic, uint32_t addr, bool ech
     time_to_refresh_strd_vals = 1;
 }
 
-// Вспомогательная функция для print-обработчиков.
+// Helper for "print" handlers.
 void handle_cmd_helper_print(const char *topic, uint32_t addr)
 {
     char msg[STR_MAX_LEN * 2 + 1] = {0};
@@ -972,7 +966,7 @@ void handle_cmd_helper_print(const char *topic, uint32_t addr)
     handle_cmd_helper_send(msg);
 }
 
-// Вспомогательная функция для отправки сообщений обработчиками.
+// Helper for sending messages by handlers// Вспомогательная функция для отправки сообщений обработчиками.
 void handle_cmd_helper_send(const char *msg)
 {
     Serial.println(msg);
@@ -992,12 +986,12 @@ void handle_cmd_helper_send(const char *msg)
 }
 
 
-/*--- Прочие функции ---*/
+/*--- Misc functions ---*/
 
-// Чтение настроек со встроенного накопителя устройства в структуру.
+// Reading config values from the inbuilt storage into the struct.
 void strd_vals_read(strd_vals_t *_strd_vals)
 {
-    // Индексы в массиве строк, считываемых со встроенного накопителя.
+    // Indices in the array of strings read from the inbuilt storage.
     #define INDEX_SSID               0
     #define INDEX_PSWD               1
     #define INDEX_LOCAL_SERVER_PORT  2
@@ -1011,7 +1005,7 @@ void strd_vals_read(strd_vals_t *_strd_vals)
     #define INDEX_RSSI_PRINT_FLAG    10
 
 
-    /*--- Чтение строк со встроенного накопителя ---*/
+    /*--- Reading strings from the inbuilt storage ---*/
     
     char strd_vals_str[INBUILT_STORAGE_ITEM_LIST_LEN][INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
     uint32_t strd_vals_addr[] = {
@@ -1044,49 +1038,49 @@ void strd_vals_read(strd_vals_t *_strd_vals)
     }
 
 
-    /*--- Запись строк и извлечённых целочисленных значений в структуру ---*/
+    /*--- Writing of strings and extracted integers into a struct ---*/
     
-    // SSID.
+    // Local SSID.
     strcpy(_strd_vals->SSID, strd_vals_str[INDEX_SSID]);
     
-    // Пароль.
+    // Local access point password.
     strcpy(_strd_vals->pswd, strd_vals_str[INDEX_PSWD]);
     
-    // Порт локального TCP-сервера.
+    // Local TCP server port.
     _strd_vals->local_server_port = strtol(strd_vals_str[INDEX_LOCAL_SERVER_PORT], NULL, 10);
 
-    // Флаг связи с удалённым сервером (сервером IoT).
+    // Flag for a connection to a remote server (IoT server)
     if (!strcmp(strd_vals_str[INDEX_IOT_FLAG], "ON")) {
         _strd_vals->IoT_flag = 1;
     } else {
         _strd_vals->IoT_flag = 0;
     }
 
-    // IP удалённого сервера.
+    // Remote server IP.
     strcpy(_strd_vals->IoT_server_IP, strd_vals_str[INDEX_IOT_SERVER_IP]);
     
-    // Порт удалённого сервера.
+    // Remote server port.
     _strd_vals->IoT_server_port = strtol(strd_vals_str[INDEX_IOT_SERVER_PORT], NULL, 10);
     
-    // Текст запроса, направляемого удалённому серверу.
+    // Text of a request to a remote server.
     strcpy(_strd_vals->IoT_req_msg, strd_vals_str[INDEX_IOT_REQ_MSG]);
     
-    // Периодичность отправки запросов удалённому серверу.
+    // Interval of requests to a remote server.
     _strd_vals->IoT_req_period = strtol(strd_vals_str[INDEX_IOT_REQ_PERIOD], NULL, 10);
 
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
-        // Флаг Bluetooth.
+        // Bluetooth flag.
         if (!strcmp(strd_vals_str[INDEX_BT_FLAG], "ON")) {
             _strd_vals->BT_flag = 1;
         } else {
             _strd_vals->BT_flag = 0;
         }
 
-        // Имя устройства как ведомого устройства Bluetooth.
+        // Bluetooth slave device name.
         strcpy(_strd_vals->BT_dev_name, strd_vals_str[INDEX_BT_DEV_NAME]);
     #endif
 
-    // Флаг вывода текущего значения RSSI.
+    // RSSI printout flag.
     if (!strcmp(strd_vals_str[INDEX_RSSI_PRINT_FLAG], "ON")) {
         _strd_vals->RSSI_print_flag = 1;
     } else {

@@ -10,15 +10,15 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Основная библиотека Arduino.
+// General Arduino library.
 #include <Arduino.h>
 
-// Локальные модули.
+// Local modules.
 #include "ESP_WiFi.h"
 
-// Дополнительные библиотеки для Arduino IDE.
+// Additional libraries for Arduino IDE.
 #ifdef ESP32
     #include <WiFi.h>         // Вариант для ESP32.
 #endif
@@ -27,7 +27,7 @@
 #endif
 
 
-/******************** ФУНКЦИИ *******************/
+/******************* FUNCTIONS ******************/
 
 bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeout)
 {

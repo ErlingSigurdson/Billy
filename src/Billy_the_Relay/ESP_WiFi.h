@@ -10,9 +10,9 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Защита от повторного включения заголовочного файла.
+// Include guards.
 #ifndef ESP_WIFI_H
 #define ESP_WIFI_H
 
@@ -20,7 +20,7 @@
 #define DEFAULT_WIFI_RSSI_PRINT_PERIOD 2000
 
 
-/*************** ПРОТОТИПЫ ФУНКЦИЙ **************/
+/************** FUNCTION PROTOTYPES *************/
 
 bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeout);
 void ESP_WiFi_indicate_connection(uint32_t LED_pin, uint32_t cycles, uint32_t period);
@@ -28,4 +28,4 @@ String ESP_WiFi_get_current_IP();
 void ESP_WiFi_RSSI_print();
 
 
-#endif  // Завершающая директива защиты от повторного включения заголовочного файла.
+#endif  // Include guards.

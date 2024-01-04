@@ -13,19 +13,19 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Основная библиотека Arduino.
+// General Arduino library.
 #include <Arduino.h>
 
-// Локальные модули.
+// Local modules.
 #include "inbuilt_storage.h"
 
-// Дополнительные библиотеки для Arduino IDE.
+// Additional libraries for Arduino IDE.
 #include <EEPROM.h>
 
 
-/******************** ФУНКЦИИ *******************/
+/******************* FUNCTIONS ******************/
 
 // Инициализация хранилища. Требуется для ESP32, ESP8266 и STM32. Не требуется для AVR.
 void inbuilt_storage_init(uint32_t emulated_EEPROM_size)

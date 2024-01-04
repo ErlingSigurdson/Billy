@@ -9,27 +9,27 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Основная библиотека Arduino.
+// General Arduino library.
 #include <Arduino.h>
 
-// Локальные модули.
+// Local modules.
 #include "ESP32_Bluetooth.h"
 
-// Условная компиляция.
+// Conditional compilation.
 #if defined ESP32 && defined BT_CLASSIC_PROVIDED
 
-// Дополнительные библиотеки для Arduino IDE.
+// Additional libraries for Arduino IDE.
 #include <BluetoothSerial.h>
 
 
-/************* ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ************/
+/*************** GLOBAL VARIABLES ***************/
 
 BluetoothSerial BT_Serial;
 
 
-/******************** ФУНКЦИИ *******************/
+/******************* FUNCTIONS ******************/
 
 void ESP32_BT_start(char *dev_name)
 {

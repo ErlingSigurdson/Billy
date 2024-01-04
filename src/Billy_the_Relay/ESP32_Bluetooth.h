@@ -9,20 +9,20 @@
  */
 
 
-/************ ДИРЕКТИВЫ ПРЕПРОЦЕССОРА ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
 
-// Защита от повторного включения заголовочного файла.
+// Include guards.
 #ifndef ESP32_BLUETOOTH_H
 #define ESP32_BLUETOOTH_H
 
-// Настройки проекта.
+// Project configs.
 #include "config_general.h"
 
-// Условная компиляция.
+// Conditional compilation.
 #if defined ESP32 && defined BT_CLASSIC_PROVIDED
 
 
-/*************** ПРОТОТИПЫ ФУНКЦИЙ **************/
+/************** FUNCTION PROTOTYPES *************/
 
 void ESP32_BT_start(char *dev_name);
 bool ESP32_BT_check_connection();
@@ -32,5 +32,4 @@ void ESP32_BT_disconnect(uint32_t shutdown_downtime);
 void ESP32_BT_stop(uint32_t shutdown_downtime);
 
 
-#endif  // Завершающая директива условной компиляции.
-#endif  // Завершающая директива защиты от повторного включения заголовочного файла.
+#endif  // Include guards.
