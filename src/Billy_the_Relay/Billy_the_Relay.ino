@@ -3,11 +3,12 @@
 /**
  * Filename: Billy_the_Relay.ino
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: base file of an Arduino sketch written for ESP32 или ESP8266 SoCs.
- * Provides a remote control of a simple ON/OFF load via ASCII commands set
- * via UART, TCP, HTTP and Bluetooth Classic.
+ * Purpose: a central file of an Arduino sketch written for the ESP32
+ * and ESP8266 SoCs. Provides a control over a simple ON/OFF load
+ * with ASCII commands sent via UART (over a cable), Wi-Fi (TCP, HTTP)
+ * and (optionally) Bluetooth Classic.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes: project homepage https://github.com/ErlingSigurdson/Billy_the_Relay
+ * Notes: homepage URI - https://github.com/ErlingSigurdson/Billy_the_Relay
  */
 
 
@@ -16,14 +17,14 @@
 /*--- Includes ---*/
 
 // Project configs.
-#include "config_general.h"            // Aside from .ino file included into some local modules.
+#include "config_general.h"            // Also included in some local modules.
 
-#include "config_ASCII_cmd_handler.h"  /* Aside from .ino file included into ESP_HTTP.h
-                                        * because the local module needs to "know" commands' syntax.
+#include "config_ASCII_cmd_handler.h"  /* Also included in ESP_HTTP.h
+                                        * because the local module needs to "know" the commands' syntax.
                                         */
 
-#include "config_inbuilt_storage.h"    /* Aside from .ino file included into inbuilt_storage.h
-                                        * because the local module needs to "know" it works with ESP32/ESP8266.
+#include "config_inbuilt_storage.h"    /* Also included in inbuilt_storage.h
+                                        * because the local module needs to "know" that it works with ESP32/ESP8266.
                                         */
 
 // Local modules.
@@ -39,12 +40,12 @@
     #include "ESP32_Bluetooth.h"
 #endif
 
-// Additional Arduino libraries are included into local modules' files.
+// Additional Arduino libraries are included in local modules.
 
 
 /****************** DATA TYPES ******************/
 
-// Struct to store values read from the inbuilt storage.
+// Struct for storing values read from the inbuilt storage.
 typedef struct strd_vals_t {
     char SSID[STR_MAX_LEN + 1];
     char pswd[STR_MAX_LEN + 1];
@@ -67,83 +68,83 @@ bool time_to_refresh_strd_vals = 1;
 
 /************** FUNCTION PROTOTYPES *************/
 
-/*--- Command handler functions ---*/
+/*--- Handler functions ---*/
 
-/* Functions called as a response to commands received
- * and command processing errors.
+/* Functions called as a response to received commands
+ * and command processing errors. 
  */
 
-// Absent correct command prefix.
+// Incorrect/absent command prefix.
 void handle_cmd_err_prefix();
 
-// Absent correct command after the prefix.
+// No command after the prefix.
 void handle_cmd_err_cmd();
 
-// Absent correct value after the command which requires it.
+// No value after the command which requires it.
 void handle_cmd_err_val();
 
-// Command string is too long.
+// Incoming byte string is too long.
 void handle_cmd_err_len();
 
-/* Inserted command #0:
- * turn load ON of OFF. Primary "daily driver".
+/* Command #0:
+ * turn load ON of OFF. Main workhorse.
  */
 void handle_cmd_set_load(char *cmd);
 
-/* Inserted command #1:
- * change the SSID of a local Wi-Fi access point
+/* Command #1:
+ * change an SSID of a local Wi-Fi access point
  * stored in the inbuilt storage.
  */
 void handle_cmd_set_local_SSID(char *cmd);
 
-/* Inserted command #2:
- * print the SSID of a local Wi-Fi access point
+/* Command #2:
+ * print an SSID of a local Wi-Fi access point
  * stored in the inbuilt storage.
  */
 void handle_cmd_print_local_SSID();
 
-/* Inserted command #3:
- * изменение пароля точки доступа локальной сети Wi-Fi, хранящегося
- * во встроенном накопителе устройства.
+/* Command #3:
+ * change a password for a local Wi-Fi access point
+ * stored in the inbuilt storage.
  */
 void handle_cmd_set_local_pswd(char *cmd);
 
-/* Inserted command #4:
- * изменение номера порта, используемого устройством как локальным TCP-сервером,
- * хранящегося во встроенном накопителе устройства.
+/* Command #4:
+ * change a local TCP server port number
+ * stored in the inbuilt storage.
  */
 void handle_cmd_set_local_port(char *cmd);
 
-/* Inserted command #5:
- * вывод номера порта, используемого устройством как локальным TCP-сервером,
- * хранящегося во встроенном накопителе устройства.
+/* Command #5:
+ * print a local TCP server port number
+ * stored in the inbuilt storage.
  */
 void handle_cmd_print_local_port();
 
-/* Inserted command #6:
- * вывод локального IP-адреса, присвоенного устройству в текущей сети Wi-Fi.
+/* Command #6:
+ * print local TCP server current local IP.
  */
 void handle_cmd_print_local_IP();
 
-/* Inserted command #7:
+/* Command #7:
  * reset local connections.
  */
 void handle_cmd_rst_local_conn();
 
-/* Inserted command #8:
- * включение или выключение связи с удалённым сервером (сервером IoT).
+/* Command #8:
+ * set IoT mode (attempts to connect to a remote server) ON or OFF.
  */
 void handle_cmd_set_IoT_flag(char *cmd);
 
-/* Inserted command #9:
- * изменение IP-адреса удалённого сервера, хранящегося
- * во встроенном накопителе устройства.
+/* Command #9:
+ * change an IP address of a remote server
+ * stored in the inbuilt storage.
  */
 void handle_cmd_set_IoT_server_IP(char *cmd);
 
-/* Inserted command #10:
- * вывод IP-адреса удалённого сервера, хранящегося
- * во встроенном накопителе устройства.
+/* Command #10:
+ * print an IP address of a remote server
+ * stored in the inbuilt storage.
  */
 void handle_cmd_print_IoT_server_IP();
 
