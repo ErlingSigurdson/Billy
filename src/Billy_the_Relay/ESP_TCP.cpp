@@ -60,6 +60,7 @@ bool ESP_TCP_server_get_client()
 {
     TCP_remote_client = TCP_local_server.accept();  /* Previously available() method was used,
                                                      * but nowadays it's deprecated.
+                                                     */
     if (TCP_remote_client) {
         return 1;
     } else {

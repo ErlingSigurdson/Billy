@@ -24,6 +24,7 @@
 
 #include "config_inbuilt_storage.h"    /* Aside from .ino file included into inbuilt_storage.h
                                         * because the local module needs to "know" it works with ESP32/ESP8266.
+                                        */
 
 // Local modules.
 #include "utilities.h"

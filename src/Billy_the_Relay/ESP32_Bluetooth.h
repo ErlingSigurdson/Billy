@@ -32,4 +32,5 @@ void ESP32_BT_disconnect(uint32_t shutdown_downtime);
 void ESP32_BT_stop(uint32_t shutdown_downtime);
 
 
+#endif  // Conditional compilation.
 #endif  // Include guards.
