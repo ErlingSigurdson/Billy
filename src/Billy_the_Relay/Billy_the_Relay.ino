@@ -233,8 +233,8 @@ void setup()
 
     /*--- Interaction with the inbuilt storage ---*/
 
-    /* In contrast to AVR-based devices, ESP32 и ESP8266 inbuilt storage
-     * must be initialized before use.
+    /* In contrast to AVR-based devices, ESP32 and ESP8266
+     * inbuilt storage must be initialized before use.
      */
     inbuilt_storage_init(INBUILT_STORAGE_SIZE);
 
