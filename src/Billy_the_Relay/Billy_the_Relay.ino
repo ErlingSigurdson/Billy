@@ -3,12 +3,12 @@
 /**
  * Filename: Billy_the_Relay.ino
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: a central file of an Arduino sketch written for the ESP32
- * and ESP8266 SoCs. Provides a control over a simple ON/OFF load
+ * Purpose: a central file of an Arduino sketch written for ESP32
+ * and ESP8266 SoCs. Provides the control over a simple ON/OFF load
  * with ASCII commands sent via UART (over a cable), Wi-Fi (TCP, HTTP)
  * and (optionally) Bluetooth Classic.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes: homepage URI - https://github.com/ErlingSigurdson/Billy_the_Relay
+ * Notes: project homepage https://github.com/ErlingSigurdson/Billy_the_Relay
  */
 
 
@@ -40,12 +40,12 @@
     #include "ESP32_Bluetooth.h"
 #endif
 
-// Additional Arduino libraries are included in local modules.
+// Additional Arduino libraries are included in the local modules.
 
 
 /****************** DATA TYPES ******************/
 
-// Struct for storing values read from the inbuilt storage.
+// Struct for holding values read from the inbuilt storage.
 typedef struct strd_vals_t {
     char SSID[STR_MAX_LEN + 1];
     char pswd[STR_MAX_LEN + 1];
@@ -70,7 +70,7 @@ bool time_to_refresh_strd_vals = 1;
 
 /*--- Handler functions ---*/
 
-/* Functions called as a response to received commands
+/* Functions called in response to received commands
  * and command processing errors. 
  */
 
@@ -148,74 +148,74 @@ void handle_cmd_set_IoT_server_IP(char *cmd);
  */
 void handle_cmd_print_IoT_server_IP();
 
-/* Inserted command #11:
- * изменение номера порта, в который устройство будет стучаться
- * к удалённому серверу, хранящегося во встроенном накопителе устройства.
+/* Command #11:
+ * change port number used for sending requests to a remote server
+ * stored in the inbuilt storage.
  */
 void handle_cmd_set_IoT_server_port(char *cmd);
 
-/* Inserted command #12:
- * вывод номера порта, в который устройство будет стучаться
- * к удалённому серверу, хранящегося во встроенном накопителе устройства.
+/* Command #12:
+ * print port number used for sending requests to a remote server
+ * stored in the inbuilt storage.
  */
 void handle_cmd_print_IoT_server_port();
 
-/* Inserted command #13:
- * изменение текста запроса, направляемого устройством удалённому серверу,
- * хранящегося во встроенном накопителе устройства.
+/* Command #13:
+ * change request message to be sent to a remote server
+ * stored in the inbuilt storage.
  */
 void handle_cmd_set_IoT_req_msg(char *cmd);
 
-/* Inserted command #14:
- * вывод текста запроса, направляемого устройством удалённому серверу,
- * хранящегося во встроенном накопителе устройства.
+/* Command #14:
+ * print request message to be sent to a remote server
+ * stored in the inbuilt storage.
  */
 void handle_cmd_print_IoT_req_msg();
 
-/* Inserted command #15:
- * изменение периодичности (в миллисекундах) направления запросов
- * удалённому серверу, хранящейся во встроенном накопителе устройства.
+/* Command #15:
+ * change the interval for sending requests to a remote server
+ * stored in the inbuilt storage.
  */
 void handle_cmd_set_IoT_req_period(char *cmd);
 
-/* Inserted command #16:
+/* Command #16:
  * set Bluetooth Classic functionality ON or OFF.
  */
 void handle_cmd_set_BT_flag(char *cmd);
 
-/* Inserted command #17:
- * изменение имени устройства как ведомого устройства Bluetooth,
- * хранящегося во встроенном накопителе устройства.
+/* Command #17:
+ * change ESP's name as a Bluetooth slave device
+ * stored in the inbuilt storage.
  */
 void handle_cmd_set_BT_dev_name(char *cmd);
 
-/* Inserted command #18:
- * вывод имени устройства как ведомого устройства Bluetooth,
- * хранящегося во встроенном накопителе устройства.
+/* Command #18:
+ * print ESP's name as a Bluetooth slave device
+ * stored in the inbuilt storage.
  */
 void handle_cmd_print_BT_dev_name();
 
 /* Inserted command #19:
- * включение или выключение периодического вывода текущего значения RSSI.
+ * set periodical printount of a current RSSI value ON or OFF.
  */
 void handle_cmd_set_RSSI_print_flag(char *cmd);
 
 
-/*--- Helpers for handler functions ---*/
+/*--- Handler function subroutines ---*/
 
-// Helper for "set" handlers.
+// Subroutine for "set" handlers.
 void handle_cmd_helper_set(char *cmd, const char *topic, uint32_t addr, bool echo);
 
-// Helper for "print" handlers.
+// Subroutine for "print" handlers.
 void handle_cmd_helper_print(const char *topic, uint32_t addr);
 
-// Helper for sending messages by handlers
+// Subroutine for sending messages.
 void handle_cmd_helper_send(const char *msg);
 
 
 /*--- Misc functions ---*/
 
-// Read values from the inbuilt storage 
+// Read values from the inbuilt storage.
 void strd_vals_read(strd_vals_t *_strd_vals);
 
 
@@ -231,21 +231,21 @@ void setup()
     pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
 
 
-    /*--- Interactions with the inbult storage ---*/
+    /*--- Interaction with the inbuilt storage ---*/
 
     /* In contrast to AVR-based devices, ESP32 и ESP8266 inbuilt storage
      * must be initialized before use.
      */
     inbuilt_storage_init(INBUILT_STORAGE_SIZE);
 
-    // Read the stored configs from the inbuilt storage into the struct.
+    // Read stored configs from the inbuilt storage into the struct.
     strd_vals_t strd_vals;
     strd_vals_read(&strd_vals);
 
-    /* If necessary, you can put any config value into the inbuilt storage
-     * at the same time with  uploading the sketch. To achieve this,
-     * uncomment respective #define directive and specify the desired value
-     * right in the code, pre-compile-time. Then upload the sketch. After that
+    /* If necessary, you can write any config value into the inbuilt storage
+     * at the same time with uploading the sketch. To achieve this, uncomment
+     * respective #define directive and specify the desired value right
+     * in the code, pre-compile-time. Then upload the sketch. After that
      * comment out the same directives you've uncommented before and upload
      * the sketch once again. Without that last step a config value will always
      * be reverted to the hardcoded value upon every device startup. 
@@ -342,9 +342,9 @@ void setup()
 
     /*--- Starting communications ---*/
 
-    // Starting hardware UART.
+    // Hardware UART startup.
     Serial.begin(HW_UART_BAUD_RATE);
-    delay(HW_UART_STARTUP_PAUSE);    // Tiny pause for interface startup.
+    delay(HW_UART_STARTUP_PAUSE);    // Tiny pause for an interface startup.
 
     Serial.println("");
     Serial.println("*** HELLO, HUMAN! ***");
@@ -357,7 +357,7 @@ void setup()
      */
     ESP_TCP_server_port_update(strd_vals.local_server_port);
 
-    // Connecting to Wi-Fi network.
+    // Connect to Wi-Fi network.
     bool WiFi_connected = ESP_WiFi_set_connection(strd_vals.SSID,
                                                   strd_vals.pswd,
                                                   CONN_TIMEOUT);
@@ -389,9 +389,9 @@ void setup()
     #endif
 
 
-    /*--- Respective config values printout ---*/
+    /*--- Config values printout ---*/
 
-    // Check for IoT connection mode flag.
+    // Check for IoT mode flag.
     Serial.print("Requests to IoT server: ");
     if (strd_vals.IoT_flag) {
         Serial.println("ON");
@@ -431,14 +431,14 @@ void setup()
 
 void loop()
 {
-    // Reading config values from the inbuilt storage into the struct.
+    // Read config values from the inbuilt storage into the struct.
     static strd_vals_t strd_vals;
-    if (time_to_refresh_strd_vals) {
+    if (time_to_refresh_strd_vals) {   // Check if update is necessary.
         strd_vals_read(&strd_vals);
         time_to_refresh_strd_vals = 0;
     }
 
-    // Valid commands' array
+    // Array of valid commands.
     static const char *cmd_list[] = {
         CMD_0,
         CMD_1,
@@ -486,7 +486,7 @@ void loop()
     // Command buffer.
     char terminal_input[STR_MAX_LEN + 1] = {0};
 
-    // Reading data received by hardware UART.
+    // Read data received by hardware UART.
     uint32_t HW_UART_bytes_read = HW_UART_read_line(terminal_input,
                                                     STR_MAX_LEN,
                                                     CONN_TIMEOUT,
@@ -507,11 +507,11 @@ void loop()
         }
     }
 
-    // Handling HTTP requests and writing request body values into a buffer.
+    // Handle HTTP request and write value from a request body into a buffer.
     ESP_HTTP_handle_client_in_loop();
     ESP_HTTP_copy_value(terminal_input, STR_MAX_LEN);
 
-    /* Local TCP client sends the request to a remote server
+    /* Local TCP client sends a request to a remote server
      * and reads the response.
      */
     if (strd_vals.IoT_req_period == 0) {
@@ -540,7 +540,7 @@ void loop()
         }
     }
 
-    // Reading data from a Bluetooth master device.
+    // Read data from a Bluetooth master device.
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         bool BT_was_connected = 0;
         if (strd_vals.BT_flag && ESP32_BT_check_connection()) {
@@ -556,7 +556,7 @@ void loop()
     #endif
 
 
-    /*--- Handling text commands ---*/
+    /*--- Handling commands ---*/
     
     // Essentially it's a central hub of the whole sketch.
 
@@ -660,7 +660,7 @@ void loop()
     }
     
     
-    /*--- Finishing communications ---*/
+    /*--- Closing communications ---*/
 
     // TCP clients' disconnection.
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
@@ -677,7 +677,7 @@ void loop()
 }
 
 
-/*--- Функции-обработчики ---*/
+/*--- Handler functions ---*/
 
 void handle_cmd_err_prefix()
 {
@@ -930,9 +930,9 @@ void handle_cmd_set_RSSI_print_flag(char *cmd)
 }
 
 
-/*--- Helpers for handler functions ---*/
+/*--- Handler function subroutines ---*/
 
-// Helper for "set" handlers.
+// Subroutine for "set" handlers.
 void handle_cmd_helper_set(char *cmd, const char *topic, uint32_t addr, bool echo)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
@@ -953,7 +953,7 @@ void handle_cmd_helper_set(char *cmd, const char *topic, uint32_t addr, bool ech
     time_to_refresh_strd_vals = 1;
 }
 
-// Helper for "print" handlers.
+// Subroutine for "print" handlers.
 void handle_cmd_helper_print(const char *topic, uint32_t addr)
 {
     char msg[STR_MAX_LEN * 2 + 1] = {0};
@@ -968,7 +968,7 @@ void handle_cmd_helper_print(const char *topic, uint32_t addr)
     handle_cmd_helper_send(msg);
 }
 
-// Helper for sending messages by handlers// Вспомогательная функция для отправки сообщений обработчиками.
+// Subroutine for sending messages.
 void handle_cmd_helper_send(const char *msg)
 {
     Serial.println(msg);
@@ -990,7 +990,7 @@ void handle_cmd_helper_send(const char *msg)
 
 /*--- Misc functions ---*/
 
-// Reading config values from the inbuilt storage into the struct.
+// Read config values from the inbuilt storage into the struct.
 void strd_vals_read(strd_vals_t *_strd_vals)
 {
     // Indices in the array of strings read from the inbuilt storage.
@@ -1027,7 +1027,7 @@ void strd_vals_read(strd_vals_t *_strd_vals)
     uint32_t strd_vals_addr_list_len = sizeof(strd_vals_addr) / sizeof(uint32_t);
     if (INBUILT_STORAGE_ITEM_LIST_LEN != strd_vals_addr_list_len) {
         Serial.println("");
-        Serial.println("Error reading from inbuilt storage: function strd_vals_read().");
+        Serial.println("Error reading from the inbuilt storage: function strd_vals_read().");
 
         return;
     }
@@ -1040,7 +1040,7 @@ void strd_vals_read(strd_vals_t *_strd_vals)
     }
 
 
-    /*--- Writing of strings and extracted integers into a struct ---*/
+    /*--- Writing of strings and extracted integers into the struct ---*/
     
     // Local SSID.
     strcpy(_strd_vals->SSID, strd_vals_str[INDEX_SSID]);
@@ -1051,7 +1051,7 @@ void strd_vals_read(strd_vals_t *_strd_vals)
     // Local TCP server port.
     _strd_vals->local_server_port = strtol(strd_vals_str[INDEX_LOCAL_SERVER_PORT], NULL, 10);
 
-    // Flag for a connection to a remote server (IoT server)
+    // IoT mode (attempts to connect to a remote server) flag.
     if (!strcmp(strd_vals_str[INDEX_IOT_FLAG], "ON")) {
         _strd_vals->IoT_flag = 1;
     } else {
@@ -1067,18 +1067,18 @@ void strd_vals_read(strd_vals_t *_strd_vals)
     // Text of a request to a remote server.
     strcpy(_strd_vals->IoT_req_msg, strd_vals_str[INDEX_IOT_REQ_MSG]);
     
-    // Interval of requests to a remote server.
+    // Interval for sending requests to a remote server.
     _strd_vals->IoT_req_period = strtol(strd_vals_str[INDEX_IOT_REQ_PERIOD], NULL, 10);
 
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
-        // Bluetooth flag.
+        // Bluetooth functionality flag.
         if (!strcmp(strd_vals_str[INDEX_BT_FLAG], "ON")) {
             _strd_vals->BT_flag = 1;
         } else {
             _strd_vals->BT_flag = 0;
         }
 
-        // Bluetooth slave device name.
+        // ESP's name as a Bluetooth slave device
         strcpy(_strd_vals->BT_dev_name, strd_vals_str[INDEX_BT_DEV_NAME]);
     #endif
 
