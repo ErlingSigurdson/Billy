@@ -3,17 +3,18 @@
 /**
  * Filename: inbuilt_storage.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: чтение и запись строк во встроенный накопитель устройства
- * с помощью библиотеки EEPROM.h.
+ * Purpose: reading and writing strings from and to an inbuilt storage
+ * using EEPROM.h library.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
- * У микроконтроллеров AVR используется встроенная EEPROM.
- * У микроконтроллеров ESP32, ESP8266 и STM32 используется флеш-память
- * с эмуляцией EEPROM.
+ * AVR devices use inbuilt EEPROM.
+ * ESP32, ESP8266 and STM32 emulate EEPROM in their inbuilt flash memory.
  */
 
 
 /************ PREPROCESSOR DIRECTIVES ***********/
+
+/*--- Includes ---*/
 
 // Include guards.
 #ifndef INBUILT_STORAGE_H
@@ -25,13 +26,13 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-// Инициализация хранилища. Требуется для ESP32, ESP8266 и STM32. Не требуется для AVR.
+// Storage initialization. Necessary for ESP32, ESP8266 and STM32. Not to be used with AVR devices.
 void inbuilt_storage_init(uint32_t emulated_EEPROM_size);
 
-// Чтение строки.
+// Read string.
 void inbuilt_storage_read(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr);
 
-// Запись строки.
+// Write string.
 void inbuilt_storage_write(char *str, uint32_t str_len, uint32_t str_max_len, uint32_t addr);
 
 

@@ -17,19 +17,19 @@
 /*--- Includes ---*/
 
 // Project configs.
-#include "config_general.h"            // Also included in some local modules.
+#include "config_general.h"          // Also included in some local modules.
 
-#include "config_ASCII_cmd_handler.h"  /* Also included in ESP_HTTP.h
-                                        * because the local module needs to "know" the commands' syntax.
-                                        */
+#include "config_ASCII_cmd_check.h"  /* Also included in ESP_HTTP.h because the local module
+                                      * needs to "know" the commands' syntax.
+                                      */
 
-#include "config_inbuilt_storage.h"    /* Also included in inbuilt_storage.h
-                                        * because the local module needs to "know" that it works with ESP32/ESP8266.
-                                        */
+#include "config_inbuilt_storage.h"  /* Also included in inbuilt_storage.h because the local module
+                                      * needs to "know" that it works with ESP32/ESP8266.
+                                      */
 
 // Local modules.
 #include "utilities.h"
-#include "ASCII_cmd_handler.h"
+#include "ASCII_cmd_check.h"
 #include "inbuilt_storage.h"
 #include "HW_UART.h"
 #include "ESP_WiFi.h"
@@ -173,7 +173,7 @@ void handle_cmd_set_IoT_req_msg(char *cmd);
 void handle_cmd_print_IoT_req_msg();
 
 /* Command #15:
- * change the interval for sending requests to a remote server
+ * change the interval (in ms) for sending requests to a remote server
  * stored in the inbuilt storage.
  */
 void handle_cmd_set_IoT_req_period(char *cmd);
@@ -195,7 +195,7 @@ void handle_cmd_set_BT_dev_name(char *cmd);
  */
 void handle_cmd_print_BT_dev_name();
 
-/* Inserted command #19:
+/* Command #19:
  * set periodical printount of a current RSSI value ON or OFF.
  */
 void handle_cmd_set_RSSI_print_flag(char *cmd);
@@ -344,7 +344,7 @@ void setup()
 
     // Hardware UART startup.
     Serial.begin(HW_UART_BAUD_RATE);
-    delay(HW_UART_STARTUP_PAUSE);    // Tiny pause for an interface startup.
+    delay(HW_UART_STARTUP_PAUSE);    // Tiny pause to allow interface startup.
 
     Serial.println("");
     Serial.println("*** HELLO, HUMAN! ***");
@@ -433,7 +433,7 @@ void loop()
 {
     // Read config values from the inbuilt storage into the struct.
     static strd_vals_t strd_vals;
-    if (time_to_refresh_strd_vals) {   // Check if update is necessary.
+    if (time_to_refresh_strd_vals) {    // Check if update is necessary.
         strd_vals_read(&strd_vals);
         time_to_refresh_strd_vals = 0;
     }
@@ -561,11 +561,11 @@ void loop()
     // Essentially it's a central hub of the whole sketch.
 
     // Check for non-empty buffer string and correct command prefix.
-    if (terminal_input[0] != '\0' && ASCII_cmd_handler_check_prefix(terminal_input, CMD_PREFIX)) {
+    if (terminal_input[0] != '\0' && ASCII_cmd_check_prefix(terminal_input, CMD_PREFIX)) {
         utilities_remove_CR_and_LF(terminal_input);
 
         // Check for valid commands.
-        int32_t func_to_call = ASCII_cmd_handler_check_cmd(terminal_input, cmd_list, CMD_LIST_LEN);
+        int32_t func_to_call = ASCII_cmd_check_cmd(terminal_input, cmd_list, CMD_LIST_LEN);
         switch (func_to_call) {
             case -1:
                 handle_cmd_err_cmd();

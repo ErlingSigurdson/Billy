@@ -1,78 +1,74 @@
 # Concept
 
-Billy is an Arduino project written for ESP32 and ESP8266 systems-on-chip.
+Billy the Relay is an Arduino project written for ESP32 and ESP8266 systems-on-chip. Billy can control simple (ON/OFF) load like an LED or (using a driver) a relay.
+Billy itself takes commands via:
+- UART, through a cable connection.
+- Wi-Fi as a local TCP server, e.g. from a classic Unix utility `netcat` (`nc`) or an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   
+- Wi-Fi as a local HTTP server, e.g. from a browser (sketch provides a simplistic web interface) or another app capable of sending HTTP requests.
+- Bluetooth Classic as a slave device[^1], e.g. from a desktop Bluetooth terminal or an Android app like [Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android).
+- Wi-Fi as a TCP client (inter alia via Internet). To do so Billy sends requests to a custom-programmed TCP server and receives commands as a response (this implementation is specified below).
 
-# Концепция
-Билли - это Arduino-проект на базе модуля (платы) ESP32 или ESP8266. Билли умеет управлять простой (ВКЛ./ВЫКЛ.) нагрузкой, например, светодиодом или (с помощью драйвера) реле.
-В свою очередь Билли можно отдавать команды:
-- По UART через кабель.
-- По Wi-Fi как локальному TCP-серверу, например, с помощью классической Unix-утилиты `netcat` или приложения для Android [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   
-- По Wi-Fi как локальному HTTP-серверу, например, с помощью браузера (скетч предоставляет минималистичный веб-интерфейс) или иного приложения для отправки HTTP-запросов.
-- По Bluetooth Classic как ведомому устройству[^1], например, с помощью Bluetooth-терминала для рабочего стола или приложения для Android [Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android).
-- По Wi-Fi как TCP-клиенту (в том числе через Интернет). Для этого Билли направляет запросы специально настроенному TCP-серверу и в ответ получает от него команды (этот способ отдельно описан ниже).
+Billy works within a local Wi-Fi network in a station (STA) mode. Billy uses Internet access provided by a local access point.
 
-Билли предназначен для работы в локальной сети Wi-Fi в режиме клиента (station, STA). Доступ в Интернет Билли получает через точку доступа, к которой он подключен в рамках сети Wi-Fi.
+# Manual
+### Quickstart
+Follow these steps to configure Billy and try using its functionality:
+1. In file `config_general.h` using provided `#define` directives:
+- specify whether your device use Bluetooth Classic (`BT_CLASSIC_PROVIDED`, for ESP32 only, omit for ESP8266);
+- specify load control pin (`LOAD_PIN`);
+- specify indicator LED pin (`WIFI_INDICATOR_LED_PIN`);
+- specify load mode (`INVERTED_OUTPUT`).
+2. Make sure your Arduino IDE (or Arduino SDK for a third-party IDE) has an appropriate core for [ESP32](https://github.com/espressif/arduino-esp32) or [ESP8266](https://github.com/esp8266/Arduino) by Espressif Systems.
+3. Compile sketch and upload the sketch.[^2]
+4. Turn on your device and connect to it by a cable (through USB-UART adapter or, if suppored, UART over native USB).
+5. Send command `AT+SETLOAD=TOGGLE` twice and make sure that load control pin's logical level changes every time (load turns ON and OFF).
+6. Send command `AT+SETLOCALSSID=<value>` to specify your local Wi-Fi network SSID.
+7. Send command `AT+SETLOCALPSWD=<value>` to specify your local Wi-Fi network access password.
+8. Send command `AT+SETLOCALPORT=<value>` to specify port number to be used by your device as a local TCP server.
+9. Reset your device or send command `AT+RSTLOCALCONN`. Make sure you device has established a connection to your local Wi-Fi network (watch UART terminal and indicator LED). Remember of write down printed local IP address (you can use `AT+PRINTLOCALIP` command to print it again).
+10. Connect to you device by Wi-Fi using previously printed local IP address and previously specified port.
+11. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Wi-Fi using established TCP connection. Make sure Billy follows your orders.
+12. Open any web browser (I recommend Mozilla Firefox) on any device connected to the same local Wi-Fi network and insert previously printed IP address into an address bar.
+13. Use web interface to turn your load ON and OFF.
 
-# Инструкция
-### Быстрый старт
-Выполните следующие шаги, чтобы запустить Билли и познакомиться с его функционалом:
-1. В файле `config_general.h` с помощью приведённых в нём директив `#define`:
-- укажите, будет ли использоваться Bluetooth Classic (`BT_CLASSIC_PROVIDED`, только для ESP32);
-- назначьте пин управления нагрузкой (`LOAD_PIN`);
-- назначьте пин управления индикаторным светодиодом (`WIFI_INDICATOR_LED_PIN`);
-- выберите режим работы нагрузки (`INVERTED_OUTPUT`).
-2. Убедитесь, что в вашу Arduino IDE (или в SDK Arduino в другой IDE) добавлено "ядро" для [ESP32](https://github.com/espressif/arduino-esp32) или [ESP8266](https://github.com/esp8266/Arduino) от компании Espressif Systems.
-3. Скомпилируйте скетч и загрузите его в устройство.[^2]
-4. Включите устройство и подключитесь к нему по UART по кабелю (через USB-UART преобразователь или, если это поддерживается вашим устройством, через UART поверх нативного USB).
-5. Дважды введите команду `AT+SETLOAD=TOGGLE` и удостоверьтесь, что каждый ввод команды изменяет логический уровень на пине управления нагрузкой (изменяет состояние нагрузки на противоположное).
-6. С помощью команды `AT+SETLOCALSSID=<значение>` укажите SSID точки доступа вашей сети Wi-Fi.
-7. С помощью команды `AT+SETLOCALPSWD=<значение>` укажите пароль точки доступа вашей сети Wi-Fi.
-8. С помощью команды `AT+SETLOCALPORT=<значение>` укажите номер порта, который будет использоваться вашим устройством как TCP-сервером для локального соединения (например, 451).
-9. Перезагрузите устройство или введите команду `AT+RSTLOCALCONN`. Удостоверьтесь, что устройство подключилось к сети Wi-Fi (следите за терминалом UART и за индикаторным светодиодом). Запомните выведенный IP-адрес, для его повторного вывода введите команду `AT+PRINTLOCALIP`.
-10. Подключитесь к устройству через Wi-Fi, используя ранее введённые IP-адрес и порт.
-11. Попробуйте передавать устройству команды (например, `AT+SETLOAD=TOGGLE`) через TCP-соединение. Удостоверьтесь, что Билли вас понимает и слушается.
-12. Откройте любой браузер (по моему опыту Firefox менее капризный) на другом устройстве, подключенном к той же сети Wi-Fi, и введите в адресную строку ранее выведенный IP устройства.
-13. С помощью веб-интерфейса попробуйте включить и выключить нагрузку.
+Additionally, if your device supports Bluetooth Classic:
 
-Опционально, если ваше устройство поддерживает Bluetooth Classic:
+14. Send command `AT+SETBTDEVNAME=<value>` to specify Billy's name as a Bluetooth slave device.
+15. Send command `AT+SETBT=ON` to turn on Bluetooth Clasicc.
+16. Connect to Billy by Bluetooth using previously specified slave device name.
+17. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Bluetooth. Make sure Billy follows your orders.
 
-14. С помощью команды `AT+SETBTDEVNAME=<значение>` укажите имя устройства как ведомого устройства Bluetooth.
-15. С помощью команды `AT+SETBT=ON` включите функционал Bluetooth.
-16. Подключитесь к устройству через Bluetooth.
-17. Попробуйте передавать устройству команды (например, `AT+SETLOAD=TOGGLE`) через Bluetooth-соединение. Удостоверьтесь, что Билли вас понимает и слушается.
+### Complete command list
+Please refer to `config_ASCII_cmd_handler.h`.
 
-### Полный список команд
-см. файл `config_ASCII_cmd_handler.h`.
+### Billy as a TCP client and IoT control
+A remote server (an IoT server) to which Billy sends requests must be able to:
+- in response to Billy's requests (e.g. string `"UPD_REQ"`) send messages (strings) with valid commands;
+- update a message to be sent to Billy according to remote commands sent by another devices.
 
-### Билли как TCP-клиент и управление через Интернет
-TCP-сервер, к которому обращается Билли (в том числе через Интернет), должен уметь:
-- в ответ на направляемый Билли запрос (например, строку `"UPD_REQ"`) направлять ему сообщение (тоже строку), содержащее одну из валидных команд.
-- изменять сообщение, заготовленное в качестве ответа на запрос Билли, согласно передаваемым самому серверу дистанционным командам.
+Say, IoT server receives "turn load ON" command from your web browser and prepares to send `AT+SETLOAD=ON` string in a response to Billy's next request. Billy receives the string and puts it into a buffer to check for valid commands.
 
-Например, сервер, получив с вашей рабочей станции дистанционную команду "включить нагрузку", готовится в ответ на следующий запрос Билли отправить ему команду `AT+SETLOAD=ON`. Получив команду "выключить нагрузку", он заготавливает уже другую команду - `AT+SETLOAD=OFF`. Билли в роли TCP-клиента принимает команду и обрабатывает её так же, как полученную по любому другому протоколу.
+To specify IoT configs use commands `AT+SETIOTIP=<value>`, `AT+SETIOTPORT=<value>`, `AT+SETIOTREQMSG=<value>`, `AT+SETIOTREQPERIOD=<value>`, `AT+SETIOT=ON` and `AT+SETIOT=OFF`.
 
-Чтобы задать для Билли настройки обращения к удалённому серверу, используйте команды `AT+SETIOTIP=<значение>`, `AT+SETIOTPORT=<значение>`, `AT+SETIOTREQMSG=<значение>`, `AT+SETIOTREQPERIOD=<значение>`, `AT+SETIOT=ON` и `AT+SETIOT=OFF`.
+[Here you can find an example code for a Linux server that works in a described fashion, written in C language.](https://github.com/ErlingSigurdson/server0451/tree/main). It is written specifically for Billy and similar devices.
 
-[Здесь вы можете найти готовый код работающего таким образом сервера для Linux](https://github.com/ErlingSigurdson/server0451/tree/main), написанный на языке С. Он рассчитан как раз на взаимодействие с Билли и ему подобными устройствами.
+# General notes on code
+### Sketch layout
+Breaking a sketch into a basic `.ino` file and local modules (pairs of `.h` and `.cpp` files) may not be very popular within Arduino paradigm, but I find it more straightforward and easier to manage than simple concatenation of multiple `.ino` files.  
 
-# Общие примечания к коду
+### Global variables
+Use of global variables is generally avoided since the inbuilt storage serves as a "common space" for various sketch functions. Exceptions made for certain flags and class instances (e.g. `WiFiServer`, `BluetoothSerial`, etc).
 
-### Разделение проекта на файлы
-Разделение исходного кода самого скетча на основной файл `.ino` и локальные файлы `.h` и `.cpp` не очень популярно (чаще используется вариант с несколькими файлами `.ino`, которые перед компиляцией конкатенируются средой разработки, либо с упаковкой в библиотеки), но я нахожу его удобным, поскольку он позволяет определять порядок включений и делает структуру кода более прозрачной.
+### Local modules and wrapper functions
+Method calls are mostly packed into wrapper functions declared in local modules. It's handy since method calls are usually accompanied with related lines of code.
+Local modules do not refer to each other. Instead, their wrapper functions are combined in `.ino` file, which allows for easier sketch customization.
 
-### Глобальные переменные
-Дополнительные глобальные переменные нарочито не вводятся, поскольку "общим пространством" для различных функций скетча служит встроенный накопитель устройства. Исключение - некоторые флаги и экземпляры классов (таких как `WiFiServer`, `BluetoothSerial` и т. д.).
+# Expected questions
+### Why not MQTT? It's so well-suited for IoT!
+I wanted more flexibility and I didn't want to stick to a particular OSI layer 7 protocol.
 
-### Модули и функции-врапперы
-Вызовы методов в основном обёрнуты в функции-врапперы, объявленные в локальных модулях (файлах `.h` и `.cpp`). Это удобно, поскольку каждому вызову метода, как правило, сопутствуют связанные с ним дополнительные строки кода.
-Модули не ссылаются друг на друга, вместо этого относящиеся к ним функции-врапперы комбинируются в файле `.ino`, благодаря чему не усложняется цепочка зависимостей.
+### Why "Billy"?
+An honorable mention of a programmer parrot, protagonist of [meme videos](https://www.youtube.com/watch?v=0MhVkKHYUAY&list=PLkdGijFCNuVmu35l6EJxdvsvf7xj4EQVf&index=21) by [Mr. P Solver](https://www.youtube.com/c/mrpsolver).
 
-# Справедливые вопросы
-### Почему не MQTT, ведь он отлично подходит для "Интернета вещей"?
-Хотелось обеспечить больше гибкости и не хотелось привязываться к определённому протоколу 7-го уровня модели OSI. Из "голых" TCP-сообщений опытный пользователь может слепить практически что угодно, например, HTTP-запросы.
-
-### Почему "Билли"?
-В честь попугая-программиста, героя [мемных видео](https://www.youtube.com/watch?v=0MhVkKHYUAY&list=PLkdGijFCNuVmu35l6EJxdvsvf7xj4EQVf&index=21) от [Mr. P Solver](https://www.youtube.com/c/mrpsolver).
-
-[^1]: Не работает для ESP8266 и чипов ESP32 без поддержки Bluetooth Classic (например, ESP32-S2 и ESP32-C3).
-[^2]: Если среда разработки сообщает о недостатке у ESP32 памяти для загрузки скетча, попробуйте изменить опцию `partition scheme` на "Huge APP".
+[^1]: Not supported for ESP8266 and those ESP32 modules which lack Bluetooth Classic functionality (e.g. ESP32-S2 and ESP32-C3).
+[^2]: If your IDE warns you of lack of memory for storing the sketch, try switching `partition scheme` option to "Huge APP".

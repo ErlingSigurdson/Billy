@@ -3,7 +3,7 @@
 /**
  * Filename: utilities.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: некоторые вспомогательные макросы и функции.
+ * Purpose: some general purpose macros and functions.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -15,7 +15,10 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-// Пара макросов для превращения аргумента в строку.
+
+/*--- Misc ---*/
+
+// A pair of macros for turning an argument into a string.
 #define STRINGIFY(x) INTERMEDIATE_STRINGIFY(x)
 #define INTERMEDIATE_STRINGIFY(x) #x
 

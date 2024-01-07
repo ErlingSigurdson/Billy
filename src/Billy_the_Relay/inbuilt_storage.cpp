@@ -3,17 +3,18 @@
 /**
  * Filename: inbuilt_storage.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: чтение и запись строк во встроенный накопитель устройства
- * с помощью библиотеки EEPROM.h.
+ * Purpose: reading and writing strings from and to an inbuilt storage
+ * using EEPROM.h library.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
- * У микроконтроллеров AVR используется встроенная EEPROM.
- * У микроконтроллеров ESP32, ESP8266 и STM32 используется флеш-память
- * с эмуляцией EEPROM.
+ * AVR devices use inbuilt EEPROM.
+ * ESP32, ESP8266 and STM32 emulate EEPROM in their inbuilt flash memory.
  */
 
 
 /************ PREPROCESSOR DIRECTIVES ***********/
+
+/*--- Includes ---*/
 
 // General Arduino library.
 #include <Arduino.h>
@@ -27,18 +28,18 @@
 
 /******************* FUNCTIONS ******************/
 
-// Инициализация хранилища. Требуется для ESP32, ESP8266 и STM32. Не требуется для AVR.
+// Storage initialization. Necessary for ESP32, ESP8266 and STM32. Not to be used with AVR devices.
 void inbuilt_storage_init(uint32_t emulated_EEPROM_size)
 {
-    /* Определяется на этапе компиляции, поскольку вариант библиотеки EEPROM.h
-     * для AVR попросту не содержит соответствующего метода.
+    /* Conditional compilation is used because EEPROM.h variant for AVR devices
+     * just lacks respective method.
      */
     #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32
         EEPROM.begin(emulated_EEPROM_size);
     #endif
 }
 
-// Чтение строки.
+// Read string.
 void inbuilt_storage_read(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr)
 {
     if (buf_size < str_max_len + 1) {
@@ -56,7 +57,7 @@ void inbuilt_storage_read(char *buf, size_t buf_size, uint32_t str_max_len, uint
     }
 }
 
-// Запись строки.
+// Write string.
 void inbuilt_storage_write(char *str, uint32_t str_len, uint32_t str_max_len, uint32_t addr)
 {
     if (str_len > str_max_len) {
@@ -79,8 +80,8 @@ void inbuilt_storage_write(char *str, uint32_t str_len, uint32_t str_max_len, ui
     }
     EEPROM.write(addr, '\0');
 
-    /* Определяется на этапе компиляции, поскольку вариант библиотеки EEPROM.h
-     * для AVR попросту не содержит соответствующего метода.
+    /* Conditional compilation is used because EEPROM.h variant for AVR devices
+     * just lacks respective method.
      */
     #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32
         EEPROM.commit();

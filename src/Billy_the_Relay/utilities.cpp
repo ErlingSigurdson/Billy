@@ -3,7 +3,7 @@
 /**
  * Filename: utilities.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: некоторые вспомогательные макросы и функции.
+ * Purpose: some general purpose macros and functions.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -37,7 +37,7 @@ bool utilities_remove_CR_and_LF(char *buf)
 
 bool utilities_append_CR_and_LF(char *buf, size_t buf_size)
 {
-    if (buf_size - strlen(buf) >= 3) {  // Один байт для CR, второй для LF, третий для нуля.
+    if (buf_size - strlen(buf) >= 3) {  // One byte for CR, another byte for LF, third byte for a null terminator.
         buf[strlen(buf)] = '\r';
         buf[strlen(buf)] = '\n';
         buf[strlen(buf)] = '\0';
@@ -50,7 +50,7 @@ bool utilities_append_CR_and_LF(char *buf, size_t buf_size)
 
 bool utilities_append_LF(char *buf, size_t buf_size)
 {
-    if (buf_size - strlen(buf) >= 2) {  // Один байт для LF, второй для нуля.
+    if (buf_size - strlen(buf) >= 2) {  // One byte for LF, another byte for a null terminator.
         buf[strlen(buf)] = '\n';
         buf[strlen(buf)] = '\0';
 
@@ -64,7 +64,7 @@ bool utilities_append_LF_if_absent(char *buf, size_t buf_size)
 {
     if (strrchr(buf, '\n') == &buf[strlen(buf) - 1]) {
         return 0;
-    } else if (buf_size - strlen(buf) >= 2) {  // Один байт для LF, второй для нуля.
+    } else if (buf_size - strlen(buf) >= 2) {  // One byte for LF, another byte for a null terminator.
         utilities_append_LF(buf, buf_size);
 
         return 1;
@@ -76,7 +76,7 @@ bool utilities_append_LF_if_absent(char *buf, size_t buf_size)
 bool utilities_force_2xLF(char *buf, size_t buf_size)
 {
     utilities_remove_CR_and_LF(buf);
-    if (buf_size - strlen(buf) >= 3) {  // Два байта для LF, третий для нуля.
+    if (buf_size - strlen(buf) >= 3) {  // Two bytes for LFs, another byte for a null terminator.
         buf[strlen(buf)] = '\n';
         buf[strlen(buf)] = '\n';
         buf[strlen(buf)] = '\0';

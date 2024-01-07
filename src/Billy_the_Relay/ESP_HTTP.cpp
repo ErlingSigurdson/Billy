@@ -11,6 +11,8 @@
 
 /************ PREPROCESSOR DIRECTIVES ***********/
 
+/*--- Includes ---*/
+
 // General Arduino library.
 #include <Arduino.h>
 
@@ -24,6 +26,9 @@
 #ifdef ESP8266
     #include <ESP8266WebServer.h>
 #endif
+
+
+/*--- Misc ---*/
 
 // Modifying the web page according to a previous command.
 #define NO_PREVIOUS_CMD  0
@@ -151,7 +156,7 @@ String ESP_HTTP_send_HTML(uint32_t previous_cmd)
         prev_text+= "</p>";
     }
 
-    // Основной сайт.
+    // Basic site.
     String site = "";
 
     site+= "<!DOCTYPE html>";

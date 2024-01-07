@@ -1,9 +1,9 @@
 /****************** DESCRIPTION *****************/
 
 /**
- * Filename: ASCII_cmd_handler.cpp
+ * Filename: ASCII_cmd_check.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: обработка текстовых команд.
+ * Purpose: check a string for valid text commands.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -11,16 +11,18 @@
 
 /************ PREPROCESSOR DIRECTIVES ***********/
 
+/*--- Includes ---*/
+
 // General Arduino library.
 #include <Arduino.h>
 
 // Local modules.
-#include "ASCII_cmd_handler.h"
+#include "ASCII_cmd_check.h"
 
 
 /******************* FUNCTIONS ******************/
 
-bool ASCII_cmd_handler_check_prefix(char *buf, const char *prefix)
+bool ASCII_cmd_check_prefix(char *buf, const char *prefix)
 {
     if (strstr(buf, prefix) == buf) {
         return 1;
@@ -29,7 +31,7 @@ bool ASCII_cmd_handler_check_prefix(char *buf, const char *prefix)
     }
 }
 
-int32_t ASCII_cmd_handler_check_cmd(char *buf, const char *cmd_list[], uint32_t cmd_list_len)
+int32_t ASCII_cmd_check_cmd(char *buf, const char *cmd_list[], uint32_t cmd_list_len)
 {
     for (uint32_t i = 0; i < cmd_list_len; ++i) {
         if (strstr(buf, cmd_list[i]) != NULL) {

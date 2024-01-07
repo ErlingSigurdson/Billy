@@ -15,9 +15,12 @@
 #ifndef ESP_HTTP_H
 #define ESP_HTTP_H
 
+
+/*--- Includes ---*/
+
 // Project configs.
 #include "config_general.h"
-#include "config_ASCII_cmd_handler.h"
+#include "config_ASCII_cmd_check.h"
 
 
 /************** FUNCTION PROTOTYPES *************/

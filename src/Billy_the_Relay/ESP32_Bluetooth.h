@@ -3,7 +3,7 @@
 /**
  * Filename: ESP32_Bluetooth.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: обмен данными через Bluetooth для модулей ESP32.
+ * Purpose: Bluetooth Classic-related functions for ESP32 modules.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -15,8 +15,14 @@
 #ifndef ESP32_BLUETOOTH_H
 #define ESP32_BLUETOOTH_H
 
+
+/*--- Includes ---*/
+
 // Project configs.
 #include "config_general.h"
+
+
+/*--- Misc ---*/
 
 // Conditional compilation.
 #if defined ESP32 && defined BT_CLASSIC_PROVIDED

@@ -1,9 +1,9 @@
 /****************** DESCRIPTION *****************/
 
 /**
- * Filename: ASCII_cmd_handler.h
+ * Filename: ASCII_cmd_check.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: обработка текстовых команд.
+ * Purpose: check a string for valid text commands.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -18,8 +18,8 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-bool ASCII_cmd_handler_check_prefix(char *buf, const char *prefix);
-int32_t ASCII_cmd_handler_check_cmd(char *buf, const char *cmd_list[], uint32_t cmd_list_len);
+bool ASCII_cmd_check_prefix(char *buf, const char *prefix);
+int32_t ASCII_cmd_check_cmd(char *buf, const char *cmd_list[], uint32_t cmd_list_len);
 
 
 #endif  // Include guards.

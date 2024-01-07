@@ -3,14 +3,15 @@
 /**
  * Filename: ESP_WiFi.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: управление встроенным интерфейсом WiFi для модулей
- * ESP32 и ESP8266.
+ * Purpose: Wi-Fi-related functions.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
 
 
 /************ PREPROCESSOR DIRECTIVES ***********/
+
+/*--- Includes ---*/
 
 // General Arduino library.
 #include <Arduino.h>
@@ -20,10 +21,10 @@
 
 // Additional libraries for Arduino IDE.
 #ifdef ESP32
-    #include <WiFi.h>         // Вариант для ESP32.
+    #include <WiFi.h>
 #endif
 #ifdef ESP8266
-    #include <ESP8266WiFi.h>  // Вариант для ESP8266.
+    #include <ESP8266WiFi.h>
 #endif
 
 
@@ -34,7 +35,7 @@ bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeo
     if (WiFi.isConnected()) {
         WiFi.disconnect();
     }
-    while (WiFi.isConnected());  // Пауза, гарантирующая отключение предыдущего соединения с сетью Wi-Fi.
+    while (WiFi.isConnected());                 // Pause to ensure termination of a previous connection.
 
     Serial.print("Connecting to Wi-Fi access point ");
     Serial.println(SSID);
@@ -43,7 +44,7 @@ bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeo
     uint64_t current_millis = millis();
     uint64_t previous_millis = current_millis;
     while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);             // Точка выводится раз в секунду.
+        delay(1000);                            // Once a second.
         Serial.print(".");
 
         current_millis = millis();
@@ -75,7 +76,6 @@ void ESP_WiFi_indicate_connection(uint32_t led_pin, uint32_t cycles, uint32_t pe
     return;
 }
 
-// Изначально хотел сделать возвращаемым типом IPAddress, но тогда скетч почему-то не компилировался для ESP8266.
 String ESP_WiFi_get_current_IP()
 {
     return WiFi.localIP().toString();

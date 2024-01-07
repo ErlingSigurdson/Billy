@@ -3,13 +3,15 @@
 /**
  * Filename: HW_UART.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: обмен данными через аппаратный интерфейс UART.
+ * Purpose: hardware UART-related functions.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
 
 
 /************ PREPROCESSOR DIRECTIVES ***********/
+
+/*--- Includes ---*/
 
 // General Arduino library.
 #include <Arduino.h>
@@ -22,7 +24,7 @@
 
 uint32_t HW_UART_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout, uint32_t read_slowdown)
 {
-    // Счётчик таймаута подключения.
+    // Connection timeout counter.
     uint64_t current_millis = millis();
     uint64_t previous_millis = current_millis;
 
@@ -44,7 +46,9 @@ uint32_t HW_UART_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeou
         current_millis = millis();
 
         if (read_slowdown > 0) {
-            delay(read_slowdown);  // Чтобы байты из буфера не считывались быстрее, чем они туда поступают.
+            delay(read_slowdown);  /* Pause to ensure that reading from the buffer
+                                    * won't run ahead of writing to it.
+                                    */
         }
     }
 

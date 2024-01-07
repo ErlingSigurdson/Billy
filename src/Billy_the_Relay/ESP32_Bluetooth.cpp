@@ -3,13 +3,15 @@
 /**
  * Filename: ESP32_Bluetooth.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: обмен данными через Bluetooth для модулей ESP32.
+ * Purpose: Bluetooth Classic-related functions for ESP32 modules.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
 
 
 /************ PREPROCESSOR DIRECTIVES ***********/
+
+/*--- Includes ---*/
 
 // General Arduino library.
 #include <Arduino.h>
@@ -43,7 +45,7 @@ bool ESP32_BT_check_connection()
 
 uint32_t ESP32_BT_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
 {
-    // Счётчик таймаута подключения.
+    // Connection timeout counter.
     uint64_t current_millis = millis();
     uint64_t previous_millis = current_millis;
 
@@ -66,16 +68,12 @@ uint32_t ESP32_BT_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeo
             current_millis = millis();
 
             #define BT_READ_SLOWDOWN 2
-            delay(BT_READ_SLOWDOWN);  // Чтобы байты из буфера не считывались быстрее, чем они туда поступают.
+            delay(BT_READ_SLOWDOWN);    /* Pause to ensure that reading from the buffer
+                                         * won't run ahead of writing to it.
+                                         */
         }
         current_millis = millis();
     }
-
-    /* Заметка: если во внешнем цикле убрать проверку первой ячейки буфера
-     * на нуль-терминатор, то программа будет продолжать слушать байты
-     * даже после прекращения их непрерывного потока, пока не истечёт
-     * время подключения или не будет прислан LF.
-     */
 
     return i;
 }
@@ -99,4 +97,4 @@ void ESP32_BT_stop(uint32_t shutdown_downtime)
     BT_Serial.end();
 }
 
-#endif  // Завершающая директива условной компиляции.
+#endif  // Conditional compilation.

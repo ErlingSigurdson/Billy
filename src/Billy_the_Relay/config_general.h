@@ -3,7 +3,7 @@
 /**
  * Filename: config_general.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: основные настройки проекта.
+ * Purpose: project basic configs.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -18,23 +18,23 @@
 
 /*--- Bluetooth ---*/
 
-/* Для модулей ESP32 без функционала Bluetooth Classic
- * (например, ESP32-S2 и ESP32-C3) следует закомментировать.
+/* Comment following #define directive for ESP32 modules
+ * which lack Bluetooth Classic functionality (e.g. ESP32-S2 and ESP32-C3).
+ * For ESP8266 don't worry about it.
  */
 #ifdef ESP32
     #define BT_CLASSIC_PROVIDED
 #endif
 
 
-/*--- Нагрузка ---*/
+/*--- Load ---*/
 
-// Назначение вывода, управляющего нагрузкой (ВКЛ./ВЫКЛ.).
+// Assign load control pin.
 #define LOAD_PIN 13
 
-/* Выбор между неинвертированным (включение нагрузки при высоком уровне,
- * вариант по умолчанию) и инвертированным (включение нагрузки при низком
- * уровне) выходом. Последний удобен, например, для модулей реле, в которых
- * драйвером служит PNP-транзистор.
+/* Choose between uninverted (load turned ON at high logic level, default)
+ * and inverted (load turned ON at low logic level) output. The latter is handy
+ * if your load is driven by a PNP transistor.
  */
 //#define INVERTED_OUTPUT
 #ifndef INVERTED_OUTPUT
@@ -47,23 +47,23 @@
 #endif
 
 
-/*--- Аппаратный UART ---*/
+/*--- Hardware UART ---*/
 
-// Скорость передачи данных через аппаратный интерфейс UART.
+// Hardware UART baud rate.
 #define HW_UART_BAUD_RATE 115200
 
-/* Пауза, благодаря которой микроконтроллер не будет читать данные из буфера
- * быстрее, чем они туда поступают. Паузы в 2 мс вполне достаточно.
+/* Pause to ensure that reading from the buffer
+ * won't run ahead of writing to it.
  */
 #define HW_UART_READ_SLOWDOWN 2
 
-// Небольшая пауза, дающая устройству время на запуск интерфейса.
+// Tiny pause to allow interface startup.
 #define HW_UART_STARTUP_PAUSE 100
 
 
 /*--- Wi-Fi ---*/
 
-// Настройки индикации подключения.
+// Connection indication.
 #define WIFI_INDICATOR_LED_PIN 2
 #define WIFI_INDICATE_CONNECTION_CYCLES 20
 #define WIFI_INDICATE_CONNECTION_PERIOD 90
