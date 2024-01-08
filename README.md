@@ -18,24 +18,24 @@ Follow these steps to configure Billy and start using it:
 - indicator LED control pin (`WIFI_INDICATOR_LED_PIN`);
 - load mode (`INVERTED_OUTPUT`).
 2. Make sure your Arduino IDE (or Arduino SDK for a third-party IDE) has an appropriate core for [ESP32](https://github.com/espressif/arduino-esp32) or [ESP8266](https://github.com/esp8266/Arduino) by Espressif Systems.
-3. Compile sketch and upload the sketch.[^2]
+3. Compile the sketch and upload it to your device.[^2]
 4. Turn on your device and connect to it by a cable (through USB-UART adapter or, if suppored, UART over native USB).
-5. Send command `AT+SETLOAD=TOGGLE` twice and make sure that load control pin's logical level changes every time (load turns ON and OFF).
+5. Send command `AT+SETLOAD=TOGGLE` twice and make sure that Billy switches the current load status.
 6. Send command `AT+SETLOCALSSID=<value>` to specify your local Wi-Fi network SSID.
-7. Send command `AT+SETLOCALPSWD=<value>` to specify your local Wi-Fi network access password.
+7. Send command `AT+SETLOCALPSWD=<value>` to specify your local Wi-Fi network access point password.
 8. Send command `AT+SETLOCALPORT=<value>` to specify port number to be used by your device as a local TCP server.
-9. Reset your device or send command `AT+RSTLOCALCONN`. Make sure you device has established a connection to your local Wi-Fi network (watch UART terminal and indicator LED). Remember of write down printed local IP address (you can use `AT+PRINTLOCALIP` command to print it again).
-10. Connect to you device by Wi-Fi using previously printed local IP address and previously specified port.
-11. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Wi-Fi using established TCP connection. Make sure Billy follows your orders.
+9. Reset your device or send the command `AT+RSTLOCALCONN`. Make sure your device has established a connection to your local Wi-Fi network (look at UART terminal and indicator LED). Remember of write down printed local IP address (you can use `AT+PRINTLOCALIP` command to print it again if necessary).
+10. Connect to you device over Wi-Fi using previously printed local IP address and previously specified port.
+11. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Wi-Fi using established TCP connection. Make sure Billy follows your instructions.
 12. Open any web browser (I recommend Mozilla Firefox) on any device connected to the same local Wi-Fi network and insert previously printed IP address into an address bar.
 13. Use web interface to turn your load ON and OFF.
 
 Additionally, if your device supports Bluetooth Classic:
 
 14. Send command `AT+SETBTDEVNAME=<value>` to specify Billy's name as a Bluetooth slave device.
-15. Send command `AT+SETBT=ON` to turn on Bluetooth Clasicc.
-16. Connect to Billy by Bluetooth using previously specified slave device name.
-17. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Bluetooth. Make sure Billy follows your orders.
+15. Send command `AT+SETBT=ON` to turn on Bluetooth Classic.
+16. Connect to Billy over Bluetooth using previously specified slave device name.
+17. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Bluetooth. Make sure Billy follows your instructions.
 
 ### Complete command list
 Please refer to `config_ASCII_cmd_handler.h`.
@@ -43,7 +43,7 @@ Please refer to `config_ASCII_cmd_handler.h`.
 ### Billy as a TCP client and IoT control
 A remote server (an IoT server) to which Billy sends requests must be able to:
 - in response to Billy's requests (e.g. string `"UPD_REQ"`) send messages (strings) with valid commands;
-- update a message to be sent to Billy according to remote commands sent by another devices.
+- update a message prepared to be sent to Billy according to remote commands sent by other devices.
 
 Say, IoT server receives "turn load ON" command from your web browser and prepares to send `AT+SETLOAD=ON` string in a response to Billy's next request. Billy receives the string and puts it into a buffer to check for valid commands.
 
