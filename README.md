@@ -49,14 +49,14 @@ Say, IoT server receives "turn load ON" command from your web browser and prepar
 
 To specify IoT configs use commands `AT+SETIOTIP=<value>`, `AT+SETIOTPORT=<value>`, `AT+SETIOTREQMSG=<value>`, `AT+SETIOTREQPERIOD=<value>`, `AT+SETIOT=ON` and `AT+SETIOT=OFF`.
 
-[Here you can find an example code for a Linux server that works in a described fashion, written in C language.](https://github.com/ErlingSigurdson/server0451/tree/main). It is written specifically for Billy and similar devices.
+[Here you can find an example code for a Linux server that works in a described fashion, written in C language](https://github.com/ErlingSigurdson/server0451/tree/main). It is written specifically for Billy and similar devices.
 
 # General notes on code
 ### Sketch layout
 Breaking a sketch into a basic `.ino` file and local modules (pairs of `.h` and `.cpp` files) may not be very popular within Arduino paradigm, but I find it more straightforward and easier to manage than simple concatenation of multiple `.ino` files.  
 
 ### Global variables
-Use of global variables is generally avoided since the inbuilt storage serves as a "common space" for various sketch functions. Exceptions made for certain flags and class instances (e.g. `WiFiServer`, `BluetoothSerial`, etc).
+Introduction of additional global variables is generally avoided since the inbuilt storage serves as a "common space" for various sketch functions. Exceptions are made for certain flags and class instances (e.g. `WiFiServer`, `BluetoothSerial`, etc).
 
 ### Local modules and wrapper functions
 Method calls are mostly packed into wrapper functions declared in local modules. It's handy since method calls are usually accompanied with related lines of code.
