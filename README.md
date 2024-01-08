@@ -14,6 +14,8 @@ Billy itself takes commands over:
 
 Billy works within a local Wi-Fi network in a station (STA) mode. Billy uses Internet access provided by a local access point.
 
+Billy's operations rely heavily on module's inbuilt flash memory storage. When you specify an SSID, a password, a port number, etc. they are saved in inbuilt storage and thus you don't need to assign them again in case of device reboot.
+
 # Manual
 ### Quickstart
 Follow these steps to configure Billy and start using it:
