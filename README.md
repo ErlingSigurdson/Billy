@@ -1,5 +1,5 @@
 # Concept
-Billy the Relay is an Arduino sketch written for ESP32 and ESP8266 modules (systems-on-chip). Billy can control simple (ON/OFF) load like an LED or (with a help of a driver) a relay.
+Billy the Relay is an Arduino project written for ESP32 and ESP8266 modules (systems-on-chip). Billy can control simple (ON/OFF) load like an LED or (by means of a driver) a relay.
 Billy itself takes commands via:
 - UART, through a cable connection.
 - Wi-Fi as a local TCP server, e.g. from a classic Unix utility `netcat` (`nc`) or an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   
@@ -11,12 +11,12 @@ Billy works within a local Wi-Fi network in a station (STA) mode. Billy uses Int
 
 # Manual
 ### Quickstart
-Follow these steps to configure Billy and try using its functionality:
-1. In file `config_general.h` using provided `#define` directives:
-- specify whether your device use Bluetooth Classic (`BT_CLASSIC_PROVIDED`, for ESP32 only, omit for ESP8266);
-- specify load control pin (`LOAD_PIN`);
-- specify indicator LED pin (`WIFI_INDICATOR_LED_PIN`);
-- specify load mode (`INVERTED_OUTPUT`).
+Follow these steps to configure Billy and start using it:
+1. In file `config_general.h` set `#define` values to specify:
+- whether your device uses Bluetooth Classic (`BT_CLASSIC_PROVIDED`, for ESP32 only; omit for ESP8266);
+- load control pin (`LOAD_PIN`);
+- indicator LED control pin (`WIFI_INDICATOR_LED_PIN`);
+- load mode (`INVERTED_OUTPUT`).
 2. Make sure your Arduino IDE (or Arduino SDK for a third-party IDE) has an appropriate core for [ESP32](https://github.com/espressif/arduino-esp32) or [ESP8266](https://github.com/esp8266/Arduino) by Espressif Systems.
 3. Compile sketch and upload the sketch.[^2]
 4. Turn on your device and connect to it by a cable (through USB-UART adapter or, if suppored, UART over native USB).
