@@ -1,12 +1,11 @@
 # Concept
-
-Billy the Relay is an Arduino project written for ESP32 and ESP8266 systems-on-chip. Billy can control simple (ON/OFF) load like an LED or (using a driver) a relay.
+Billy the Relay is an Arduino sketch written for ESP32 and ESP8266 modules (systems-on-chip). Billy can control simple (ON/OFF) load like an LED or (with a help of a driver) a relay.
 Billy itself takes commands via:
 - UART, through a cable connection.
 - Wi-Fi as a local TCP server, e.g. from a classic Unix utility `netcat` (`nc`) or an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   
-- Wi-Fi as a local HTTP server, e.g. from a browser (sketch provides a simplistic web interface) or another app capable of sending HTTP requests.
+- Wi-Fi as a local HTTP server, e.g. from a browser (sketch provides a simplistic web interface) or a different app capable of sending HTTP requests.
 - Bluetooth Classic as a slave device[^1], e.g. from a desktop Bluetooth terminal or an Android app like [Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android).
-- Wi-Fi as a TCP client (inter alia via Internet). To do so Billy sends requests to a custom-programmed TCP server and receives commands as a response (this implementation is specified below).
+- Wi-Fi as a TCP client (inter alia via Internet). To do so Billy sends requests to a custom-programmed TCP server and receives commands as a response (this implementation is described in detail below).
 
 Billy works within a local Wi-Fi network in a station (STA) mode. Billy uses Internet access provided by a local access point.
 
