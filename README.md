@@ -59,7 +59,7 @@ Breaking a sketch into a basic `.ino` file and local modules (pairs of `.h` and 
 Introduction of additional global variables is generally avoided since the inbuilt storage serves as a "common space" for various sketch functions. Exceptions are made for certain flags and class instances (e.g. `WiFiServer`, `BluetoothSerial`, etc).
 
 ### Local modules and wrapper functions
-Method calls are mostly packed into wrapper functions declared in local modules. It's handy since method calls are usually accompanied with related lines of code.
+Method calls are mostly packed into wrapper functions declared and defined in local modules. It's handy since method calls are usually accompanied with related lines of code.
 Local modules do not refer to each other. Instead, their wrapper functions are combined in `.ino` file, which allows for easier sketch customization.
 
 # Expected questions
@@ -67,7 +67,11 @@ Local modules do not refer to each other. Instead, their wrapper functions are c
 I wanted more flexibility and I didn't want to stick to a particular OSI layer 7 protocol.
 
 ### Why "Billy"?
-An honorable mention of a programmer parrot, protagonist of [meme videos](https://www.youtube.com/watch?v=0MhVkKHYUAY&list=PLkdGijFCNuVmu35l6EJxdvsvf7xj4EQVf&index=21) by [Mr. P Solver](https://www.youtube.com/c/mrpsolver).
+A reference to an eponymous programmer parrot, a protagonist of [meme videos](https://www.youtube.com/watch?v=0MhVkKHYUAY&list=PLkdGijFCNuVmu35l6EJxdvsvf7xj4EQVf&index=21) by [Mr. P Solver](https://www.youtube.com/c/mrpsolver).
+
+### It doesn't seem to be secure, does it?
+Within your local Wi-Fi network your best protection is your access point password. You can even run additional Wi-Fi network on the same router if you want to separate Billy and other IoT devices from your regular consumer electronics.
+As for Bluetooth (and lack of PIN code for BT access), you can change a command syntax in `config_ASCII_cmd_handler.h` and make commands look like `AT+``MYPSWD_SETLOAD=TOGGLE`.
 
 [^1]: Not supported for ESP8266 and those ESP32 modules which lack Bluetooth Classic functionality (e.g. ESP32-S2 and ESP32-C3).
-[^2]: If your IDE warns you of lack of memory for storing the sketch, try switching `partition scheme` option to "Huge APP".
+[^2]: In case of your IDE throwing a message on insufficient memory size try switching `partition scheme` option to "Huge APP".
