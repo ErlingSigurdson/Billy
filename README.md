@@ -52,7 +52,7 @@ Say, IoT server receives "turn load ON" command from your web browser and prepar
 
 To specify IoT configs use commands `AT+SETIOTIP=<value>`, `AT+SETIOTPORT=<value>`, `AT+SETIOTREQMSG=<value>`, `AT+SETIOTREQPERIOD=<value>`, `AT+SETIOT=ON` and `AT+SETIOT=OFF`.
 
-[Here you can find an example code for a Linux server that works in a described fashion, written in C language](https://github.com/ErlingSigurdson/server0451/tree/main). It is written specifically for Billy and similar devices.
+[Here you can find an example code for a Linux server that works in a described fashion](https://github.com/ErlingSigurdson/server0451/tree/main) written in C language. It is written specifically for Billy and similar devices.
 
 # General notes on code
 ### Sketch layout
@@ -72,9 +72,10 @@ I wanted more flexibility and I didn't want to stick to a particular OSI layer 7
 ### Why "Billy"?
 A reference to an eponymous programmer parrot, a protagonist of [meme videos](https://www.youtube.com/watch?v=0MhVkKHYUAY&list=PLkdGijFCNuVmu35l6EJxdvsvf7xj4EQVf&index=21) by [Mr. P Solver](https://www.youtube.com/c/mrpsolver).
 
-### It doesn't seem to be secure, does it?
+### what about security?
 Within your local Wi-Fi network your best protection is your access point password. You can even run additional Wi-Fi network on the same router if you want to separate Billy and other IoT devices from your regular consumer electronics.
-As for Bluetooth (and lack of PIN code for BT access), you can change a command syntax in `config_ASCII_cmd_handler.h` and make commands look like `AT+``MYPSWD_SETLOAD=TOGGLE`.
+
+As for Bluetooth (and lack of PIN code for BT access), you can change a command syntax in `config_ASCII_cmd_handler.h` and make commands look like `AT+` `MYPSWD_SETLOAD=TOGGLE`.
 
 [^1]: Not supported for ESP8266 and those ESP32 modules which lack Bluetooth Classic functionality (e.g. ESP32-S2 and ESP32-C3).
 [^2]: In case of your IDE throwing a message on insufficient memory size try switching `partition scheme` option to "Huge APP".
