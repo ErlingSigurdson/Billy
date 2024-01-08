@@ -23,7 +23,7 @@ Follow these steps to configure Billy and start using it:
 2. Make sure your Arduino IDE (or Arduino SDK for a third-party IDE) has an appropriate core for [ESP32](https://github.com/espressif/arduino-esp32) or [ESP8266](https://github.com/esp8266/Arduino) by Espressif Systems.
 3. Compile the sketch and upload it to your device.[^2]
 4. Turn on your device and connect to it by a cable (through USB-UART adapter or, if suppored, UART over native USB).
-5. Send command `AT+SETLOAD=TOGGLE` twice and make sure that Billy switches the current load status.
+5. Send command `AT+SETLOAD=TOGGLE` twice and make sure that Billy switches a current load status.
 6. Send command `AT+SETLOCALSSID=<value>` to specify your local Wi-Fi network SSID.
 7. Send command `AT+SETLOCALPSWD=<value>` to specify your local Wi-Fi network access point password.
 8. Send command `AT+SETLOCALPORT=<value>` to specify port number to be used by your device as a local TCP server.
