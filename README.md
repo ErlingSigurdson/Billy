@@ -1,3 +1,6 @@
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.md)
+[![ru](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.ru.md)
+
 # Concept
 Billy the Relay is an Arduino project written for ESP32 and ESP8266 modules (systems-on-chip). Billy can control simple (ON/OFF) load like an LED or (by means of a driver) a relay.
 Billy itself takes commands via:
