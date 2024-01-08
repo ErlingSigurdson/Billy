@@ -1,4 +1,4 @@
-![Good old ESP32](https://imgur.com/a/CGhDTL0))
+![Good old ESP32](https://i.imgur.com/U5nZ8fW.png)
 
 [![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.md)
 [![ru](https://img.shields.io/badge/lang-ru-red.svg)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.ru.md)
