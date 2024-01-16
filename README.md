@@ -8,7 +8,7 @@
 **14.01.2024** - Tested the sketch with ESP32-C6 SoC using [3.0.0 alpha version of ESP32 Arduino Core](https://github.com/espressif/arduino-esp32/milestone/4). Works alright.
 
 # Concept
-Billy the Relay is an Arduino project written for ESP32 and ESP8266 modules (systems-on-chip). Billy can control simple (ON/OFF) load like an LED or (by means of a driver) a relay.
+Billy the Relay is an Arduino project written for ESP32 and ESP8266 modules (systems-on-chip, SoCs). Billy can control simple (ON/OFF) load like an LED or (by means of a driver) a relay.
 Billy itself takes commands over:
 - UART by a cable connection.
 - Wi-Fi as a local TCP server, e.g. from a classic Unix utility `netcat` (`nc`) or an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   
