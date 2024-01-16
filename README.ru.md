@@ -1,6 +1,10 @@
 [![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.md)
 [![ru](https://img.shields.io/badge/lang-ru-red.svg)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.ru.md)
 
+## Новости
+
+**14.01.2024** - Запустил скетч на модуле ESP32-C6 с помощью [альфа-версии 3.0.0 ядра Ардуино для ESP32](https://github.com/espressif/arduino-esp32/milestone/4). Работает хорошо.
+
 # Концепция
 Релешка Билли - это Arduino-проект на базе модуля ESP32 или ESP8266. Билли умеет управлять простой (ВКЛ./ВЫКЛ.) нагрузкой, например, светодиодом или (с помощью драйвера) реле.
 В свою очередь Билли можно отдавать команды:
