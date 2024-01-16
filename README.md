@@ -23,11 +23,11 @@ Billy's operations rely heavily on module's inbuilt flash memory storage. When y
 # Manual
 ### Quickstart
 Follow these steps to configure Billy and start using it:
-1. In file `config_general.h` set `#define` values to specify:
-- whether your device uses Bluetooth Classic (`BT_CLASSIC_PROVIDED`, for ESP32 only; omit for ESP8266);
-- load control pin (`LOAD_PIN`);
-- indicator LED control pin (`WIFI_INDICATOR_LED_PIN`);
-- load mode (`INVERTED_OUTPUT`).
+1. In file `config_general.h` use `#define` directives to specify:
+- whether your device uses Bluetooth Classic (`BT_CLASSIC_PROVIDED`). Comment out the directive if your ESP32 SoC doesn't support Bluetooth Classic or you just don't want to use it. Ignore for ESP8266.
+- load control pin (`LOAD_PIN`). Specify the pin number as a value;
+- indicator LED control pin (`WIFI_INDICATOR_LED_PIN`). Specify the pin number as a value;
+- load mode (`INVERTED_OUTPUT`). Uncomment the directive if you need an inverted output.
 2. Make sure your Arduino IDE (or Arduino SDK for a third-party IDE) has an appropriate core for [ESP32](https://github.com/espressif/arduino-esp32) or [ESP8266](https://github.com/esp8266/Arduino) by Espressif Systems.
 3. Compile the sketch and upload it to your device.[^2]
 4. Turn on your device and connect to it by a cable (through USB-UART adapter or, if suppored, UART over native USB).
