@@ -49,7 +49,7 @@ Additionally, if your device supports Bluetooth Classic:
 17. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Bluetooth. Make sure Billy follows your instructions.
 
 ### Complete command list
-Please refer to `config_ASCII_cmd_handler.h`.
+Please refer to `config_ASCII_cmd_check.h`.
 
 ### Billy as a TCP client and IoT control
 A remote server (an IoT server) to which Billy sends requests must be able to:
