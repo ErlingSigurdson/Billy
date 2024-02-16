@@ -426,7 +426,9 @@ void setup()
     } else {
         Serial.println("OFF");
     }
+    
     Serial.println("");
+    Serial.flush();
 }
 
 void loop()
@@ -656,6 +658,7 @@ void loop()
         }
     } else if (terminal_input[0] != '\0') {
         handle_cmd_err_prefix();
+        Serial.flush();
         ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     }
     
