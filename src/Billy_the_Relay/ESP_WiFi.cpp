@@ -70,9 +70,19 @@ void ESP_WiFi_indicate_connection(uint32_t led_pin, uint32_t cycles, uint32_t pe
         ++cycles;
     }
 
+    static uint64_t current_millis = millis();
+    static uint64_t previous_millis = current_millis;
+
     for (uint32_t i = 0; i < cycles; ++i) {
         digitalWrite(led_pin, !digitalRead(led_pin));
-        delay(period);
+
+        while (1) {
+            current_millis = millis();
+            if (current_millis - previous_millis >= period) {
+                previous_millis = current_millis;
+                break;
+            }
+        }
     }
 
     return;
