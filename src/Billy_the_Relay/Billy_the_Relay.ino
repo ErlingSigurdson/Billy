@@ -564,7 +564,7 @@ void loop()
 
     // Check for non-empty buffer string and correct command prefix.
     if (terminal_input[0] != '\0' && ASCII_cmd_check_prefix(terminal_input, CMD_PREFIX)) {
-        utilities_remove_CR_and_LF(terminal_input);
+        utilities_nullify_first_CR_or_LF_in_string(terminal_input);
 
         // Check for valid commands.
         int32_t func_to_call = ASCII_cmd_check_cmd(terminal_input, cmd_list, CMD_LIST_LEN);
