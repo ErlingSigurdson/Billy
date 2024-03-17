@@ -9,12 +9,15 @@
  * and (optionally) Bluetooth Classic.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes: project homepage https://github.com/ErlingSigurdson/Billy_the_Relay
+ *                         https://gitflic.ru/efimov-d-v/billy_the_relay
  */
 
 
 /************ PREPROCESSOR DIRECTIVES ***********/
 
 /*--- Includes ---*/
+
+// Additional Arduino libraries are included in the local modules.
 
 // Project configs.
 #include "config_general.h"          // Also included in some local modules.
@@ -39,8 +42,6 @@
 #if defined ESP32 && defined BT_CLASSIC_PROVIDED
     #include "ESP32_Bluetooth.h"
 #endif
-
-// Additional Arduino libraries are included in the local modules.
 
 
 /****************** DATA TYPES ******************/
@@ -426,7 +427,9 @@ void setup()
     } else {
         Serial.println("OFF");
     }
+    
     Serial.println("");
+    Serial.flush();
 }
 
 void loop()
@@ -562,7 +565,7 @@ void loop()
 
     // Check for non-empty buffer string and correct command prefix.
     if (terminal_input[0] != '\0' && ASCII_cmd_check_prefix(terminal_input, CMD_PREFIX)) {
-        utilities_remove_CR_and_LF(terminal_input);
+        utilities_nullify_first_CR_or_LF_in_string(terminal_input);
 
         // Check for valid commands.
         int32_t func_to_call = ASCII_cmd_check_cmd(terminal_input, cmd_list, CMD_LIST_LEN);
@@ -656,6 +659,7 @@ void loop()
         }
     } else if (terminal_input[0] != '\0') {
         handle_cmd_err_prefix();
+        Serial.flush();
         ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     }
     

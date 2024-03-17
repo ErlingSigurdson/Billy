@@ -16,6 +16,12 @@
 #define UTILITIES_H
 
 
+/*--- Includes ---*/
+
+// General Arduino library.
+#include <Arduino.h>
+
+
 /*--- Misc ---*/
 
 // A pair of macros for turning an argument into a string.
@@ -25,11 +31,15 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-bool utilities_remove_CR_and_LF(char *buf);
-bool utilities_append_CR_and_LF(char *buf, size_t buf_size);
-bool utilities_append_LF(char *buf, size_t buf_size);
-bool utilities_append_LF_if_absent(char *buf, size_t buf_size);
-bool utilities_force_2xLF(char *buf, size_t buf_size);
+/*--- String operations ---*/
+
+bool utilities_nullify_first_CR_or_LF_in_string(char *buf);
+bool utilities_nullify_all_CR_and_LF_in_char_array(char *buf, size_t buf_size);
+bool utilities_nullify_all_trailing_CR_and_LF_in_string(char *buf);
+bool utilities_substitute_all_CR_and_LF_in_char_array(char *buf, size_t buf_size, char character);
+bool utilities_append_LF_to_string(char *buf, size_t buf_size);
+bool utilities_append_LF_if_absent_to_string(char *buf, size_t buf_size);
+bool utilities_append_CR_to_string(char *buf, size_t buf_size);
 
 
 #endif  // Include guards.

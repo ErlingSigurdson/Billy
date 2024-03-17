@@ -18,6 +18,9 @@
 
 /*--- Includes ---*/
 
+// General Arduino library.
+#include <Arduino.h>
+
 // Project configs.
 #include "config_general.h"
 

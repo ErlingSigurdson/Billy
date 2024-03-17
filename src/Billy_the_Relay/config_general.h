@@ -30,7 +30,7 @@
 /*--- Load ---*/
 
 // Assign load control pin.
-#define LOAD_PIN 13
+#define LOAD_PIN 2
 
 /* Choose between uninverted (load turned ON at high logic level, default)
  * and inverted (load turned ON at low logic level) output. The latter is handy
