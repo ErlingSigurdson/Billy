@@ -16,14 +16,14 @@
 // General Arduino library.
 #include <Arduino.h>
 
+// Local modules.
+#include "ESP32_Bluetooth.h"
+
 // Conditional compilation.
 #if defined ESP32 && defined BT_CLASSIC_PROVIDED
 
 // Additional libraries for Arduino IDE.
 #include <BluetoothSerial.h>
-
-// Local modules.
-#include "ESP32_Bluetooth.h"
 
 
 /*************** GLOBAL VARIABLES ***************/
