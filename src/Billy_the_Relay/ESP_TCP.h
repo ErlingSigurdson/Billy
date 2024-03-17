@@ -16,6 +16,12 @@
 #define ESP_TCP_H
 
 
+/*--- Includes ---*/
+
+// General Arduino library.
+#include <Arduino.h>
+
+
 /*--- Misc ---*/
 
 #define DEFAULT_IOT_REQ_PERIOD 500

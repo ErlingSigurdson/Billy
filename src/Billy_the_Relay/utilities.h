@@ -16,6 +16,12 @@
 #define UTILITIES_H
 
 
+/*--- Includes ---*/
+
+// General Arduino library.
+#include <Arduino.h>
+
+
 /*--- Misc ---*/
 
 // A pair of macros for turning an argument into a string.

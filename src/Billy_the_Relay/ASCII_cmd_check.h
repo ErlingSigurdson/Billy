@@ -16,6 +16,12 @@
 #define ASCII_CMD_HANDLER_H
 
 
+/*--- Includes ---*/
+
+// General Arduino library.
+#include <Arduino.h>
+
+
 /************** FUNCTION PROTOTYPES *************/
 
 bool ASCII_cmd_check_prefix(char *buf, const char *prefix);

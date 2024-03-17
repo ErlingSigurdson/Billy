@@ -9,12 +9,15 @@
  * and (optionally) Bluetooth Classic.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes: project homepage https://github.com/ErlingSigurdson/Billy_the_Relay
+ *                         https://gitflic.ru/efimov-d-v/billy_the_relay
  */
 
 
 /************ PREPROCESSOR DIRECTIVES ***********/
 
 /*--- Includes ---*/
+
+// Additional Arduino libraries are included in the local modules.
 
 // Project configs.
 #include "config_general.h"          // Also included in some local modules.
@@ -39,8 +42,6 @@
 #if defined ESP32 && defined BT_CLASSIC_PROVIDED
     #include "ESP32_Bluetooth.h"
 #endif
-
-// Additional Arduino libraries are included in the local modules.
 
 
 /****************** DATA TYPES ******************/

@@ -16,6 +16,12 @@
 #define ESP_WIFI_H
 
 
+/*--- Includes ---*/
+
+// General Arduino library.
+#include <Arduino.h>
+
+
 /*--- Misc ---*/
 
 #define DEFAULT_WIFI_RSSI_PRINT_PERIOD 2000
