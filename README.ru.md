@@ -3,7 +3,7 @@
 [![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.md)
 [![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.ru.md)
 [![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/project/efimov-d-v/billy_the_relay/blob?file=README.md&branch=main)
-[![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)]((https://gitflic.ru/project/efimov-d-v/billy_the_relay/blob?file=README.ru.md&branch=main)
+[![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy_the_relay/blob?file=README.ru.md&branch=main)
 
 ## Новости
 
