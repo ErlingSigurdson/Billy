@@ -17,7 +17,7 @@
 
 // Text commands.
 #define CMD_PREFIX  "AT+"
-#define CMD_0       "SETLOAD="          // Turn load ON of OFF. Main workhorse.
+#define CMD_0       "SETLOAD="          // Turn load ON or OFF. Main workhorse.
 
 #define CMD_1       "SETLOCALSSID="     // Change an SSID of a local Wi-Fi access point  stored in the inbuilt storage.
 

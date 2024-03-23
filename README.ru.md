@@ -1,9 +1,14 @@
-[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.md)
-[![ru](https://img.shields.io/badge/lang-ru-red.svg)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.ru.md)
+![Good old ESP32](https://i.imgur.com/U5nZ8fW.png)
+
+[![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.md)
+[![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.ru.md)
+[![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/efimov-d-v/billy_the_relay/blob/main/README.md)
+[![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/efimov-d-v/billy_the_relay/blob/main/README.ru.md)
 
 ## Новости
 
 **14.01.2024** - Запустил скетч на модуле ESP32-C6 с помощью [альфа-версии 3.0.0-alpha3 ядра Ардуино для ESP32](https://github.com/espressif/arduino-esp32/milestone/4). Работает хорошо.
+**18.03.2024** - Релиз версии 1.1.
 
 # Концепция
 Релешка Билли - это Arduino-проект на базе модуля ESP32 или ESP8266. Билли умеет управлять простой (ВКЛ./ВЫКЛ.) нагрузкой, например, светодиодом или (с помощью драйвера) реле.
