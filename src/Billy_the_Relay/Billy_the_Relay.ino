@@ -302,8 +302,8 @@ void setup()
 
     //#define SET_IOT_REQ_MSG_AT_UPLOAD
     #ifdef SET_IOT_REQ_MSG_AT_UPLOAD
-        inbuilt_storage_write("UPD_REQ",
-                              strlen("UPD_REQ"),
+        inbuilt_storage_write("SERVE_CURRENT_CMD",
+                              strlen("SERVE_CURRENT_CMD"),
                               INBUILT_STORAGE_STR_MAX_LEN,
                               INBUILT_STORAGE_ADDR_IOT_REQ_MSG);
     #endif
@@ -350,11 +350,12 @@ void setup()
     Serial.println("");
     Serial.println("*** HELLO, HUMAN! ***");
 
-    /* Initializing of certain objects (class instances) requires specifying
+    /* Initializing certain objects (class instances) requires specifying
      * their parameters compile-time, since the latter are to be passed
-     * to a constructor function. However, to avoid mentioning such objects
-     * in an .ino file, they are initialized with dummy values and then get
-     * updated with the values read from the inbuilt storage.
+     * to a constructor function. However, it's not possible to specify
+     * a proper port number for a WiFiServer class object in advance because
+     * the relevant port number is to be read from an inbuilt storage. Therefore
+     * the object gets initialized with a dummy value and then becomes updated.
      */
     ESP_TCP_server_port_update(strd_vals.local_server_port);
 
