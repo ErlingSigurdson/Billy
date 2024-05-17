@@ -708,9 +708,10 @@ void handle_cmd_err_len()
 void handle_cmd_set_load(char *cmd)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
+    uint32_t current_state = digitalRead(LOAD_PIN);
 
     if (!strcmp(cmd_val, "TOGGLE")) {
-        if (digitalRead(LOAD_PIN) == LOAD_ON) {
+        if (current_state == PIN_ON) {
             strcpy(cmd_val, "OFF");
         } else {
             strcpy(cmd_val, "ON");
@@ -718,17 +719,27 @@ void handle_cmd_set_load(char *cmd)
     }
 
     if (!strcmp(cmd_val, "ON")) {
-        digitalWrite(LOAD_PIN, LOAD_ON);
-        handle_cmd_helper_send("LOAD ON");
+        if (current_state != PIN_ON) {
+            digitalWrite(LOAD_PIN, (uint8_t)PIN_ON);
+            handle_cmd_helper_send("LOAD is now ON");
 
-        return;
+            return;
+        } else {
+            handle_cmd_helper_send("LOAD is already ON");
+            return;
+        }
     }
 
     if (!strcmp(cmd_val, "OFF")) {
-        digitalWrite(LOAD_PIN, LOAD_OFF);
-        handle_cmd_helper_send("LOAD OFF");
+        if (current_state != PIN_OFF) {
+            digitalWrite(LOAD_PIN, (uint8_t)PIN_OFF);
+            handle_cmd_helper_send("LOAD is now OFF");
 
-        return;
+            return;
+        } else {
+            handle_cmd_helper_send("LOAD is already OFF");
+            return;
+        }
     }
 
     handle_cmd_err_val();

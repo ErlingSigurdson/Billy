@@ -18,6 +18,7 @@
 
 // Local modules.
 #include "ESP_WiFi.h"
+#include "config_general.h"
 
 // Additional libraries for Arduino IDE.
 #ifdef ESP32
@@ -48,6 +49,9 @@ bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeo
     while (WiFi.status() != WL_CONNECTED) {
         delay(1000);                             // Once a second.
         Serial.print(".");
+        digitalWrite(WIFI_INDICATOR_LED_PIN, PIN_ON);
+        delay(WIFI_INDICATE_CONNECTION_PERIOD);
+        digitalWrite(WIFI_INDICATOR_LED_PIN, PIN_OFF);
 
         current_millis = millis();
         if (current_millis - previous_millis >= conn_attempt_timeout) {
@@ -81,8 +85,6 @@ void ESP_WiFi_indicate_connection(uint32_t led_pin, uint32_t cycles, uint32_t pe
         }
         previous_millis = current_millis;
     }
-
-    return;
 }
 
 String ESP_WiFi_get_current_IP()

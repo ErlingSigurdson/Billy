@@ -34,16 +34,16 @@
 
 /* Choose between uninverted (load turned ON at high logic level, default)
  * and inverted (load turned ON at low logic level) output. The latter is handy
- * if your load is driven by a PNP transistor.
+ * if your load is driven by a PNP transistor, for example.
  */
 //#define INVERTED_OUTPUT
 #ifndef INVERTED_OUTPUT
-    #define LOAD_ON 1
-    #define LOAD_OFF 0
+    #define PIN_ON 1
+    #define PIN_OFF 0
 #endif
 #ifdef INVERTED_OUTPUT
-    #define LOAD_ON 0
-    #define LOAD_OFF 1
+    #define PIN_ON 0
+    #define PIN_OFF 1
 #endif
 
 
