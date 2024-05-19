@@ -130,7 +130,7 @@ void handle_cmd_print_local_IP();
 /* Command #7:
  * reset local connections.
  */
-void handle_cmd_rst_local_conn();
+void handle_cmd_rst_local_conn(void (*setup_ptr)(void));
 
 /* Command #8:
  * set IoT mode (attempts to connect to a remote server) ON or OFF.
@@ -182,7 +182,7 @@ void handle_cmd_set_IoT_req_period(char *cmd);
 /* Command #16:
  * set Bluetooth Classic functionality ON or OFF.
  */
-void handle_cmd_set_BT_flag(char *cmd);
+void handle_cmd_set_BT_flag(char *cmd, void (*setup_ptr)(void));
 
 /* Command #17:
  * change ESP's name as a Bluetooth slave device
@@ -604,7 +604,7 @@ void loop()
                 break;
 
             case 7:
-                handle_cmd_rst_local_conn();
+                handle_cmd_rst_local_conn(setup);
                 break;
 
             case 8:
@@ -640,7 +640,7 @@ void loop()
                 break;
 
             case 16:
-                handle_cmd_set_BT_flag(terminal_input);
+                handle_cmd_set_BT_flag(terminal_input, setup);
                 break;
 
             case 17:
@@ -805,7 +805,7 @@ void handle_cmd_print_local_IP()
 }
 
 // Command #7
-void handle_cmd_rst_local_conn()
+void handle_cmd_rst_local_conn(void (*setup_ptr)(void))
 {
     handle_cmd_helper_send("Resetting local connections...");
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
@@ -815,7 +815,7 @@ void handle_cmd_rst_local_conn()
         ESP32_BT_stop(CONN_SHUTDOWN_DOWNTIME);
     #endif
 
-    setup();
+    setup_ptr();
 }
 
 // Command #8
@@ -891,7 +891,7 @@ void handle_cmd_set_IoT_req_period(char *cmd)
 }
 
 // Command #16
-void handle_cmd_set_BT_flag(char *cmd)
+void handle_cmd_set_BT_flag(char *cmd, void (*setup_ptr)(void))
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         char *cmd_val = strstr(cmd, "=") + 1;
@@ -901,7 +901,7 @@ void handle_cmd_set_BT_flag(char *cmd)
                                   "Bluetooth: ",
                                   INBUILT_STORAGE_ADDR_BT_FLAG,
                                   ECHO_ON);
-            handle_cmd_rst_local_conn();
+            handle_cmd_rst_local_conn(setup_ptr);
         } else {
             handle_cmd_err_val();
         }
