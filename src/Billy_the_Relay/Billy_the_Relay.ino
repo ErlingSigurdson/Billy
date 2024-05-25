@@ -148,12 +148,12 @@ void setup()
                               INBUILT_STORAGE_ADDR_IOT_REQ_PERIOD);
     #endif
 
-    //#define SET_BT_FLAG_AT_UPLOAD
-    #ifdef SET_BT_FLAG_AT_UPLOAD
+    //#define SET_BT_CLASSIC_FLAG_AT_UPLOAD
+    #ifdef SET_BT_CLASSIC_FLAG_AT_UPLOAD
         inbuilt_storage_write("OFF",
                               strlen("OFF"),
                               INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_BT_FLAG);
+                              INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG);
     #endif
 
     //#define SET_BT_DEV_NAME_AT_UPLOAD

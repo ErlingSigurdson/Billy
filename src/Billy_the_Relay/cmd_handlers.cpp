@@ -227,7 +227,7 @@ void handle_cmd_set_IoT_req_period(char *cmd)
 }
 
 // Command #16
-void handle_cmd_set_BT_flag(char *cmd, void (*setup_ptr)(void))
+void handle_cmd_set_BTClassic_flag(char *cmd, void (*setup_ptr)(void))
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         char *cmd_val = strstr(cmd, "=") + 1;
@@ -235,7 +235,7 @@ void handle_cmd_set_BT_flag(char *cmd, void (*setup_ptr)(void))
         if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
             handle_cmd_helper_set(cmd,
                                   "Bluetooth: ",
-                                  INBUILT_STORAGE_ADDR_BT_FLAG,
+                                  INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG,
                                   ECHO_ON);
             handle_cmd_rst_local_conn(setup_ptr);
         } else {
@@ -245,7 +245,7 @@ void handle_cmd_set_BT_flag(char *cmd, void (*setup_ptr)(void))
 }
 
 // Command #17
-void handle_cmd_set_BT_dev_name(char *cmd)
+void handle_cmd_set_BTClassic_dev_name(char *cmd)
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         handle_cmd_helper_set(cmd,
@@ -258,7 +258,7 @@ void handle_cmd_set_BT_dev_name(char *cmd)
 }
 
 // Command #18
-void handle_cmd_print_BT_dev_name()
+void handle_cmd_print_BTClassic_dev_name()
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         handle_cmd_helper_print("Current Bluetooth device name is: ",
@@ -331,7 +331,7 @@ void handle_cmd_helper_send(const char *msg)
         inbuilt_storage_read(val,
                              sizeof(val),
                              STR_MAX_LEN,
-                             INBUILT_STORAGE_ADDR_BT_FLAG);
+                             INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG);
 
         if (!strcmp(val, "ON")) {
             ESP32_BT_send_msg(msg);

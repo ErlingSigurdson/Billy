@@ -18,7 +18,7 @@ void strd_vals_read(strd_vals_t *_strd_vals)
     #define INDEX_IOT_SERVER_PORT    5
     #define INDEX_IOT_REQ_MSG        6
     #define INDEX_IOT_REQ_PERIOD     7
-    #define INDEX_BT_FLAG            8
+    #define INDEX_BT_CLASSIC_FLAG            8
     #define INDEX_BT_DEV_NAME        9
     #define INDEX_RSSI_PRINT_FLAG    10
 
@@ -35,7 +35,7 @@ void strd_vals_read(strd_vals_t *_strd_vals)
         INBUILT_STORAGE_ADDR_IOT_SERVER_PORT,
         INBUILT_STORAGE_ADDR_IOT_REQ_MSG,
         INBUILT_STORAGE_ADDR_IOT_REQ_PERIOD,
-        INBUILT_STORAGE_ADDR_BT_FLAG,
+        INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG,
         INBUILT_STORAGE_ADDR_BT_DEV_NAME,
         INBUILT_STORAGE_ADDR_RSSI_PRINT_FLAG
     };
@@ -88,7 +88,7 @@ void strd_vals_read(strd_vals_t *_strd_vals)
 
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         // Bluetooth functionality flag.
-        if (!strcmp(strd_vals_str[INDEX_BT_FLAG], "ON")) {
+        if (!strcmp(strd_vals_str[INDEX_BT_CLASSIC_FLAG], "ON")) {
             _strd_vals->BT_flag = 1;
         } else {
             _strd_vals->BT_flag = 0;

@@ -32,9 +32,12 @@ int32_t cmd_check_body(char *buf, const char *cmd_list[], uint32_t cmd_list_len)
 
 /*--- Handler functions ---*/
 
-/* Functions called in response to received commands
+/* Functions called in a response to received commands
  * and command processing errors. 
  */
+
+// Incoming byte string is too long.
+void cmd_handler_err_len();
 
 // Incorrect/absent command prefix.
 void cmd_handler_err_prefix();
@@ -45,58 +48,55 @@ void cmd_handler_err_cmd();
 // No valid value after the command which requires it.
 void cmd_handler_err_val();
 
-// Incoming byte string is too long.
-void cmd_handler_err_len();
-
 /* Command #0:
- * turn a simple (two-state) load ON of OFF. Main workhorse.
+ * turn a two-state load ON or OFF. Main workhorse.
  */
-void cmd_handler_set_load_digital(char *cmd, bool *refresh_flag);
+void cmd_handler_set_digital_load(char *cmd);
 
 /* Command #1:
  * drive a load using PWM. Another main workhorse.
  */
-void cmd_handler_set_load_analog(char *cmd, bool *refresh_flag);
+void cmd_handler_set_analog_load(char *cmd);
 
 /* Command #2:
- * print and send a current state of a simple (two-state) load.
+ * print and send a current state of a two-state load.
  */
-void cmd_handler_get_load_digital();
+void cmd_handler_output_digital_load();
 
 /* Command #3:
  * change an SSID of a local Wi-Fi access point
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_local_SSID(char *cmd, bool *refresh_flag);
+void cmd_handler_update_local_SSID(char *cmd, bool *refresh_flag);
 
 /* Command #4
  * print and send an SSID of a local Wi-Fi access point
  * stored in the inbuilt storage.
  */
-void cmd_handler_get_local_SSID();
+void cmd_handler_output_local_SSID();
 
 /* Command #5:
  * change a password for a local Wi-Fi access point
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_local_pswd(char *cmd, bool *refresh_flag);
+void cmd_handler_update_local_pswd(char *cmd, bool *refresh_flag);
 
 /* Command #6:
  * change a local TCP server port number
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_local_port(char *cmd, bool *refresh_flag);
+void cmd_handler_update_local_port(char *cmd, bool *refresh_flag);
 
 /* Command #7:
  * print and send a local TCP server port number
  * stored in the inbuilt storage.
  */
-void cmd_handler_get_local_port();
+void cmd_handler_output_local_port();
 
 /* Command #8:
  * print and send local TCP server current local IP.
  */
-void cmd_handler_get_local_IP();
+void cmd_handler_update_local_IP();
 
 /* Command #9:
  * reset local connections.
@@ -106,81 +106,81 @@ void cmd_handler_rst_local_conn(void (*setup_ptr)(void));
 /* Command #10:
  * set IoT mode (attempts to connect to a remote server) ON or OFF.
  */
-void cmd_handler_set_IoT_flag(char *cmd, bool *refresh_flag);
+void cmd_handler_update_IoT_flag(char *cmd, bool *refresh_flag);
 
 /* Command #11:
  * change an IP address of a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_IoT_server_IP(char *cmd, bool *refresh_flag);
+void cmd_handler_update_IoT_server_IP(char *cmd, bool *refresh_flag);
 
 /* Command #12
  * print and send an IP address of a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_get_IoT_server_IP();
+void cmd_handler_output_IoT_server_IP();
 
 /* Command #13:
  * change port number used for sending requests to a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_IoT_server_port(char *cmd, bool *refresh_flag);
+void cmd_handler_update_IoT_server_port(char *cmd, bool *refresh_flag);
 
 /* Command #14:
  * print and send a port number used for sending requests to a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_get_IoT_server_port();
+void cmd_handler_output_IoT_server_port();
 
 /* Command #15:
  * change request message to be sent to a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_IoT_req_msg(char *cmd, bool *refresh_flag);
+void cmd_handler_update_IoT_req_msg(char *cmd, bool *refresh_flag);
 
 /* Command #16:
  * print and send a request message to be sent to a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_get_IoT_req_msg();
+void cmd_handler_output_IoT_req_msg();
 
 /* Command #17:
  * change the interval (in ms) for sending requests to a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_IoT_req_period(char *cmd, bool *refresh_flag);
+void cmd_handler_update_IoT_req_period(char *cmd, bool *refresh_flag);
 
 /* Command #18:
  * set Bluetooth Classic functionality ON or OFF.
  */
-void cmd_handler_set_BT_flag(char *cmd, void (*setup_ptr)(void));
+void cmd_handler_update_BTClassic_flag(char *cmd, void (*setup_ptr)(void));
 
 /* Command #19:
  * change ESP's name as a Bluetooth slave device
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_BT_dev_name(char *cmd, bool *refresh_flag);
+void cmd_handler_update_BTClassic_dev_name(char *cmd, bool *refresh_flag);
 
 /* Command #20:
  * print and send ESP's name as a Bluetooth slave device
  * stored in the inbuilt storage.
  */
-void cmd_handler_get_BT_dev_name();
+void cmd_handler_output_BTClassic_dev_name();
 
 /* Command #21:
- * set periodical printount of a current RSSI value ON or OFF.
+ * turn periodical printount of a current RSSI value ON or OFF.
  */
-void cmd_handler_set_RSSI_print_flag(char *cmd, bool *refresh_flag);
+void cmd_handler_update_RSSI_print_flag(char *cmd, bool *refresh_flag);
 
 
 /*--- Auxiliary functions ---*/
 
 // Accessories for handler functions.
 void cmd_aux_print_and_send_msg(const char *msg);
-void cmd_aux_get_config(const char *topic, uint32_t addr);
-void cmd_aux_set_config(char *cmd, const char *topic, uint32_t addr, bool echo, bool *refresh_flag);
-void cmd_aux_set_load_digital(uint8_t pin, uint8_t state, const char *msg);
-void cmd_aux_set_load_analog(uint8_t pin, uint32_t val, const char *msg);
+void cmd_aux_output_config(const char *topic, uint32_t addr);
+void cmd_aux_update_config(char *cmd, const char *topic, uint32_t addr, bool echo, bool *refresh_flag);
+void cmd_aux_set_digital_load(uint8_t pin, uint8_t state, const char *msg);
+void cmd_aux_set_analog_load(uint8_t pin, uint32_t val, const char *msg);
  
 
 #endif  // Include guards.
