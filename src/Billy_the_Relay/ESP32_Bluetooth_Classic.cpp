@@ -17,7 +17,7 @@
 #include <Arduino.h>
 
 // Local modules.
-#include "ESP32_Bluetooth.h"
+#include "ESP32_Bluetooth_Classic.h"
 
 // Conditional compilation.
 #if defined ESP32 && defined BT_CLASSIC_PROVIDED
@@ -28,22 +28,22 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-BluetoothSerial BT_Serial;
+BluetoothSerial BT_Classic_Serial;
 
 
 /******************* FUNCTIONS ******************/
 
-void ESP32_BT_start(char *dev_name)
+void ESP32_BT_Classic_start(char *dev_name)
 {
-    BT_Serial.begin(dev_name);
+    BT_Classic_Serial.begin(dev_name);
 }
 
-bool ESP32_BT_check_connection()
+bool ESP32_BT_Classic_check_connection()
 {
-    return BT_Serial.connected();
+    return BT_Classic_Serial.connected();
 }
 
-uint32_t ESP32_BT_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
+uint32_t ESP32_BT_Classic_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
 {
     // Connection timeout counter.
     uint64_t current_millis = millis();
@@ -52,8 +52,8 @@ uint32_t ESP32_BT_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeo
     uint32_t i = 0, j = 0;
     bool lf = 0;
     while (buf[0] == '\0' && current_millis - previous_millis < conn_timeout && !lf) {
-        while (BT_Serial.available() && current_millis - previous_millis < conn_timeout && !lf) {
-            char c = BT_Serial.read();
+        while (BT_Classic_Serial.available() && current_millis - previous_millis < conn_timeout && !lf) {
+            char c = BT_Classic_Serial.read();
             ++i;
 
             if (j < str_max_len) {
@@ -67,10 +67,10 @@ uint32_t ESP32_BT_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeo
 
             current_millis = millis();
 
-            #define BT_READ_SLOWDOWN 2
-            delay(BT_READ_SLOWDOWN);    /* Pause to ensure that reading from the buffer
-                                         * won't run ahead of writing to it.
-                                         */
+            #define BT_CLASSIC_READ_SLOWDOWN 2
+            delay(BT_CLASSIC_READ_SLOWDOWN);    /* Pause to ensure that reading from the buffer
+                                                 * won't run ahead of writing to it.
+                                                 */
         }
         current_millis = millis();
     }
@@ -78,23 +78,23 @@ uint32_t ESP32_BT_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeo
     return i;
 }
 
-void ESP32_BT_send_msg(const char *msg)
+void ESP32_BT_Classic_send_msg(const char *msg)
 {
-    if (BT_Serial.connected()) {
-        BT_Serial.println(msg);
+    if (BT_Classic_Serial.connected()) {
+        BT_Classic_Serial.println(msg);
     }
 }
 
-void ESP32_BT_disconnect(uint32_t shutdown_downtime)
+void ESP32_BT_Classic_disconnect(uint32_t shutdown_downtime)
 {
     delay(shutdown_downtime);
-    BT_Serial.disconnect();
+    BT_Classic_Serial.disconnect();
 }
 
-void ESP32_BT_stop(uint32_t shutdown_downtime)
+void ESP32_BT_Classic_stop(uint32_t shutdown_downtime)
 {
     delay(shutdown_downtime);
-    BT_Serial.end();
+    BT_Classic_Serial.end();
 }
 
 #endif  // Conditional compilation.

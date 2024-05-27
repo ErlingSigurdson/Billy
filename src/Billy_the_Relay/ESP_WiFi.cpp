@@ -49,9 +49,9 @@ bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeo
     while (WiFi.status() != WL_CONNECTED) {
         delay(1000);                             // Once a second.
         Serial.print(".");
-        digitalWrite(WIFI_INDICATOR_LED_PIN, PIN_ON);
+        digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_LOAD_ON);
         delay(WIFI_INDICATE_CONNECTION_PERIOD);
-        digitalWrite(WIFI_INDICATOR_LED_PIN, PIN_OFF);
+        digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_LOAD_OFF);
 
         current_millis = millis();
         if (current_millis - previous_millis >= conn_attempt_timeout) {

@@ -23,7 +23,7 @@
 
 // Project configs.
 #include "config_general.h"
-#include "config_ASCII_cmd_check.h"
+#include "config_cmd.h"
 
 
 /************** FUNCTION PROTOTYPES *************/
