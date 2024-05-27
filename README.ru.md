@@ -1,7 +1,7 @@
 ![Good old ESP32](https://i.imgur.com/U5nZ8fW.png)
 
-[![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.md)
-[![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.ru.md)
+[![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Billy_the_Smarty/blob/main/README.md)
+[![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Billy_the_Smarty/blob/main/README.ru.md)
 [![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/project/efimov-d-v/billy_the_relay/blob?file=README.md&branch=main)
 [![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy_the_relay/blob?file=README.ru.md&branch=main)
 
@@ -13,7 +13,7 @@
 - **25.04.2024** - Релиз версии 1.2.
 
 # Концепция
-Релешка Билли - это Arduino-проект на базе модуля ESP32 или ESP8266. Билли умеет управлять простой (ВКЛ./ВЫКЛ.) нагрузкой, например, светодиодом или (с помощью драйвера) реле.
+Умник Билли - это Arduino-проект на базе модуля ESP32 или ESP8266. Билли умеет управлять простой (ВКЛ./ВЫКЛ.) нагрузкой, например, светодиодом или (с помощью драйвера) реле.
 В свою очередь Билли можно отдавать команды:
 - По UART через кабель.
 - По Wi-Fi как локальному TCP-серверу, например, с помощью классической Unix-утилиты `netcat` (`nc`) или приложения для Android [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   

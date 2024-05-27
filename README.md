@@ -1,7 +1,7 @@
 ![Good old ESP32](https://i.imgur.com/U5nZ8fW.png)
 
-[![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.md)
-[![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Billy_the_Relay/blob/main/README.ru.md)
+[![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Billy_the_Smarty/blob/main/README.md)
+[![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Billy_the_Smarty/blob/main/README.ru.md)
 [![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/project/efimov-d-v/billy_the_relay/blob?file=README.md&branch=main)
 [![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy_the_relay/blob?file=README.ru.md&branch=main)
 
@@ -12,7 +12,7 @@
 - **25.04.2024** - v.1.2 released.
 
 # Concept
-Billy the Relay is an Arduino project written for ESP32 and ESP8266 modules (systems-on-chip, SoCs). Billy can control simple (ON/OFF) load like an LED or (by means of a driver) a relay.
+Billy the Smarty is an Arduino project written for ESP32 and ESP8266 modules (systems-on-chip, SoCs). Billy can control simple (ON/OFF) load like an LED or (by means of a driver) a relay.
 Billy itself takes commands over:
 - UART by a cable connection.
 - Wi-Fi as a local TCP server, e.g. from a classic Unix utility `netcat` (`nc`) or an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   
