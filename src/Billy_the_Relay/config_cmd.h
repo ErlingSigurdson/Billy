@@ -17,65 +17,65 @@
 
 // Text commands.
 #define CMD_PREFIX  "AT+"
-#define CMD_0       "SETDLOAD="         // Turn load ON or OFF. Main workhorse.
+#define CMD_0       "DIGITALLOAD="         // Turn load ON or OFF. Main workhorse.
 
-#define CMD_1       "SETALOAD="
+#define CMD_1       "ANALOGLOAD="
 
-#define CMD_2       "PRINTDLOAD"
+#define CMD_2       "DIGITALLOAD?"
 
-#define CMD_3       "SETLOCALSSID="     // Change an SSID of a local Wi-Fi access point  stored in the inbuilt storage.
+#define CMD_3       "LOCALSSID="     // Change an SSID of a local Wi-Fi access point  stored in the inbuilt storage.
 
-#define CMD_4       "PRINTLOCALSSID"    // Print an SSID of a local Wi-Fi access point  stored in the inbuilt storage.
+#define CMD_4       "LOCALSSID?"    // Print an SSID of a local Wi-Fi access point  stored in the inbuilt storage.
 
-#define CMD_5       "SETLOCALPSWD="     /* Change a password for a local Wi-Fi access point
+#define CMD_5       "LOCALPSWD="     /* Change a password for a local Wi-Fi access point
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_6       "SETLOCALPORT="     // Change a local TCP server port number stored in the inbuilt storage.      
+#define CMD_6       "LOCALPORT="     // Change a local TCP server port number stored in the inbuilt storage.      
 
-#define CMD_7       "PRINTLOCALPORT"    // Print a local TCP server port number stored in the inbuilt storage.
+#define CMD_7       "LOCALPORT?"    // Print a local TCP server port number stored in the inbuilt storage.
 
-#define CMD_8       "PRINTLOCALIP"      // Print local TCP server current local IP.
+#define CMD_8       "LOCALIP?"      // Print local TCP server current local IP.
 
 #define CMD_9       "RSTLOCALCONN"      // Reset local connections.
 
-#define CMD_10      "SETIOT="           // Set IoT mode (attempts to connect to a remote server) ON or OFF.
+#define CMD_10      "IOT="           // Set IoT mode (attempts to connect to a remote server) ON or OFF.
 
-#define CMD_11      "SETIOTIP="         // Change an IP address of a remote server stored in the inbuilt storage.
+#define CMD_11      "IOTIP="         // Change an IP address of a remote server stored in the inbuilt storage.
 
-#define CMD_12      "PRINTIOTIP"        // Print an IP address of a remote server stored in the inbuilt storage.
+#define CMD_12      "IOTIP?"        // Print an IP address of a remote server stored in the inbuilt storage.
 
-#define CMD_13      "SETIOTPORT="       /* Change port number used for sending requests to a remote server
+#define CMD_13      "IOTPORT="       /* Change port number used for sending requests to a remote server
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_14      "PRINTIOTPORT"      /* Print port number used for sending requests to a remote server
+#define CMD_14      "IOTPORT?"      /* Print port number used for sending requests to a remote server
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_15      "SETIOTREQMSG="     /* Change request message to be sent to a remote server
+#define CMD_15      "IOTMSG="     /* Change request message to be sent to a remote server
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_16      "PRINTIOTREQMSG"    /* Print request message to be sent to a remote server
+#define CMD_16      "IOTMSG?"    /* Print request message to be sent to a remote server
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_17      "SETIOTREQPERIOD="  /* Change the interval (in ms) for sending requests to a remote server
+#define CMD_17      "IOTREQPERIOD="  /* Change the interval (in ms) for sending requests to a remote server
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_18      "SETBT="            // Set Bluetooth Classic functionality ON or OFF.
+#define CMD_18      "BTCLASSIC="            // Set Bluetooth Classic functionality ON or OFF.
 
-#define CMD_19      "SETBTDEVNAME="     /* Change ESP's name as a Bluetooth slave device
+#define CMD_19      "BTCLASSICDEVNAME="     /* Change ESP's name as a Bluetooth slave device
                                          * stored in the inbuilt storage.
                                          */
                                          
-#define CMD_20      "PRINTBTDEVNAME"    /* Print ESP's name as a Bluetooth slave device
+#define CMD_20      "BTCLASSICDEVNAME?"    /* Print ESP's name as a Bluetooth slave device
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_21      "SETRSSIPRINT="     // Set periodical printount of a current RSSI value ON or OFF.
+#define CMD_21      "RSSIPRINT="     // Set periodical printount of a current RSSI value ON or OFF.
 
 // Evaluate command list length.
 #define CMD_LIST_LEN (CMD_0_DEFINED + CMD_1_DEFINED + CMD_2_DEFINED + CMD_3_DEFINED + CMD_4_DEFINED         \

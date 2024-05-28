@@ -60,6 +60,7 @@ void setup()
     /*--- GPIO configuration ---*/
 
     pinMode(DIGITAL_LOAD_PIN, OUTPUT);
+    pinMode(ANALOG_LOAD_PIN, OUTPUT);
     pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
 
 

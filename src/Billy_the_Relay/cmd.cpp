@@ -46,7 +46,7 @@ bool cmd_check_prefix(const char *buf, const char *prefix)
 int32_t cmd_check_body(const char *buf, const char *cmd_list[], uint32_t cmd_list_len)
 {
     for (uint32_t i = 0; i < cmd_list_len; ++i) {
-        if (strstr(buf, cmd_list[i]) == buf) {
+        if (strstr(buf, cmd_list[i]) != NULL) {
             return i;
         }
     }
@@ -134,9 +134,13 @@ void cmd_handler_set_analog_load(const char *cmd)
     }
 
     uint32_t val = strtol(cmd_val, 0, 10);  // Convert to decimal.
+    if (val > (2 << 7) - 1) {
+        cmd_handler_err_val();
+        return;
+    }
     
     char msg[STR_MAX_LEN + 1] = "Analog load duty cycle set to ";
-    strcpy(msg, cmd_val);
+    strcat(msg, cmd_val);
 
     cmd_aux_set_analog_load(ANALOG_LOAD_PIN, val, msg);
 }
