@@ -32,26 +32,21 @@
 
 /******************* FUNCTIONS ******************/
 
-/*--- Contents checking functions ---*/
+/*--- Contents checking function ---*/
 
-bool cmd_check_prefix(const char *buf, const char *prefix)
+int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len)
 {
-    if (strstr(buf, prefix) == buf) {
-        return 1;
-    } else {
-        return 0;
+    if (strstr(buf, prefix) != buf) {
+        return -1;
     }
-}
 
-int32_t cmd_check_body(const char *buf, const char *cmd_list[], uint32_t cmd_list_len)
-{
-    for (uint32_t i = 0; i < cmd_list_len; ++i) {
-        if (strstr(buf, cmd_list[i]) != NULL) {
+    for (uint32_t i = 1; i <= cmd_list_len; ++i) {
+        if (strstr(buf, cmd_list[i]) == buf + strlen(prefix)) {
             return i;
         }
     }
 
-    return -1;
+    return 0;
 }
 
 

@@ -278,7 +278,7 @@ void loop()
 
     // Array of valid commands.
     static const char *cmd_list[] = {
-        CMD_0,
+        "placeholder",                       // A placeholder to bump first command's index up to 1.
         CMD_1,
         CMD_2,
         CMD_3,
@@ -299,7 +299,8 @@ void loop()
         CMD_18,
         CMD_19,
         CMD_20,
-        CMD_21
+        CMD_21,
+        CMD_22
     };
 
 
@@ -401,115 +402,117 @@ void loop()
     // Essentially it's a central hub of the whole sketch.
 
     // Check for non-empty buffer string and correct command prefix.
-    if (terminal_input[0] != '\0' && cmd_check_prefix(terminal_input, CMD_PREFIX)) {
+    if (terminal_input[0] != '\0' ) {
         utilities_nullify_first_CR_or_LF_in_string(terminal_input);
 
         // Check for valid commands.
-        int32_t func_to_call = cmd_check_body(terminal_input, cmd_list, CMD_LIST_LEN);
+        int32_t func_to_call = cmd_check(terminal_input, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
         switch (func_to_call) {
             case -1:
-                cmd_handler_err_cmd();
+                cmd_handler_err_prefix();
                 break;
 
             case 0:
+                cmd_handler_err_cmd();
+                break;
+
+            case 1:
                 cmd_handler_set_digital_load(terminal_input);
                 break;
                 
-            case 1:
+            case 2:
                 cmd_handler_set_analog_load(terminal_input);
                 break;
                 
-            case 2:
+            case 3:
                 cmd_handler_output_digital_load();
                 break;
 
-            case 3:
+            case 4:
                 cmd_handler_update_local_SSID(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
-            case 4:
+            case 5:
                 cmd_handler_output_local_SSID();
                 break;
 
-            case 5:
+            case 6:
                 cmd_handler_update_local_pswd(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
-            case 6:
+            case 7:
                 cmd_handler_update_local_port(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
-            case 7:
+            case 8:
                 cmd_handler_output_local_port();
                 break;
 
-            case 8:
+            case 9:
                 cmd_handler_output_local_IP();
                 break;
 
-            case 9:
+            case 10:
                 cmd_handler_rst_local_conn(setup);
                 break;
 
-            case 10:
+            case 11:
                 cmd_handler_update_IoT_flag(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
-            case 11:
+            case 12:
                 cmd_handler_update_IoT_server_IP(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
-            case 12:
+            case 13:
                 cmd_handler_output_IoT_server_IP();
                 break;
 
-            case 13:
+            case 14:
                 cmd_handler_update_IoT_server_port(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
-            case 14:
+            case 15:
                 cmd_handler_output_IoT_server_port();
                 break;
 
-            case 15:
+            case 16:
                 cmd_handler_update_IoT_req_msg(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
-            case 16:
+            case 17:
                 cmd_handler_output_IoT_req_msg();
                 break;
 
-            case 17:
+            case 18:
                 cmd_handler_update_IoT_req_period(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
-            case 18:
+            case 19:
                 cmd_handler_update_BT_Classic_flag(terminal_input, setup, &time_to_refresh_stored_configs);
                 break;
 
-            case 19:
+            case 20:
                 cmd_handler_update_BT_Classic_dev_name(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
-            case 20:
+            case 21:
                 cmd_handler_output_BT_Classic_dev_name();
                 break;
 
-            case 21:
+            case 22:
                 cmd_handler_update_RSSI_print_flag(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             default:
                 break;  // Do nothing and hail MISRA.
         }
-    } else if (terminal_input[0] != '\0') {
-        cmd_handler_err_prefix();
-        Serial.flush();
-        ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     }
     
     
-    /*--- Closing communications ---*/
+    /*--- Finishing communications ---*/
+
+    Serial.flush();
 
     // TCP clients' disconnection.
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
@@ -517,9 +520,9 @@ void loop()
     // Bluetooth disconnection.
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         if (BT_Classic_was_connected) {  /* Another call for connected() method
-                                  * caused RTOS crash, hence additional
-                                  * flag was introduced.
-                                  */
+                                          * caused RTOS crash, hence additional
+                                          * flag was introduced.
+                                          */
             ESP32_BT_Classic_disconnect(CONN_SHUTDOWN_DOWNTIME);
         }
     #endif

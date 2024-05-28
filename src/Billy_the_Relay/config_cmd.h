@@ -17,78 +17,72 @@
 
 // Text commands.
 #define CMD_PREFIX  "AT+"
-#define CMD_0       "DIGITALLOAD="         // Turn load ON or OFF. Main workhorse.
+#define CMD_1       "DIGITALLOAD="         // Turn load ON or OFF. Main workhorse.
 
-#define CMD_1       "ANALOGLOAD="
+#define CMD_2       "ANALOGLOAD="
 
-#define CMD_2       "DIGITALLOAD?"
+#define CMD_3       "DIGITALLOAD?"
 
-#define CMD_3       "LOCALSSID="     // Change an SSID of a local Wi-Fi access point  stored in the inbuilt storage.
+#define CMD_4       "LOCALSSID="     // Change an SSID of a local Wi-Fi access point  stored in the inbuilt storage.
 
-#define CMD_4       "LOCALSSID?"    // Print an SSID of a local Wi-Fi access point  stored in the inbuilt storage.
+#define CMD_5       "LOCALSSID?"    // Print an SSID of a local Wi-Fi access point  stored in the inbuilt storage.
 
-#define CMD_5       "LOCALPSWD="     /* Change a password for a local Wi-Fi access point
+#define CMD_6       "LOCALPSWD="     /* Change a password for a local Wi-Fi access point
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_6       "LOCALPORT="     // Change a local TCP server port number stored in the inbuilt storage.      
+#define CMD_7       "LOCALPORT="     // Change a local TCP server port number stored in the inbuilt storage.      
 
-#define CMD_7       "LOCALPORT?"    // Print a local TCP server port number stored in the inbuilt storage.
+#define CMD_8       "LOCALPORT?"    // Print a local TCP server port number stored in the inbuilt storage.
 
-#define CMD_8       "LOCALIP?"      // Print local TCP server current local IP.
+#define CMD_9       "LOCALIP?"      // Print local TCP server current local IP.
 
-#define CMD_9       "RSTLOCALCONN"      // Reset local connections.
+#define CMD_10       "RSTLOCALCONN"      // Reset local connections.
 
-#define CMD_10      "IOT="           // Set IoT mode (attempts to connect to a remote server) ON or OFF.
+#define CMD_11      "IOT="           // Set IoT mode (attempts to connect to a remote server) ON or OFF.
 
-#define CMD_11      "IOTIP="         // Change an IP address of a remote server stored in the inbuilt storage.
+#define CMD_12      "IOTIP="         // Change an IP address of a remote server stored in the inbuilt storage.
 
-#define CMD_12      "IOTIP?"        // Print an IP address of a remote server stored in the inbuilt storage.
+#define CMD_13      "IOTIP?"        // Print an IP address of a remote server stored in the inbuilt storage.
 
-#define CMD_13      "IOTPORT="       /* Change port number used for sending requests to a remote server
+#define CMD_14      "IOTPORT="       /* Change port number used for sending requests to a remote server
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_14      "IOTPORT?"      /* Print port number used for sending requests to a remote server
+#define CMD_15      "IOTPORT?"      /* Print port number used for sending requests to a remote server
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_15      "IOTMSG="     /* Change request message to be sent to a remote server
+#define CMD_16      "IOTMSG="     /* Change request message to be sent to a remote server
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_16      "IOTMSG?"    /* Print request message to be sent to a remote server
+#define CMD_17      "IOTMSG?"    /* Print request message to be sent to a remote server
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_17      "IOTREQPERIOD="  /* Change the interval (in ms) for sending requests to a remote server
+#define CMD_18      "IOTREQPERIOD="  /* Change the interval (in ms) for sending requests to a remote server
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_18      "BTCLASSIC="            // Set Bluetooth Classic functionality ON or OFF.
+#define CMD_19      "BTCLASSIC="            // Set Bluetooth Classic functionality ON or OFF.
 
-#define CMD_19      "BTCLASSICDEVNAME="     /* Change ESP's name as a Bluetooth slave device
+#define CMD_20      "BTCLASSICDEVNAME="     /* Change ESP's name as a Bluetooth slave device
                                          * stored in the inbuilt storage.
                                          */
                                          
-#define CMD_20      "BTCLASSICDEVNAME?"    /* Print ESP's name as a Bluetooth slave device
+#define CMD_21      "BTCLASSICDEVNAME?"    /* Print ESP's name as a Bluetooth slave device
                                          * stored in the inbuilt storage.
                                          */
 
-#define CMD_21      "RSSIPRINT="     // Set periodical printount of a current RSSI value ON or OFF.
+#define CMD_22      "RSSIPRINT="     // Set periodical printount of a current RSSI value ON or OFF.
 
 // Evaluate command list length.
-#define CMD_LIST_LEN (CMD_0_DEFINED + CMD_1_DEFINED + CMD_2_DEFINED + CMD_3_DEFINED + CMD_4_DEFINED         \
-                      + CMD_5_DEFINED + CMD_6_DEFINED + CMD_7_DEFINED + CMD_8_DEFINED + CMD_9_DEFINED       \
-                      + CMD_10_DEFINED + CMD_11_DEFINED + CMD_12_DEFINED + CMD_13_DEFINED + CMD_14_DEFINED  \
-                      + CMD_15_DEFINED + CMD_16_DEFINED + CMD_17_DEFINED + CMD_18_DEFINED + CMD_19_DEFINED  \
-                      + CMD_20_DEFINED + CMD_21_DEFINED)
-
-#ifdef CMD_0
-    #define CMD_0_DEFINED 1
-#else
-    #define CMD_0_DEFINED 0
-#endif
+#define CMD_LIST_LEN (CMD_1_DEFINED + CMD_2_DEFINED + CMD_3_DEFINED + CMD_4_DEFINED + CMD_5_DEFINED         \
+                      + CMD_6_DEFINED + CMD_7_DEFINED + CMD_8_DEFINED + CMD_9_DEFINED + CMD_10_DEFINED      \
+                      + CMD_11_DEFINED + CMD_12_DEFINED + CMD_13_DEFINED + CMD_14_DEFINED + CMD_15_DEFINED  \
+                      + CMD_16_DEFINED + CMD_17_DEFINED + CMD_18_DEFINED + CMD_19_DEFINED + CMD_20_DEFINED  \
+                      + CMD_21_DEFINED + CMD_22_DEFINED)
 
 #ifdef CMD_1
     #define CMD_1_DEFINED 1
@@ -214,6 +208,12 @@
     #define CMD_21_DEFINED 1
 #else
     #define CMD_21_DEFINED 0
+#endif
+
+#ifdef CMD_22
+    #define CMD_22_DEFINED 1
+#else
+    #define CMD_22_DEFINED 0
 #endif
 
 

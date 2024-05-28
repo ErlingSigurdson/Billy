@@ -86,7 +86,7 @@ void ESP_HTTP_handle_ctrl()
         strcat(cmd_buf, Str_cmd_buf.c_str());
 
         // If a command immediately follows the prefix.
-        if (strstr(cmd_buf, CMD_0) == cmd_buf + strlen(CMD_PREFIX)) {
+        if (strstr(cmd_buf, CMD_1) == cmd_buf + strlen(CMD_PREFIX)) {
             if (strstr(cmd_buf, "=") == NULL) {
                 HTTP_server.send(200, "text/plain", "No valid command issued.");
     

@@ -24,10 +24,9 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-/*--- Contents checking functions ---*/
+/*--- Contents checking function ---*/
 
-bool cmd_check_prefix(const char *buf, const char *prefix);
-int32_t cmd_check_body(const char *buf, const char *cmd_list[], uint32_t cmd_list_len);
+int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len);
 
 
 /*--- Handler functions ---*/
