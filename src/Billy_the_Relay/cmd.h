@@ -55,6 +55,7 @@ void cmd_handler_set_digital_load(const char *cmd);
 
 /* Command #1:
  * drive a load using PWM. Another main workhorse.
+ * Valid values are 0 to 255.
  */
 void cmd_handler_set_analog_load(const char *cmd);
 
