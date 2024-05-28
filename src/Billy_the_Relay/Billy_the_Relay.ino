@@ -425,7 +425,7 @@ void loop()
                 break;
                 
             case 3:
-                cmd_handler_output_digital_load();
+                cmd_handler_report_digital_load();
                 break;
 
             case 4:

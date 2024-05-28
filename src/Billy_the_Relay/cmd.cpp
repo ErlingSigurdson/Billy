@@ -141,7 +141,7 @@ void cmd_handler_set_analog_load(const char *cmd)
 }
 
 // Command #2
-void cmd_handler_output_digital_load()
+void cmd_handler_report_digital_load()
 {
     if (digitalRead(DIGITAL_LOAD_PIN) == DIGITAL_LOAD_ON) {
         cmd_aux_print_and_send_msg("Current digital load state is ON");
