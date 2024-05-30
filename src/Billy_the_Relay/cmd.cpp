@@ -79,17 +79,17 @@ void cmd_handler_set_digital_load(const char *cmd)
 
     if (!strcmp(cmd_val, "TOGGLE")) {
         if (digitalRead(DIGITAL_LOAD_PIN) == DIGITAL_LOAD_ON) {
-            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, 0, "Digital load is now OFF");
+            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, DIGITAL_LOAD_OFF, "Digital load is now OFF");
             return;
         } else {
-            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, 1, "Digital load is now ON");
+            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, DIGITAL_LOAD_ON, "Digital load is now ON");
             return;
         }
     }
 
     if (!strcmp(cmd_val, "ON")) {
         if (digitalRead(DIGITAL_LOAD_PIN) != DIGITAL_LOAD_ON) {
-            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, 1, "Digital load is now ON");
+            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, DIGITAL_LOAD_ON, "Digital load is now ON");
             return;
         } else {
             cmd_aux_print_and_send_msg("Digital load is already ON");
@@ -99,7 +99,7 @@ void cmd_handler_set_digital_load(const char *cmd)
 
     if (!strcmp(cmd_val, "OFF")) {
         if (digitalRead(DIGITAL_LOAD_PIN) != DIGITAL_LOAD_OFF) {
-            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, 0, "Digital load is now OFF");
+            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, DIGITAL_LOAD_OFF, "Digital load is now OFF");
             return;
         } else {
             cmd_aux_print_and_send_msg("Digital load is already OFF");
