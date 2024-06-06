@@ -24,21 +24,36 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-/*--- Contents checking function ---*/
+/*--- Contents check ---*/
 
+// Looks up for a valid prefix and for valid commands from a given list.
 int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len);
+
+
+/*--- Auxiliary functions ---*/
+
+/* A first-line subroutine called by the ones declared below.
+ * Prints a message over UART and sends it over the wireless connections. 
+ */
+void cmd_aux_output(const char *msg);
+
+// Subroutines for handler functions.
+void cmd_aux_set_digital_load(uint8_t pin, uint8_t state, const char *topic);
+void cmd_aux_set_analog_load(uint8_t pin, uint32_t val, const char *topic);
+void cmd_aux_set_config(const char *cmd, uint32_t addr, const char *topic, bool echo_val, bool *refresh_flag);
+void cmd_aux_output_config(uint32_t addr, const char *topic);
 
 
 /*--- Handler functions ---*/
 
 /* Functions called in a response to received commands
- * and command processing errors. 
+ * and command processing errors.
  */
 
 // Incoming byte string is too long.
 void cmd_handler_err_len();
 
-// Incorrect/absent command prefix.
+// Invalid/absent command prefix.
 void cmd_handler_err_prefix();
 
 // No valid command after a prefix.
@@ -48,20 +63,24 @@ void cmd_handler_err_cmd();
 void cmd_handler_err_val();
 
 /* Command #1:
- * turn a two-state load ON or OFF. Main workhorse.
+ * turn a two-state load ON or OFF. A main workhorse.
+ * A prescribed state of the load is NOT stored in the inbuilt storage.
  */
 void cmd_handler_set_digital_load(const char *cmd);
 
 /* Command #2:
  * drive a load using PWM. Another main workhorse.
- * Valid values are 0 to 255.
+ * Valid values of a duty cycle are 0 to 255.
+ * A prescribed duty cycle value is NOT stored in the inbuilt storage.
  */
 void cmd_handler_set_analog_load(const char *cmd);
 
 /* Command #3:
- * print and send a current state of a two-state load.
+ * print and send to a client the current state of a two-state load.
+ * Since a prescribed state of a load is NOT stored in an inbuilt storage,
+ * the actual output is based on a return value of the digitalRead().
  */
-void cmd_handler_report_digital_load();
+void cmd_handler_output_digital_load();
 
 /* Command #4:
  * change an SSID of a local Wi-Fi access point
@@ -70,13 +89,13 @@ void cmd_handler_report_digital_load();
 void cmd_handler_update_local_SSID(const char *cmd, bool *refresh_flag);
 
 /* Command #5:
- * print and send an SSID of a local Wi-Fi access point
+ * print and send to a client an SSID of a local Wi-Fi access point
  * stored in the inbuilt storage.
  */
-void cmd_handler_print_local_SSID();
+void cmd_handler_output_local_SSID();
 
 /* Command #6:
- * change a password of a local Wi-Fi access point
+ * change a password for a local Wi-Fi access point
  * stored in the inbuilt storage.
  */
 void cmd_handler_update_local_pswd(const char *cmd, bool *refresh_flag);
@@ -88,15 +107,15 @@ void cmd_handler_update_local_pswd(const char *cmd, bool *refresh_flag);
 void cmd_handler_update_local_port(const char *cmd, bool *refresh_flag);
 
 /* Command #8:
- * print and send a local TCP server port number
+ * print and send to a client a local TCP server port number
  * stored in the inbuilt storage.
  */
-void cmd_handler_print_local_port();
+void cmd_handler_output_local_port();
 
 /* Command #9:
- * print and send device's IP in a local network.
+ * print and send to a client the device's IP in a local network.
  */
-void cmd_handler_print_local_IP();
+void cmd_handler_output_local_IP();
 
 /* Command #10:
  * reset local connections.
@@ -115,34 +134,34 @@ void cmd_handler_update_IoT_flag(const char *cmd, bool *refresh_flag);
 void cmd_handler_update_IoT_server_IP(const char *cmd, bool *refresh_flag);
 
 /* Command #13:
- * print and send an IP address of a remote server
+ * print and send to a client an IP address of a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_print_IoT_server_IP();
+void cmd_handler_output_IoT_server_IP();
 
 /* Command #14:
- * change port number used for sending requests to a remote server
+ * change a port number used for sending requests to a remote server
  * stored in the inbuilt storage.
  */
 void cmd_handler_update_IoT_server_port(const char *cmd, bool *refresh_flag);
 
 /* Command #15:
- * print and send a port number used for sending requests to a remote server
+ * print and send to a client a port number used for sending requests to a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_print_IoT_server_port();
+void cmd_handler_output_IoT_server_port();
 
 /* Command #16:
- * change request message to be sent to a remote server
+ * change a request message to be sent to a remote server
  * stored in the inbuilt storage.
  */
 void cmd_handler_update_IoT_req_msg(const char *cmd, bool *refresh_flag);
 
 /* Command #17:
- * print and send a request message to be sent to a remote server
+ * print and send to a client a request message to be sent to a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_print_IoT_req_msg();
+void cmd_handler_output_IoT_req_msg();
 
 /* Command #18:
  * change the interval (in ms) for sending requests to a remote server
@@ -162,25 +181,15 @@ void cmd_handler_update_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void)
 void cmd_handler_update_BT_Classic_dev_name(const char *cmd, bool *refresh_flag);
 
 /* Command #21:
- * print and send ESP's name as a Bluetooth slave device
+ * print and send to a client the ESP's name as a Bluetooth slave device
  * stored in the inbuilt storage.
  */
-void cmd_handler_print_BT_Classic_dev_name();
+void cmd_handler_output_BT_Classic_dev_name();
 
 /* Command #22:
  * turn periodical printount of a current RSSI value ON or OFF.
  */
 void cmd_handler_update_RSSI_print_flag(const char *cmd, bool *refresh_flag);
 
-
-/*--- Auxiliary functions ---*/
-
-// Accessories for handler functions.
-void cmd_aux_print_msg(const char *msg);
-void cmd_aux_print_config(const char *topic, uint32_t addr);
-void cmd_aux_update_config(const char *cmd, uint32_t addr, const char *topic, bool echo_val, bool *refresh_flag);
-void cmd_aux_set_digital_load(uint8_t pin, uint8_t state, const char *topic);
-void cmd_aux_set_analog_load(uint8_t pin, uint32_t val, const char *topic);
- 
 
 #endif  // Include guards.

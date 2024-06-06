@@ -32,7 +32,7 @@
 
 /******************* FUNCTIONS ******************/
 
-/*--- Contents checking function ---*/
+/*--- Contents check ---*/
 
 int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len)
 {
@@ -50,26 +50,94 @@ int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], u
 }
 
 
+/*--- Auxiliary functions ---*/
+
+void cmd_aux_output(const char *msg)
+{
+    Serial.println(msg);
+    ESP_TCP_server_send_msg(msg);
+
+    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+        char val[INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
+        inbuilt_storage_read(val,
+                             sizeof(val),
+                             STR_MAX_LEN,
+                             INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG);
+
+        if (!strcmp(val, "ON")) {
+            ESP32_BT_Classic_send_msg(msg);
+        }
+    #endif
+}
+
+void cmd_aux_set_digital_load(uint8_t pin, uint8_t state, const char *topic)
+{
+    digitalWrite(pin, state);
+    cmd_aux_output(topic);
+}
+
+void cmd_aux_set_analog_load(uint8_t pin, uint32_t val, const char *topic)
+{
+    analogWrite(pin, val);
+    cmd_aux_output(topic);    
+}
+
+void cmd_aux_set_config(const char *cmd, uint32_t addr, const char *topic, bool echo_val, bool *refresh_flag)
+{
+    char *cmd_val = strstr(cmd, "=") + 1;
+
+    inbuilt_storage_write(cmd_val,
+                          strlen(cmd_val),
+                          STR_MAX_LEN,
+                          addr);
+
+    char msg[STR_MAX_LEN * 2 + 1] = {0};
+    strcpy(msg, topic);
+
+    if (echo_val) {
+        strcat(msg, cmd_val);
+    }
+    cmd_aux_output(msg);
+
+    *refresh_flag = 1;
+}
+
+void cmd_aux_output_config(uint32_t addr, const char *topic)
+{
+    char msg[STR_MAX_LEN * 2 + 1] = {0};
+    strcpy(msg, topic);
+
+    char val[INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
+    inbuilt_storage_read(val,
+                         sizeof(val),
+                         STR_MAX_LEN,
+                         addr);
+    strcat(msg, val);
+    
+    cmd_aux_output(msg);
+}
+
+
 /*--- Handler functions ---*/
 
 void cmd_handler_err_len()
 {
-    cmd_aux_print_msg("Command buffer overflow.");
+    cmd_aux_output("Command buffer overflow.");
 }
 
 void cmd_handler_err_prefix()
 {
-    cmd_aux_print_msg("Invalid prefix for a command.");
+    cmd_aux_output("Invalid or absent prefix for a command.");
 }
 
 void cmd_handler_err_cmd()
 {
-    cmd_aux_print_msg("No valid command entered.");
+    cmd_aux_output("No valid command entered.");
 }
 
 void cmd_handler_err_val()
 {
-    cmd_aux_print_msg("No valid value submitted.");
+    cmd_aux_output("No valid value submitted.");
 }
 
 // Command #1
@@ -92,7 +160,7 @@ void cmd_handler_set_digital_load(const char *cmd)
             cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, DIGITAL_LOAD_ON, "Digital load is now ON");
             return;
         } else {
-            cmd_aux_print_msg("Digital load is already ON");
+            cmd_aux_output("Digital load is already ON");
             return;
         }
     }
@@ -102,7 +170,7 @@ void cmd_handler_set_digital_load(const char *cmd)
             cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, DIGITAL_LOAD_OFF, "Digital load is now OFF");
             return;
         } else {
-            cmd_aux_print_msg("Digital load is already OFF");
+            cmd_aux_output("Digital load is already OFF");
             return;
         }
     }
@@ -116,7 +184,7 @@ void cmd_handler_set_analog_load(const char *cmd)
     char *cmd_val = strstr(cmd, "=") + 1;
 
     uint32_t val_len = (uint32_t)strlen(cmd_val);
-    if (val_len < 1 || val_len > 3) {
+    if (val_len < 1 || val_len > 3) {  // Valid duty cycle values are 0 to 255.
         cmd_handler_err_val();
         return;
     }
@@ -141,81 +209,81 @@ void cmd_handler_set_analog_load(const char *cmd)
 }
 
 // Command #3
-void cmd_handler_report_digital_load()
+void cmd_handler_output_digital_load()
 {
     if (digitalRead(DIGITAL_LOAD_PIN) == DIGITAL_LOAD_ON) {
-        cmd_aux_print_msg("Current digital load state is ON");
+        cmd_aux_output("Current digital load state is ON");
     } else {
-        cmd_aux_print_msg("Current digital load state is OFF");
+        cmd_aux_output("Current digital load state is OFF");
     }
 }
 
-/* To print or not to print a new value of an updated config.
+/* To print or not to print a new value of a changed config.
  * OFF for password, ON for other cases.
  */
-#define ECHO_ON 1
-#define ECHO_OFF 0
+#define ECHO_VAL_ON 1
+#define ECHO_VAL_OFF 0
 
 // Command #4
 void cmd_handler_update_local_SSID(const char *cmd, bool *refresh_flag)
 {
-    cmd_aux_update_config(cmd,
-                          INBUILT_STORAGE_ADDR_SSID,
-                          "SSID changed successfully! New SSID is: ",
-                          ECHO_ON,
-                          refresh_flag);
+    cmd_aux_set_config(cmd,
+                       INBUILT_STORAGE_ADDR_SSID,
+                       "SSID changed successfully! New SSID is: ",
+                       ECHO_VAL_ON,
+                       refresh_flag);
 }
 
 // Command #5
-void cmd_handler_print_local_SSID()
+void cmd_handler_output_local_SSID()
 {
-    cmd_aux_print_config("Current SSID is: ",
-                          INBUILT_STORAGE_ADDR_SSID);
+    cmd_aux_output_config(INBUILT_STORAGE_ADDR_SSID,
+                          "Current SSID is: ");
 }
 
 // Command #6
 void cmd_handler_update_local_pswd(const char *cmd, bool *refresh_flag)
 {
-    cmd_aux_update_config(cmd,
-                          INBUILT_STORAGE_ADDR_PSWD,
-                          "Password changed successfully!",
-                          ECHO_OFF,
-                          refresh_flag);
+    cmd_aux_set_config(cmd,
+                       INBUILT_STORAGE_ADDR_PSWD,
+                       "Password changed successfully!",
+                       ECHO_VAL_OFF,
+                       refresh_flag);
 }
 
 // Command #7
 void cmd_handler_update_local_port(const char *cmd, bool *refresh_flag)
 {
-    cmd_aux_update_config(cmd,
-                          INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
-                          "Local server port changed successfully! New port is: ",
-                          ECHO_ON,
-                          refresh_flag);
+    cmd_aux_set_config(cmd,
+                       INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
+                       "Local server port changed successfully! New port is: ",
+                       ECHO_VAL_ON,
+                       refresh_flag);
 
-    cmd_aux_print_msg("Please reboot your device or reset local connection to put changes into effect.");
+    cmd_aux_output("Please reboot your device or reset local connection to put changes into effect.");
 }
 
 // Command #8
-void cmd_handler_print_local_port()
+void cmd_handler_output_local_port()
 {
-    cmd_aux_print_config("Current local server port is: ",
-                          INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT);
+    cmd_aux_output_config(INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
+                          "Current local server port is: ");
 }
 
 // Command #9
-void cmd_handler_print_local_IP()
+void cmd_handler_output_local_IP()
 {
     char msg[STR_MAX_LEN * 2 + 1] = {0};
     String current_IP = ESP_WiFi_get_current_IP();
     strcpy(msg, "Current IP address is: ");
     strcat(msg, current_IP.c_str());
-    cmd_aux_print_msg(msg);
+    cmd_aux_output(msg);
 }
 
 // Command #10
 void cmd_handler_rst_local_conn(void (*setup_ptr)(void))
 {
-    cmd_aux_print_msg("Resetting local connections...");
+    cmd_aux_output("Resetting local connections...");
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
 
@@ -232,11 +300,11 @@ void cmd_handler_update_IoT_flag(const char *cmd, bool *refresh_flag)
     char *cmd_val = strstr(cmd, "=") + 1;
 
     if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
-        cmd_aux_update_config(cmd,
-                              INBUILT_STORAGE_ADDR_IOT_FLAG,
-                              "Requests to an IoT server: ",
-                              ECHO_ON,
-                              refresh_flag);
+        cmd_aux_set_config(cmd,
+                           INBUILT_STORAGE_ADDR_IOT_FLAG,
+                           "Requests to an IoT server: ",
+                           ECHO_VAL_ON,
+                           refresh_flag);
     } else {
         cmd_handler_err_val();
     }
@@ -245,62 +313,62 @@ void cmd_handler_update_IoT_flag(const char *cmd, bool *refresh_flag)
 // Command #12
 void cmd_handler_update_IoT_server_IP(const char *cmd, bool *refresh_flag)
 {
-    cmd_aux_update_config(cmd,
-                          INBUILT_STORAGE_ADDR_IOT_SERVER_IP,
-                          "IoT server target IP changed successfully! New IP is: ",
-                          ECHO_ON,
-                          refresh_flag);
+    cmd_aux_set_config(cmd,
+                       INBUILT_STORAGE_ADDR_IOT_SERVER_IP,
+                       "IoT server target IP changed successfully! New IP is: ",
+                       ECHO_VAL_ON,
+                       refresh_flag);
 }
 
 // Command #13
-void cmd_handler_print_IoT_server_IP()
+void cmd_handler_output_IoT_server_IP()
 {
-    cmd_aux_print_config("Current IoT server target IP is: ",
-                          INBUILT_STORAGE_ADDR_IOT_SERVER_IP);
+    cmd_aux_output_config(INBUILT_STORAGE_ADDR_IOT_SERVER_IP,
+                          "Current IoT server target IP is: ");
 }
 
 // Command #14
 void cmd_handler_update_IoT_server_port(const char *cmd, bool *refresh_flag)
 {
-    cmd_aux_update_config(cmd,
-                          INBUILT_STORAGE_ADDR_IOT_SERVER_PORT,
-                          "IoT server target port changed successfully! New port is: ",
-                          ECHO_ON,
-                          refresh_flag);
+    cmd_aux_set_config(cmd,
+                       INBUILT_STORAGE_ADDR_IOT_SERVER_PORT,
+                       "IoT server target port changed successfully! New port is: ",
+                       ECHO_VAL_ON,
+                       refresh_flag);
 }
 
 // Command #15
-void cmd_handler_print_IoT_server_port()
+void cmd_handler_output_IoT_server_port()
 {
-    cmd_aux_print_config("Current IoT server target port is: ",
-                            INBUILT_STORAGE_ADDR_IOT_SERVER_PORT);
+    cmd_aux_output_config(INBUILT_STORAGE_ADDR_IOT_SERVER_PORT,
+                          "Current IoT server target port is: ");
 }
 
 // Command #16
 void cmd_handler_update_IoT_req_msg(const char *cmd, bool *refresh_flag)
 {
-    cmd_aux_update_config(cmd,
-                          INBUILT_STORAGE_ADDR_IOT_REQ_MSG,
-                          "IoT server request text changed successfully! New text is: ",
-                          ECHO_ON,
-                          refresh_flag);
+    cmd_aux_set_config(cmd,
+                       INBUILT_STORAGE_ADDR_IOT_REQ_MSG,
+                       "IoT server request text changed successfully! New text is: ",
+                       ECHO_VAL_ON,
+                       refresh_flag);
 }
 
 // Command #17
-void cmd_handler_print_IoT_req_msg()
+void cmd_handler_output_IoT_req_msg()
 {
-    cmd_aux_print_config("Current IoT server request text is: ",
-                          INBUILT_STORAGE_ADDR_IOT_REQ_MSG);
+    cmd_aux_output_config(INBUILT_STORAGE_ADDR_IOT_REQ_MSG,
+                          "Current IoT server request text is: ");
 }
 
 // Command #18
 void cmd_handler_update_IoT_req_period(const char *cmd, bool *refresh_flag)
 {
-    cmd_aux_update_config(cmd,
-                          INBUILT_STORAGE_ADDR_IOT_REQ_PERIOD,
-                          "IoT server request period changed successfully! New period (ms) is: ",
-                          ECHO_ON,
-                          refresh_flag);
+    cmd_aux_set_config(cmd,
+                       INBUILT_STORAGE_ADDR_IOT_REQ_PERIOD,
+                       "IoT server request period changed successfully! New period (ms) is: ",
+                       ECHO_VAL_ON,
+                       refresh_flag);
 }
 
 // Command #19
@@ -310,11 +378,11 @@ void cmd_handler_update_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void)
         char *cmd_val = strstr(cmd, "=") + 1;
 
         if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
-            cmd_aux_update_config(cmd,
-                                  INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG,
-                                  "Bluetooth: ",
-                                  ECHO_ON,
-                                  refresh_flag);
+            cmd_aux_set_config(cmd,
+                               INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG,
+                               "Bluetooth: ",
+                               ECHO_VAL_ON,
+                               refresh_flag);
             cmd_handler_rst_local_conn(setup_ptr);
         } else {
             cmd_handler_err_val();
@@ -326,22 +394,22 @@ void cmd_handler_update_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void)
 void cmd_handler_update_BT_Classic_dev_name(const char *cmd, bool *refresh_flag)
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
-        cmd_aux_update_config(cmd,
-                              INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME,
-                              "Bluetooth device name changed successfully! New name is: ",
-                              ECHO_ON,
-                              refresh_flag);
+        cmd_aux_set_config(cmd,
+                           INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME,
+                           "Bluetooth device name changed successfully! New name is: ",
+                           ECHO_VAL_ON,
+                           refresh_flag);
 
-        cmd_aux_print_msg("Please reboot your device or reset local connection to put changes into effect.");
+        cmd_aux_output("Please reboot your device or reset local connection to put changes into effect.");
     #endif
 }
 
 // Command #21
-void cmd_handler_print_BT_Classic_dev_name()
+void cmd_handler_output_BT_Classic_dev_name()
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
-        cmd_aux_print_config("Current Bluetooth device name is: ",
-                              INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME);
+        cmd_aux_output_config(INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME,
+                              "Current Bluetooth device name is: ");
     #endif
 }
 
@@ -351,80 +419,12 @@ void cmd_handler_update_RSSI_print_flag(const char *cmd, bool *refresh_flag)
     char *cmd_val = strstr(cmd, "=") + 1;
     
     if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
-        cmd_aux_update_config(cmd,
-                              INBUILT_STORAGE_ADDR_RSSI_PRINT_FLAG,
-                              "RSSI print: ",
-                              ECHO_ON,
-                              refresh_flag);
+        cmd_aux_set_config(cmd,
+                           INBUILT_STORAGE_ADDR_RSSI_PRINT_FLAG,
+                           "RSSI print: ",
+                           ECHO_VAL_ON,
+                           refresh_flag);
     } else {
         cmd_handler_err_val();
     }
-}
-
-
-/*--- Auxiliary functions ---*/
-
-void cmd_aux_print_msg(const char *msg)
-{
-    Serial.println(msg);
-    ESP_TCP_server_send_msg(msg);
-
-    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
-        char val[INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
-        inbuilt_storage_read(val,
-                             sizeof(val),
-                             STR_MAX_LEN,
-                             INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG);
-
-        if (!strcmp(val, "ON")) {
-            ESP32_BT_Classic_send_msg(msg);
-        }
-    #endif
-}
-
-void cmd_aux_print_config(const char *topic, uint32_t addr)
-{
-    char msg[STR_MAX_LEN * 2 + 1] = {0};
-    strcpy(msg, topic);
-
-    char val[INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
-    inbuilt_storage_read(val,
-                         sizeof(val),
-                         STR_MAX_LEN,
-                         addr);
-    strcat(msg, val);
-    
-    cmd_aux_print_msg(msg);
-}
-
-void cmd_aux_update_config(const char *cmd, uint32_t addr, const char *topic, bool echo_val, bool *refresh_flag)
-{
-    char *cmd_val = strstr(cmd, "=") + 1;
-
-    inbuilt_storage_write(cmd_val,
-                          strlen(cmd_val),
-                          STR_MAX_LEN,
-                          addr);
-
-    char msg[STR_MAX_LEN * 2 + 1] = {0};
-    strcpy(msg, topic);
-
-    if (echo_val) {
-        strcat(msg, cmd_val);
-    }
-    cmd_aux_print_msg(msg);
-
-    *refresh_flag = 1;
-}
-
-void cmd_aux_set_digital_load(uint8_t pin, uint8_t state, const char *topic)
-{
-    digitalWrite(pin, state);
-    cmd_aux_print_msg(topic);
-}
-
-void cmd_aux_set_analog_load(uint8_t pin, uint32_t val, const char *topic)
-{
-    analogWrite(pin, val);
-    cmd_aux_print_msg(topic);    
 }

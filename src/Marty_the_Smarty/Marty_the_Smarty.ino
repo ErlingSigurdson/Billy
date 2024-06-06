@@ -425,7 +425,7 @@ void loop()
                 break;
                 
             case 3:
-                cmd_handler_report_digital_load();
+                cmd_handler_output_digital_load();
                 break;
 
             case 4:
@@ -433,7 +433,7 @@ void loop()
                 break;
 
             case 5:
-                cmd_handler_print_local_SSID();
+                cmd_handler_output_local_SSID();
                 break;
 
             case 6:
@@ -445,11 +445,11 @@ void loop()
                 break;
 
             case 8:
-                cmd_handler_print_local_port();
+                cmd_handler_output_local_port();
                 break;
 
             case 9:
-                cmd_handler_print_local_IP();
+                cmd_handler_output_local_IP();
                 break;
 
             case 10:
@@ -465,7 +465,7 @@ void loop()
                 break;
 
             case 13:
-                cmd_handler_print_IoT_server_IP();
+                cmd_handler_output_IoT_server_IP();
                 break;
 
             case 14:
@@ -473,7 +473,7 @@ void loop()
                 break;
 
             case 15:
-                cmd_handler_print_IoT_server_port();
+                cmd_handler_output_IoT_server_port();
                 break;
 
             case 16:
@@ -481,7 +481,7 @@ void loop()
                 break;
 
             case 17:
-                cmd_handler_print_IoT_req_msg();
+                cmd_handler_output_IoT_req_msg();
                 break;
 
             case 18:
@@ -497,7 +497,7 @@ void loop()
                 break;
 
             case 21:
-                cmd_handler_print_BT_Classic_dev_name();
+                cmd_handler_output_BT_Classic_dev_name();
                 break;
 
             case 22:
