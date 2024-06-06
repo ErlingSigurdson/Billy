@@ -2,8 +2,8 @@
 
 [![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Marty_the_Smarty/blob/main/README.md)
 [![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Marty_the_Smarty/blob/main/README.ru.md)
-[![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/project/efimov-d-v/marty_the_smarty/blob?file=README.md&branch=main)
-[![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/marty_the_smarty/blob?file=README.ru.md&branch=main)
+[![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.md&branch=main)
+[![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.ru.md&branch=main)
 
 ## Новости
 
