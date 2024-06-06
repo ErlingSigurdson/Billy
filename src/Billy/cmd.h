@@ -39,7 +39,7 @@
 int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len);
 
 
-/*--- Auxiliary functions ---*/
+/*--- Auxiliary functions (helper functions, accessories) ---*/
 
 /* A generic accessory called by the other accessories.
  * Prints a message over the UART and sends it over the wireless connections. 
@@ -121,7 +121,7 @@ void cmd_handler_set_local_port(const char *cmd, bool *refresh_flag);
 void cmd_handler_output_local_port();
 
 /* Command #9:
- * print and send to a client the device's IP in a local network.
+ * print and send to a client the device's IP in a local Wi-Fi network.
  */
 void cmd_handler_output_local_IP();
 
@@ -131,7 +131,7 @@ void cmd_handler_output_local_IP();
 void cmd_handler_rst_local_conn(void (*setup_ptr)(void));
 
 /* Command #11:
- * set IoT mode (attempts to connect to a remote server) ON or OFF.
+ * set the IoT mode (attempts to connect to a remote server) ON or OFF.
  */
 void cmd_handler_set_IoT_flag(const char *cmd, bool *refresh_flag);
 
@@ -183,19 +183,19 @@ void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag);
 void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), bool *refresh_flag);
 
 /* Command #20:
- * change ESP's name as a Bluetooth slave device
+ * change a name of the ESP as a Bluetooth slave device
  * stored in the inbuilt storage.
  */
 void cmd_handler_set_BT_Classic_dev_name(const char *cmd, bool *refresh_flag);
 
 /* Command #21:
- * print and send to a client the ESP's name as a Bluetooth slave device
+ * print and send to a client a name of the ESP as a Bluetooth slave device
  * stored in the inbuilt storage.
  */
 void cmd_handler_output_BT_Classic_dev_name();
 
 /* Command #22:
- * turn periodical printount of a current RSSI value ON or OFF.
+ * turn periodical output of a current RSSI value ON or OFF.
  */
 void cmd_handler_set_RSSI_print_flag(const char *cmd, bool *refresh_flag);
 

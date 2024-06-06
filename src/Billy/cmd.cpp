@@ -50,7 +50,7 @@ int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], u
 }
 
 
-/*--- Auxiliary functions ---*/
+/*--- Auxiliary functions (helper functions, accessories) ---*/
 
 void cmd_aux_output(const char *msg)
 {
@@ -253,7 +253,7 @@ void cmd_handler_set_local_port(const char *cmd, bool *refresh_flag)
                        ECHO_VAL_ON,
                        refresh_flag);
 
-    cmd_aux_output("Please reboot your device or reset local connection to put changes into effect.");
+    cmd_aux_output("Please reboot your device or reset local connections to put changes into effect.");
 }
 
 // Command #8
@@ -359,7 +359,7 @@ void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
                        INBUILT_STORAGE_ADDR_IOT_REQ_PERIOD,
-                       "IoT server request period changed successfully! New period (ms) is: ",
+                       "IoT server request period changed successfully! New period (in ms) is: ",
                        ECHO_VAL_ON,
                        refresh_flag);
 }
@@ -373,7 +373,7 @@ void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), b
         if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
             cmd_aux_set_config(cmd,
                                INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG,
-                               "Bluetooth: ",
+                               "Bluetooth Classic: ",
                                ECHO_VAL_ON,
                                refresh_flag);
             cmd_handler_rst_local_conn(setup_ptr);
@@ -389,11 +389,11 @@ void cmd_handler_set_BT_Classic_dev_name(const char *cmd, bool *refresh_flag)
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         cmd_aux_set_config(cmd,
                            INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME,
-                           "Bluetooth device name changed successfully! New name is: ",
+                           "Bluetooth Classic device name changed successfully! New name is: ",
                            ECHO_VAL_ON,
                            refresh_flag);
 
-        cmd_aux_output("Please reboot your device or reset local connection to put changes into effect.");
+        cmd_aux_output("Please reboot your device or reset local connections to put changes into effect.");
     #endif
 }
 
@@ -402,7 +402,7 @@ void cmd_handler_output_BT_Classic_dev_name()
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         cmd_aux_output_config(INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME,
-                              "Current Bluetooth device name is: ");
+                              "Current Bluetooth Classic device name is: ");
     #endif
 }
 
