@@ -185,7 +185,7 @@ void cmd_handler_set_analog_load(const char *cmd)
 
     uint32_t val_len = (uint32_t)strlen(cmd_val);
     if (val_len < 1 || val_len > 3) {  // Valid duty cycle values are 0 to 255.
-        cmd_handler_err_val(); 36
+        cmd_handler_err_val();
         return;
     }
 
