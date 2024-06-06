@@ -1,15 +1,15 @@
 /****************** DESCRIPTION *****************/
 
 /**
- * Filename: Billy_the_Smarty.ino
+ * Filename: Marty_the_Smarty.ino
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose: a central file of an Arduino sketch written for ESP32
  * and ESP8266 SoCs. Provides the control over a simple ON/OFF load
  * with ASCII commands sent via UART (over a cable), Wi-Fi (TCP, HTTP)
  * and (optionally) Bluetooth Classic.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes: project homepage https://github.com/ErlingSigurdson/Billy_the_Smarty
- *                         https://gitflic.ru/efimov-d-v/billy_the_smarty
+ * Notes: project homepage https://github.com/ErlingSigurdson/Marty_the_Smarty
+ *                         https://gitflic.ru/efimov-d-v/marty_the_smarty
  */
 
 
@@ -401,7 +401,7 @@ void loop()
     
     // Essentially it's a central hub of the whole sketch.
 
-    // Check for non-empty buffer string and correct command prefix.
+    // Check for a non-empty buffer string.
     if (terminal_input[0] != '\0' ) {
         utilities_nullify_first_CR_or_LF_in_string(terminal_input);
 
@@ -433,7 +433,7 @@ void loop()
                 break;
 
             case 5:
-                cmd_handler_output_local_SSID();
+                cmd_handler_print_local_SSID();
                 break;
 
             case 6:
@@ -445,11 +445,11 @@ void loop()
                 break;
 
             case 8:
-                cmd_handler_output_local_port();
+                cmd_handler_print_local_port();
                 break;
 
             case 9:
-                cmd_handler_output_local_IP();
+                cmd_handler_print_local_IP();
                 break;
 
             case 10:
@@ -465,7 +465,7 @@ void loop()
                 break;
 
             case 13:
-                cmd_handler_output_IoT_server_IP();
+                cmd_handler_print_IoT_server_IP();
                 break;
 
             case 14:
@@ -473,7 +473,7 @@ void loop()
                 break;
 
             case 15:
-                cmd_handler_output_IoT_server_port();
+                cmd_handler_print_IoT_server_port();
                 break;
 
             case 16:
@@ -481,7 +481,7 @@ void loop()
                 break;
 
             case 17:
-                cmd_handler_output_IoT_req_msg();
+                cmd_handler_print_IoT_req_msg();
                 break;
 
             case 18:
@@ -497,7 +497,7 @@ void loop()
                 break;
 
             case 21:
-                cmd_handler_output_BT_Classic_dev_name();
+                cmd_handler_print_BT_Classic_dev_name();
                 break;
 
             case 22:

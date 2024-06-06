@@ -1,9 +1,9 @@
 ![Good old ESP32](https://i.imgur.com/U5nZ8fW.png)
 
-[![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Billy_the_Smarty/blob/main/README.md)
-[![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Billy_the_Smarty/blob/main/README.ru.md)
-[![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/project/efimov-d-v/billy_the_relay/blob?file=README.md&branch=main)
-[![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy_the_relay/blob?file=README.ru.md&branch=main)
+[![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Marty_the_Smarty/blob/main/README.md)
+[![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Marty_the_Smarty/blob/main/README.ru.md)
+[![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/project/efimov-d-v/marty_the_smarty/blob?file=README.md&branch=main)
+[![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/marty_the_smarty/blob?file=README.ru.md&branch=main)
 
 ## News
 
@@ -12,21 +12,21 @@
 - **25.04.2024** - v.1.2 released.
 
 # Concept
-Billy the Smarty is an Arduino project written for ESP32 and ESP8266 modules (systems-on-chip, SoCs). Billy can control simple (ON/OFF) load like an LED or (by means of a driver) a relay.
-Billy itself takes commands over:
+Marty the Smarty is an Arduino project written for ESP32 and ESP8266 modules (systems-on-chip, SoCs). Marty can control simple (ON/OFF) load like an LED or (by means of a driver) a relay.
+Marty itself takes commands over:
 - UART by a cable connection.
 - Wi-Fi as a local TCP server, e.g. from a classic Unix utility `netcat` (`nc`) or an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   
 - Wi-Fi as a local HTTP server, e.g. from a browser (sketch provides a simplistic web interface) or a different app capable of sending HTTP requests.
 - Bluetooth Classic as a slave device[^1], e.g. from a desktop Bluetooth terminal or an Android app like [Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android).
-- Wi-Fi as a TCP client (inter alia via Internet). To do so Billy sends requests to a custom-programmed TCP server and receives commands as a response (this implementation is described in detail below).
+- Wi-Fi as a TCP client (inter alia via Internet). To do so Marty sends requests to a custom-programmed TCP server and receives commands as a response (this implementation is described in detail below).
 
-Billy works within a local Wi-Fi network in a station (STA) mode. Billy uses Internet access provided by a local access point.
+Marty works within a local Wi-Fi network in a station (STA) mode. Marty uses Internet access provided by a local access point.
 
-Billy's operations rely heavily on module's inbuilt flash memory storage. When you specify an SSID, a password, a port number, etc., they are saved in inbuilt storage and thus you don't need to assign them again in case of device reboot.
+Marty's operations rely heavily on module's inbuilt flash memory storage. When you specify an SSID, a password, a port number, etc., they are saved in inbuilt storage and thus you don't need to assign them again in case of device reboot.
 
 # Manual
 ### Quickstart
-Follow these steps to configure Billy and start using it:
+Follow these steps to configure Marty and start using it:
 1. In file `config_general.h` use `#define` directives to specify:
 - whether your device uses Bluetooth Classic (`BT_CLASSIC_PROVIDED`). Comment out the directive if your ESP32 SoC doesn't support Bluetooth Classic or you just don't want to use it. Ignore for ESP8266.
 - load control pin (`LOAD_PIN`). Specify the pin number as a value;
@@ -35,36 +35,36 @@ Follow these steps to configure Billy and start using it:
 2. Make sure your Arduino IDE (or Arduino SDK for a third-party IDE) has an appropriate core for [ESP32](https://github.com/espressif/arduino-esp32) or [ESP8266](https://github.com/esp8266/Arduino) by Espressif Systems.
 3. Compile the sketch and upload it to your device.[^2]
 4. Turn on your device and connect to it by a cable (through USB-UART adapter or, if suppored, UART over native USB).
-5. Send command `AT+SETLOAD=TOGGLE` twice and make sure that Billy switches a current load status.
+5. Send command `AT+SETLOAD=TOGGLE` twice and make sure that Marty switches a current load status.
 6. Send command `AT+SETLOCALSSID=<value>` to specify your local Wi-Fi network SSID.
 7. Send command `AT+SETLOCALPSWD=<value>` to specify your local Wi-Fi network access point password.
 8. Send command `AT+SETLOCALPORT=<value>` to specify port number to be used by your device as a local TCP server.
 9. Reset your device or send the command `AT+RSTLOCALCONN`. Make sure your device has established a connection to your local Wi-Fi network (look at UART terminal and indicator LED). Remember of write down printed local IP address (you can use `AT+PRINTLOCALIP` command to print it again if necessary).
 10. Connect to you device over Wi-Fi using previously printed local IP address and previously specified port.
-11. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Wi-Fi using established TCP connection. Make sure Billy follows your instructions.
+11. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Wi-Fi using established TCP connection. Make sure Marty follows your instructions.
 12. Open any web browser (I recommend Mozilla Firefox) on any device connected to the same local Wi-Fi network and insert previously printed IP address into an address bar.
 13. Use web interface to turn your load ON and OFF.
 
 Additionally, if your device supports Bluetooth Classic:
 
-14. Send command `AT+SETBTDEVNAME=<value>` to specify Billy's name as a Bluetooth slave device.
+14. Send command `AT+SETBTDEVNAME=<value>` to specify Marty's name as a Bluetooth slave device.
 15. Send command `AT+SETBT=ON` to turn on Bluetooth Classic.
-16. Connect to Billy over Bluetooth using previously specified slave device name.
-17. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Bluetooth. Make sure Billy follows your instructions.
+16. Connect to Marty over Bluetooth using previously specified slave device name.
+17. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Bluetooth. Make sure Marty follows your instructions.
 
 ### Complete command list
 Please refer to `config_ASCII_cmd_check.h`.
 
-### Billy as a TCP client and IoT control
-A remote server (an IoT server) to which Billy sends requests must be able to:
-- in response to Billy's requests (e.g. string `"UPD_REQ"`) send messages (strings) with valid commands;
-- update a message prepared to be sent to Billy according to remote commands sent by other devices.
+### Marty as a TCP client and IoT control
+A remote server (an IoT server) to which Marty sends requests must be able to:
+- in response to Marty's requests (e.g. string `"UPD_REQ"`) send messages (strings) with valid commands;
+- update a message prepared to be sent to Marty according to remote commands sent by other devices.
 
-Say, IoT server receives "turn load ON" command from your web browser and prepares to send `AT+SETLOAD=ON` string in a response to Billy's next request. Billy receives the string and puts it into a buffer to check for valid commands.
+Say, IoT server receives "turn load ON" command from your web browser and prepares to send `AT+SETLOAD=ON` string in a response to Marty's next request. Marty receives the string and puts it into a buffer to check for valid commands.
 
 To specify IoT configs use commands `AT+SETIOTIP=<value>`, `AT+SETIOTPORT=<value>`, `AT+SETIOTREQMSG=<value>`, `AT+SETIOTREQPERIOD=<value>`, `AT+SETIOT=ON` and `AT+SETIOT=OFF`.
 
-[Here you can find an example code for a Linux server that works in a described fashion](https://github.com/ErlingSigurdson/server0451/tree/main) written in C language. It is written specifically for Billy and similar devices.
+[Here you can find an example code for a Linux server that works in a described fashion](https://github.com/ErlingSigurdson/server0451/tree/main) written in C language. It is written specifically for Marty and similar devices.
 
 # General notes on code
 ### Sketch layout
@@ -81,11 +81,11 @@ Local modules do not refer to each other. Instead, their wrapper functions are c
 ### Why not MQTT? It's so well-suited for IoT!
 I wanted more flexibility and I didn't want to stick to a particular OSI layer 7 protocol.
 
-### Why "Billy"?
+### Why "Marty"?
 A reference to an eponymous programmer parrot, a protagonist of [meme videos](https://www.youtube.com/watch?v=0MhVkKHYUAY&list=PLkdGijFCNuVmu35l6EJxdvsvf7xj4EQVf&index=21) by [Mr. P Solver](https://www.youtube.com/c/mrpsolver).
 
 ### What about security?
-Within your local Wi-Fi network your best protection is your access point password. You can even run additional Wi-Fi network on the same router if you want to separate Billy and other IoT devices from your regular consumer electronics.
+Within your local Wi-Fi network your best protection is your access point password. You can even run additional Wi-Fi network on the same router if you want to separate Marty and other IoT devices from your regular consumer electronics.
 
 As for Bluetooth (and lack of PIN code for BT access), you can change a command syntax in `config_ASCII_cmd_handler.h` and make commands look like `AT+` `MYPSWD_SETLOAD=TOGGLE`.
 

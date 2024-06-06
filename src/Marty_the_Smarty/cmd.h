@@ -73,7 +73,7 @@ void cmd_handler_update_local_SSID(const char *cmd, bool *refresh_flag);
  * print and send an SSID of a local Wi-Fi access point
  * stored in the inbuilt storage.
  */
-void cmd_handler_output_local_SSID();
+void cmd_handler_print_local_SSID();
 
 /* Command #6:
  * change a password of a local Wi-Fi access point
@@ -91,12 +91,12 @@ void cmd_handler_update_local_port(const char *cmd, bool *refresh_flag);
  * print and send a local TCP server port number
  * stored in the inbuilt storage.
  */
-void cmd_handler_output_local_port();
+void cmd_handler_print_local_port();
 
 /* Command #9:
  * print and send device's IP in a local network.
  */
-void cmd_handler_output_local_IP();
+void cmd_handler_print_local_IP();
 
 /* Command #10:
  * reset local connections.
@@ -118,7 +118,7 @@ void cmd_handler_update_IoT_server_IP(const char *cmd, bool *refresh_flag);
  * print and send an IP address of a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_output_IoT_server_IP();
+void cmd_handler_print_IoT_server_IP();
 
 /* Command #14:
  * change port number used for sending requests to a remote server
@@ -130,7 +130,7 @@ void cmd_handler_update_IoT_server_port(const char *cmd, bool *refresh_flag);
  * print and send a port number used for sending requests to a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_output_IoT_server_port();
+void cmd_handler_print_IoT_server_port();
 
 /* Command #16:
  * change request message to be sent to a remote server
@@ -142,7 +142,7 @@ void cmd_handler_update_IoT_req_msg(const char *cmd, bool *refresh_flag);
  * print and send a request message to be sent to a remote server
  * stored in the inbuilt storage.
  */
-void cmd_handler_output_IoT_req_msg();
+void cmd_handler_print_IoT_req_msg();
 
 /* Command #18:
  * change the interval (in ms) for sending requests to a remote server
@@ -165,7 +165,7 @@ void cmd_handler_update_BT_Classic_dev_name(const char *cmd, bool *refresh_flag)
  * print and send ESP's name as a Bluetooth slave device
  * stored in the inbuilt storage.
  */
-void cmd_handler_output_BT_Classic_dev_name();
+void cmd_handler_print_BT_Classic_dev_name();
 
 /* Command #22:
  * turn periodical printount of a current RSSI value ON or OFF.
@@ -176,11 +176,11 @@ void cmd_handler_update_RSSI_print_flag(const char *cmd, bool *refresh_flag);
 /*--- Auxiliary functions ---*/
 
 // Accessories for handler functions.
-void cmd_aux_print_and_send_msg(const char *msg);
-void cmd_aux_output_config(const char *topic, uint32_t addr);
-void cmd_aux_update_config(const char *cmd, const char *topic, uint32_t addr, bool echo, bool *refresh_flag);
-void cmd_aux_set_digital_load(uint8_t pin, uint8_t state, const char *msg);
-void cmd_aux_set_analog_load(uint8_t pin, uint32_t val, const char *msg);
+void cmd_aux_print_msg(const char *msg);
+void cmd_aux_print_config(const char *topic, uint32_t addr);
+void cmd_aux_update_config(const char *cmd, uint32_t addr, const char *topic, bool echo_val, bool *refresh_flag);
+void cmd_aux_set_digital_load(uint8_t pin, uint8_t state, const char *topic);
+void cmd_aux_set_analog_load(uint8_t pin, uint32_t val, const char *topic);
  
 
 #endif  // Include guards.
