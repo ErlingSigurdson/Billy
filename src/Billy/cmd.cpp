@@ -32,7 +32,7 @@
 
 /******************* FUNCTIONS ******************/
 
-/*--- Contents check ---*/
+/*--- Buffer contents check ---*/
 
 int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len)
 {
@@ -58,12 +58,11 @@ void cmd_aux_output(const char *msg)
     ESP_TCP_server_send_msg(msg);
 
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
-        char val[INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
+        char val[STR_MAX_LEN + 1] = {0};
         inbuilt_storage_read(val,
                              sizeof(val),
-                             STR_MAX_LEN,
+                             INBUILT_STORAGE_STR_MAX_LEN,
                              INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG);
-
         if (!strcmp(val, "ON")) {
             ESP32_BT_Classic_send_msg(msg);
         }
@@ -88,7 +87,7 @@ void cmd_aux_set_config(const char *cmd, uint32_t addr, const char *topic, bool 
 
     inbuilt_storage_write(cmd_val,
                           strlen(cmd_val),
-                          STR_MAX_LEN,
+                          INBUILT_STORAGE_STR_MAX_LEN,
                           addr);
 
     char msg[STR_MAX_LEN * 2 + 1] = {0};
@@ -107,10 +106,10 @@ void cmd_aux_output_config(uint32_t addr, const char *topic)
     char msg[STR_MAX_LEN * 2 + 1] = {0};
     strcpy(msg, topic);
 
-    char val[INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
+    char val[STR_MAX_LEN + 1] = {0};
     inbuilt_storage_read(val,
                          sizeof(val),
-                         STR_MAX_LEN,
+                         INBUILT_STORAGE_STR_MAX_LEN,
                          addr);
     strcat(msg, val);
     
@@ -127,7 +126,7 @@ void cmd_handler_err_len()
 
 void cmd_handler_err_prefix()
 {
-    cmd_aux_output("Invalid or absent prefix for a command.");
+    cmd_aux_output("Invalid or absent command prefix.");
 }
 
 void cmd_handler_err_cmd()
@@ -197,12 +196,12 @@ void cmd_handler_set_analog_load(const char *cmd)
     }
 
     uint32_t val = strtol(cmd_val, 0, 10);  // Convert to decimal.
-    if (val > (2 << 7) - 1) {
+    if (val > 255) {                        // Valid duty cycle values are 0 to 255.
         cmd_handler_err_val();
         return;
     }
     
-    char msg[STR_MAX_LEN + 1] = "Analog load duty cycle set to ";
+    char msg[STR_MAX_LEN * 2 + 1] = "Analog load duty cycle set to ";
     strcat(msg, cmd_val);
 
     cmd_aux_set_analog_load(ANALOG_LOAD_PIN, val, msg);
@@ -218,14 +217,8 @@ void cmd_handler_output_digital_load()
     }
 }
 
-/* To print or not to print a new value of a changed config.
- * OFF for password, ON for other cases.
- */
-#define ECHO_VAL_ON 1
-#define ECHO_VAL_OFF 0
-
 // Command #4
-void cmd_handler_update_local_SSID(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_local_SSID(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
                        INBUILT_STORAGE_ADDR_SSID,
@@ -242,7 +235,7 @@ void cmd_handler_output_local_SSID()
 }
 
 // Command #6
-void cmd_handler_update_local_pswd(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_local_pswd(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
                        INBUILT_STORAGE_ADDR_PSWD,
@@ -252,7 +245,7 @@ void cmd_handler_update_local_pswd(const char *cmd, bool *refresh_flag)
 }
 
 // Command #7
-void cmd_handler_update_local_port(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_local_port(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
                        INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
@@ -295,7 +288,7 @@ void cmd_handler_rst_local_conn(void (*setup_ptr)(void))
 }
 
 // Command #11
-void cmd_handler_update_IoT_flag(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_IoT_flag(const char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
@@ -311,7 +304,7 @@ void cmd_handler_update_IoT_flag(const char *cmd, bool *refresh_flag)
 }
 
 // Command #12
-void cmd_handler_update_IoT_server_IP(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_IoT_server_IP(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
                        INBUILT_STORAGE_ADDR_IOT_SERVER_IP,
@@ -328,7 +321,7 @@ void cmd_handler_output_IoT_server_IP()
 }
 
 // Command #14
-void cmd_handler_update_IoT_server_port(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_IoT_server_port(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
                        INBUILT_STORAGE_ADDR_IOT_SERVER_PORT,
@@ -345,7 +338,7 @@ void cmd_handler_output_IoT_server_port()
 }
 
 // Command #16
-void cmd_handler_update_IoT_req_msg(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_IoT_req_msg(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
                        INBUILT_STORAGE_ADDR_IOT_REQ_MSG,
@@ -362,7 +355,7 @@ void cmd_handler_output_IoT_req_msg()
 }
 
 // Command #18
-void cmd_handler_update_IoT_req_period(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
                        INBUILT_STORAGE_ADDR_IOT_REQ_PERIOD,
@@ -372,7 +365,7 @@ void cmd_handler_update_IoT_req_period(const char *cmd, bool *refresh_flag)
 }
 
 // Command #19
-void cmd_handler_update_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), bool *refresh_flag)
+void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), bool *refresh_flag)
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         char *cmd_val = strstr(cmd, "=") + 1;
@@ -391,7 +384,7 @@ void cmd_handler_update_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void)
 }
 
 // Command #20
-void cmd_handler_update_BT_Classic_dev_name(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_BT_Classic_dev_name(const char *cmd, bool *refresh_flag)
 {
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         cmd_aux_set_config(cmd,
@@ -414,7 +407,7 @@ void cmd_handler_output_BT_Classic_dev_name()
 }
 
 // Command #22
-void cmd_handler_update_RSSI_print_flag(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_RSSI_print_flag(const char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
     

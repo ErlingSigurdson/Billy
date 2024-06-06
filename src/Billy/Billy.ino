@@ -58,6 +58,11 @@ void setup()
     pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
 
 
+    /*--- Setting initial digital load state ---*/
+
+    digitalWrite(DIGITAL_LOAD_PIN, DIGITAL_LOAD_OFF);
+
+
     /*--- Interaction with the inbuilt storage ---*/
 
     /* In contrast to AVR-based devices, ESP32 and ESP8266
@@ -423,7 +428,7 @@ void loop()
                 break;
 
             case 4:
-                cmd_handler_update_local_SSID(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_local_SSID(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             case 5:
@@ -431,11 +436,11 @@ void loop()
                 break;
 
             case 6:
-                cmd_handler_update_local_pswd(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_local_pswd(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             case 7:
-                cmd_handler_update_local_port(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_local_port(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             case 8:
@@ -451,11 +456,11 @@ void loop()
                 break;
 
             case 11:
-                cmd_handler_update_IoT_flag(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_IoT_flag(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             case 12:
-                cmd_handler_update_IoT_server_IP(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_IoT_server_IP(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             case 13:
@@ -463,7 +468,7 @@ void loop()
                 break;
 
             case 14:
-                cmd_handler_update_IoT_server_port(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_IoT_server_port(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             case 15:
@@ -471,7 +476,7 @@ void loop()
                 break;
 
             case 16:
-                cmd_handler_update_IoT_req_msg(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_IoT_req_msg(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             case 17:
@@ -479,15 +484,15 @@ void loop()
                 break;
 
             case 18:
-                cmd_handler_update_IoT_req_period(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_IoT_req_period(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             case 19:
-                cmd_handler_update_BT_Classic_flag(terminal_input, setup, &time_to_refresh_stored_configs);
+                cmd_handler_set_BT_Classic_flag(terminal_input, setup, &time_to_refresh_stored_configs);
                 break;
 
             case 20:
-                cmd_handler_update_BT_Classic_dev_name(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_BT_Classic_dev_name(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             case 21:
@@ -495,7 +500,7 @@ void loop()
                 break;
 
             case 22:
-                cmd_handler_update_RSSI_print_flag(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_RSSI_print_flag(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             default:
