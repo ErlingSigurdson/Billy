@@ -13,7 +13,7 @@
 
 /*--- Includes ---*/
 
-// General Arduino library.
+// Main Arduino library.
 #include <Arduino.h>
 
 // Local modules.

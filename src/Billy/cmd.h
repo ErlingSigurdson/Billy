@@ -18,7 +18,7 @@
 
 /*--- Includes ---*/
 
-// General Arduino library.
+// Main Arduino library.
 #include <Arduino.h>
 
 
@@ -112,23 +112,23 @@ void cmd_handler_set_local_pswd(const char *cmd, bool *refresh_flag);
  * change a local TCP server port number
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_local_port(const char *cmd, bool *refresh_flag);
+void cmd_handler_set_local_server_port(const char *cmd, bool *refresh_flag);
 
 /* Command #8:
  * print and send to a client a local TCP server port number
  * stored in the inbuilt storage.
  */
-void cmd_handler_output_local_port();
+void cmd_handler_output_local_server_port();
 
 /* Command #9:
  * print and send to a client the device's IP in a local Wi-Fi network.
  */
-void cmd_handler_output_local_IP();
+void cmd_handler_output_local_server_IP();
 
 /* Command #10:
  * reset local connections.
  */
-void cmd_handler_rst_local_conn(void (*setup_ptr)(void));
+void cmd_handler_local_conn_rst(void (*setup_ptr)(void));
 
 /* Command #11:
  * set the IoT mode (attempts to connect to a remote server) ON or OFF.
@@ -195,9 +195,9 @@ void cmd_handler_set_BT_Classic_dev_name(const char *cmd, bool *refresh_flag);
 void cmd_handler_output_BT_Classic_dev_name();
 
 /* Command #22:
- * turn periodical output of a current RSSI value ON or OFF.
+ * turn periodical printing and sending of a current RSSI value ON or OFF.
  */
-void cmd_handler_set_RSSI_print_flag(const char *cmd, bool *refresh_flag);
+void cmd_handler_set_RSSI_output_flag(const char *cmd, bool *refresh_flag);
 
 
 #endif  // Include guards.

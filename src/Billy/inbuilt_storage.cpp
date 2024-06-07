@@ -16,14 +16,17 @@
 
 /*--- Includes ---*/
 
-// General Arduino library.
+// Main Arduino library.
 #include <Arduino.h>
 
-// Local modules.
-#include "inbuilt_storage.h"
+// Project configs.
+#include "config_inbuilt_storage.h"
 
 // Additional libraries for Arduino IDE.
 #include <EEPROM.h>
+
+// Local modules.
+#include "inbuilt_storage.h"
 
 
 /******************* FUNCTIONS ******************/

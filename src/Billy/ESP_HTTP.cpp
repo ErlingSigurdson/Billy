@@ -13,11 +13,12 @@
 
 /*--- Includes ---*/
 
-// General Arduino library.
+// Main Arduino library.
 #include <Arduino.h>
 
-// Local modules.
-#include "ESP_HTTP.h"
+// Project configs.
+#include "config_general.h"
+#include "config_cmd.h"
 
 // Additional libraries for Arduino IDE.
 #ifdef ESP32
@@ -26,6 +27,9 @@
 #ifdef ESP8266
     #include <ESP8266WebServer.h>
 #endif
+
+// Local modules.
+#include "ESP_HTTP.h"
 
 
 /*--- Misc ---*/
@@ -130,7 +134,7 @@ void ESP_HTTP_copy_value(char *buf, uint32_t str_max_len)
 
 String ESP_HTTP_send_HTML(uint32_t previous_cmd)
 {
-    // Mention of previous command.
+    // Mention of a previous command.
     String prev_style;
     String prev_text;
 

@@ -20,11 +20,8 @@
 #ifndef INBUILT_STORAGE_H
 #define INBUILT_STORAGE_H
 
-// General Arduino library.
+// Main Arduino library.
 #include <Arduino.h>
-
-// Project configs.
-#include "config_inbuilt_storage.h"
 
 
 /************** FUNCTION PROTOTYPES *************/

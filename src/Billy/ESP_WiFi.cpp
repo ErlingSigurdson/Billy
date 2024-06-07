@@ -13,12 +13,8 @@
 
 /*--- Includes ---*/
 
-// General Arduino library.
+// Main Arduino library.
 #include <Arduino.h>
-
-// Local modules.
-#include "ESP_WiFi.h"
-#include "config_general.h"
 
 // Additional libraries for Arduino IDE.
 #ifdef ESP32
@@ -27,6 +23,10 @@
 #ifdef ESP8266
     #include <ESP8266WiFi.h>
 #endif
+
+// Local modules.
+#include "ESP_WiFi.h"
+#include "config_general.h"
 
 
 /******************* FUNCTIONS ******************/
@@ -87,7 +87,7 @@ void ESP_WiFi_indicate_connection(uint32_t led_pin, uint32_t cycles, uint32_t pe
     }
 }
 
-String ESP_WiFi_get_current_IP()
+String ESP_WiFi_get_devices_current_IP()
 {
     return WiFi.localIP().toString();
 }

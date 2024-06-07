@@ -3,7 +3,7 @@
 /**
  * Filename: stored_configs.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: data type for config values held in an inbuilt storage.
+ * Purpose: data type for config values stored in the inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -11,8 +11,11 @@
 
 /*--- Includes ---*/
 
-// General Arduino library.
+// Main Arduino library.
 #include <Arduino.h>
+
+// Project configs.
+#include "config_inbuilt_storage.h"
 
 // Local modules.
 #include "stored_configs.h"
@@ -25,25 +28,25 @@
 void stored_configs_read(stored_configs_t *_stored_configs)
 {
     // Indices in the array of strings read from the inbuilt storage.
-    #define INDEX_SSID               0
-    #define INDEX_PSWD               1
-    #define INDEX_LOCAL_SERVER_PORT  2
-    #define INDEX_IOT_FLAG           3
-    #define INDEX_IOT_SERVER_IP      4
-    #define INDEX_IOT_SERVER_PORT    5
-    #define INDEX_IOT_REQ_MSG        6
-    #define INDEX_IOT_REQ_PERIOD     7
-    #define INDEX_BT_CLASSIC_FLAG    8
-    #define INDEX_BT_CLASSIC_DEV_NAME        9
-    #define INDEX_RSSI_PRINT_FLAG    10
+    #define INDEX_LOCAL_SSID           0
+    #define INDEX_LOCAL_PSWD           1
+    #define INDEX_LOCAL_SERVER_PORT    2
+    #define INDEX_IOT_FLAG             3
+    #define INDEX_IOT_SERVER_IP        4
+    #define INDEX_IOT_SERVER_PORT      5
+    #define INDEX_IOT_REQ_MSG          6
+    #define INDEX_IOT_REQ_PERIOD       7
+    #define INDEX_BT_CLASSIC_FLAG      8
+    #define INDEX_BT_CLASSIC_DEV_NAME  9
+    #define INDEX_RSSI_OUTPUT_FLAG     10
 
 
     /*--- Reading strings from the inbuilt storage ---*/
     
     char stored_configs_str[INBUILT_STORAGE_ITEM_LIST_LEN][INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
     uint32_t stored_configs_addr[] = {
-        INBUILT_STORAGE_ADDR_SSID,
-        INBUILT_STORAGE_ADDR_PSWD,
+        INBUILT_STORAGE_ADDR_LOCAL_SSID,
+        INBUILT_STORAGE_ADDR_LOCAL_PSWD,
         INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
         INBUILT_STORAGE_ADDR_IOT_FLAG,
         INBUILT_STORAGE_ADDR_IOT_SERVER_IP,
@@ -52,7 +55,7 @@ void stored_configs_read(stored_configs_t *_stored_configs)
         INBUILT_STORAGE_ADDR_IOT_REQ_PERIOD,
         INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG,
         INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME,
-        INBUILT_STORAGE_ADDR_RSSI_PRINT_FLAG
+        INBUILT_STORAGE_ADDR_RSSI_OUTPUT_FLAG
     };
 
     uint32_t stored_configs_addr_list_len = sizeof(stored_configs_addr) / sizeof(uint32_t);
@@ -73,11 +76,11 @@ void stored_configs_read(stored_configs_t *_stored_configs)
 
     /*--- Writing of strings and extracted integers into the struct ---*/
     
-    // Local SSID.
-    strcpy(_stored_configs->SSID, stored_configs_str[INDEX_SSID]);
+    // Local Wi-Fi network SSID.
+    strcpy(_stored_configs->local_SSID, stored_configs_str[INDEX_LOCAL_SSID]);
     
-    // Local access point password.
-    strcpy(_stored_configs->pswd, stored_configs_str[INDEX_PSWD]);
+    // Local Wi-Fi access point password.
+    strcpy(_stored_configs->local_pswd, stored_configs_str[INDEX_LOCAL_PSWD]);
     
     // Local TCP server port.
     _stored_configs->local_server_port = strtol(stored_configs_str[INDEX_LOCAL_SERVER_PORT], NULL, 10);
@@ -89,34 +92,34 @@ void stored_configs_read(stored_configs_t *_stored_configs)
         _stored_configs->IoT_flag = 0;
     }
 
-    // Remote server IP.
+    // IoT (remote) server IP.
     strcpy(_stored_configs->IoT_server_IP, stored_configs_str[INDEX_IOT_SERVER_IP]);
     
-    // Remote server port.
+    // IoT (remote) server port.
     _stored_configs->IoT_server_port = strtol(stored_configs_str[INDEX_IOT_SERVER_PORT], NULL, 10);
     
-    // Text of a request to a remote server.
+    // Text of a request to an IoT (remote) server.
     strcpy(_stored_configs->IoT_req_msg, stored_configs_str[INDEX_IOT_REQ_MSG]);
     
-    // Interval for sending requests to a remote server.
+    // Interval for sending requests to an IoT (remote) server.
     _stored_configs->IoT_req_period = strtol(stored_configs_str[INDEX_IOT_REQ_PERIOD], NULL, 10);
 
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
-        // Bluetooth functionality flag.
+        // Bluetooth Classic functionality flag.
         if (!strcmp(stored_configs_str[INDEX_BT_CLASSIC_FLAG], "ON")) {
             _stored_configs->BT_Classic_flag = 1;
         } else {
             _stored_configs->BT_Classic_flag = 0;
         }
 
-        // ESP's name as a Bluetooth slave device
+        // ESP's name as a Bluetooth Classic slave device
         strcpy(_stored_configs->BT_Classic_dev_name, stored_configs_str[INDEX_BT_CLASSIC_DEV_NAME]);
     #endif
 
-    // RSSI printout flag.
-    if (!strcmp(stored_configs_str[INDEX_RSSI_PRINT_FLAG], "ON")) {
-        _stored_configs->RSSI_print_flag = 1;
+    // RSSI output flag.
+    if (!strcmp(stored_configs_str[INDEX_RSSI_OUTPUT_FLAG], "ON")) {
+        _stored_configs->RSSI_output_flag = 1;
     } else {
-        _stored_configs->RSSI_print_flag = 0;
+        _stored_configs->RSSI_output_flag = 0;
     }
 }

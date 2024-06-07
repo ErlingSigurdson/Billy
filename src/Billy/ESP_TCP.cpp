@@ -13,11 +13,8 @@
 
 /*--- Includes ---*/
 
-// General Arduino library.
+// Main Arduino library.
 #include <Arduino.h>
-
-// Local modules.
-#include "ESP_TCP.h"
 
 // Additional libraries for Arduino IDE.
 #ifdef ESP32
@@ -26,6 +23,9 @@
 #ifdef ESP8266
     #include <ESP8266WiFi.h>
 #endif
+
+// Local modules.
+#include "ESP_TCP.h"
 
 
 /*--- Misc ---*/

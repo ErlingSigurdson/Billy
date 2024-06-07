@@ -18,17 +18,8 @@
 
 /*--- Includes ---*/
 
-// General Arduino library.
+// Main Arduino library.
 #include <Arduino.h>
-
-// Project configs.
-#include "config_general.h"
-
-
-/*--- Misc ---*/
-
-// Conditional compilation.
-#if defined ESP32 && defined BT_CLASSIC_PROVIDED
 
 
 /************** FUNCTION PROTOTYPES *************/
@@ -41,5 +32,4 @@ void ESP32_BT_Classic_disconnect(uint32_t shutdown_downtime);
 void ESP32_BT_Classic_stop(uint32_t shutdown_downtime);
 
 
-#endif  // Conditional compilation.
 #endif  // Include guards.

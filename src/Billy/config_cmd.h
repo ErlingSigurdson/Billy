@@ -3,7 +3,7 @@
 /**
  * Filename: config_cmd.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: text commands configs.
+ * Purpose: text commands.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -12,77 +12,36 @@
 /************ PREPROCESSOR DIRECTIVES ***********/
 
 // Include guards.
-#ifndef CMD_CONFIG_H
-#define CMD_CONFIG_H
+#ifndef CONFIG_CMD_H
+#define CONFIG_CMD_H
 
 // Text commands.
 #define CMD_PREFIX  "AT+"
-#define CMD_1       "DIGITALLOAD="         // Turn load ON or OFF. Main workhorse.
+#define CMD_1       "DLOAD="
+#define CMD_2       "ALOAD="
+#define CMD_3       "DLOAD?"
+#define CMD_4       "LOCALSSID="
+#define CMD_5       "LOCALSSID?"
+#define CMD_6       "LOCALPSWD="
+#define CMD_7       "LOCALPORT="
+#define CMD_8       "LOCALPORT?"
+#define CMD_9       "LOCALIP?"
+#define CMD_10      "LOCALCONNRST"
+#define CMD_11      "IOT="
+#define CMD_12      "IOTIP="
+#define CMD_13      "IOTIP?"
+#define CMD_14      "IOTPORT="
+#define CMD_15      "IOTPORT?"
+#define CMD_16      "IOTREQMSG="
+#define CMD_17      "IOTREQMSG?"
+#define CMD_18      "IOTREQPERIOD="
+#define CMD_19      "BTCLASSIC="
+#define CMD_20      "BTCLASSICDEVNAME="
+#define CMD_21      "BTCLASSICDEVNAME?"
+#define CMD_22      "RSSIOUTPUT="
 
-#define CMD_2       "ANALOGLOAD="
 
-#define CMD_3       "DIGITALLOAD?"
-
-#define CMD_4       "LOCALSSID="     // Change an SSID of a local Wi-Fi access point  stored in the inbuilt storage.
-
-#define CMD_5       "LOCALSSID?"    // Print an SSID of a local Wi-Fi access point  stored in the inbuilt storage.
-
-#define CMD_6       "LOCALPSWD="     /* Change a password for a local Wi-Fi access point
-                                         * stored in the inbuilt storage.
-                                         */
-
-#define CMD_7       "LOCALPORT="     // Change a local TCP server port number stored in the inbuilt storage.      
-
-#define CMD_8       "LOCALPORT?"    // Print a local TCP server port number stored in the inbuilt storage.
-
-#define CMD_9       "LOCALIP?"      // Print local TCP server current local IP.
-
-#define CMD_10       "RSTLOCALCONN"      // Reset local connections.
-
-#define CMD_11      "IOT="           // Set IoT mode (attempts to connect to a remote server) ON or OFF.
-
-#define CMD_12      "IOTIP="         // Change an IP address of a remote server stored in the inbuilt storage.
-
-#define CMD_13      "IOTIP?"        // Print an IP address of a remote server stored in the inbuilt storage.
-
-#define CMD_14      "IOTPORT="       /* Change port number used for sending requests to a remote server
-                                         * stored in the inbuilt storage.
-                                         */
-
-#define CMD_15      "IOTPORT?"      /* Print port number used for sending requests to a remote server
-                                         * stored in the inbuilt storage.
-                                         */
-
-#define CMD_16      "IOTMSG="     /* Change request message to be sent to a remote server
-                                         * stored in the inbuilt storage.
-                                         */
-
-#define CMD_17      "IOTMSG?"    /* Print request message to be sent to a remote server
-                                         * stored in the inbuilt storage.
-                                         */
-
-#define CMD_18      "IOTREQPERIOD="  /* Change the interval (in ms) for sending requests to a remote server
-                                         * stored in the inbuilt storage.
-                                         */
-
-#define CMD_19      "BTCLASSIC="            // Set Bluetooth Classic functionality ON or OFF.
-
-#define CMD_20      "BTCLASSICDEVNAME="     /* Change ESP's name as a Bluetooth slave device
-                                         * stored in the inbuilt storage.
-                                         */
-                                         
-#define CMD_21      "BTCLASSICDEVNAME?"    /* Print ESP's name as a Bluetooth slave device
-                                         * stored in the inbuilt storage.
-                                         */
-
-#define CMD_22      "RSSIPRINT="     // Set periodical printount of a current RSSI value ON or OFF.
-
-// Evaluate command list length.
-#define CMD_LIST_LEN (CMD_1_DEFINED + CMD_2_DEFINED + CMD_3_DEFINED + CMD_4_DEFINED + CMD_5_DEFINED         \
-                      + CMD_6_DEFINED + CMD_7_DEFINED + CMD_8_DEFINED + CMD_9_DEFINED + CMD_10_DEFINED      \
-                      + CMD_11_DEFINED + CMD_12_DEFINED + CMD_13_DEFINED + CMD_14_DEFINED + CMD_15_DEFINED  \
-                      + CMD_16_DEFINED + CMD_17_DEFINED + CMD_18_DEFINED + CMD_19_DEFINED + CMD_20_DEFINED  \
-                      + CMD_21_DEFINED + CMD_22_DEFINED)
+/*--- Сommand list length evaluation ---*/
 
 #ifdef CMD_1
     #define CMD_1_DEFINED 1
@@ -215,6 +174,12 @@
 #else
     #define CMD_22_DEFINED 0
 #endif
+
+#define CMD_LIST_LEN (CMD_1_DEFINED + CMD_2_DEFINED + CMD_3_DEFINED + CMD_4_DEFINED + CMD_5_DEFINED +       \
+                      CMD_6_DEFINED + CMD_7_DEFINED + CMD_8_DEFINED + CMD_9_DEFINED + CMD_10_DEFINED +      \
+                      CMD_11_DEFINED + CMD_12_DEFINED + CMD_13_DEFINED + CMD_14_DEFINED + CMD_15_DEFINED +  \
+                      CMD_16_DEFINED + CMD_17_DEFINED + CMD_18_DEFINED + CMD_19_DEFINED + CMD_20_DEFINED +  \
+                      CMD_21_DEFINED + CMD_22_DEFINED)
 
 
 #endif  // Include guards.

@@ -27,8 +27,8 @@
 /*--- Config strings addresses ---*/
 
 // Local Wi-Fi network authentication data.
-#define INBUILT_STORAGE_ADDR_SSID 0
-#define INBUILT_STORAGE_ADDR_PSWD 101
+#define INBUILT_STORAGE_ADDR_LOCAL_SSID 0
+#define INBUILT_STORAGE_ADDR_LOCAL_PSWD 101
 
 // Local server settings.
 #define INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT 202
@@ -45,7 +45,7 @@
 #define INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME 909
 
 // Current RSSI printout settings.
-#define INBUILT_STORAGE_ADDR_RSSI_PRINT_FLAG 1010
+#define INBUILT_STORAGE_ADDR_RSSI_OUTPUT_FLAG 1010
 
 
 /*--- Misc ---*/

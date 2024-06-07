@@ -13,11 +13,12 @@
 
 /*--- Includes ---*/
 
-// General Arduino library.
+// Main Arduino library.
 #include <Arduino.h>
 
 // Project configs.
 #include "config_general.h"
+#include "config_inbuilt_storage.h"
 
 // Local modules.
 #include "cmd.h"
@@ -221,7 +222,7 @@ void cmd_handler_output_digital_load()
 void cmd_handler_set_local_SSID(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
-                       INBUILT_STORAGE_ADDR_SSID,
+                       INBUILT_STORAGE_ADDR_LOCAL_SSID,
                        "SSID changed successfully! New SSID is: ",
                        ECHO_VAL_ON,
                        refresh_flag);
@@ -230,7 +231,7 @@ void cmd_handler_set_local_SSID(const char *cmd, bool *refresh_flag)
 // Command #5
 void cmd_handler_output_local_SSID()
 {
-    cmd_aux_output_config(INBUILT_STORAGE_ADDR_SSID,
+    cmd_aux_output_config(INBUILT_STORAGE_ADDR_LOCAL_SSID,
                           "Current SSID is: ");
 }
 
@@ -238,14 +239,14 @@ void cmd_handler_output_local_SSID()
 void cmd_handler_set_local_pswd(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
-                       INBUILT_STORAGE_ADDR_PSWD,
+                       INBUILT_STORAGE_ADDR_LOCAL_PSWD,
                        "Password changed successfully!",
                        ECHO_VAL_OFF,
                        refresh_flag);
 }
 
 // Command #7
-void cmd_handler_set_local_port(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_local_server_port(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
                        INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
@@ -257,24 +258,24 @@ void cmd_handler_set_local_port(const char *cmd, bool *refresh_flag)
 }
 
 // Command #8
-void cmd_handler_output_local_port()
+void cmd_handler_output_local_server_port()
 {
     cmd_aux_output_config(INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
                           "Current local server port is: ");
 }
 
 // Command #9
-void cmd_handler_output_local_IP()
+void cmd_handler_output_local_server_IP()
 {
     char msg[STR_MAX_LEN * 2 + 1] = {0};
-    String current_IP = ESP_WiFi_get_current_IP();
+    String current_IP = ESP_WiFi_get_devices_current_IP();
     strcpy(msg, "Current IP address is: ");
     strcat(msg, current_IP.c_str());
     cmd_aux_output(msg);
 }
 
 // Command #10
-void cmd_handler_rst_local_conn(void (*setup_ptr)(void))
+void cmd_handler_local_conn_rst(void (*setup_ptr)(void))
 {
     cmd_aux_output("Resetting local connections...");
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
@@ -367,6 +368,11 @@ void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag)
 // Command #19
 void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), bool *refresh_flag)
 {
+    // Dummy statements to prevent warnings connected to a conditional compilation.
+    (void)cmd;
+    (void)setup_ptr;
+    (void)refresh_flag;
+
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         char *cmd_val = strstr(cmd, "=") + 1;
 
@@ -376,7 +382,7 @@ void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), b
                                "Bluetooth Classic: ",
                                ECHO_VAL_ON,
                                refresh_flag);
-            cmd_handler_rst_local_conn(setup_ptr);
+            cmd_handler_local_conn_rst(setup_ptr);
         } else {
             cmd_handler_err_val();
         }
@@ -386,6 +392,10 @@ void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), b
 // Command #20
 void cmd_handler_set_BT_Classic_dev_name(const char *cmd, bool *refresh_flag)
 {
+    // Dummy statements to prevent warnings connected to a conditional compilation.
+    (void)cmd;
+    (void)refresh_flag;
+
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         cmd_aux_set_config(cmd,
                            INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME,
@@ -407,13 +417,13 @@ void cmd_handler_output_BT_Classic_dev_name()
 }
 
 // Command #22
-void cmd_handler_set_RSSI_print_flag(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_RSSI_output_flag(const char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
     
     if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
         cmd_aux_set_config(cmd,
-                           INBUILT_STORAGE_ADDR_RSSI_PRINT_FLAG,
+                           INBUILT_STORAGE_ADDR_RSSI_OUTPUT_FLAG,
                            "RSSI print: ",
                            ECHO_VAL_ON,
                            refresh_flag);

@@ -3,7 +3,7 @@
 /**
  * Filename: stored_configs.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: data type for config values held in an inbuilt storage.
+ * Purpose: data type for config values stored in the inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -18,10 +18,10 @@
 
 /*--- Includes ---*/
 
-// General Arduino library.
-//#include <Arduino.h>
+// Main Arduino library.
+#include <Arduino.h>
 
-// Local modules.
+// Project configs.
 #include "config_general.h"
 
 
@@ -29,8 +29,8 @@
 
 // Struct for holding values read from the inbuilt storage.
 typedef struct stored_configs_t {
-    char SSID[STR_MAX_LEN + 1];
-    char pswd[STR_MAX_LEN + 1];
+    char local_SSID[STR_MAX_LEN + 1];
+    char local_pswd[STR_MAX_LEN + 1];
     uint32_t local_server_port;
     bool IoT_flag;
     char IoT_server_IP[STR_MAX_LEN + 1];
@@ -39,7 +39,7 @@ typedef struct stored_configs_t {
     uint32_t IoT_req_period;
     bool BT_Classic_flag;
     char BT_Classic_dev_name[STR_MAX_LEN + 1];
-    bool RSSI_print_flag;
+    bool RSSI_output_flag;
 } stored_configs_t;
 
 

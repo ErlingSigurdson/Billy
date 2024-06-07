@@ -18,12 +18,8 @@
 
 /*--- Includes ---*/
 
-// General Arduino library.
+// Main Arduino library.
 #include <Arduino.h>
-
-// Project configs.
-#include "config_general.h"
-#include "config_cmd.h"
 
 
 /************** FUNCTION PROTOTYPES *************/

@@ -53,7 +53,7 @@
 // Hardware UART baud rate.
 #define HW_UART_BAUD_RATE 115200
 
-/* Pause to ensure that reading from the buffer
+/* Pause to ensure that the reading from the buffer
  * won't run ahead of writing to it.
  */
 #define HW_UART_READ_SLOWDOWN 2
@@ -69,7 +69,7 @@
 #define WIFI_INDICATE_CONNECTION_CYCLES 20
 #define WIFI_INDICATE_CONNECTION_PERIOD 90
 
-#define WIFI_RSSI_PRINT_PERIOD 2000
+#define WIFI_RSSI_OUTPUT_PERIOD 2000
 
 
 /*--- HTTP ---*/
