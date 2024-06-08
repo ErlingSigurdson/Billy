@@ -11,7 +11,7 @@
 Works alright.
 - **18.03.2024** - v.1.1 released.
 - **25.04.2024** - v.1.2 released.
-- **08.06.2024** - v.1.3 released: (1) added analog load control functionality, (2) thus changed project's name
+- **08.06.2024** - v.1.3 released: (1) added an analog load control functionality, (2) thus changed project's name
 from "Billy the Relay" to just "Billy".
 
 # Concept
