@@ -72,7 +72,7 @@ void cmd_handler_err_cmd();
 void cmd_handler_err_val();
 
 /* Command #1:
- * turn a two-state load ON or OFF. A main workhorse.
+ * turn a digital (two-state) load ON or OFF. A main workhorse.
  * A prescribed state of the load is NOT stored in the inbuilt storage.
  */
 void cmd_handler_set_digital_load(const char *cmd);
@@ -85,7 +85,7 @@ void cmd_handler_set_digital_load(const char *cmd);
 void cmd_handler_set_analog_load(const char *cmd);
 
 /* Command #3:
- * print and send to a client the current state of a two-state load.
+ * print and send to a client the current state of a digital (two-state) load.
  * The actual output is based on a return value of the digitalRead().
  */
 void cmd_handler_output_digital_load();

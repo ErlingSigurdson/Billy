@@ -17,27 +17,64 @@
 
 // Text commands.
 #define CMD_PREFIX  "AT+"
-#define CMD_1       "DLOAD="
-#define CMD_2       "ALOAD="
-#define CMD_3       "DLOAD?"
-#define CMD_4       "LOCALSSID="
-#define CMD_5       "LOCALSSID?"
-#define CMD_6       "LOCALPSWD="
-#define CMD_7       "LOCALPORT="
-#define CMD_8       "LOCALPORT?"
-#define CMD_9       "LOCALIP?"
-#define CMD_10      "LOCALCONNRST"
+
+#define CMD_1       "DLOAD="             /* Turn a digital (two-state) load ON or OFF. A main workhorse.
+                                          * A prescribed state of the load is NOT stored in the inbuilt storage.
+                                          */
+
+#define CMD_2       "ALOAD="             /* Drive a load using PWM. Another main workhorse.
+                                          * Valid values of a duty cycle are 0 to 255.
+                                          * A prescribed duty cycle value is NOT stored in the inbuilt storage.
+                                          */
+
+#define CMD_3       "DLOAD?"             // Print and send to a client the current state of a digital (two-state) load.
+
+#define CMD_4       "LOCALSSID="         /* Change an SSID of a local Wi-Fi access point
+                                          * stored in the inbuilt storage.
+                                          */
+
+#define CMD_5       "LOCALSSID?"         /* Print and send to a client an SSID of a local Wi-Fi access point
+                                          * stored in the inbuilt storage.
+                                          */
+
+#define CMD_6       "LOCALPSWD="         /* Change a password for a local Wi-Fi access point
+                                          * stored in the inbuilt storage.
+                                          */
+
+#define CMD_7       "LOCALPORT="         /* Change a local TCP server port number
+                                          * stored in the inbuilt storage.
+                                          */
+
+#define CMD_8       "LOCALPORT?"         /* Print and send to a client a local TCP server port number stored
+                                          * in the inbuilt storage.
+                                          */
+
+#define CMD_9       "LOCALIP?"           // Print and send to a client the device's IP in a local Wi-Fi network.
+
+#define CMD_10      "LOCALCONNRST"       // Reset local connections.
+
 #define CMD_11      "IOT="
+
 #define CMD_12      "IOTIP="
+
 #define CMD_13      "IOTIP?"
+
 #define CMD_14      "IOTPORT="
+
 #define CMD_15      "IOTPORT?"
+
 #define CMD_16      "IOTREQMSG="
+
 #define CMD_17      "IOTREQMSG?"
+
 #define CMD_18      "IOTREQPERIOD="
+
 #define CMD_19      "BTCLASSIC="
+
 #define CMD_20      "BTCLASSICDEVNAME="
+
 #define CMD_21      "BTCLASSICDEVNAME?"
+
 #define CMD_22      "RSSIOUTPUT="
 
 
