@@ -7,12 +7,20 @@
 
 ## News
 
-- **14.01.2024** - Tested the sketch with ESP32-C6 SoC using [3.0.0-alpha3 version of ESP32 Arduino Core](https://github.com/espressif/arduino-esp32/milestone/4). Works alright.
+- **14.01.2024** - Tested the sketch with ESP32-C6 SoC using [3.0.0-alpha3 version of ESP32 Arduino Core](https://github.com/espressif/arduino-esp32/milestone/4).
+Works alright.
 - **18.03.2024** - v.1.1 released.
 - **25.04.2024** - v.1.2 released.
+- **08.06.2024** - v.1.3 released: (1) added analog load control functionality, (2) thus changed project's name
+from "Billy the Relay" to just "Billy".
 
 # Concept
-Billy is an Arduino project written for ESP32 and ESP8266 modules (systems-on-chip, SoCs). Billy can control simple (ON/OFF) load like an LED or (by means of a driver) a relay.
+Billy is a sketch for Arduino framework written for ESP32 and ESP8266 modules (systems-on-chip, SoCs). Billy can control:
+- a digital (ON/OFF) load, like an LED or (by means of a driver) a relay;
+- an analog load, like an (again) LED of (by means of a driver) an electric motor.
+
+Billy does this by means of changing the output at GPIOs specified in the sketch.
+
 Billy itself takes commands over:
 - UART by a cable connection.
 - Wi-Fi as a local TCP server, e.g. from a classic Unix utility `netcat` (`nc`) or an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   
@@ -22,14 +30,15 @@ Billy itself takes commands over:
 
 Billy works within a local Wi-Fi network in a station (STA) mode. Billy uses Internet access provided by a local access point.
 
-Billy's operations rely heavily on module's inbuilt flash memory storage. When you specify an SSID, a password, a port number, etc., they are saved in inbuilt storage and thus you don't need to assign them again in case of device reboot.
+Billy's operations rely heavily on module's inbuilt flash memory storage. When you specify an SSID, a password, a port number, etc., they are saved in the inbuilt storage and thus you don't need to assign them again in case of device reboot.
 
 # Manual
 ### Quickstart
 Follow these steps to configure Billy and start using it:
 1. In file `config_general.h` use `#define` directives to specify:
-- whether your device uses Bluetooth Classic (`BT_CLASSIC_PROVIDED`). Comment out the directive if your ESP32 SoC doesn't support Bluetooth Classic or you just don't want to use it. Ignore for ESP8266.
-- load control pin (`LOAD_PIN`). Specify the pin number as a value;
+- whether your device uses Bluetooth Classic (`BT_CLASSIC_PROVIDED`). Comment out the directive if your ESP32 SoC
+doesn't support Bluetooth Classic or you just don't want to use it. Ignore for ESP8266.
+- load control pin (`DIGITAL_LOAD_PIN`). Specify the pin number as a value;
 - indicator LED control pin (`WIFI_INDICATOR_LED_PIN`). Specify the pin number as a value;
 - load mode (`INVERTED_OUTPUT`). Uncomment the directive if you need an inverted output.
 2. Make sure your Arduino IDE (or Arduino SDK for a third-party IDE) has an appropriate core for [ESP32](https://github.com/espressif/arduino-esp32) or [ESP8266](https://github.com/esp8266/Arduino) by Espressif Systems.

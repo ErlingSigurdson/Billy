@@ -22,7 +22,7 @@
  * which lack Bluetooth Classic functionality (e.g. ESP32-S2 and ESP32-C3).
  * For ESP8266 don't worry about it.
  */
-#ifdef ESP32  // This macro is provided by the Arduino framework for respective MCU family.
+#ifdef ESP32  // This macro is provided by the Arduino framework for respective SoC family.
     #define BT_CLASSIC_PROVIDED
 #endif
 
@@ -30,8 +30,8 @@
 /*--- Load ---*/
 
 // Assign load control pins.
-#define DIGITAL_LOAD_PIN 5
-#define ANALOG_LOAD_PIN 12
+#define DIGITAL_LOAD_PIN 2
+#define ANALOG_LOAD_PIN 5
 
 /* Choose between an uninverted (load turned ON at high logic level, default)
  * and an inverted (load turned ON at low logic level) output. The latter is handy
