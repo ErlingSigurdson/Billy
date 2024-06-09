@@ -37,12 +37,12 @@
  * and an inverted (load turned ON at low logic level) output. The latter is handy
  * if your load is driven by a PNP transistor, for example.
  */
-//#define INVERTED_OUTPUT
-#ifndef INVERTED_OUTPUT
+//#define INVERTED_DIGITAL_OUTPUT
+#ifndef INVERTED_DIGITAL_OUTPUT
     #define DIGITAL_LOAD_ON 1
     #define DIGITAL_LOAD_OFF 0
 #endif
-#ifdef INVERTED_OUTPUT
+#ifdef INVERTED_DIGITAL_OUTPUT
     #define DIGITAL_LOAD_ON 0
     #define DIGITAL_LOAD_OFF 1
 #endif

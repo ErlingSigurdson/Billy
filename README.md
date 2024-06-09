@@ -6,63 +6,81 @@
 [![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.ru.md&branch=main)
 
 ## News
-
-- **14.01.2024** - Tested the sketch with ESP32-C6 SoC using [3.0.0-alpha3 version of ESP32 Arduino Core](https://github.com/espressif/arduino-esp32/milestone/4).
-Works alright.
+- **14.01.2024** - Tested the sketch with ESP32-C6 SoC using
+[3.0.0-alpha3 version of ESP32 Arduino Core](https://github.com/espressif/arduino-esp32/milestone/4). Works alright.
 - **18.03.2024** - v.1.1 released.
 - **25.04.2024** - v.1.2 released.
-- **08.06.2024** - v.1.3 released: (1) added an analog load control functionality, (2) thus changed project's name
-from "Billy the Relay" to just "Billy".
+- **09.06.2024** - v.1.3 released: (1) analog load control functionality added, (2) thus project's name changed
+from "Billy the Relay" to just "Billy", (3) code was refactored significantly: command handler functions
+are now declared and defined in the separate files, not in the .ino file.
 
 # Concept
-Billy is a sketch for Arduino framework written for ESP32 and ESP8266 modules (systems-on-chip, SoCs). Billy can control:
-- a digital (ON/OFF) load, like an LED or (by means of a driver) a relay;
-- an analog load, like an (again) LED of (by means of a driver) an electric motor.
+Billy is a sketch for Arduino framework written for ESP32 and ESP8266 modules (systems-on-chip, SoCs).
+The same name may also refer to a device that runs the respective sketch. 
+Billy can control:
+- a digital (ON/OFF) load, like an LED or (by means of a transistor driver) a relay;
+- an analog load, like an LED of (by means of a transistor driver) an electric motor.
 
-Billy does this by means of changing the output at GPIOs specified in the sketch.
+Load is controlled by changing the output voltage at GPIOs specified in the code.
 
-Billy itself takes commands over:
-- UART by a cable connection.
-- Wi-Fi as a local TCP server, e.g. from a classic Unix utility `netcat` (`nc`) or an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).   
-- Wi-Fi as a local HTTP server, e.g. from a browser (sketch provides a simplistic web interface) or a different app capable of sending HTTP requests.
-- Bluetooth Classic as a slave device[^1], e.g. from a desktop Bluetooth terminal or an Android app like [Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android).
-- Wi-Fi as a TCP client (inter alia via Internet). To do so Billy sends requests to a custom-programmed TCP server and receives commands as a response (this implementation is described in detail below).
+Billing can receive commands:
+- over UART through a cable connection;
+- over Wi-Fi as a local TCP server, e.g. sent by a classic Unix utility `netcat` (`nc`)
+or by an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android);  
+- over Wi-Fi as a local HTTP server, e.g. from a web browser (sketch provides a simplistic web interface)
+or a different app capable of sending HTTP requests;
+- over Bluetooth Classic as a slave device[^1], e.g. from a desktop Bluetooth terminal or an Android app like
+[Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android);
+- over Wi-Fi as a TCP client (inter alia via Internet). To do so Billy sends requests to a custom-programmed TCP server
+and receives commands as a response (this implementation is described in detail below).
 
-Billy works within a local Wi-Fi network in a station (STA) mode. Billy uses Internet access provided by a local access point.
+Billy works within a local Wi-Fi network in a station (STA) mode.
+Billy uses an Internet access provided by a local access point.
 
-Billy's operations rely heavily on module's inbuilt flash memory storage. When you specify an SSID, a password, a port number, etc., they are saved in the inbuilt storage and thus you don't need to assign them again in case of device reboot.
+Billy's operations rely heavily on a module's inbuilt flash memory storage.
+When you specify configs (an SSID, a password, a port number, etc.), they are saved in the inbuilt storage
+and thus you don't need to assign them again in case of a device reboot.
+There's a single exception: load state is reset to OFF (or 0 duty cycle) upon reset.
 
 # Manual
+### Complete command list
+Please refer to `config_сmd.h` to see all the available commands.
+
 ### Quickstart
-Follow these steps to configure Billy and start using it:
-1. In file `config_general.h` use `#define` directives to specify:
-- whether your device uses Bluetooth Classic (`BT_CLASSIC_PROVIDED`). Comment out the directive if your ESP32 SoC
-doesn't support Bluetooth Classic or you just don't want to use it. Ignore for ESP8266.
-- load control pin (`DIGITAL_LOAD_PIN`). Specify the pin number as a value;
+Follow these steps to configure and start using Billy:
+1. In the file `config_general.h` use `#define` directives to specify:
+- whether your device uses Bluetooth Classic (`BT_CLASSIC_PROVIDED`). Comment out the directive if your ESP32
+doesn't support Bluetooth Classic or you just don't want to use it. Ignore for ESP8266;
+- digital load control pin (`DIGITAL_LOAD_PIN`). Specify the pin number as a value;
+- analog load control pin (`ANALOG_LOAD_PIN`). Specify the pin number as a value;
 - indicator LED control pin (`WIFI_INDICATOR_LED_PIN`). Specify the pin number as a value;
-- load mode (`INVERTED_OUTPUT`). Uncomment the directive if you need an inverted output.
-2. Make sure your Arduino IDE (or Arduino SDK for a third-party IDE) has an appropriate core for [ESP32](https://github.com/espressif/arduino-esp32) or [ESP8266](https://github.com/esp8266/Arduino) by Espressif Systems.
+- digital load mode (`INVERTED_DIGITAL_OUTPUT`). Uncomment the directive if you need an inverted output.
+2. Make sure your Arduino IDE (or Arduino SDK for a third-party IDE) has an appropriate core for 
+[ESP32](https://github.com/espressif/arduino-esp32) or [ESP8266](https://github.com/esp8266/Arduino)
+by Espressif Systems.
 3. Compile the sketch and upload it to your device.[^2]
 4. Turn on your device and connect to it by a cable (through USB-UART adapter or, if suppored, UART over native USB).
-5. Send command `AT+SETLOAD=TOGGLE` twice and make sure that Billy switches a current load status.
-6. Send command `AT+SETLOCALSSID=<value>` to specify your local Wi-Fi network SSID.
-7. Send command `AT+SETLOCALPSWD=<value>` to specify your local Wi-Fi network access point password.
-8. Send command `AT+SETLOCALPORT=<value>` to specify port number to be used by your device as a local TCP server.
-9. Reset your device or send the command `AT+RSTLOCALCONN`. Make sure your device has established a connection to your local Wi-Fi network (look at UART terminal and indicator LED). Remember of write down printed local IP address (you can use `AT+PRINTLOCALIP` command to print it again if necessary).
-10. Connect to you device over Wi-Fi using previously printed local IP address and previously specified port.
-11. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Wi-Fi using established TCP connection. Make sure Billy follows your instructions.
-12. Open any web browser (I recommend Mozilla Firefox) on any device connected to the same local Wi-Fi network and insert previously printed IP address into an address bar.
-13. Use web interface to turn your load ON and OFF.
+Open serial terminal.
+5. Send command `AT+DLOAD=TOGGLE` twice and make sure that Billy switches a current digital load status.
+6. Consecutively send commands `AT+ALOAD=255` and `AT+ALOAD=00` and make sure that Billy control the analog load.
+
+7. Send command `AT+LOCALSSID=<value>` to specify your local Wi-Fi network SSID.
+8. Send command `AT+LOCALPSWD=<value>` to specify your local Wi-Fi network access point password.
+9. Send command `AT+LOCALPORT=<value>` to specify port number to be used by your device as a local TCP server.
+10. Reset your device or send the command `AT+RSTLOCALCONN`. Make sure your device has established a connection to your local Wi-Fi network (look at UART terminal and indicator LED). Remember of write down printed local IP address (you can use `AT+PRINTLOCALIP` command to print it again if necessary).
+11. Connect to you device over Wi-Fi using previously printed local IP address and previously specified port.
+12. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Wi-Fi using established TCP connection. Make sure Billy follows your instructions.
+13. Open any web browser (I recommend Mozilla Firefox) on any device connected to the same local Wi-Fi network and insert previously printed IP address into an address bar.
+14. Use web interface to turn your load ON and OFF.
 
 Additionally, if your device supports Bluetooth Classic:
 
-14. Send command `AT+SETBTDEVNAME=<value>` to specify Billy's name as a Bluetooth slave device.
-15. Send command `AT+SETBT=ON` to turn on Bluetooth Classic.
-16. Connect to Billy over Bluetooth using previously specified slave device name.
-17. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Bluetooth. Make sure Billy follows your instructions.
+15. Send command `AT+SETBTDEVNAME=<value>` to specify Billy's name as a Bluetooth slave device.
+16. Send command `AT+SETBT=ON` to turn on Bluetooth Classic.
+17. Connect to Billy over Bluetooth using previously specified slave device name.
+18. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Bluetooth. Make sure Billy follows your instructions.
 
-### Complete command list
-Please refer to `config_ASCII_cmd_check.h`.
+
 
 ### Billy as a TCP client and IoT control
 A remote server (an IoT server) to which Billy sends requests must be able to:
