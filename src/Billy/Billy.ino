@@ -46,7 +46,7 @@
 void setup()
 {
     /*--- Starting hardware UART ---*/
-.
+
     Serial.begin(HW_UART_BAUD_RATE);
     delay(HW_UART_STARTUP_PAUSE);     // A tiny pause to allow interface startup.
 

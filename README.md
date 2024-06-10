@@ -14,6 +14,10 @@
 from "Billy the Relay" to just "Billy", (3) code was refactored significantly: command handler functions
 are now declared and defined in the separate files, not in the .ino file.
 
+## TODO list
+- Optional (config-defined) periodical attempts to reconnect to a Wi-Fi network. 
+
+
 # Concept
 Billy is a sketch for Arduino framework written for ESP32 and ESP8266 modules (systems-on-chip, SoCs).
 The same name may also refer to a device that runs the respective sketch. 
@@ -41,6 +45,7 @@ Billy's operations rely heavily on a module's inbuilt flash memory storage.
 When you specify configs (an SSID, a password, a port number, etc.), they are saved in the inbuilt storage
 and thus you don't need to assign them again in case of a device reboot.
 There's a single exception: load state is reset to OFF (or 0 duty cycle) upon reset.
+
 
 # Manual
 ### Complete command list
@@ -80,8 +85,6 @@ Additionally, if your device supports Bluetooth Classic:
 17. Connect to Billy over Bluetooth using previously specified slave device name.
 18. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Bluetooth. Make sure Billy follows your instructions.
 
-
-
 ### Billy as a TCP client and IoT control
 A remote server (an IoT server) to which Billy sends requests must be able to:
 - in response to Billy's requests (e.g. string `"UPD_REQ"`) send messages (strings) with valid commands;
@@ -93,6 +96,13 @@ To specify IoT configs use commands `AT+SETIOTIP=<value>`, `AT+SETIOTPORT=<value
 
 [Here you can find an example code for a Linux server that works in a described fashion](https://github.com/ErlingSigurdson/server0451/tree/main) written in C language. It is written specifically for Billy and similar devices.
 
+### Notes on GPIO
+Defining `DIGITAL_LOAD_PIN` and `ANALOG_LOAD_PIN` with same values should be avoided
+since it will most probably render digital control inoperable.
+Defining `DIGITAL_LOAD_PIN` and `WIFI_INDICATOR_LED_PIN` is technically acceptable, but hardly makes sense
+unless your digital load is an LED.
+
+
 # General notes on code
 ### Sketch layout
 Breaking a sketch into a basic `.ino` file and local modules (pairs of `.h` and `.cpp` files) may not be very popular within Arduino paradigm, but I find it more straightforward and easier to manage than simple concatenation of multiple `.ino` files.  
@@ -103,6 +113,7 @@ Introduction of additional global variables is generally avoided since the inbui
 ### Local modules and wrapper functions
 Method calls are mostly packed into wrapper functions declared and defined in local modules. It's handy since method calls are usually accompanied with related lines of code.
 Local modules do not refer to each other. Instead, their wrapper functions are combined in `.ino` file, which allows for easier sketch customization.
+
 
 # Expected questions
 ### Why not MQTT? It's so well-suited for IoT!
