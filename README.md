@@ -23,7 +23,7 @@ are now declared and defined in the separate files, not in the .ino file.
 ## TODO list
 - Switching between station (STA) and access point (AP) Wi-Fi modes.
 - Adding analog load control to the web interface.
-
+-------------------------------------------------------------------------------
 
 # Concept
 Billy is a sketch for Arduino framework written for ESP32 and ESP8266 modules (systems-on-chip, SoCs).
