@@ -23,15 +23,18 @@
  * For ESP8266 don't worry about it.
  */
 #ifdef ESP32  // This macro is provided by the Arduino framework for the respective SoC family.
-    //#define BT_CLASSIC_PROVIDED
+    #define BT_CLASSIC_PROVIDED
 #endif
 
 
-/*--- Load ---*/
+/*--- GPIO ---*/
 
 // Assign load control pins.
 #define DIGITAL_LOAD_PIN 2
 #define ANALOG_LOAD_PIN 5
+
+// Assign indicator LED control pin.
+#define WIFI_INDICATOR_LED_PIN 2
 
 /* Choose between an uninverted (load turned ON at high logic level, default)
  * and an inverted (load turned ON at low logic level) digital output.
@@ -65,7 +68,6 @@
 /*--- Wi-Fi ---*/
 
 // Connection indication.
-#define WIFI_INDICATOR_LED_PIN 2
 #define WIFI_INDICATE_CONNECTION_CYCLES 20
 #define WIFI_INDICATE_CONNECTION_PERIOD 90
 

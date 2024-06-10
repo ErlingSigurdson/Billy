@@ -41,8 +41,6 @@
 
 /******************* FUNCTIONS ******************/
 
-/*--- Basic functions ---*/
-
 void setup()
 {
     /*--- Starting hardware UART ---*/
@@ -557,4 +555,28 @@ void loop()
             ESP32_BT_Classic_disconnect(CONN_SHUTDOWN_DOWNTIME);
         }
     #endif
+
+
+    /*--- Wi-Fi reconnect ---*/
+    static uint64_t WiFi_reconnect_current_millis = millis();
+    static uint64_t WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis;
+
+    if (ESP_WiFi_is_connected()) {
+        WiFi_reconnect_current_millis = millis();
+        WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis;
+    } else {
+        WiFi_reconnect_current_millis = millis();
+    }
+
+    if (WiFi_reconnect_current_millis - WiFi_reconnect_previous_millis >= 30000) {
+        ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
+        ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
+
+        #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+            ESP32_BT_Classic_stop(CONN_SHUTDOWN_DOWNTIME);
+        #endif
+        
+        setup();
+        WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis;
+    }
 }

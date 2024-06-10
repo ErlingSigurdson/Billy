@@ -98,3 +98,8 @@ void ESP_WiFi_RSSI_print()
     Serial.print("Current RSSI is: ");
     Serial.println(RSSI);
 }
+
+bool ESP_WiFi_is_connected()
+{
+    return WiFi.isConnected();
+}

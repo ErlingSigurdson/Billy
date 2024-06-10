@@ -1,7 +1,13 @@
 ![Good old ESP32 devboard](https://i.imgur.com/U5nZ8fW.png)
 
+# Project info
+
+## Home pages
+GitHub:
 [![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Billy/blob/main/README.md)
 [![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Billy/blob/main/README.ru.md)
+
+GitFlic:
 [![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.md&branch=main)
 [![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.ru.md&branch=main)
 
@@ -15,7 +21,8 @@ from "Billy the Relay" to just "Billy", (3) code was refactored significantly: c
 are now declared and defined in the separate files, not in the .ino file.
 
 ## TODO list
-- Optional (config-defined) periodical attempts to reconnect to a Wi-Fi network. 
+- Switching between station (STA) and access point (AP) Wi-Fi modes.
+- Adding analog load control to the web interface.
 
 
 # Concept
