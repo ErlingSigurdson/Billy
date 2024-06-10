@@ -45,16 +45,26 @@
 
 void setup()
 {
-    /*--- GPIO configuration ---*/
+    /*--- GPIO ---*/
+    
+    /* In case of local wireless connections being reset without resetting the device,
+     * setup() is used as a callback function. Such reset should not impact GPIOs though,
+     * and thus here is introduced a static flag that makes GPIO-related code a one-shot.
+     */
+    static bool first_setup = 1;
 
-    pinMode(DIGITAL_LOAD_PIN, OUTPUT);
-    pinMode(ANALOG_LOAD_PIN, OUTPUT);
-    pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
+    if (first_setup) {
+    // Configuration.
+        pinMode(DIGITAL_LOAD_PIN, OUTPUT);
+        pinMode(ANALOG_LOAD_PIN, OUTPUT);
+        pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
+ 
+    // Setting digital outputs to respective initial digital levels.
+        digitalWrite(DIGITAL_LOAD_PIN, DIGITAL_LOAD_OFF);
+        digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_LOAD_OFF);
+    }
 
-
-    /*--- Setting initial digital load state ---*/
-
-    digitalWrite(DIGITAL_LOAD_PIN, DIGITAL_LOAD_OFF);
+    first_setup = 0;
 
 
     /*--- Interaction with the inbuilt storage ---*/
@@ -63,10 +73,6 @@ void setup()
      * inbuilt storage must be initialized before use.
      */
     inbuilt_storage_init(INBUILT_STORAGE_SIZE);
-
-    // Read stored configs from the inbuilt storage into the struct.
-    stored_configs_t stored_configs;
-    stored_configs_read(&stored_configs);
 
     /* If necessary, you can write any config value into the inbuilt storage
      * at the same time with uploading the sketch. To achieve this, uncomment
@@ -174,6 +180,10 @@ void setup()
                               INBUILT_STORAGE_STR_MAX_LEN,
                               INBUILT_STORAGE_ADDR_RSSI_OUTPUT_FLAG);
     #endif
+
+    // Read stored configs from the inbuilt storage into the struct.
+    stored_configs_t stored_configs;
+    stored_configs_read(&stored_configs);
 
 
     /*--- Starting communications ---*/
@@ -361,6 +371,13 @@ void loop()
             uint32_t TCP_client_bytes_read = ESP_TCP_client_read_line(terminal_input,
                                                                       STR_MAX_LEN,
                                                                       CONN_TIMEOUT);
+
+            if (TCP_client_bytes_read > 0 && TCP_client_bytes_read < STR_MAX_LEN) {
+                utilities_nullify_first_CR_or_LF_in_string(terminal_input);
+                Serial.print("Message received from remote server: ");
+                Serial.println(terminal_input);
+            }
+
             if (TCP_client_bytes_read > STR_MAX_LEN) {
                 terminal_input[0] = '\0';
                 cmd_handler_err_len();

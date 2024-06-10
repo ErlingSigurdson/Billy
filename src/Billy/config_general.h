@@ -23,7 +23,7 @@
  * For ESP8266 don't worry about it.
  */
 #ifdef ESP32  // This macro is provided by the Arduino framework for the respective SoC family.
-    #define BT_CLASSIC_PROVIDED
+    //#define BT_CLASSIC_PROVIDED
 #endif
 
 
@@ -34,8 +34,8 @@
 #define ANALOG_LOAD_PIN 5
 
 /* Choose between an uninverted (load turned ON at high logic level, default)
- * and an inverted (load turned ON at low logic level) output. The latter is handy
- * if your load is driven by a PNP transistor, for example.
+ * and an inverted (load turned ON at low logic level) digital output.
+ * The latter is handy if your load is driven by a PNP transistor, for example.
  */
 //#define INVERTED_DIGITAL_OUTPUT
 #ifndef INVERTED_DIGITAL_OUTPUT
