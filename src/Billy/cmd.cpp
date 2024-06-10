@@ -79,7 +79,7 @@ void cmd_aux_set_digital_load(uint8_t pin, uint8_t state, const char *topic)
 void cmd_aux_set_analog_load(uint8_t pin, uint32_t val, const char *topic)
 {
     analogWrite(pin, val);
-    cmd_aux_output(topic);    
+    cmd_aux_output(topic);
 }
 
 void cmd_aux_set_config(const char *cmd, uint32_t addr, const char *topic, bool echo_val, bool *refresh_flag)
@@ -113,7 +113,7 @@ void cmd_aux_output_config(uint32_t addr, const char *topic)
                          INBUILT_STORAGE_STR_MAX_LEN,
                          addr);
     strcat(msg, val);
-    
+
     cmd_aux_output(msg);
 }
 
@@ -201,7 +201,7 @@ void cmd_handler_set_analog_load(const char *cmd)
         cmd_handler_err_val();
         return;
     }
-    
+
     char msg[STR_MAX_LEN * 2 + 1] = "Analog load duty cycle set to ";
     strcat(msg, cmd_val);
 
@@ -420,7 +420,7 @@ void cmd_handler_output_BT_Classic_dev_name()
 void cmd_handler_set_RSSI_output_flag(const char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
-    
+
     if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
         cmd_aux_set_config(cmd,
                            INBUILT_STORAGE_ADDR_RSSI_OUTPUT_FLAG,

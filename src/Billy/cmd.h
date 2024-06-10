@@ -42,7 +42,7 @@ int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], u
 /*--- Auxiliary functions (helper functions, accessories) ---*/
 
 /* A generic accessory called by the other accessories.
- * Prints a message over the UART and sends it over the wireless connections. 
+ * Prints a message over the UART and sends it over the wireless connections.
  */
 void cmd_aux_output(const char *msg);
 

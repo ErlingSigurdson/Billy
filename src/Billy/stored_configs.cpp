@@ -42,7 +42,7 @@ void stored_configs_read(stored_configs_t *_stored_configs)
 
 
     /*--- Reading strings from the inbuilt storage ---*/
-    
+
     char stored_configs_str[INBUILT_STORAGE_ITEM_LIST_LEN][INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
     uint32_t stored_configs_addr[] = {
         INBUILT_STORAGE_ADDR_LOCAL_SSID,
@@ -75,13 +75,13 @@ void stored_configs_read(stored_configs_t *_stored_configs)
 
 
     /*--- Writing of strings and extracted integers into the struct ---*/
-    
+
     // Local Wi-Fi network SSID.
     strcpy(_stored_configs->local_SSID, stored_configs_str[INDEX_LOCAL_SSID]);
-    
+
     // Local Wi-Fi access point password.
     strcpy(_stored_configs->local_pswd, stored_configs_str[INDEX_LOCAL_PSWD]);
-    
+
     // Local TCP server port.
     _stored_configs->local_server_port = strtol(stored_configs_str[INDEX_LOCAL_SERVER_PORT], NULL, 10);
 
@@ -94,13 +94,13 @@ void stored_configs_read(stored_configs_t *_stored_configs)
 
     // IoT (remote) server IP.
     strcpy(_stored_configs->IoT_server_IP, stored_configs_str[INDEX_IOT_SERVER_IP]);
-    
+
     // IoT (remote) server port.
     _stored_configs->IoT_server_port = strtol(stored_configs_str[INDEX_IOT_SERVER_PORT], NULL, 10);
-    
+
     // Text of a request to an IoT (remote) server.
     strcpy(_stored_configs->IoT_req_msg, stored_configs_str[INDEX_IOT_REQ_MSG]);
-    
+
     // Interval for sending requests to an IoT (remote) server.
     _stored_configs->IoT_req_period = strtol(stored_configs_str[INDEX_IOT_REQ_PERIOD], NULL, 10);
 

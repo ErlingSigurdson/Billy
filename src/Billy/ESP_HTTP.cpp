@@ -93,7 +93,7 @@ void ESP_HTTP_handle_ctrl()
         if (strstr(cmd_buf, CMD_1) == cmd_buf + strlen(CMD_PREFIX)) {
             if (strstr(cmd_buf, "=") == NULL) {
                 HTTP_server.send(200, "text/plain", "No valid command issued.");
-    
+
                 return;
             }
 
@@ -101,21 +101,21 @@ void ESP_HTTP_handle_ctrl()
 
             if (*cmd_val == '\0') {
                 HTTP_server.send(200, "text/plain", "No valid value submitted.");
-    
+
                 return;
             }
 
             if (!strcmp(cmd_val, "ON")) {
                 HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(PREVIOUS_CMD_ON));
                 strcpy(ESP_HTTP_current_val, cmd_buf);
-    
+
                 return;
             }
 
             if (!strcmp(cmd_val, "OFF")) {
                 HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(PREVIOUS_CMD_OFF));
                 strcpy(ESP_HTTP_current_val, cmd_buf);
-    
+
                 return;
             }
         }

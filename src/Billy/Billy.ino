@@ -45,8 +45,22 @@
 
 void setup()
 {
-    /*--- GPIO ---*/
+    /*--- Starting hardware UART ---*/
+.
+    Serial.begin(HW_UART_BAUD_RATE);
+    delay(HW_UART_STARTUP_PAUSE);     // A tiny pause to allow interface startup.
+
+    Serial.println("");
+    Serial.println("*** HELLO, HUMAN! ***");
     
+
+    /*--- GPIO ---*/
+
+    if (DIGITAL_LOAD_PIN == ANALOG_LOAD_PIN) {
+        Serial.println("Warning! Pins controlling digital and analog loads coincide. "
+                       "It will most probably render digital control inoperable.");
+    }
+
     /* In case of local wireless connections being reset without resetting the device,
      * setup() is used as a callback function. Such reset should not impact GPIOs though,
      * and thus here is introduced a static flag that makes GPIO-related code a one-shot.
@@ -58,7 +72,7 @@ void setup()
         pinMode(DIGITAL_LOAD_PIN, OUTPUT);
         pinMode(ANALOG_LOAD_PIN, OUTPUT);
         pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
- 
+
     // Setting digital outputs to respective initial digital levels.
         digitalWrite(DIGITAL_LOAD_PIN, DIGITAL_LOAD_OFF);
         digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_LOAD_OFF);
@@ -80,7 +94,7 @@ void setup()
      * in the code, pre-compile-time. Then upload the sketch. After that
      * comment out the same directives you've uncommented before and upload
      * the sketch once again. Without that last step a config value will always
-     * be reverted to the hardcoded value upon every device startup. 
+     * be reverted to the hardcoded value upon every device startup.
      */
     //#define SET_LOCAL_SSID_AT_UPLOAD
     #ifdef SET_LOCAL_SSID_AT_UPLOAD
@@ -186,14 +200,7 @@ void setup()
     stored_configs_read(&stored_configs);
 
 
-    /*--- Starting communications ---*/
-
-    // Hardware UART startup.
-    Serial.begin(HW_UART_BAUD_RATE);
-    delay(HW_UART_STARTUP_PAUSE);     // Tiny pause to allow interface startup.
-
-    Serial.println("");
-    Serial.println("*** HELLO, HUMAN! ***");
+    /*--- Starting wireless communications ---*/
 
     /* Initializing certain objects (class instances) requires specifying
      * their parameters compile-time, since the latter are to be passed
@@ -273,7 +280,7 @@ void setup()
     } else {
         Serial.println("OFF");
     }
-    
+
     Serial.println("");
     Serial.flush();
 }
@@ -394,7 +401,7 @@ void loop()
             BT_Classic_was_connected = 1;
             uint32_t BT_Classic_bytes_read = 0;
             BT_Classic_bytes_read = ESP32_BT_Classic_read_line(terminal_input, STR_MAX_LEN, CONN_TIMEOUT);
-            
+
             if (BT_Classic_bytes_read > STR_MAX_LEN) {
                 terminal_input[0] = '\0';
                 cmd_handler_err_len();
@@ -404,7 +411,7 @@ void loop()
 
 
     /*--- Handling commands ---*/
-    
+
     // Essentially it's the central hub of the whole sketch.
 
     // Check for a non-empty buffer string.
@@ -425,11 +432,11 @@ void loop()
             case 1:
                 cmd_handler_set_digital_load(terminal_input);
                 break;
-                
+
             case 2:
                 cmd_handler_set_analog_load(terminal_input);
                 break;
-                
+
             case 3:
                 cmd_handler_output_digital_load();
                 break;
@@ -517,7 +524,7 @@ void loop()
 
 
     /*--- Current RSSI output ---*/
-    
+
     uint32_t WiFi_RSSI_print_period = WIFI_RSSI_OUTPUT_PERIOD;
     if (WiFi_RSSI_print_period == 0) {
         WiFi_RSSI_print_period = DEFAULT_WIFI_RSSI_OUTPUT_PERIOD;  // Divide by zero prevention.
@@ -532,8 +539,8 @@ void loop()
         ESP_WiFi_RSSI_print();
         RSSI_output_loaded = 0;
     }
-    
-    
+
+
     /*--- Finishing communications ---*/
 
     Serial.flush();
