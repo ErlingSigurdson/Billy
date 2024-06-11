@@ -21,10 +21,10 @@ may refer both to the software and a device that runs it.
 - **14.01.2024** - the sketch is successfully run on a ESP32-C6 microcontroller using
 [3.0.0-alpha3 version of the ESP32 Arduino core](https://github.com/espressif/arduino-esp32/milestone/4).
 - **__.06.2024** - v.1.3 released, with certain major changes made:
-    - analog load control functionality added, and thus the project's name was changed
+    - analog load control functionality added, and thus the project's name changed
       from "Billy the Relay" to just "Billy";
-    - the code was refactored significantly. Among other things, command handler functions are now declared and defined
-      in the separate files, not in the .ino file.
+    - the code was refactored significantly. Among other things, command handler functions
+      are now declared and defined in the separate files, not in the .ino file.
 
 ### TODO list
 - Add switching between station (STA) and access point (AP) Wi-Fi modes in runtime.
