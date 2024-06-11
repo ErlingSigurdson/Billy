@@ -12,6 +12,7 @@ may refer both to the software and a device that runs it.
 **GitHub**
 [![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Billy/blob/main/README.md)
 [![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Billy/blob/main/README.ru.md)
+
 **GitFlic**
 [![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.md&branch=main)
 [![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.ru.md&branch=main)
@@ -20,18 +21,26 @@ may refer both to the software and a device that runs it.
 - **14.01.2024** - the sketch is successfully run on a ESP32-C6 microcontroller using
 [3.0.0-alpha3 version of the ESP32 Arduino core](https://github.com/espressif/arduino-esp32/milestone/4).
 - **__.06.2024** - v.1.3 released, with certain major changes made:
-    - analog load control functionality added;
-    - thus the project's name changed from "Billy the Relay" to just "Billy";
+    - analog load control functionality added, and thus the project's name was changed
+      from "Billy the Relay" to just "Billy";
     - the code was refactored significantly. Among other things, command handler functions are now declared and defined
-    in the separate files, not in the .ino file.
+      in the separate files, not in the .ino file.
 
 ### TODO list
-- Switching between station (STA) and access point (AP) Wi-Fi modes.
-- Adding analog load control to the web interface.
+- Add switching between station (STA) and access point (AP) Wi-Fi modes in runtime.
+- Add an analog load control to the web interface.
 
 
 ***
-# Concept
+# Manual
+
+## Load
+
+## Communications
+
+## Storing configs
+
+
 Billy is a sketch for Arduino framework written for ESP32 and ESP8266 modules (systems-on-chip, SoCs).
 The same name may also refer to a device that runs the respective sketch. 
 Billy can control:
