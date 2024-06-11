@@ -1,30 +1,32 @@
 ![Good old ESP32 devboard](https://i.imgur.com/U5nZ8fW.png)
 
-# Project info
+# Background
 
-## Home pages
-GitHub:
+### Home pages
+
+**GitHub**
 [![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Billy/blob/main/README.md)
 [![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Billy/blob/main/README.ru.md)
 
-GitFlic:
+**GitFlic**
 [![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.md&branch=main)
 [![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.ru.md&branch=main)
 
-## News
+### News
 - **14.01.2024** - Tested the sketch with ESP32-C6 SoC using
 [3.0.0-alpha3 version of ESP32 Arduino Core](https://github.com/espressif/arduino-esp32/milestone/4). Works alright.
 - **18.03.2024** - v.1.1 released.
 - **25.04.2024** - v.1.2 released.
-- **09.06.2024** - v.1.3 released: (1) analog load control functionality added, (2) thus project's name changed
+- **__.06.2024** - v.1.3 released: (1) analog load control functionality added, (2) thus project's name changed
 from "Billy the Relay" to just "Billy", (3) code was refactored significantly: command handler functions
 are now declared and defined in the separate files, not in the .ino file.
 
-## TODO list
+### TODO list
 - Switching between station (STA) and access point (AP) Wi-Fi modes.
 - Adding analog load control to the web interface.
--------------------------------------------------------------------------------
 
+
+***
 # Concept
 Billy is a sketch for Arduino framework written for ESP32 and ESP8266 modules (systems-on-chip, SoCs).
 The same name may also refer to a device that runs the respective sketch. 
