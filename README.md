@@ -1,4 +1,4 @@
-![ESP modules](https://i.imgur.com/5ZhI7Su.png)
+[<65;80;20M]![ESP modules](https://i.imgur.com/5ZhI7Su.png)
 
 # Project background information
 
@@ -34,10 +34,18 @@ may refer both to the software and a device that runs it.
 ***
 # Manual
 
-### Load
-Billy provides a single channel for a digital load control and a single channel for an analog load control.
-A typical digital load would be an LED (usually used for test purposes) or a transistor driver which in its turn
-controls a relay or an electric motor. A typical analog load would be, again, an LED 
+### GPIO and Load
+Billy provides 2 control channels - one for a digital load and another one for an analog load.
+The channels are basically GPIOs, one in a digital output mode and another one outputting PWM signal.
+
+A typical digital load would be an LED (usually used for testing purposes) or a transistor driver which
+in its turn switches a relay. A typical analog load would be, again, an LED or a MOSFET driver which
+in its turn drives an electric motor.
+
+Additionally, there's a GPIO in a digital output mode assigned to control an indicator LED.
+
+GPIOs are assigned with a `#define` directive in 
+
 
 ### Communications
 
