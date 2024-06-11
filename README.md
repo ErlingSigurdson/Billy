@@ -34,11 +34,14 @@ may refer both to the software and a device that runs it.
 ***
 # Manual
 
-## Load
+### Load
+Billy provides a single channel for a digital load control and a single channel for an analog load control.
+A typical digital load would be an LED (usually used for test purposes) or a transistor driver which in its turn
+controls a relay or an electric motor. A typical analog load would be, again, an LED 
 
-## Communications
+### Communications
 
-## Storing configs
+### Storing configs
 
 
 Billy is a sketch for Arduino framework written for ESP32 and ESP8266 modules (systems-on-chip, SoCs).
