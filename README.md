@@ -1,25 +1,29 @@
-![Good old ESP32 devboard](https://i.imgur.com/U5nZ8fW.png)
+![ESP modules](https://i.imgur.com/5ZhI7Su.png)
 
-# Background
+# Project background information
 
-### Home pages
+### Concept
+Billy is a program (an Arduino sketch) written for ESP32 and ESP8266 microcontrollers.
+With this software an MCU can control a digital (ON/OFF) and an analog (with PWM) load
+and receive commands over a UART and wireless networks. In the following the name "Billy"
+may refer both to the software and a device that runs it.
 
+### Project pages
 **GitHub**
 [![github-en](https://img.shields.io/badge/github-en-blue)](https://github.com/ErlingSigurdson/Billy/blob/main/README.md)
 [![github-ru](https://img.shields.io/badge/github-ru-blue)](https://github.com/ErlingSigurdson/Billy/blob/main/README.ru.md)
-
 **GitFlic**
 [![gitlfic-en](https://img.shields.io/badge/gitflic-en-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.md&branch=main)
 [![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.ru.md&branch=main)
 
 ### News
-- **14.01.2024** - Tested the sketch with ESP32-C6 SoC using
-[3.0.0-alpha3 version of ESP32 Arduino Core](https://github.com/espressif/arduino-esp32/milestone/4). Works alright.
-- **18.03.2024** - v.1.1 released.
-- **25.04.2024** - v.1.2 released.
-- **__.06.2024** - v.1.3 released: (1) analog load control functionality added, (2) thus project's name changed
-from "Billy the Relay" to just "Billy", (3) code was refactored significantly: command handler functions
-are now declared and defined in the separate files, not in the .ino file.
+- **14.01.2024** - the sketch is successfully run on a ESP32-C6 microcontroller using
+[3.0.0-alpha3 version of the ESP32 Arduino core](https://github.com/espressif/arduino-esp32/milestone/4).
+- **__.06.2024** - v.1.3 released, with certain major changes made:
+    - analog load control functionality added;
+    - thus the project's name changed from "Billy the Relay" to just "Billy";
+    - the code was refactored significantly. Among other things, command handler functions are now declared and defined
+      in the separate files, not in the .ino file.
 
 ### TODO list
 - Switching between station (STA) and access point (AP) Wi-Fi modes.
