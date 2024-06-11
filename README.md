@@ -24,11 +24,11 @@ may refer both to the software and a device that runs it.
     - analog load control functionality added, and thus the project's name changed
       from "Billy the Relay" to just "Billy";
     - the code was refactored significantly. Among other things, command handler functions
-      are now declared and defined in the separate files, not in the .ino file.
+      are now declared and defined in separate files, not in the .ino file.
 
 ### TODO list
 - Add switching between station (STA) and access point (AP) Wi-Fi modes in runtime.
-- Add an analog load control to the web interface.
+- Add an analog load control panel to the web interface.
 
 
 ***
