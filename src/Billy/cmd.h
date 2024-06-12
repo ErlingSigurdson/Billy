@@ -47,8 +47,8 @@ int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], u
 void cmd_aux_output(const char *msg);
 
 // Accessories for handler functions.
-void cmd_aux_set_digital_load(uint8_t pin, uint8_t state, const char *topic);
-void cmd_aux_set_analog_load(uint8_t pin, uint32_t val, const char *topic);
+void cmd_aux_set_digital_output(uint8_t pin, uint8_t state, const char *topic);
+void cmd_aux_set_PWM(uint8_t pin, uint32_t val, const char *topic);
 void cmd_aux_set_config(const char *cmd, uint32_t addr, const char *topic, bool echo_val, bool *refresh_flag);
 void cmd_aux_output_config(uint32_t addr, const char *topic);
 
@@ -75,20 +75,20 @@ void cmd_handler_err_val();
  * turn a digital (two-state) load ON or OFF. A main workhorse.
  * A prescribed state of the load is NOT stored in the inbuilt storage.
  */
-void cmd_handler_set_digital_load(const char *cmd);
+void cmd_handler_set_load_digital(const char *cmd);
 
 /* Command #2:
  * drive a load using PWM. Another main workhorse.
  * Valid values of a duty cycle are 0 to 255.
  * A prescribed duty cycle value is NOT stored in the inbuilt storage.
  */
-void cmd_handler_set_analog_load(const char *cmd);
+void cmd_handler_set_load_PWM(const char *cmd);
 
 /* Command #3:
  * print and send to a client the current state of a digital (two-state) load.
  * The actual output is based on a return value of the digitalRead().
  */
-void cmd_handler_output_digital_load();
+void cmd_handler_output_load_digital();
 
 /* Command #4:
  * change an SSID of a local Wi-Fi access point

@@ -30,8 +30,8 @@
 /*--- GPIO ---*/
 
 // Assign load control pins.
-#define DIGITAL_LOAD_PIN 2
-#define ANALOG_LOAD_PIN 5
+#define DIGITAL_OUTPUT_PIN 2
+#define PWM_PIN 5
 
 // Assign indicator LED control pin.
 #define WIFI_INDICATOR_LED_PIN 2
@@ -42,12 +42,12 @@
  */
 //#define INVERTED_DIGITAL_OUTPUT
 #ifndef INVERTED_DIGITAL_OUTPUT
-    #define DIGITAL_LOAD_ON 1
-    #define DIGITAL_LOAD_OFF 0
+    #define DIGITAL_OUTPUT_LOAD_ON 1
+    #define DIGITAL_OUTPUT_LOAD_OFF 0
 #endif
 #ifdef INVERTED_DIGITAL_OUTPUT
-    #define DIGITAL_LOAD_ON 0
-    #define DIGITAL_LOAD_OFF 1
+    #define DIGITAL_OUTPUT_LOAD_ON 0
+    #define DIGITAL_OUTPUT_LOAD_OFF 1
 #endif
 
 

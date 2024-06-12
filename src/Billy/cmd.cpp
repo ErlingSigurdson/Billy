@@ -70,13 +70,13 @@ void cmd_aux_output(const char *msg)
     #endif
 }
 
-void cmd_aux_set_digital_load(uint8_t pin, uint8_t state, const char *topic)
+void cmd_aux_set_digital_output(uint8_t pin, uint8_t state, const char *topic)
 {
     digitalWrite(pin, state);
     cmd_aux_output(topic);
 }
 
-void cmd_aux_set_analog_load(uint8_t pin, uint32_t val, const char *topic)
+void cmd_aux_set_PWM(uint8_t pin, uint32_t val, const char *topic)
 {
     analogWrite(pin, val);
     cmd_aux_output(topic);
@@ -141,36 +141,36 @@ void cmd_handler_err_val()
 }
 
 // Command #1
-void cmd_handler_set_digital_load(const char *cmd)
+void cmd_handler_set_load_digital(const char *cmd)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
     if (!strcmp(cmd_val, "TOGGLE")) {
-        if (digitalRead(DIGITAL_LOAD_PIN) == DIGITAL_LOAD_ON) {
-            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, DIGITAL_LOAD_OFF, "Digital load is now OFF");
+        if (digitalRead(DIGITAL_OUTPUT_PIN) == DIGITAL_OUTPUT_LOAD_ON) {
+            cmd_aux_set_digital_output(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF, "Two-state load is now OFF");
             return;
         } else {
-            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, DIGITAL_LOAD_ON, "Digital load is now ON");
+            cmd_aux_set_digital_output(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_ON, "Two-state load is now ON");
             return;
         }
     }
 
     if (!strcmp(cmd_val, "ON")) {
-        if (digitalRead(DIGITAL_LOAD_PIN) != DIGITAL_LOAD_ON) {
-            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, DIGITAL_LOAD_ON, "Digital load is now ON");
+        if (digitalRead(DIGITAL_OUTPUT_PIN) != DIGITAL_OUTPUT_LOAD_ON) {
+            cmd_aux_set_digital_output(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_ON, "Two-state load is now ON");
             return;
         } else {
-            cmd_aux_output("Digital load is already ON");
+            cmd_aux_output("Two-state load is already ON");
             return;
         }
     }
 
     if (!strcmp(cmd_val, "OFF")) {
-        if (digitalRead(DIGITAL_LOAD_PIN) != DIGITAL_LOAD_OFF) {
-            cmd_aux_set_digital_load(DIGITAL_LOAD_PIN, DIGITAL_LOAD_OFF, "Digital load is now OFF");
+        if (digitalRead(DIGITAL_OUTPUT_PIN) != DIGITAL_OUTPUT_LOAD_OFF) {
+            cmd_aux_set_digital_output(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF, "Two-state load is now OFF");
             return;
         } else {
-            cmd_aux_output("Digital load is already OFF");
+            cmd_aux_output("Two-state load is already OFF");
             return;
         }
     }
@@ -179,7 +179,7 @@ void cmd_handler_set_digital_load(const char *cmd)
 }
 
 // Command #2
-void cmd_handler_set_analog_load(const char *cmd)
+void cmd_handler_set_load_PWM(const char *cmd)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
@@ -205,13 +205,13 @@ void cmd_handler_set_analog_load(const char *cmd)
     char msg[STR_MAX_LEN * 2 + 1] = "Analog load duty cycle set to ";
     strcat(msg, cmd_val);
 
-    cmd_aux_set_analog_load(ANALOG_LOAD_PIN, val, msg);
+    cmd_aux_set_PWM(PWM_PIN, val, msg);
 }
 
 // Command #3
-void cmd_handler_output_digital_load()
+void cmd_handler_output_load_digital()
 {
-    if (digitalRead(DIGITAL_LOAD_PIN) == DIGITAL_LOAD_ON) {
+    if (digitalRead(DIGITAL_OUTPUT_PIN) == DIGITAL_OUTPUT_LOAD_ON) {
         cmd_aux_output("Current digital load state is ON");
     } else {
         cmd_aux_output("Current digital load state is OFF");
