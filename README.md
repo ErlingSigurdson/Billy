@@ -1,12 +1,13 @@
-[<65;80;20M]![ESP modules](https://i.imgur.com/5ZhI7Su.png)
+![ESP modules](https://i.imgur.com/5ZhI7Su.png)
 
 # Project background information
 
 ### Concept
 Billy is a program (an Arduino sketch) written for ESP32 and ESP8266 microcontrollers.
-With this software an MCU can control a digital (ON/OFF) and an analog (with PWM) load
-and receive commands over a UART and wireless networks. In the following the name "Billy"
-may refer both to the software and a device that runs it.
+With this software an MCU can control a load using a digital (ON/OFF) and a pseudo-analog (PWM) output
+and receive commands over a UART and wireless networks.
+
+In the following the name "Billy" may refer both to the software and a device that runs it.
 
 ### Project pages
 **GitHub**
@@ -21,30 +22,29 @@ may refer both to the software and a device that runs it.
 - **14.01.2024** - the sketch is successfully run on a ESP32-C6 microcontroller using
 [3.0.0-alpha3 version of the ESP32 Arduino core](https://github.com/espressif/arduino-esp32/milestone/4).
 - **__.06.2024** - v.1.3 released, with certain major changes made:
-    - analog load control functionality added, and thus the project's name changed
+    - PWM output functionality added, and thus the project's name changed
       from "Billy the Relay" to just "Billy";
     - the code was refactored significantly. Among other things, command handler functions
       are now declared and defined in separate files, not in the .ino file.
 
 ### TODO list
 - Add switching between station (STA) and access point (AP) Wi-Fi modes in runtime.
-- Add an analog load control panel to the web interface.
+- Add a PWM output control panel to the web interface.
 
 
 ***
 # Manual
 
-### GPIO and Load
-Billy provides 2 control channels - one for a digital load and another one for an analog load.
-The channels are basically GPIOs, one in a digital output mode and another one outputting PWM signal.
+### GPIO and load
+Billy uses 2 GPIOs to control a load - one for a digital output and another one for a pseudo-analog (PWM) output.
+A single additional GPIO provides a digital output to control an indicator LED.
 
-A typical digital load would be an LED (usually used for testing purposes) or a transistor driver which
-in its turn switches a relay. A typical analog load would be, again, an LED or a MOSFET driver which
-in its turn drives an electric motor.
+Aside from an LED, Billy can control such a typical load as:
+- a relay (by means of an octocoupler or a transistor driver) controlled by a digital output;
+- an electric motor (by means of a MOSFET driver) controlled by a PWM signal.
 
-Additionally, there's a GPIO in a digital output mode assigned to control an indicator LED.
-
-GPIOs are assigned with a `#define` directive in 
+GPIOs are assigned with `#define` directives in
+TODO 
 
 
 ### Communications
