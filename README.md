@@ -23,8 +23,8 @@ In the following the name "Billy" may refer both to the software and a device th
 [3.0.0-alpha3 version of the ESP32 Arduino core](https://github.com/espressif/arduino-esp32/milestone/4).
 - **__.06.2024** - v.1.3 released, with certain major changes made:
     - PWM output functionality added, and thus the project's name changed
-      from "Billy the Relay" to just "Billy";
-    - the code was refactored significantly. Among other things, command handler functions
+      from "Billy the Relay" to just "Billy".
+    - The code was refactored significantly. Among other things, command handler functions
       are now declared and defined in separate files, not in the .ino file.
 
 ### TODO list
@@ -40,8 +40,8 @@ Billy uses 2 GPIOs to control a load - one for a digital output and another one 
 A single additional GPIO provides a digital output to control an indicator LED.
 
 Aside from an LED, Billy can control such a typical load as:
-- a relay (by means of an octocoupler or a transistor driver) controlled by a digital output;
-- an electric motor (by means of a MOSFET driver) controlled by a PWM signal.
+- A relay (via an octocoupler or a transistor driver) using a digital output.
+- An electric motor (via a MOSFET driver) using a PWM signal.
 
 GPIOs are assigned with `#define` directives in
 TODO 
