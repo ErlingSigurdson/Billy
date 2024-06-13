@@ -31,7 +31,7 @@
 
 // Assign load control pins.
 #define DIGITAL_OUTPUT_PIN 2
-#define PWM_PIN 5
+#define PWM_OUTPUT_PIN 5
 
 // Assign indicator LED control pin.
 #define WIFI_INDICATOR_LED_PIN 2

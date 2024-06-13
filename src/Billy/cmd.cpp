@@ -205,7 +205,7 @@ void cmd_handler_set_load_PWM(const char *cmd)
     char msg[STR_MAX_LEN * 2 + 1] = "Analog load duty cycle set to ";
     strcat(msg, cmd_val);
 
-    cmd_aux_set_PWM(PWM_PIN, val, msg);
+    cmd_aux_set_PWM(PWM_OUTPUT_PIN, val, msg);
 }
 
 // Command #3

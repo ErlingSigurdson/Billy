@@ -1,6 +1,6 @@
 ![ESP modules](https://i.imgur.com/5ZhI7Su.png)
 
-# Project background information
+# Project background
 
 ### Concept
 Billy is a program (an Arduino sketch) written for ESP32 and ESP8266 microcontrollers.
@@ -19,70 +19,84 @@ In the following the name "Billy" may refer both to the software and a device th
 [![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.ru.md&branch=main)
 
 ### News and milestones
-- **14.01.2024** - the sketch is successfully run on a ESP32-C6 microcontroller using
-[3.0.0-alpha3 version of the ESP32 Arduino core](https://github.com/espressif/arduino-esp32/milestone/4).
-- **__.06.2024** - v.1.3 released, with certain major changes made:
-    - PWM output functionality added, and thus the project's name changed
-      from "Billy the Relay" to just "Billy".
+- **14.01.2024** - the sketch is successfully run on a ESP32-C6 module using
+[3.0.0-alpha3 version of the ESP32 Arduino core by Espressif Systems](https://github.com/espressif/arduino-esp32/milestone/4).
+- **14.06.2024** - v.1.3 released, with certain major changes made:
+    - PWM output support added, and thus the project's name changed from "Billy the Relay" to just "Billy".
     - The code was refactored significantly. Among other things, command handler functions
       are now declared and defined in separate files, not in the .ino file.
 
 ### TODO list
-- Add switching between station (STA) and access point (AP) Wi-Fi modes in runtime.
-- Add a PWM output control panel to the web interface.
+1. Add a PWM output control panel to the web interface.
+2. Add a Bluetooth Low Energy (BLE) support.
+3. Add support for switching between station (STA) and access point (AP) Wi-Fi modes,
+and afterwards make this switching runtime.
 
 
 ***
 # Manual
 
-### GPIO and load
-Billy uses 2 GPIOs to control a load - one for a digital output and another one for a pseudo-analog (PWM) output.
-A single additional GPIO provides a digital output to control an indicator LED.
+### Load control
+Billy uses 2 GPIO pins to control a load - one for a digital output and another one for a PWM output.
 
-Aside from an LED, Billy can control such a typical load as:
-- A relay (via an octocoupler or a transistor driver) using a digital output.
-- An electric motor (via a MOSFET driver) using a PWM signal.
+A typical load for Billy would be:
+- For a digital output - an electromechanical relay controlled via an octocoupler or a transistor driver.
+- For a PWM output - an electric motor controlled via a MOSFET driver.
+- For both output types - an LED (usually used for testing purposes).
 
-GPIOs are assigned with `#define` directives in
-TODO 
+### Indicator LED
+Billy uses a single additional GPIO pin for a digital control over an indicator LED.
+The LED indicates a Wi-Fi connection status: a low-frequency blinking for an ongoing connection attempt,
+a high-frequency blinking for a successful connection attempts.  
 
+### Combined outputs
+A combination of digital and PWM outputs in one pin is to be avoided.
+A combination of digital outputs for a load control and for an indicator LED control is safe,
+but will effectively turn that same LED into the load to be controlled.
 
 ### Communications
-
-### Storing configs
-
-
-Billy is a sketch for Arduino framework written for ESP32 and ESP8266 modules (systems-on-chip, SoCs).
-The same name may also refer to a device that runs the respective sketch. 
-Billy can control:
-- a digital (ON/OFF) load, like an LED or (by means of a transistor driver) a relay;
-- an analog load, like an LED of (by means of a transistor driver) an electric motor.
-
-Load is controlled by changing the output voltage at GPIOs specified in the code.
-
 Billing can receive commands:
-- over UART through a cable connection;
-- over Wi-Fi as a local TCP server, e.g. sent by a classic Unix utility `netcat` (`nc`)
-or by an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android);  
-- over Wi-Fi as a local HTTP server, e.g. from a web browser (sketch provides a simplistic web interface)
-or a different app capable of sending HTTP requests;
-- over Bluetooth Classic as a slave device[^1], e.g. from a desktop Bluetooth terminal or an Android app like
-[Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android);
-- over Wi-Fi as a TCP client (inter alia via Internet). To do so Billy sends requests to a custom-programmed TCP server
+- Over UART through a cable connection.
+- Over Wi-Fi as a local TCP server, e.g. sent by a classic Unix utility `netcat` (`nc`)
+or by an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).
+- Over Wi-Fi as a local HTTP server, e.g. from a web browser (sketch provides a simplistic web interface)
+or a different app capable of sending HTTP requests.
+- Over Bluetooth Classic as a slave device[^1], e.g. from a desktop Bluetooth terminal or an Android app like
+[Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android).
+- Over Wi-Fi as a TCP client (inter alia via Internet). To do so Billy sends requests to a custom-programmed TCP server
 and receives commands as a response (this implementation is described in detail below).
 
 Billy works within a local Wi-Fi network in a station (STA) mode.
 Billy uses an Internet access provided by a local access point.
 
-Billy's operations rely heavily on a module's inbuilt flash memory storage.
-When you specify configs (an SSID, a password, a port number, etc.), they are saved in the inbuilt storage
+### IoT: Billy as a TCP client and control over Internet
+A remote TCP server (an IoT server) to which Billy sends requests must be able to:
+- Send messages (strings) with valid commands in a response to Billy's requests (e.g. string `"UPD_REQ"`).
+- Update a message prepared to be sent to Billy according to remote commands sent by other devices.
+
+Say, the IoT server receives "turn load ON" command from your web browser and prepares to send `AT+DLOAD=ON` string
+in a response to Billy's next request. Billy receives the string and puts it into a buffer to check for valid commands,
+as it would do with a message received over any other communication channel.
+
+[Here you can find an example code for a Linux server that works in a described fashion](https://github.com/ErlingSigurdson/server0451/tree/main)
+written in C language. It's been written with an interaction with Billy and similar devices in mind.
+
+### Storing configs
+Billy's operations rely heavily on a flash memory storage built into the MCU or into the respective module.
+When you specify configs (an SSID, a password, a port number, etc.), they become saved in the storage
 and thus you don't need to assign them again in case of a device reboot.
-There's a single exception: load state is reset to OFF (or 0 duty cycle) upon reset.
 
+A current load state (a current digital output level or a PWM duty cycle) isn't considered to be a config though,
+and thus it's not stored in the flash storage. Any load will be turned off in case of a device reboot.
 
-# Manual
 ### Complete command list
-Please refer to `config_сmd.h` to see all the available commands.
+Refer to the file `config_сmd.h` to see all available commands.
+
+### Quickstart
+Code configuration, minimal runtime configuration and startup are made as follows:
+
+
+
 
 ### Quickstart
 Follow these steps to configure and start using Billy:
@@ -119,15 +133,7 @@ Additionally, if your device supports Bluetooth Classic:
 18. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Bluetooth. Make sure Billy follows your instructions.
 
 ### Billy as a TCP client and IoT control
-A remote server (an IoT server) to which Billy sends requests must be able to:
-- in response to Billy's requests (e.g. string `"UPD_REQ"`) send messages (strings) with valid commands;
-- update a message prepared to be sent to Billy according to remote commands sent by other devices.
-
-Say, IoT server receives "turn load ON" command from your web browser and prepares to send `AT+SETLOAD=ON` string in a response to Billy's next request. Billy receives the string and puts it into a buffer to check for valid commands.
-
-To specify IoT configs use commands `AT+SETIOTIP=<value>`, `AT+SETIOTPORT=<value>`, `AT+SETIOTREQMSG=<value>`, `AT+SETIOTREQPERIOD=<value>`, `AT+SETIOT=ON` and `AT+SETIOT=OFF`.
-
-[Here you can find an example code for a Linux server that works in a described fashion](https://github.com/ErlingSigurdson/server0451/tree/main) written in C language. It is written specifically for Billy and similar devices.
+ It is written specifically for Billy and similar devices.
 
 ### Notes on GPIO
 Defining `DIGITAL_LOAD_PIN` and `ANALOG_LOAD_PIN` with same values should be avoided
@@ -136,6 +142,7 @@ Defining `DIGITAL_LOAD_PIN` and `WIFI_INDICATOR_LED_PIN` is technically acceptab
 unless your digital load is an LED.
 
 
+***
 # General notes on code
 ### Sketch layout
 Breaking a sketch into a basic `.ino` file and local modules (pairs of `.h` and `.cpp` files) may not be very popular within Arduino paradigm, but I find it more straightforward and easier to manage than simple concatenation of multiple `.ino` files.  
@@ -148,6 +155,7 @@ Method calls are mostly packed into wrapper functions declared and defined in lo
 Local modules do not refer to each other. Instead, their wrapper functions are combined in `.ino` file, which allows for easier sketch customization.
 
 
+***
 # Expected questions
 ### Why not MQTT? It's so well-suited for IoT!
 I wanted more flexibility and I didn't want to stick to a particular OSI layer 7 protocol.

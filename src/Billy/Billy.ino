@@ -54,7 +54,7 @@ void setup()
 
     /*--- GPIO ---*/
 
-    if (DIGITAL_OUTPUT_PIN == PWM_PIN) {
+    if (DIGITAL_OUTPUT_PIN == PWM_OUTPUT_PIN) {
         Serial.println("Warning! Pins controlling digital and analog loads coincide. "
                        "It will most probably render digital control inoperable.");
     }
@@ -68,7 +68,7 @@ void setup()
     if (first_setup) {
     // Configuration.
         pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
-        pinMode(PWM_PIN, OUTPUT);
+        pinMode(PWM_OUTPUT_PIN, OUTPUT);
         pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
 
     // Setting digital outputs to respective initial digital levels.
