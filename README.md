@@ -82,7 +82,7 @@ as it would do with a message received over any other communication channel.
 written in C language. It's been written with an interaction with Billy and similar devices in mind.
 
 ### Storing configs
-Billy's operations rely heavily on a flash memory storage built into the MCU or into the respective module.
+Billy's operations rely heavily on a flash memory storage built into the MCU or into the integrated module.
 When you specify configs (an SSID, a password, a port number, etc.), they become saved in the storage
 and thus you don't need to assign them again in case of a device reboot.
 
@@ -93,57 +93,51 @@ and thus it's not stored in the flash storage. Any load will be turned off in ca
 Refer to the file `config_сmd.h` to see all available commands.
 
 ### Quickstart
-Code configuration, minimal runtime configuration and startup are made as follows:
+Code configuration and upload, minimal runtime configuration and initial testing are made as follows:
 
-
-
-
-### Quickstart
-Follow these steps to configure and start using Billy:
-1. In the file `config_general.h` use `#define` directives to specify:
-- whether your device uses Bluetooth Classic (`BT_CLASSIC_PROVIDED`). Comment out the directive if your ESP32
-doesn't support Bluetooth Classic or you just don't want to use it. Ignore for ESP8266;
-- digital load control pin (`DIGITAL_LOAD_PIN`). Specify the pin number as a value;
-- analog load control pin (`ANALOG_LOAD_PIN`). Specify the pin number as a value;
-- indicator LED control pin (`WIFI_INDICATOR_LED_PIN`). Specify the pin number as a value;
-- digital load mode (`INVERTED_DIGITAL_OUTPUT`). Uncomment the directive if you need an inverted output.
+1. In the file `config_general.h`:
+- Specify a digital output pin using directive `#define DIGITAL_OUTPUT_PIN`.
+- Specify a PWM ouput pin using directive `#define PWM_OUTPUT_PIN`.
+- Specify an indicator LED control pin using directive `#define WIFI_INDICATOR_LED_PIN`.
+- If your digitally controlled load is turned on by a low logical level on the respective pin,
+uncomment the directive `#define INVERTED_DIGITAL_OUTPUT`.
+- Comment out the directive `#define BT_CLASSIC_PROVIDED` if your ESP32 device doesn't support Bluetooth Classic
+or you just don't want to use this technology. Ignore for ESP8266.
 2. Make sure your Arduino IDE (or Arduino SDK for a third-party IDE) has an appropriate core for 
 [ESP32](https://github.com/espressif/arduino-esp32) or [ESP8266](https://github.com/esp8266/Arduino)
 by Espressif Systems.
 3. Compile the sketch and upload it to your device.[^2]
-4. Turn on your device and connect to it by a cable (through USB-UART adapter or, if suppored, UART over native USB).
-Open serial terminal.
-5. Send command `AT+DLOAD=TOGGLE` twice and make sure that Billy switches a current digital load status.
-6. Consecutively send commands `AT+ALOAD=255` and `AT+ALOAD=00` and make sure that Billy control the analog load.
+4. Turn on your device and connect to it by a cable (via USB-UART adapter or, if supported by your device,
+via UART over native USB).
+5. Open a serial terminal and set an appropriate baud rate (115200 by default). 
+6. Send command `AT+LOCALSSID=<value>` to specify your Wi-Fi network SSID.
+7. Send command `AT+LOCALPSWD=<value>` to specify your Wi-Fi network access point password.
+8. Send command `AT+LOCALPORT=<value>` to specify a port number to be used by Billy as a local TCP server.
+9. Reset Billy and send a `AT+LOCALCONNRST` command.
+10. Make sure your device has established a connection to your Wi-Fi network.
+11. Send commands `AT+DLOAD=ON`, `AT+DLOAD=OFF`, `AT+DLOAD=TOGGLE` и `AT+ALOAD=<значение от 0 до 255>`,
+over the UART and via a Wi-Fi serial terminal, try controlling your load in different ways.
+12. Start any web browser and insert Billy's local IP. Try controlling the load using the web interface.
 
-7. Send command `AT+LOCALSSID=<value>` to specify your local Wi-Fi network SSID.
-8. Send command `AT+LOCALPSWD=<value>` to specify your local Wi-Fi network access point password.
-9. Send command `AT+LOCALPORT=<value>` to specify port number to be used by your device as a local TCP server.
-10. Reset your device or send the command `AT+RSTLOCALCONN`. Make sure your device has established a connection to your local Wi-Fi network (look at UART terminal and indicator LED). Remember of write down printed local IP address (you can use `AT+PRINTLOCALIP` command to print it again if necessary).
-11. Connect to you device over Wi-Fi using previously printed local IP address and previously specified port.
-12. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Wi-Fi using established TCP connection. Make sure Billy follows your instructions.
-13. Open any web browser (I recommend Mozilla Firefox) on any device connected to the same local Wi-Fi network and insert previously printed IP address into an address bar.
-14. Use web interface to turn your load ON and OFF.
+Test Bluetooth Classic functionality (if supported) as follows:
 
-Additionally, if your device supports Bluetooth Classic:
+1. Send command `AT+BTCLASSICDEVNAME=<value>` to specify Billy's name as a slave device.
+2. Send command `AT+BTCLASSIC=ON` to turn Bluetooth Classic functionality on.
+3. Send commands `AT+DLOAD=ON`, `AT+DLOAD=OFF`, `AT+DLOAD=TOGGLE` and `AT+ALOAD=<value from 0 to 255>`,
+over a Bluetooth terminal, try controlling your load in different ways.
 
-15. Send command `AT+SETBTDEVNAME=<value>` to specify Billy's name as a Bluetooth slave device.
-16. Send command `AT+SETBT=ON` to turn on Bluetooth Classic.
-17. Connect to Billy over Bluetooth using previously specified slave device name.
-18. Try sending commands (e.g. `AT+SETLOAD=TOGGLE`) over Bluetooth. Make sure Billy follows your instructions.
+Test IoT functionality as follows:
 
-### Billy as a TCP client and IoT control
- It is written specifically for Billy and similar devices.
-
-### Notes on GPIO
-Defining `DIGITAL_LOAD_PIN` and `ANALOG_LOAD_PIN` with same values should be avoided
-since it will most probably render digital control inoperable.
-Defining `DIGITAL_LOAD_PIN` and `WIFI_INDICATOR_LED_PIN` is technically acceptable, but hardly makes sense
-unless your digital load is an LED.
+1. Send command `AT+IOTIP=<value>` assign an IP address of a remote server that will send commands to Billy.
+2. Send command `AT+IOTPORT=<value>` assign a port number of a remote server opened for the requests from Billy. 
+3. Send command `AT+IOTREQMSG=<value>` assign a request message that suits the remote server's settings.
+4. Send command `AT+IOT=OFF` turn IoT functionality on.
+5. Make sure Billy receives commands from the remote server.
 
 
 ***
 # General notes on code
+
 ### Sketch layout
 Breaking a sketch into a basic `.ino` file and local modules (pairs of `.h` and `.cpp` files) may not be very popular within Arduino paradigm, but I find it more straightforward and easier to manage than simple concatenation of multiple `.ino` files.  
 
@@ -157,6 +151,7 @@ Local modules do not refer to each other. Instead, their wrapper functions are c
 
 ***
 # Expected questions
+
 ### Why not MQTT? It's so well-suited for IoT!
 I wanted more flexibility and I didn't want to stick to a particular OSI layer 7 protocol.
 
