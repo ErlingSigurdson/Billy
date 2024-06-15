@@ -233,7 +233,7 @@ void setup()
     }
     Serial.println("");
 
-    // Bluetooth startup.
+    // Bluetooth Classic startup.
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         if (stored_configs.BT_Classic_flag) {
             ESP32_BT_Classic_start(stored_configs.BT_Classic_dev_name);
@@ -392,7 +392,7 @@ void loop()
         }
     }
 
-    // Read data from a Bluetooth master device.
+    // Read data from a Bluetooth Classic master device.
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         bool BT_Classic_was_connected = 0;
         if (stored_configs.BT_Classic_flag && ESP32_BT_Classic_check_connection()) {
@@ -546,7 +546,7 @@ void loop()
     // TCP clients' disconnection.
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
 
-    // Bluetooth disconnection.
+    // Bluetooth Classic disconnection.
     #if defined ESP32 && defined BT_CLASSIC_PROVIDED
         if (BT_Classic_was_connected) {  /* Another call for connected() method
                                           * caused RTOS crash, hence additional
@@ -558,17 +558,20 @@ void loop()
 
 
     /*--- Wi-Fi reconnect ---*/
+
+    #define WIFI_RECONNECT_CHECK_PERIOD 30000
+    
     static uint64_t WiFi_reconnect_current_millis = millis();
     static uint64_t WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis;
 
-    if (ESP_WiFi_is_connected()) {
-        WiFi_reconnect_current_millis = millis();
-        WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis;
-    } else {
-        WiFi_reconnect_current_millis = millis();
-    }
-
-    if (WiFi_reconnect_current_millis - WiFi_reconnect_previous_millis >= 30000) {
+    static bool WiFi_was_unconnected = !ESP_WiFi_is_connected();
+    static bool WiFi_reconnect_due_time =
+           WiFi_reconnect_current_millis - WiFi_reconnect_previous_millis()  > WIFI_RECONNECT_CHECK_PERIOD;
+    
+    if (WiFi_reconnect_due_time && !WiFi_was_unconnected) {
+        WiFi_was_unconnected = !ESP_WiFi_is_connected();
+        WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis; 
+    } else if (WiFi_reconnect_due_time && WiFi_was_unconnected)
         ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
         ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
 
@@ -576,7 +579,21 @@ void loop()
             ESP32_BT_Classic_stop(CONN_SHUTDOWN_DOWNTIME);
         #endif
         
-        setup();
+        setup_WiFi();
+        WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis;        
+    } else {
+        WiFi_reconnect_current_millis = millis();
+    }
+
+
+    
+        WiFi_reconnect_current_millis = millis();
         WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis;
+    } else {
+        WiFi_reconnect_current_millis = millis();
+    }
+
+    if (WiFi_reconnect_current_millis - WiFi_reconnect_previous_millis >= 30000) {
+
     }
 }

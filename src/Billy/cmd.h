@@ -183,13 +183,13 @@ void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag);
 void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), bool *refresh_flag);
 
 /* Command #20:
- * change a name of the ESP as a Bluetooth slave device
+ * change a name of the ESP as a Bluetooth Classic slave device
  * stored in the inbuilt storage.
  */
 void cmd_handler_set_BT_Classic_dev_name(const char *cmd, bool *refresh_flag);
 
 /* Command #21:
- * print and send to a client a name of the ESP as a Bluetooth slave device
+ * print and send to a client a name of the ESP as a Bluetooth Classic slave device
  * stored in the inbuilt storage.
  */
 void cmd_handler_output_BT_Classic_dev_name();

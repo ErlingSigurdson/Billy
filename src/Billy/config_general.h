@@ -16,7 +16,7 @@
 #define CONFIG_GENERAL_H
 
 
-/*--- Bluetooth ---*/
+/*--- Bluetooth Classic ---*/
 
 /* Comment following #define directive for ESP32 modules
  * which lack Bluetooth Classic functionality (e.g. ESP32-S2 and ESP32-C3).
