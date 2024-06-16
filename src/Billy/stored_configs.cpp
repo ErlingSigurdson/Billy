@@ -36,8 +36,8 @@ void stored_configs_read(stored_configs_t *_stored_configs)
     #define INDEX_IOT_SERVER_PORT      5
     #define INDEX_IOT_REQ_MSG          6
     #define INDEX_IOT_REQ_PERIOD       7
-    #define INDEX_BT_CLASSIC_FLAG      8
-    #define INDEX_BT_CLASSIC_DEV_NAME  9
+    #define INDEX_BTCLASSIC_FLAG      8
+    #define INDEX_BTCLASSIC_DEV_NAME  9
     #define INDEX_RSSI_OUTPUT_FLAG     10
 
 
@@ -53,8 +53,8 @@ void stored_configs_read(stored_configs_t *_stored_configs)
         INBUILT_STORAGE_ADDR_IOT_SERVER_PORT,
         INBUILT_STORAGE_ADDR_IOT_REQ_MSG,
         INBUILT_STORAGE_ADDR_IOT_REQ_PERIOD,
-        INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG,
-        INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME,
+        INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG,
+        INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME,
         INBUILT_STORAGE_ADDR_RSSI_OUTPUT_FLAG
     };
 
@@ -104,16 +104,16 @@ void stored_configs_read(stored_configs_t *_stored_configs)
     // Interval for sending requests to an IoT (remote) server.
     _stored_configs->IoT_req_period = strtol(stored_configs_str[INDEX_IOT_REQ_PERIOD], NULL, 10);
 
-    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_PROVIDED
         // Bluetooth Classic functionality flag.
-        if (!strcmp(stored_configs_str[INDEX_BT_CLASSIC_FLAG], "ON")) {
+        if (!strcmp(stored_configs_str[INDEX_BTCLASSIC_FLAG], "ON")) {
             _stored_configs->BT_Classic_flag = 1;
         } else {
             _stored_configs->BT_Classic_flag = 0;
         }
 
         // ESP's name as a Bluetooth Classic slave device
-        strcpy(_stored_configs->BT_Classic_dev_name, stored_configs_str[INDEX_BT_CLASSIC_DEV_NAME]);
+        strcpy(_stored_configs->BT_Classic_dev_name, stored_configs_str[INDEX_BTCLASSIC_DEV_NAME]);
     #endif
 
     // RSSI output flag.

@@ -34,7 +34,7 @@
 #include "ESP_TCP.h"
 #include "ESP_HTTP.h"
 
-#if defined ESP32 && defined BT_CLASSIC_PROVIDED
+#if defined ESP32 && defined BTCLASSIC_PROVIDED
     #include "ESP32_Bluetooth_Classic.h"
 #endif
 
@@ -46,7 +46,7 @@ void setup()
     /*--- Starting hardware UART ---*/
 
     Serial.begin(HW_UART_BAUD_RATE);
-    delay(HW_UART_STARTUP_PAUSE);     // A tiny pause to allow interface startup.
+    delay(HW_UART_STARTUP_PAUSE);     // A tiny pause to allow for the interface startup.
 
     Serial.println("");
     Serial.println("*** HELLO, HUMAN! ***");
@@ -55,28 +55,18 @@ void setup()
     /*--- GPIO ---*/
 
     if (DIGITAL_OUTPUT_PIN == PWM_OUTPUT_PIN) {
-        Serial.println("Warning! Pins controlling digital and analog loads coincide. "
+        Serial.println("Warning! Digital and PWM output pins coincide. "
                        "It will most probably render digital control inoperable.");
     }
 
-    /* In case of local wireless connections being reset without resetting the device,
-     * setup() is used as a callback function. Such reset should not impact GPIOs though,
-     * and thus here is introduced a static flag that makes GPIO-related code a one-shot.
-     */
-    static bool first_setup = 1;
-
-    if (first_setup) {
     // Configuration.
-        pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
-        pinMode(PWM_OUTPUT_PIN, OUTPUT);
-        pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
+    pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
+    pinMode(PWM_OUTPUT_PIN, OUTPUT);
+    pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
 
     // Setting digital outputs to respective initial digital levels.
-        digitalWrite(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF);
-        digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_OUTPUT_LOAD_OFF);
-    }
-
-    first_setup = 0;
+    digitalWrite(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF);
+    digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_OUTPUT_LOAD_OFF);
 
 
     /*--- Interaction with the inbuilt storage ---*/
@@ -166,22 +156,22 @@ void setup()
                               INBUILT_STORAGE_ADDR_IOT_REQ_PERIOD);
     #endif
 
-    //#define SET_BT_CLASSIC_FLAG_AT_UPLOAD
-    #ifdef SET_BT_CLASSIC_FLAG_AT_UPLOAD
+    //#define SET_BTCLASSIC_FLAG_AT_UPLOAD
+    #ifdef SET_BTCLASSIC_FLAG_AT_UPLOAD
         char BT_Classic_flag[STR_MAX_LEN] = "OFF";
         inbuilt_storage_write(BT_Classic_flag,
                               strlen(BT_Classic_flag),
                               INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG);
+                              INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
     #endif
 
-    //#define SET_BT_CLASSIC_DEV_NAME_AT_UPLOAD
-    #ifdef SET_BT_CLASSIC_DEV_NAME_AT_UPLOAD
-        char new_BT_Classic_dev_name[STR_MAX_LEN] = "NEW_BT_CLASSIC_DEV_NAME";
+    //#define SET_BTCLASSIC_DEV_NAME_AT_UPLOAD
+    #ifdef SET_BTCLASSIC_DEV_NAME_AT_UPLOAD
+        char new_BT_Classic_dev_name[STR_MAX_LEN] = "NEW_BTCLASSIC_DEV_NAME";
         inbuilt_storage_write(new_BT_Classic_dev_name,
                               strlen(new_BT_Classic_dev_name),
                               INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME);
+                              INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME);
     #endif
 
     //#define SET_RSSI_OUTPUT_FLAG_AT_UPLOAD
@@ -209,75 +199,15 @@ void setup()
      */
     ESP_TCP_server_port_update(stored_configs.local_server_port);
 
-    // Connect to Wi-Fi network.
-    bool WiFi_connected = ESP_WiFi_set_connection(stored_configs.local_SSID,
-                                                  stored_configs.local_pswd,
-                                                  CONN_TIMEOUT);
-
-    if (WiFi_connected) {
-        ESP_WiFi_indicate_connection(WIFI_INDICATOR_LED_PIN,
-                                     WIFI_INDICATE_CONNECTION_CYCLES,
-                                     WIFI_INDICATE_CONNECTION_PERIOD);
-
-        Serial.print("Current local IP address is: ");
-        Serial.println(ESP_WiFi_get_devices_current_IP());
-
-        ESP_TCP_server_start();
-        Serial.print("Local TCP server started at port ");
-        Serial.println(stored_configs.local_server_port);
-
-        ESP_HTTP_server_start();
-        ESP_HTTP_set_handlers();
-        Serial.print("Local HTTP server started at port ");
-        Serial.println(HTTP_PORT);
-    }
-    Serial.println("");
+    setup_WiFi(&stored_configs);
+    setup_BTClassic(&stored_configs);
 
     // Bluetooth Classic startup.
-    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_PROVIDED
         if (stored_configs.BT_Classic_flag) {
             ESP32_BT_Classic_start(stored_configs.BT_Classic_dev_name);
         }
     #endif
-
-
-    /*--- Config values printout ---*/
-
-    // Check for IoT mode flag.
-    Serial.print("Requests to IoT server: ");
-    if (stored_configs.IoT_flag != 0) {
-        Serial.println("ON");
-        Serial.print("Target IoT server IP address: ");
-        Serial.println(stored_configs.IoT_server_IP);
-        Serial.print("Target IoT server port: ");
-        Serial.println(stored_configs.IoT_server_port);
-        Serial.print("Request text: ");
-        Serial.println(stored_configs.IoT_req_msg);
-        Serial.print("Request period (once per ms): ");
-        Serial.println(stored_configs.IoT_req_period);
-    } else {
-        Serial.println("OFF");
-    }
-
-    // Check for Bluetooth Classic functionality flag.
-    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
-        Serial.print("Bluetooth Classic: ");
-        if (stored_configs.BT_Classic_flag != 0) {
-            Serial.println("ON");
-            Serial.print("Bluetooth Classic device name: ");
-            Serial.println(stored_configs.BT_Classic_dev_name);
-        } else {
-            Serial.println("OFF");
-        }
-    #endif
-
-    // Check for RSSI output flag.
-    Serial.print("RSSI output: ");
-    if (stored_configs.RSSI_output_flag != 0) {
-        Serial.println("ON");
-    } else {
-        Serial.println("OFF");
-    }
 
     Serial.println("");
     Serial.flush();
@@ -393,7 +323,7 @@ void loop()
     }
 
     // Read data from a Bluetooth Classic master device.
-    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_PROVIDED
         bool BT_Classic_was_connected = 0;
         if (stored_configs.BT_Classic_flag && ESP32_BT_Classic_check_connection()) {
             BT_Classic_was_connected = 1;
@@ -547,7 +477,7 @@ void loop()
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
 
     // Bluetooth Classic disconnection.
-    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_PROVIDED
         if (BT_Classic_was_connected) {  /* Another call for connected() method
                                           * caused RTOS crash, hence additional
                                           * flag was introduced.
@@ -575,7 +505,7 @@ void loop()
         ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
         ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
 
-        #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+        #if defined ESP32 && defined BTCLASSIC_PROVIDED
             ESP32_BT_Classic_stop(CONN_SHUTDOWN_DOWNTIME);
         #endif
         
@@ -583,17 +513,5 @@ void loop()
         WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis;        
     } else {
         WiFi_reconnect_current_millis = millis();
-    }
-
-
-    
-        WiFi_reconnect_current_millis = millis();
-        WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis;
-    } else {
-        WiFi_reconnect_current_millis = millis();
-    }
-
-    if (WiFi_reconnect_current_millis - WiFi_reconnect_previous_millis >= 30000) {
-
     }
 }

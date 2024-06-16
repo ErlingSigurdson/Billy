@@ -23,7 +23,7 @@
  * For ESP8266 don't worry about it.
  */
 #ifdef ESP32  // This macro is provided by the Arduino framework for the respective SoC family.
-    #define BT_CLASSIC_PROVIDED
+    #define BTCLASSIC_PROVIDED
 #endif
 
 

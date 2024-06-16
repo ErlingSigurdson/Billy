@@ -26,7 +26,7 @@
 #include "ESP_WiFi.h"
 #include "ESP_TCP.h"
 
-#if defined ESP32 && defined BT_CLASSIC_PROVIDED
+#if defined ESP32 && defined BTCLASSIC_PROVIDED
     #include "ESP32_Bluetooth_Classic.h"
 #endif
 
@@ -58,12 +58,12 @@ void cmd_aux_output(const char *msg)
     Serial.println(msg);
     ESP_TCP_server_send_msg(msg);
 
-    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_PROVIDED
         char val[STR_MAX_LEN + 1] = {0};
         inbuilt_storage_read(val,
                              sizeof(val),
                              INBUILT_STORAGE_STR_MAX_LEN,
-                             INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG);
+                             INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
         if (!strcmp(val, "ON")) {
             ESP32_BT_Classic_send_msg(msg);
         }
@@ -281,7 +281,7 @@ void cmd_handler_local_conn_rst(void (*setup_ptr)(void))
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
 
-    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_PROVIDED
         ESP32_BT_Classic_stop(CONN_SHUTDOWN_DOWNTIME);
     #endif
 
@@ -373,12 +373,12 @@ void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), b
     (void)setup_ptr;
     (void)refresh_flag;
 
-    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_PROVIDED
         char *cmd_val = strstr(cmd, "=") + 1;
 
         if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
             cmd_aux_set_config(cmd,
-                               INBUILT_STORAGE_ADDR_BT_CLASSIC_FLAG,
+                               INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG,
                                "Bluetooth Classic: ",
                                ECHO_VAL_ON,
                                refresh_flag);
@@ -396,9 +396,9 @@ void cmd_handler_set_BT_Classic_dev_name(const char *cmd, bool *refresh_flag)
     (void)cmd;
     (void)refresh_flag;
 
-    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_PROVIDED
         cmd_aux_set_config(cmd,
-                           INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME,
+                           INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME,
                            "Bluetooth Classic device name changed successfully! New name is: ",
                            ECHO_VAL_ON,
                            refresh_flag);
@@ -410,8 +410,8 @@ void cmd_handler_set_BT_Classic_dev_name(const char *cmd, bool *refresh_flag)
 // Command #21
 void cmd_handler_output_BT_Classic_dev_name()
 {
-    #if defined ESP32 && defined BT_CLASSIC_PROVIDED
-        cmd_aux_output_config(INBUILT_STORAGE_ADDR_BT_CLASSIC_DEV_NAME,
+    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+        cmd_aux_output_config(INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME,
                               "Current Bluetooth Classic device name is: ");
     #endif
 }

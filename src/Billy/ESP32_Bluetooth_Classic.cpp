@@ -20,7 +20,7 @@
 #include "config_general.h"
 
 // Conditional compilation
-#if defined ESP32 && defined BT_CLASSIC_PROVIDED
+#if defined ESP32 && defined BTCLASSIC_PROVIDED
 
 // Additional libraries for Arduino IDE.
 #include <BluetoothSerial.h>
@@ -70,8 +70,8 @@ uint32_t ESP32_BT_Classic_read_line(char *buf, uint32_t str_max_len, uint32_t co
 
             current_millis = millis();
 
-            #define BT_CLASSIC_READ_SLOWDOWN 2
-            delay(BT_CLASSIC_READ_SLOWDOWN);    /* Pause to ensure that the reading from the buffer
+            #define BTCLASSIC_READ_SLOWDOWN 2
+            delay(BTCLASSIC_READ_SLOWDOWN);    /* Pause to ensure that the reading from the buffer
                                                  * won't run ahead of writing to it.
                                                  */
         }

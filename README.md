@@ -152,9 +152,8 @@ for various sketch functions. Exceptions are made for certain flags and class in
 Method calls are mostly packed into wrapper functions declared and defined in the local modules.
 It's handy since method calls are usually accompanied with related lines of code.
 
-Local modules mostly do not refer to each other. Instead, their wrapper functions are combined in
-`setup()`, `setip_WiFi()`. `setup_BTClassic()`, `loop()` functions as well as command handler functions.
-This allows for an easier sketch customization.
+Local modules mostly do not refer to each other. Instead, their wrapper functions are called in the code
+listed in `Billy.ino`, `cmd.cpp` and `setup_wireless.cpp` files. This allows for an easier sketch customization.
 
 
 ***

@@ -19,37 +19,89 @@
  // Local modules.
  #include "setup_wireless.h"
  #include "utilities.h"
- #include "cmd.h"
- #include "inbuilt_storage.h"
- #include "stored_configs.h"
- #include "HW_UART.h"
  #include "ESP_WiFi.h"
  #include "ESP_TCP.h"
  #include "ESP_HTTP.h"
 
- #if defined ESP32 && defined BT_CLASSIC_PROVIDED
+ #if defined ESP32 && defined BTCLASSIC_PROVIDED
      #include "ESP32_Bluetooth_Classic.h"
  #endif
 
 
  /******************* FUNCTIONS ******************/
 
+void setup_WiFi(stored_configs_t *stored_configs)
+{
+    // Connect to Wi-Fi network.
+    bool WiFi_connected = ESP_WiFi_set_connection(stored_configs->local_SSID,
+                                                  stored_configs->local_pswd,
+                                                  CONN_TIMEOUT);
 
+    if (WiFi_connected) {
+        ESP_WiFi_indicate_connection(WIFI_INDICATOR_LED_PIN,
+                                     WIFI_INDICATE_CONNECTION_CYCLES,
+                                     WIFI_INDICATE_CONNECTION_PERIOD);
 
-     // Check for IoT mode flag.
+        Serial.print("Current local IP address is: ");
+        Serial.println(ESP_WiFi_get_devices_current_IP());
+
+        ESP_TCP_server_start();
+        Serial.print("Local TCP server started at port ");
+        Serial.println(stored_configs.local_server_port);
+
+        ESP_HTTP_server_start();
+        ESP_HTTP_set_handlers();
+        Serial.print("Local HTTP server started at port ");
+        Serial.println(HTTP_PORT);
+    }
+    Serial.println("");
+
+    // Check for IoT mode flag.
     Serial.print("Requests to IoT server: ");
-    if (stored_configs.IoT_flag != 0) {
+    if (stored_configs->IoT_flag != 0) {
         Serial.println("ON");
         Serial.print("Target IoT server IP address: ");
-        Serial.println(stored_configs.IoT_server_IP);
+        Serial.println(stored_configs->IoT_server_IP);
         Serial.print("Target IoT server port: ");
-        Serial.println(stored_configs.IoT_server_port);
-        Serial.print("Request text: ");
-        Serial.println(stored_configs.IoT_req_msg);
+        Serial.println(stored_configs->IoT_server_port);
+        Serial.print("Request message: ");
+        Serial.println(stored_configs->IoT_req_msg);
         Serial.print("Request period (once per ms): ");
-        Serial.println(stored_configs.IoT_req_period);
+        Serial.println(stored_configs->IoT_req_period);
     } else {
         Serial.println("OFF");
     }
+
+    // Check for RSSI output flag.
+    Serial.print("RSSI output: ");
+    if (stored_configs->RSSI_output_flag != 0) {
+        Serial.println("ON");
+    } else {
+        Serial.println("OFF");
+    }
+
+    // Check for automatic reconnect attempts flag.
+    Serial.print("Automatic reconnect attempts: ");
+    if (stored_configs->WiFi_autoreconnect_flag != 0) {
+        Serial.println("ON");
+    } else {
+        Serial.println("OFF");
+    }
+}
+
+void setup_BTClassic(stored_configs_t *stored_configs)
+{
+    // Check for Bluetooth Classic functionality flag.
+    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+        Serial.print("Bluetooth Classic: ");
+        if (stored_configs->BT_Classic_flag != 0) {
+            Serial.println("ON");
+            Serial.print("Bluetooth Classic device name: ");
+            Serial.println(stored_configs->BT_Classic_dev_name);
+        } else {
+            Serial.println("OFF");
+        }
+    #endif
+}
 
  

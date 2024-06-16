@@ -12,8 +12,8 @@
 /************ PREPROCESSOR DIRECTIVES ***********/
 
 // Include guards.
-#ifndef ESP32_BT_CLASSIC_H
-#define ESP32_BT_CLASSIC_H
+#ifndef ESP32_BTCLASSIC_H
+#define ESP32_BTCLASSIC_H
 
 
 /*--- Includes ---*/

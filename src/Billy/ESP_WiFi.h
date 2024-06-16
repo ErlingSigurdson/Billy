@@ -30,7 +30,9 @@
 /************** FUNCTION PROTOTYPES *************/
 
 bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeout);
+bool ESP_WiFi_autoreset_connection();
 void ESP_WiFi_indicate_connection(uint32_t LED_pin, uint32_t cycles, uint32_t period);
+
 String ESP_WiFi_get_devices_current_IP();
 void ESP_WiFi_RSSI_print();
 bool ESP_WiFi_is_connected();
