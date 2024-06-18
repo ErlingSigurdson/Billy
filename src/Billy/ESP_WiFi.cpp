@@ -1,3 +1,4 @@
+#include "WiFiType.h"
 /****************** DESCRIPTION *****************/
 
 /**
@@ -36,7 +37,7 @@ bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeo
     if (WiFi.isConnected()) {
         WiFi.disconnect();
     }
-    while (WiFi.status() == WL_CONNECTED {       // Pause to ensure termination of a previous connection.
+    while (WiFi.status() == WL_CONNECTED) {       // Pause to ensure termination of a previous connection.
         yield();                                 // Avoid a reset caused by the watchdog timer.
     }
 
@@ -101,5 +102,9 @@ void ESP_WiFi_RSSI_print()
 
 bool ESP_WiFi_is_connected()
 {
-    return WiFi.isConnected();
+    if (WiFi.status() == WL_CONNECTED) {
+        return 1;
+    } else {
+        return 0;
+    }
 }

@@ -28,4 +28,4 @@ void setup_WiFi(stored_configs_t *stored_configs);
 void setup_BTClassic(stored_configs_t *stored_configs);
 
 
-#endif SETUP_WIRELESS_H
+#endif  // Include guards.

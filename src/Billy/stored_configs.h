@@ -31,15 +31,16 @@
 typedef struct stored_configs_t {
     char local_SSID[STR_MAX_LEN + 1];
     char local_pswd[STR_MAX_LEN + 1];
+    bool local_autoreconnect_flag;
+    bool local_RSSI_output_flag;
     uint32_t local_server_port;
     bool IoT_flag;
     char IoT_server_IP[STR_MAX_LEN + 1];
     uint32_t IoT_server_port;
     char IoT_req_msg[STR_MAX_LEN + 1];
     uint32_t IoT_req_period;
-    bool BT_Classic_flag;
-    char BT_Classic_dev_name[STR_MAX_LEN + 1];
-    bool RSSI_output_flag;
+    bool BTClassic_flag;
+    char BTClassic_dev_name[STR_MAX_LEN + 1];
 } stored_configs_t;
 
 

@@ -9,26 +9,26 @@
  */
 
 
- /************ PREPROCESSOR DIRECTIVES ***********/
+/************ PREPROCESSOR DIRECTIVES ***********/
  
- /*--- Includes ---*/
+/*--- Includes ---*/
  
- // Main Arduino library.
- #include <Arduino.h>
+// Main Arduino library.
+#include <Arduino.h>
  
- // Local modules.
- #include "setup_wireless.h"
- #include "utilities.h"
- #include "ESP_WiFi.h"
- #include "ESP_TCP.h"
- #include "ESP_HTTP.h"
+// Local modules.
+#include "setup_wireless.h"
+#include "utilities.h"
+#include "ESP_WiFi.h"
+#include "ESP_TCP.h"
+#include "ESP_HTTP.h"
 
- #if defined ESP32 && defined BTCLASSIC_PROVIDED
-     #include "ESP32_Bluetooth_Classic.h"
- #endif
+#if defined ESP32 && defined BTCLASSIC_PROVIDED
+    #include "ESP32_BTClassic.h"
+#endif
 
 
- /******************* FUNCTIONS ******************/
+/******************* FUNCTIONS ******************/
 
 void setup_WiFi(stored_configs_t *stored_configs)
 {
@@ -47,7 +47,7 @@ void setup_WiFi(stored_configs_t *stored_configs)
 
         ESP_TCP_server_start();
         Serial.print("Local TCP server started at port ");
-        Serial.println(stored_configs.local_server_port);
+        Serial.println(stored_configs->local_server_port);
 
         ESP_HTTP_server_start();
         ESP_HTTP_set_handlers();
@@ -72,36 +72,42 @@ void setup_WiFi(stored_configs_t *stored_configs)
         Serial.println("OFF");
     }
 
-    // Check for RSSI output flag.
-    Serial.print("RSSI output: ");
-    if (stored_configs->RSSI_output_flag != 0) {
+    // Check for automatic reconnect attempts flag.
+    Serial.print("Automatic reconnect attempts: ");
+    if (stored_configs->local_autoreconnect_flag != 0) {
         Serial.println("ON");
     } else {
         Serial.println("OFF");
     }
 
-    // Check for automatic reconnect attempts flag.
-    Serial.print("Automatic reconnect attempts: ");
-    if (stored_configs->WiFi_autoreconnect_flag != 0) {
+    // Check for RSSI output flag.
+    Serial.print("RSSI output: ");
+    if (stored_configs->local_RSSI_output_flag != 0) {
         Serial.println("ON");
     } else {
         Serial.println("OFF");
     }
+
+    Serial.println("");
 }
 
 void setup_BTClassic(stored_configs_t *stored_configs)
 {
-    // Check for Bluetooth Classic functionality flag.
+    
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
+        // Check for Bluetooth Classic functionality flag.
         Serial.print("Bluetooth Classic: ");
-        if (stored_configs->BT_Classic_flag != 0) {
+        if (stored_configs->BTClassic_flag != 0) {
             Serial.println("ON");
             Serial.print("Bluetooth Classic device name: ");
-            Serial.println(stored_configs->BT_Classic_dev_name);
+            Serial.println(stored_configs->BTClassic_dev_name);
         } else {
             Serial.println("OFF");
         }
+
+        // Bluetooth Classic startup.
+        if (stored_configs->BTClassic_flag) {
+            ESP32_BTClassic_start(stored_configs->BTClassic_dev_name);
+        }
     #endif
 }
-
- 

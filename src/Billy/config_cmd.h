@@ -75,7 +75,9 @@
 
 #define CMD_21      "BTCLASSICDEVNAME?"
 
-#define CMD_22      "RSSIOUTPUT="
+#define CMD_22      "LOCALAUTORECONN="
+
+#define CMD_23      "RSSIOUTPUT="
 
 
 /*--- Сommand list length evaluation ---*/
@@ -212,11 +214,17 @@
     #define CMD_22_DEFINED 0
 #endif
 
+#ifdef CMD_23
+    #define CMD_23_DEFINED 1
+#else
+    #define CMD_23_DEFINED 0
+#endif
+
 #define CMD_LIST_LEN (CMD_1_DEFINED + CMD_2_DEFINED + CMD_3_DEFINED + CMD_4_DEFINED + CMD_5_DEFINED +       \
                       CMD_6_DEFINED + CMD_7_DEFINED + CMD_8_DEFINED + CMD_9_DEFINED + CMD_10_DEFINED +      \
                       CMD_11_DEFINED + CMD_12_DEFINED + CMD_13_DEFINED + CMD_14_DEFINED + CMD_15_DEFINED +  \
                       CMD_16_DEFINED + CMD_17_DEFINED + CMD_18_DEFINED + CMD_19_DEFINED + CMD_20_DEFINED +  \
-                      CMD_21_DEFINED + CMD_22_DEFINED)
+                      CMD_21_DEFINED + CMD_22_DEFINED + CMD_23_DEFINED)
 
 
 #endif  // Include guards.

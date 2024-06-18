@@ -22,12 +22,13 @@
 
 // Local modules.
 #include "cmd.h"
+#include "stored_configs.h"
 #include "inbuilt_storage.h"
 #include "ESP_WiFi.h"
 #include "ESP_TCP.h"
 
 #if defined ESP32 && defined BTCLASSIC_PROVIDED
-    #include "ESP32_Bluetooth_Classic.h"
+    #include "ESP32_BTClassic.h"
 #endif
 
 
@@ -65,7 +66,7 @@ void cmd_aux_output(const char *msg)
                              INBUILT_STORAGE_STR_MAX_LEN,
                              INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
         if (!strcmp(val, "ON")) {
-            ESP32_BT_Classic_send_msg(msg);
+            ESP32_BTClassic_send_msg(msg);
         }
     #endif
 }
@@ -275,17 +276,18 @@ void cmd_handler_output_local_server_IP()
 }
 
 // Command #10
-void cmd_handler_local_conn_rst(void (*setup_ptr)(void))
+void cmd_handler_local_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *), void (*setup_BTClassic_ptr)(stored_configs_t *), stored_configs_t *stored_configs)
 {
     cmd_aux_output("Resetting local connections...");
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
-        ESP32_BT_Classic_stop(CONN_SHUTDOWN_DOWNTIME);
+        ESP32_BTClassic_stop(CONN_SHUTDOWN_DOWNTIME);
     #endif
 
-    setup_ptr();
+    setup_WiFi_ptr(stored_configs);
+    setup_BTClassic_ptr(stored_configs);
 }
 
 // Command #11
@@ -366,11 +368,11 @@ void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag)
 }
 
 // Command #19
-void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), bool *refresh_flag)
+void cmd_handler_set_BTClassic_flag(const char *cmd, void (*setup_BTClassic_ptr)(void), bool *refresh_flag)
 {
-    // Dummy statements to prevent warnings connected to a conditional compilation.
+    // A dummy statement to prevent warnings connected to a conditional compilation (unused parameter).
     (void)cmd;
-    (void)setup_ptr;
+    (void)setup_BTClassic_ptr;
     (void)refresh_flag;
 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
@@ -382,7 +384,7 @@ void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), b
                                "Bluetooth Classic: ",
                                ECHO_VAL_ON,
                                refresh_flag);
-            cmd_handler_local_conn_rst(setup_ptr);
+            setup_BTClassic_ptr();
         } else {
             cmd_handler_err_val();
         }
@@ -390,9 +392,9 @@ void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), b
 }
 
 // Command #20
-void cmd_handler_set_BT_Classic_dev_name(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_BTClassic_dev_name(const char *cmd, bool *refresh_flag)
 {
-    // Dummy statements to prevent warnings connected to a conditional compilation.
+    // A dummy statement to prevent warnings connected to a conditional compilation.
     (void)cmd;
     (void)refresh_flag;
 
@@ -408,8 +410,8 @@ void cmd_handler_set_BT_Classic_dev_name(const char *cmd, bool *refresh_flag)
 }
 
 // Command #21
-void cmd_handler_output_BT_Classic_dev_name()
-{
+void cmd_handler_output_BTClassic_dev_name()
+{ 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
         cmd_aux_output_config(INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME,
                               "Current Bluetooth Classic device name is: ");
@@ -417,14 +419,30 @@ void cmd_handler_output_BT_Classic_dev_name()
 }
 
 // Command #22
-void cmd_handler_set_RSSI_output_flag(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_local_RSSI_output_flag(const char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
     if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
         cmd_aux_set_config(cmd,
-                           INBUILT_STORAGE_ADDR_RSSI_OUTPUT_FLAG,
+                           INBUILT_STORAGE_ADDR_LOCAL_RSSI_OUTPUT_FLAG,
                            "RSSI print: ",
+                           ECHO_VAL_ON,
+                           refresh_flag);
+    } else {
+        cmd_handler_err_val();
+    }
+}
+
+// Command #23
+void cmd_handler_set_local_autoreconnect_flag(const char *cmd, bool *refresh_flag)
+{
+    char *cmd_val = strstr(cmd, "=") + 1;
+
+    if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
+        cmd_aux_set_config(cmd,
+                           INBUILT_STORAGE_ADDR_LOCAL_AUTORECONNECT_FLAG,
+                           "Automatic reconnect attempts: ",
                            ECHO_VAL_ON,
                            refresh_flag);
     } else {

@@ -21,6 +21,9 @@
 // Main Arduino library.
 #include <Arduino.h>
 
+// Local modules.
+#include "stored_configs.h"
+
 
 /*--- Misc ---*/
 
@@ -128,7 +131,7 @@ void cmd_handler_output_local_server_IP();
 /* Command #10:
  * reset local connections.
  */
-void cmd_handler_local_conn_rst(void (*setup_ptr)(void));
+void cmd_handler_local_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *), void (*setup_BTClassic_ptr)(stored_configs_t *), stored_configs_t *stored_configs);
 
 /* Command #11:
  * set the IoT mode (attempts to connect to a remote server) ON or OFF.
@@ -180,24 +183,31 @@ void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag);
 /* Command #19:
  * set Bluetooth Classic functionality ON or OFF.
  */
-void cmd_handler_set_BT_Classic_flag(const char *cmd, void (*setup_ptr)(void), bool *refresh_flag);
+void cmd_handler_set_BTClassic_flag(const char *cmd,
+                                    void (*setup_BTClassic_ptr)(void),
+                                    bool *refresh_flag);
 
 /* Command #20:
  * change a name of the ESP as a Bluetooth Classic slave device
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_BT_Classic_dev_name(const char *cmd, bool *refresh_flag);
+void cmd_handler_set_BTClassic_dev_name(const char *cmd, bool *refresh_flag);
 
 /* Command #21:
  * print and send to a client a name of the ESP as a Bluetooth Classic slave device
  * stored in the inbuilt storage.
  */
-void cmd_handler_output_BT_Classic_dev_name();
+void cmd_handler_output_BTClassic_dev_name();
 
 /* Command #22:
  * turn periodical printing and sending of a current RSSI value ON or OFF.
  */
-void cmd_handler_set_RSSI_output_flag(const char *cmd, bool *refresh_flag);
+void cmd_handler_set_local_RSSI_output_flag(const char *cmd, bool *refresh_flag);
+
+/* Command #23:
+ * turn periodical attempts to reconnect to a local Wi-Fi network ON or OFF.
+ */
+void cmd_handler_set_local_autoreconnect_flag(const char *cmd, bool *refresh_flag);
 
 
 #endif  // Include guards.

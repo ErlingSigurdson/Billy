@@ -26,6 +26,7 @@
 
 // Local modules.
 #include "utilities.h"
+#include "setup_wireless.h"
 #include "cmd.h"
 #include "inbuilt_storage.h"
 #include "stored_configs.h"
@@ -35,7 +36,7 @@
 #include "ESP_HTTP.h"
 
 #if defined ESP32 && defined BTCLASSIC_PROVIDED
-    #include "ESP32_Bluetooth_Classic.h"
+    #include "ESP32_BTClassic.h"
 #endif
 
 
@@ -76,113 +77,6 @@ void setup()
      */
     inbuilt_storage_init(INBUILT_STORAGE_SIZE);
 
-    /* If necessary, you can write any config value into the inbuilt storage
-     * at the same time with uploading the sketch. To achieve this, uncomment
-     * the respective #define directive and specify the desired value right
-     * in the code, pre-compile-time. Then upload the sketch. After that
-     * comment out the same directives you've uncommented before and upload
-     * the sketch once again. Without that last step a config value will always
-     * be reverted to the hardcoded value upon every device startup.
-     */
-    //#define SET_LOCAL_SSID_AT_UPLOAD
-    #ifdef SET_LOCAL_SSID_AT_UPLOAD
-        char new_local_ssid[STR_MAX_LEN] = "NEW_LOCAL_SSID";
-        inbuilt_storage_write(new_local_ssid,
-                              strlen(new_local_ssid),
-                              INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_LOCAL_SSID);
-    #endif
-
-    //#define SET_LOCAL_PSWD_AT_UPLOAD
-    #ifdef SET_LOCAL_PSWD_AT_UPLOAD
-        char new_local_pswd[STR_MAX_LEN] = "NEW_LOCAL_PSWD";
-        inbuilt_storage_write(new_local_pswd,
-                              strlen(new_local_pswd),
-                              INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_LOCAL_PSWD);
-    #endif
-
-    //#define SET_LOCAL_SERVER_PORT_AT_UPLOAD
-    #ifdef SET_LOCAL_SERVER_PORT_AT_UPLOAD
-        char new_local_server_port[STR_MAX_LEN] = "451";
-        inbuilt_storage_write(new_local_server_port,
-                              strlen(new_local_server_port),
-                              INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT);
-    #endif
-
-    //#define SET_IOT_FLAG_AT_UPLOAD
-    #ifdef SET_IOT_FLAG_AT_UPLOAD
-        char IoT_flag[STR_MAX_LEN] = "OFF";
-        inbuilt_storage_write(IoT_flag,
-                              strlen(IoT_flag),
-                              INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_IOT_FLAG);
-    #endif
-
-    //#define SET_IOT_SERVER_IP_AT_UPLOAD
-    #ifdef SET_IOT_SERVER_IP_AT_UPLOAD
-        char new_IoT_server_IP[STR_MAX_LEN] = "111.111.111.111";
-        inbuilt_storage_write(new_IoT_server_IP,
-                              strlen(new_IoT_server_IP),
-                              INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_IOT_SERVER_IP);
-    #endif
-
-    //#define SET_IOT_SERVER_PORT_AT_UPLOAD
-    #ifdef SET_IOT_SERVER_PORT_AT_UPLOAD
-        char new_IoT_server_port[STR_MAX_LEN] = "451";
-        inbuilt_storage_write(new_IoT_server_port,
-                              strlen(new_IoT_server_port),
-                              INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_IOT_SERVER_PORT);
-    #endif
-
-    //#define SET_IOT_REQ_MSG_AT_UPLOAD
-    #ifdef SET_IOT_REQ_MSG_AT_UPLOAD
-        char new_IoT_req_msg[STR_MAX_LEN] = "SEND_ME_INFO";
-        inbuilt_storage_write(new_IoT_req_msg,
-                              strlen(new_IoT_req_msg),
-                              INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_IOT_REQ_MSG);
-    #endif
-
-    //#define SET_IOT_REQ_PERIOD_AT_UPLOAD
-    #ifdef SET_IOT_REQ_PERIOD_AT_UPLOAD
-        char new_IoT_req_period[STR_MAX_LEN] = "500";
-        inbuilt_storage_write(new_IoT_req_period,
-                              strlen(new_IoT_req_period),
-                              INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_IOT_REQ_PERIOD);
-    #endif
-
-    //#define SET_BTCLASSIC_FLAG_AT_UPLOAD
-    #ifdef SET_BTCLASSIC_FLAG_AT_UPLOAD
-        char BT_Classic_flag[STR_MAX_LEN] = "OFF";
-        inbuilt_storage_write(BT_Classic_flag,
-                              strlen(BT_Classic_flag),
-                              INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
-    #endif
-
-    //#define SET_BTCLASSIC_DEV_NAME_AT_UPLOAD
-    #ifdef SET_BTCLASSIC_DEV_NAME_AT_UPLOAD
-        char new_BT_Classic_dev_name[STR_MAX_LEN] = "NEW_BTCLASSIC_DEV_NAME";
-        inbuilt_storage_write(new_BT_Classic_dev_name,
-                              strlen(new_BT_Classic_dev_name),
-                              INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME);
-    #endif
-
-    //#define SET_RSSI_OUTPUT_FLAG_AT_UPLOAD
-    #ifdef SET_RSSI_OUTPUT_FLAG_AT_UPLOAD
-        char RSSI_output_flag[STR_MAX_LEN] = "OFF";
-        inbuilt_storage_write(RSSI_output_flag,
-                              strlen(RSSI_output_flag),
-                              INBUILT_STORAGE_STR_MAX_LEN,
-                              INBUILT_STORAGE_ADDR_RSSI_OUTPUT_FLAG);
-    #endif
-
     // Read stored configs from the inbuilt storage into the struct.
     stored_configs_t stored_configs;
     stored_configs_read(&stored_configs);
@@ -201,13 +95,6 @@ void setup()
 
     setup_WiFi(&stored_configs);
     setup_BTClassic(&stored_configs);
-
-    // Bluetooth Classic startup.
-    #if defined ESP32 && defined BTCLASSIC_PROVIDED
-        if (stored_configs.BT_Classic_flag) {
-            ESP32_BT_Classic_start(stored_configs.BT_Classic_dev_name);
-        }
-    #endif
 
     Serial.println("");
     Serial.flush();
@@ -252,7 +139,8 @@ void loop()
         CMD_19,
         CMD_20,
         CMD_21,
-        CMD_22
+        CMD_22,
+        CMD_23
     };
 
 
@@ -324,13 +212,13 @@ void loop()
 
     // Read data from a Bluetooth Classic master device.
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
-        bool BT_Classic_was_connected = 0;
-        if (stored_configs.BT_Classic_flag && ESP32_BT_Classic_check_connection()) {
-            BT_Classic_was_connected = 1;
-            uint32_t BT_Classic_bytes_read = 0;
-            BT_Classic_bytes_read = ESP32_BT_Classic_read_line(terminal_input, STR_MAX_LEN, CONN_TIMEOUT);
+        bool BTClassic_was_connected = 0;
+        if (stored_configs.BTClassic_flag && ESP32_BTClassic_check_connection()) {
+            BTClassic_was_connected = 1;
+            uint32_t BTClassic_bytes_read = 0;
+            BTClassic_bytes_read = ESP32_BTClassic_read_line(terminal_input, STR_MAX_LEN, CONN_TIMEOUT);
 
-            if (BT_Classic_bytes_read > STR_MAX_LEN) {
+            if (BTClassic_bytes_read > STR_MAX_LEN) {
                 terminal_input[0] = '\0';
                 cmd_handler_err_len();
             }
@@ -394,7 +282,7 @@ void loop()
                 break;
 
             case 10:
-                cmd_handler_local_conn_rst(setup);
+                cmd_handler_local_conn_rst(setup_WiFi, setup_BTClassic, &stored_configs);
                 break;
 
             case 11:
@@ -430,19 +318,23 @@ void loop()
                 break;
 
             case 19:
-                cmd_handler_set_BT_Classic_flag(terminal_input, setup, &time_to_refresh_stored_configs);
+                cmd_handler_set_BTClassic_flag(terminal_input, setup, &time_to_refresh_stored_configs);
                 break;
 
             case 20:
-                cmd_handler_set_BT_Classic_dev_name(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_BTClassic_dev_name(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             case 21:
-                cmd_handler_output_BT_Classic_dev_name();
+                cmd_handler_output_BTClassic_dev_name();
                 break;
 
             case 22:
-                cmd_handler_set_RSSI_output_flag(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_local_autoreconnect_flag(terminal_input, &time_to_refresh_stored_configs);
+                break;
+
+            case 23:
+                cmd_handler_set_local_RSSI_output_flag(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             default:
@@ -463,55 +355,55 @@ void loop()
         RSSI_output_loaded = 1;
     }
 
-    if (stored_configs.RSSI_output_flag && millis() % WiFi_RSSI_print_period == 0 && RSSI_output_loaded) {
+    if (stored_configs.local_RSSI_output_flag && millis() % WiFi_RSSI_print_period == 0 && RSSI_output_loaded) {
         ESP_WiFi_RSSI_print();
         RSSI_output_loaded = 0;
     }
 
+    Serial.flush();
+
 
     /*--- Finishing communications ---*/
-
-    Serial.flush();
 
     // TCP clients' disconnection.
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
 
     // Bluetooth Classic disconnection.
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
-        if (BT_Classic_was_connected) {  /* Another call for connected() method
+        if (BTClassic_was_connected) {  /* Another call for connected() method
                                           * caused RTOS crash, hence additional
                                           * flag was introduced.
                                           */
-            ESP32_BT_Classic_disconnect(CONN_SHUTDOWN_DOWNTIME);
+            ESP32_BTClassic_disconnect(CONN_SHUTDOWN_DOWNTIME);
         }
     #endif
 
 
-    /*--- Wi-Fi reconnect ---*/
+    /*--- Wi-Fi autoreconnect ---*/
 
-    #define WIFI_RECONNECT_CHECK_PERIOD 30000
+    #define WIFI_RECONNECT_CHECK_PERIOD 10000
     
-    static uint64_t WiFi_reconnect_current_millis = millis();
-    static uint64_t WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis;
+    static uint64_t WiFi_autoreconnect_current_millis = millis();
+    static uint64_t WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis;
 
     static bool WiFi_was_unconnected = !ESP_WiFi_is_connected();
-    static bool WiFi_reconnect_due_time =
-           WiFi_reconnect_current_millis - WiFi_reconnect_previous_millis()  > WIFI_RECONNECT_CHECK_PERIOD;
-    
-    if (WiFi_reconnect_due_time && !WiFi_was_unconnected) {
-        WiFi_was_unconnected = !ESP_WiFi_is_connected();
-        WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis; 
-    } else if (WiFi_reconnect_due_time && WiFi_was_unconnected)
-        ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
-        ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
+    static bool WiFi_autoreconnect_due_time = 0;
 
-        #if defined ESP32 && defined BTCLASSIC_PROVIDED
-            ESP32_BT_Classic_stop(CONN_SHUTDOWN_DOWNTIME);
-        #endif
-        
-        setup_WiFi();
-        WiFi_reconnect_previous_millis = WiFi_reconnect_current_millis;        
-    } else {
-        WiFi_reconnect_current_millis = millis();
+    if (stored_configs.local_autoreconnect_flag) {
+        if (WiFi_autoreconnect_due_time && !WiFi_was_unconnected) {
+            WiFi_was_unconnected = !ESP_WiFi_is_connected();
+            WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis; 
+        } else if (WiFi_autoreconnect_due_time && WiFi_was_unconnected) {
+            ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
+            ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
+            setup_WiFi(&stored_configs);
+            WiFi_was_unconnected = !ESP_WiFi_is_connected();
+            WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis;        
+        } else {
+            WiFi_autoreconnect_current_millis = millis();
+        }
+
+        WiFi_autoreconnect_due_time =
+        WiFi_autoreconnect_current_millis - WiFi_autoreconnect_previous_millis > WIFI_RECONNECT_CHECK_PERIOD;
     }
 }
