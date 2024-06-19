@@ -3,7 +3,7 @@
 /**
  * Filename: cmd.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: command processing.
+ * Purpose: receiving and processing commands.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -35,6 +35,27 @@
 
 
 /************** FUNCTION PROTOTYPES *************/
+
+/*--- Receiving commands ---*/
+
+// Read data received by the hardware UART.
+void cmd_receive_HW_UART(const char *cmd);
+
+// Local TCP server reads data from a remote client.
+void cmd_receive_TCP_local(const char *cmd);
+
+/* Local TCP client sends the request to a remote server
+ * and reads the response.
+ */
+void cmd_receive_TCP_IoT(const char *cmd, stored_configs_t *stored_configs);
+
+
+
+void cmd_receive_HTTP(const char *cmd, stored_configs_t *stored_configs);
+
+
+void cmd_receive_BTClassic(const char *cmd, stored_configs_t *stored_configs);
+
 
 /*--- Buffer contents check ---*/
 

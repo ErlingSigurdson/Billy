@@ -3,7 +3,7 @@
 /**
  * Filename: cmd.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: command processing.
+ * Purpose: receiving and processing commands.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -33,6 +33,81 @@
 
 
 /******************* FUNCTIONS ******************/
+
+/*--- Receiving commands ---*/
+
+void cmd_receive_HW_UART(const char *cmd)
+{
+    
+    uint32_t HW_UART_bytes_read = HW_UART_read_line(terminal_input,
+                                                    STR_MAX_LEN,
+                                                    CONN_TIMEOUT,
+                                                    HW_UART_READ_SLOWDOWN);
+    if (HW_UART_bytes_read > STR_MAX_LEN) {
+        terminal_input[0] = '\0';
+        cmd_handler_err_len();
+    }
+}
+
+void cmd_receive_TCP_local(const char *cmd)
+{
+    if (ESP_TCP_server_get_client()) {
+        uint32_t TCP_server_bytes_read = ESP_TCP_server_read_line(terminal_input,
+                                                                  STR_MAX_LEN,
+                                                                  CONN_TIMEOUT);
+        if (TCP_server_bytes_read > STR_MAX_LEN) {
+            terminal_input[0] = '\0';
+            cmd_handler_err_len();
+        }
+    }
+}
+
+void cmd_receive_TCP_IoT(const char *cmd, stored_configs_t *stored_configs)
+{
+    if (stored_configs->IoT_req_period == 0) {
+        stored_configs->IoT_req_period = DEFAULT_IOT_REQ_PERIOD;  // Divide by zero prevention.
+    }
+
+    if (stored_configs->IoT_flag && millis() % stored_configs->IoT_req_period == 0) {
+        Serial.print ("Sending request to an IoT server, target IP: ");
+        Serial.print(stored_configs.IoT_server_IP);
+        Serial.print(", target port: ");
+        Serial.println(stored_configs->IoT_server_port);
+
+        if (ESP_TCP_client_get_server(stored_configs->IoT_server_IP, stored_configs->IoT_server_port)) {
+            Serial.println("Remote server reached.");
+            ESP_TCP_client_send_msg(stored_configs->IoT_req_msg);
+
+            uint32_t TCP_client_bytes_read = ESP_TCP_client_read_line(terminal_input,
+                                                                      STR_MAX_LEN,
+                                                                      CONN_TIMEOUT);
+
+            if (TCP_client_bytes_read > 0 && TCP_client_bytes_read < STR_MAX_LEN) {
+                utilities_nullify_first_CR_or_LF_in_string(terminal_input);
+                Serial.print("Message received from remote server: ");
+                Serial.println(terminal_input);
+            }
+
+            if (TCP_client_bytes_read > STR_MAX_LEN) {
+                terminal_input[0] = '\0';
+                cmd_handler_err_len();
+            }
+        } else {
+            Serial.println("Remote server unavailable.");
+        }
+    }
+}
+
+void cmd_receive_HTTP(const char *cmd, stored_configs_t *stored_configs)
+{
+    k
+}
+
+void cmd_receive_BTClassic(const char *cmd, stored_configs_t *stored_configs)
+{
+    k
+}
+
 
 /*--- Buffer contents check ---*/
 

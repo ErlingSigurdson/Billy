@@ -149,66 +149,14 @@ void loop()
     // Command buffer.
     char terminal_input[STR_MAX_LEN + 1] = {0};
 
-    // Read data received by the hardware UART.
-    uint32_t HW_UART_bytes_read = HW_UART_read_line(terminal_input,
-                                                    STR_MAX_LEN,
-                                                    CONN_TIMEOUT,
-                                                    HW_UART_READ_SLOWDOWN);
-    if (HW_UART_bytes_read > STR_MAX_LEN) {
-        terminal_input[0] = '\0';
-        cmd_handler_err_len();
-    }
-
-    // Local TCP server reads data from a remote client.
-    if (ESP_TCP_server_get_client()) {
-        uint32_t TCP_server_bytes_read = ESP_TCP_server_read_line(terminal_input,
-                                                                  STR_MAX_LEN,
-                                                                  CONN_TIMEOUT);
-        if (TCP_server_bytes_read > STR_MAX_LEN) {
-            terminal_input[0] = '\0';
-            cmd_handler_err_len();
-        }
-    }
+    if (ESP)
+    cmd_receive_HW_UART(terminal_input, &stored_configs);
 
     // Handle HTTP request and write value from a request body into a buffer.
     ESP_HTTP_handle_client_in_loop();
     ESP_HTTP_copy_value(terminal_input, STR_MAX_LEN);
 
-    /* Local TCP client sends the request to a remote server
-     * and reads the response.
-     */
-    if (stored_configs.IoT_req_period == 0) {
-        stored_configs.IoT_req_period = DEFAULT_IOT_REQ_PERIOD;  // Divide by zero prevention.
-    }
 
-    if (stored_configs.IoT_flag && millis() % stored_configs.IoT_req_period == 0) {
-        Serial.print ("Sending request to an IoT server, target IP: ");
-        Serial.print(stored_configs.IoT_server_IP);
-        Serial.print(", target port: ");
-        Serial.println(stored_configs.IoT_server_port);
-
-        if (ESP_TCP_client_get_server(stored_configs.IoT_server_IP, stored_configs.IoT_server_port)) {
-            Serial.println("Remote server reached.");
-            ESP_TCP_client_send_msg(stored_configs.IoT_req_msg);
-
-            uint32_t TCP_client_bytes_read = ESP_TCP_client_read_line(terminal_input,
-                                                                      STR_MAX_LEN,
-                                                                      CONN_TIMEOUT);
-
-            if (TCP_client_bytes_read > 0 && TCP_client_bytes_read < STR_MAX_LEN) {
-                utilities_nullify_first_CR_or_LF_in_string(terminal_input);
-                Serial.print("Message received from remote server: ");
-                Serial.println(terminal_input);
-            }
-
-            if (TCP_client_bytes_read > STR_MAX_LEN) {
-                terminal_input[0] = '\0';
-                cmd_handler_err_len();
-            }
-        } else {
-            Serial.println("Remote server unavailable.");
-        }
-    }
 
     // Read data from a Bluetooth Classic master device.
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
