@@ -4,7 +4,7 @@
  * Filename: config_inbuilt_storage.h
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose: projects configs related to ESP32/ESP8266
- * flash memory used as an inbuilt storage.
+ *          flash memory used as an inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -26,11 +26,11 @@
 
 /*--- Config strings addresses ---*/
 
-// Local Wi-Fi network settings.
-#define INBUILT_STORAGE_ADDR_LOCAL_SSID 0
-#define INBUILT_STORAGE_ADDR_LOCAL_PSWD 101
-#define INBUILT_STORAGE_ADDR_LOCAL_AUTORECONNECT_FLAG 202
-#define INBUILT_STORAGE_ADDR_LOCAL_RSSI_OUTPUT_FLAG 303
+// Wi-Fi network settings.
+#define INBUILT_STORAGE_ADDR_WIFI_SSID 0
+#define INBUILT_STORAGE_ADDR_WIFI_PSWD 101
+#define INBUILT_STORAGE_ADDR_WIFI_RSSI_OUTPUT_FLAG 202
+#define INBUILT_STORAGE_ADDR_WIFI_AUTORECONNECT_FLAG 303
 
 // Local server settings.
 #define INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT 404

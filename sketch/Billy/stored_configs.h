@@ -1,7 +1,7 @@
 /****************** DESCRIPTION *****************/
 
 /**
- * Filename: stored_configs.h
+ * Filename: stored_configs_t
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose: data type for config values stored in the inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
@@ -18,7 +18,7 @@
 
 /*--- Includes ---*/
 
-// Main Arduino library.
+// Essential Arduino library.
 #include <Arduino.h>
 
 // Project configs.
@@ -29,10 +29,10 @@
 
 // Struct for holding values read from the inbuilt storage.
 typedef struct stored_configs_t {
-    char local_SSID[STR_MAX_LEN + 1];
-    char local_pswd[STR_MAX_LEN + 1];
-    bool local_autoreconnect_flag;
-    bool local_RSSI_output_flag;
+    char WiFi_SSID[STR_MAX_LEN + 1];
+    char WiFi_pswd[STR_MAX_LEN + 1];
+    bool WiFi_RSSI_output_flag;
+    bool WiFi_autoreconnect_flag;
     uint32_t local_server_port;
     bool IoT_flag;
     char IoT_server_IP[STR_MAX_LEN + 1];

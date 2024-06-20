@@ -18,7 +18,7 @@
 
 /*--- Includes ---*/
 
-// Main Arduino library.
+// Essential Arduino library.
 #include <Arduino.h>
 
 

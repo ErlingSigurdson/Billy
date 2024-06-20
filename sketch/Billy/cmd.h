@@ -3,7 +3,7 @@
 /**
  * Filename: cmd.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: receiving and processing commands.
+ * Purpose: text commands processing.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -18,7 +18,7 @@
 
 /*--- Includes ---*/
 
-// Main Arduino library.
+// Essential Arduino library.
 #include <Arduino.h>
 
 // Local modules.
@@ -27,7 +27,7 @@
 
 /*--- Misc ---*/
 
-/* To print or not to print a new value of a changed config.
+/* To print or not to print a new value of the changed config.
  * OFF for password, ON for other cases.
  */
 #define ECHO_VAL_ON 1
@@ -36,37 +36,17 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-/*--- Receiving commands ---*/
-
-// Read data received by the hardware UART.
-void cmd_receive_HW_UART(const char *cmd);
-
-// Local TCP server reads data from a remote client.
-void cmd_receive_TCP_local(const char *cmd);
-
-/* Local TCP client sends the request to a remote server
- * and reads the response.
- */
-void cmd_receive_TCP_IoT(const char *cmd, stored_configs_t *stored_configs);
-
-
-
-void cmd_receive_HTTP(const char *cmd, stored_configs_t *stored_configs);
-
-
-void cmd_receive_BTClassic(const char *cmd, stored_configs_t *stored_configs);
-
 
 /*--- Buffer contents check ---*/
 
-// Look up for a valid prefix and for valid commands from a given list.
+// Look up for a valid prefix and for valid commands from a text commands list.
 int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len);
 
 
 /*--- Auxiliary functions (helper functions, accessories) ---*/
 
-/* A generic accessory called by the other accessories.
- * Prints a message over the UART and sends it over the wireless connections.
+/* A generic accessory called by the others.
+ * Prints a message over a UART and sends it over the wireless connections.
  */
 void cmd_aux_output(const char *msg);
 
@@ -109,126 +89,132 @@ void cmd_handler_set_load_digital(const char *cmd);
 void cmd_handler_set_load_PWM(const char *cmd);
 
 /* Command #3:
- * print and send to a client the current state of a digital (two-state) load.
+ * print and send to a client/master the current state of a digital (two-state) load.
  * The actual output is based on a return value of the digitalRead().
  */
 void cmd_handler_output_load_digital();
 
 /* Command #4:
- * change an SSID of a local Wi-Fi access point
+ * change an SSID of a Wi-Fi access point
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_local_SSID(const char *cmd, bool *refresh_flag);
+void cmd_handler_set_WiFi_SSID(const char *cmd, bool *refresh_flag);
 
 /* Command #5:
- * print and send to a client an SSID of a local Wi-Fi access point
+ * print and send to a client/master an SSID of a Wi-Fi access point
  * stored in the inbuilt storage.
  */
-void cmd_handler_output_local_SSID();
+void cmd_handler_output_WiFi_SSID();
 
 /* Command #6:
- * change a password for a local Wi-Fi access point
+ * change a password for a Wi-Fi access point
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_local_pswd(const char *cmd, bool *refresh_flag);
+void cmd_handler_set_WiFi_pswd(const char *cmd, bool *refresh_flag);
 
 /* Command #7:
+ * turn periodical printing and sending of a current RSSI value ON or OFF.
+ */
+void cmd_handler_set_WiFi_RSSI_output_flag(const char *cmd, bool *refresh_flag);
+
+/* Command #8:
+ * turn periodical attempts to reconnect to a Wi-Fi network ON or OFF.
+ */
+void cmd_handler_set_WiFi_autoreconnect_flag(const char *cmd, bool *refresh_flag);
+
+/* Command #9:
+ * print and send to a client/master the device's IP in a Wi-Fi network.
+ */
+void cmd_handler_output_local_server_IP();
+
+/* Command #10:
  * change a local TCP server port number
  * stored in the inbuilt storage.
  */
 void cmd_handler_set_local_server_port(const char *cmd, bool *refresh_flag);
 
-/* Command #8:
- * print and send to a client a local TCP server port number
+/* Command #11:
+ * print and send to a client/master a local TCP server port number
  * stored in the inbuilt storage.
  */
 void cmd_handler_output_local_server_port();
 
-/* Command #9:
- * print and send to a client the device's IP in a local Wi-Fi network.
- */
-void cmd_handler_output_local_server_IP();
-
-/* Command #10:
- * reset local connections.
- */
-void cmd_handler_local_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *), void (*setup_BTClassic_ptr)(stored_configs_t *), stored_configs_t *stored_configs);
-
-/* Command #11:
+/* Command #12:
  * set the IoT mode (attempts to connect to a remote server) ON or OFF.
  */
 void cmd_handler_set_IoT_flag(const char *cmd, bool *refresh_flag);
 
-/* Command #12:
+/* Command #13:
  * change an IP address of a remote server
  * stored in the inbuilt storage.
  */
 void cmd_handler_set_IoT_server_IP(const char *cmd, bool *refresh_flag);
 
-/* Command #13:
- * print and send to a client an IP address of a remote server
+/* Command #14:
+ * print and send to a client/master an IP address of a remote server
  * stored in the inbuilt storage.
  */
 void cmd_handler_output_IoT_server_IP();
 
-/* Command #14:
+/* Command #15:
  * change a port number used for sending requests to a remote server
  * stored in the inbuilt storage.
  */
 void cmd_handler_set_IoT_server_port(const char *cmd, bool *refresh_flag);
 
-/* Command #15:
- * print and send to a client a port number used for sending requests to a remote server
+/* Command #16:
+ * print and send to a client/master a port number used for sending requests to a remote server
  * stored in the inbuilt storage.
  */
 void cmd_handler_output_IoT_server_port();
 
-/* Command #16:
+/* Command #17:
  * change a request message to be sent to a remote server
  * stored in the inbuilt storage.
  */
 void cmd_handler_set_IoT_req_msg(const char *cmd, bool *refresh_flag);
 
-/* Command #17:
- * print and send to a client a request message to be sent to a remote server
+/* Command #18:
+ * print and send to a client/master a request message to be sent to a remote server
  * stored in the inbuilt storage.
  */
 void cmd_handler_output_IoT_req_msg();
 
-/* Command #18:
+/* Command #19:
  * change the interval (in ms) for sending requests to a remote server
  * stored in the inbuilt storage.
  */
 void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag);
 
-/* Command #19:
+/* Command #20:
  * set Bluetooth Classic functionality ON or OFF.
  */
 void cmd_handler_set_BTClassic_flag(const char *cmd,
-                                    void (*setup_BTClassic_ptr)(void),
+                                    void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
+                                    stored_configs_t *stored_configs,
                                     bool *refresh_flag);
 
-/* Command #20:
+/* Command #21:
  * change a name of the ESP as a Bluetooth Classic slave device
  * stored in the inbuilt storage.
  */
-void cmd_handler_set_BTClassic_dev_name(const char *cmd, bool *refresh_flag);
+void cmd_handler_set_BTClassic_dev_name(const char *cmd,
+                                        void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
+                                        stored_configs_t *stored_configs,
+                                        bool *refresh_flag);
 
-/* Command #21:
- * print and send to a client a name of the ESP as a Bluetooth Classic slave device
+/* Command #22:
+ * print and send to a client/master a name of the ESP as a Bluetooth Classic slave device
  * stored in the inbuilt storage.
  */
 void cmd_handler_output_BTClassic_dev_name();
 
-/* Command #22:
- * turn periodical printing and sending of a current RSSI value ON or OFF.
- */
-void cmd_handler_set_local_RSSI_output_flag(const char *cmd, bool *refresh_flag);
-
 /* Command #23:
- * turn periodical attempts to reconnect to a local Wi-Fi network ON or OFF.
+ * reset all wireless connections and restart the wireless connectivity.
  */
-void cmd_handler_set_local_autoreconnect_flag(const char *cmd, bool *refresh_flag);
+void cmd_handler_all_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *stored_configs),
+                              void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
+                              stored_configs_t *stored_configs);
 
 
 #endif  // Include guards.

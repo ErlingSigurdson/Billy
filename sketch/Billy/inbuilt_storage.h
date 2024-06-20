@@ -4,7 +4,7 @@
  * Filename: inbuilt_storage.h
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose: reading and writing strings from and to an inbuilt storage
- * using EEPROM.h library.
+ *          using EEPROM.h library.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  * AVR devices use inbuilt EEPROM.
@@ -20,7 +20,7 @@
 #ifndef INBUILT_STORAGE_H
 #define INBUILT_STORAGE_H
 
-// Main Arduino library.
+// Essential Arduino library.
 #include <Arduino.h>
 
 

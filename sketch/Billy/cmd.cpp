@@ -3,7 +3,7 @@
 /**
  * Filename: cmd.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: receiving and processing commands.
+ * Purpose: text commands processing.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -13,7 +13,7 @@
 
 /*--- Includes ---*/
 
-// Main Arduino library.
+// Essential Arduino library.
 #include <Arduino.h>
 
 // Project configs.
@@ -33,81 +33,6 @@
 
 
 /******************* FUNCTIONS ******************/
-
-/*--- Receiving commands ---*/
-
-void cmd_receive_HW_UART(const char *cmd)
-{
-    
-    uint32_t HW_UART_bytes_read = HW_UART_read_line(terminal_input,
-                                                    STR_MAX_LEN,
-                                                    CONN_TIMEOUT,
-                                                    HW_UART_READ_SLOWDOWN);
-    if (HW_UART_bytes_read > STR_MAX_LEN) {
-        terminal_input[0] = '\0';
-        cmd_handler_err_len();
-    }
-}
-
-void cmd_receive_TCP_local(const char *cmd)
-{
-    if (ESP_TCP_server_get_client()) {
-        uint32_t TCP_server_bytes_read = ESP_TCP_server_read_line(terminal_input,
-                                                                  STR_MAX_LEN,
-                                                                  CONN_TIMEOUT);
-        if (TCP_server_bytes_read > STR_MAX_LEN) {
-            terminal_input[0] = '\0';
-            cmd_handler_err_len();
-        }
-    }
-}
-
-void cmd_receive_TCP_IoT(const char *cmd, stored_configs_t *stored_configs)
-{
-    if (stored_configs->IoT_req_period == 0) {
-        stored_configs->IoT_req_period = DEFAULT_IOT_REQ_PERIOD;  // Divide by zero prevention.
-    }
-
-    if (stored_configs->IoT_flag && millis() % stored_configs->IoT_req_period == 0) {
-        Serial.print ("Sending request to an IoT server, target IP: ");
-        Serial.print(stored_configs.IoT_server_IP);
-        Serial.print(", target port: ");
-        Serial.println(stored_configs->IoT_server_port);
-
-        if (ESP_TCP_client_get_server(stored_configs->IoT_server_IP, stored_configs->IoT_server_port)) {
-            Serial.println("Remote server reached.");
-            ESP_TCP_client_send_msg(stored_configs->IoT_req_msg);
-
-            uint32_t TCP_client_bytes_read = ESP_TCP_client_read_line(terminal_input,
-                                                                      STR_MAX_LEN,
-                                                                      CONN_TIMEOUT);
-
-            if (TCP_client_bytes_read > 0 && TCP_client_bytes_read < STR_MAX_LEN) {
-                utilities_nullify_first_CR_or_LF_in_string(terminal_input);
-                Serial.print("Message received from remote server: ");
-                Serial.println(terminal_input);
-            }
-
-            if (TCP_client_bytes_read > STR_MAX_LEN) {
-                terminal_input[0] = '\0';
-                cmd_handler_err_len();
-            }
-        } else {
-            Serial.println("Remote server unavailable.");
-        }
-    }
-}
-
-void cmd_receive_HTTP(const char *cmd, stored_configs_t *stored_configs)
-{
-    k
-}
-
-void cmd_receive_BTClassic(const char *cmd, stored_configs_t *stored_configs)
-{
-    k
-}
-
 
 /*--- Buffer contents check ---*/
 
@@ -295,49 +220,62 @@ void cmd_handler_output_load_digital()
 }
 
 // Command #4
-void cmd_handler_set_local_SSID(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_WiFi_SSID(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
-                       INBUILT_STORAGE_ADDR_LOCAL_SSID,
+                       INBUILT_STORAGE_ADDR_WIFI_SSID ,
                        "SSID changed successfully! New SSID is: ",
                        ECHO_VAL_ON,
                        refresh_flag);
 }
 
 // Command #5
-void cmd_handler_output_local_SSID()
+void cmd_handler_output_WiFi_SSID()
 {
-    cmd_aux_output_config(INBUILT_STORAGE_ADDR_LOCAL_SSID,
+    cmd_aux_output_config(INBUILT_STORAGE_ADDR_WIFI_SSID ,
                           "Current SSID is: ");
 }
 
 // Command #6
-void cmd_handler_set_local_pswd(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_WiFi_pswd(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
-                       INBUILT_STORAGE_ADDR_LOCAL_PSWD,
+                       INBUILT_STORAGE_ADDR_WIFI_PSWD,
                        "Password changed successfully!",
                        ECHO_VAL_OFF,
                        refresh_flag);
 }
 
 // Command #7
-void cmd_handler_set_local_server_port(const char *cmd, bool *refresh_flag)
+void cmd_handler_set_WiFi_RSSI_output_flag(const char *cmd, bool *refresh_flag)
 {
-    cmd_aux_set_config(cmd,
-                       INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
-                       "Local server port changed successfully! New port is: ",
-                       ECHO_VAL_ON,
-                       refresh_flag);
+    char *cmd_val = strstr(cmd, "=") + 1;
 
-    cmd_aux_output("Please reboot your device or reset local connections to put changes into effect.");
+    if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
+        cmd_aux_set_config(cmd,
+                           INBUILT_STORAGE_ADDR_WIFI_RSSI_OUTPUT_FLAG,
+                           "RSSI print: ",
+                           ECHO_VAL_ON,
+                           refresh_flag);
+    } else {
+        cmd_handler_err_val();
+    }
 }
 
 // Command #8
-void cmd_handler_output_local_server_port()
+void cmd_handler_set_WiFi_autoreconnect_flag(const char *cmd, bool *refresh_flag)
 {
-    cmd_aux_output_config(INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
-                          "Current local server port is: ");
+    char *cmd_val = strstr(cmd, "=") + 1;
+
+    if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
+        cmd_aux_set_config(cmd,
+                           INBUILT_STORAGE_ADDR_WIFI_AUTORECONNECT_FLAG,
+                           "Automatic reconnect attempts: ",
+                           ECHO_VAL_ON,
+                           refresh_flag);
+    } else {
+        cmd_handler_err_val();
+    }
 }
 
 // Command #9
@@ -351,21 +289,25 @@ void cmd_handler_output_local_server_IP()
 }
 
 // Command #10
-void cmd_handler_local_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *), void (*setup_BTClassic_ptr)(stored_configs_t *), stored_configs_t *stored_configs)
+void cmd_handler_set_local_server_port(const char *cmd, bool *refresh_flag)
 {
-    cmd_aux_output("Resetting local connections...");
-    ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
-    ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
+    cmd_aux_set_config(cmd,
+                       INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
+                       "Local server port changed successfully! New port is: ",
+                       ECHO_VAL_ON,
+                       refresh_flag);
 
-    #if defined ESP32 && defined BTCLASSIC_PROVIDED
-        ESP32_BTClassic_stop(CONN_SHUTDOWN_DOWNTIME);
-    #endif
-
-    setup_WiFi_ptr(stored_configs);
-    setup_BTClassic_ptr(stored_configs);
+    cmd_aux_output("Please reboot your device or reset local connections to put changes into effect.");
 }
 
 // Command #11
+void cmd_handler_output_local_server_port()
+{
+    cmd_aux_output_config(INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
+                          "Current local server port is: ");
+}
+
+// Command #12
 void cmd_handler_set_IoT_flag(const char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
@@ -381,7 +323,7 @@ void cmd_handler_set_IoT_flag(const char *cmd, bool *refresh_flag)
     }
 }
 
-// Command #12
+// Command #13
 void cmd_handler_set_IoT_server_IP(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
@@ -391,14 +333,14 @@ void cmd_handler_set_IoT_server_IP(const char *cmd, bool *refresh_flag)
                        refresh_flag);
 }
 
-// Command #13
+// Command #14
 void cmd_handler_output_IoT_server_IP()
 {
     cmd_aux_output_config(INBUILT_STORAGE_ADDR_IOT_SERVER_IP,
                           "Current IoT server target IP is: ");
 }
 
-// Command #14
+// Command #15
 void cmd_handler_set_IoT_server_port(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
@@ -408,14 +350,14 @@ void cmd_handler_set_IoT_server_port(const char *cmd, bool *refresh_flag)
                        refresh_flag);
 }
 
-// Command #15
+// Command #16
 void cmd_handler_output_IoT_server_port()
 {
     cmd_aux_output_config(INBUILT_STORAGE_ADDR_IOT_SERVER_PORT,
                           "Current IoT server target port is: ");
 }
 
-// Command #16
+// Command #17
 void cmd_handler_set_IoT_req_msg(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
@@ -425,14 +367,14 @@ void cmd_handler_set_IoT_req_msg(const char *cmd, bool *refresh_flag)
                        refresh_flag);
 }
 
-// Command #17
+// Command #18
 void cmd_handler_output_IoT_req_msg()
 {
     cmd_aux_output_config(INBUILT_STORAGE_ADDR_IOT_REQ_MSG,
                           "Current IoT server request text is: ");
 }
 
-// Command #18
+// Command #19
 void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag)
 {
     cmd_aux_set_config(cmd,
@@ -442,12 +384,16 @@ void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag)
                        refresh_flag);
 }
 
-// Command #19
-void cmd_handler_set_BTClassic_flag(const char *cmd, void (*setup_BTClassic_ptr)(void), bool *refresh_flag)
+// Command #20
+void cmd_handler_set_BTClassic_flag(const char *cmd,
+                                    void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
+                                    stored_configs_t *stored_configs,
+                                    bool *refresh_flag)
 {
-    // A dummy statement to prevent warnings connected to a conditional compilation (unused parameter).
+    // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)cmd;
     (void)setup_BTClassic_ptr;
+    (void)stored_configs;
     (void)refresh_flag;
 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
@@ -459,18 +405,25 @@ void cmd_handler_set_BTClassic_flag(const char *cmd, void (*setup_BTClassic_ptr)
                                "Bluetooth Classic: ",
                                ECHO_VAL_ON,
                                refresh_flag);
-            setup_BTClassic_ptr();
+                               
+            *refresh_flag = 1;
+            setup_BTClassic_ptr(stored_configs);
         } else {
             cmd_handler_err_val();
         }
     #endif
 }
 
-// Command #20
-void cmd_handler_set_BTClassic_dev_name(const char *cmd, bool *refresh_flag)
+// Command #21
+void cmd_handler_set_BTClassic_dev_name(const char *cmd,
+                                        void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
+                                        stored_configs_t *stored_configs,
+                                        bool *refresh_flag)
 {
-    // A dummy statement to prevent warnings connected to a conditional compilation.
+    // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)cmd;
+    (void)setup_BTClassic_ptr;
+    (void)stored_configs;
     (void)refresh_flag;
 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
@@ -480,11 +433,12 @@ void cmd_handler_set_BTClassic_dev_name(const char *cmd, bool *refresh_flag)
                            ECHO_VAL_ON,
                            refresh_flag);
 
-        cmd_aux_output("Please reboot your device or reset local connections to put changes into effect.");
+        *refresh_flag = 1;
+        setup_BTClassic_ptr(stored_configs);
     #endif
 }
 
-// Command #21
+// Command #22
 void cmd_handler_output_BTClassic_dev_name()
 { 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
@@ -493,34 +447,19 @@ void cmd_handler_output_BTClassic_dev_name()
     #endif
 }
 
-// Command #22
-void cmd_handler_set_local_RSSI_output_flag(const char *cmd, bool *refresh_flag)
-{
-    char *cmd_val = strstr(cmd, "=") + 1;
-
-    if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
-        cmd_aux_set_config(cmd,
-                           INBUILT_STORAGE_ADDR_LOCAL_RSSI_OUTPUT_FLAG,
-                           "RSSI print: ",
-                           ECHO_VAL_ON,
-                           refresh_flag);
-    } else {
-        cmd_handler_err_val();
-    }
-}
-
 // Command #23
-void cmd_handler_set_local_autoreconnect_flag(const char *cmd, bool *refresh_flag)
+void cmd_handler_all_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *stored_configs),
+                              void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
+                              stored_configs_t *stored_configs)
 {
-    char *cmd_val = strstr(cmd, "=") + 1;
+    cmd_aux_output("Resetting local connections...");
+    ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
+    ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
 
-    if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
-        cmd_aux_set_config(cmd,
-                           INBUILT_STORAGE_ADDR_LOCAL_AUTORECONNECT_FLAG,
-                           "Automatic reconnect attempts: ",
-                           ECHO_VAL_ON,
-                           refresh_flag);
-    } else {
-        cmd_handler_err_val();
-    }
+    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+        ESP32_BTClassic_stop(CONN_SHUTDOWN_DOWNTIME);
+    #endif
+
+    setup_WiFi_ptr(stored_configs);
+    setup_BTClassic_ptr(stored_configs);
 }

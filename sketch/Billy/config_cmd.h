@@ -3,7 +3,7 @@
 /**
  * Filename: config_cmd.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: text commands' list and its length evaluation.
+ * Purpose: text commands list and its length evaluation.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -16,73 +16,62 @@
 #define CONFIG_CMD_H
 
 
-/*--- Text commands' list ---*/
+/*--- Text commands list ---*/
 
-#define CMD_PREFIX  "AT+"
+#define CMD_PREFIX "AT+"
 
-#define CMD_1       "DLOAD="             /* Turn a digital (two-state) load ON or OFF. A main workhorse.
-                                          * A prescribed state of the load is NOT stored in the inbuilt storage.
-                                          */
+#define CMD_1      "LOADDIGITAL="       /* 
+                                         *
+                                         */
 
-#define CMD_2       "ALOAD="             /* Drive a load using PWM. Another main workhorse.
-                                          * Valid values of a duty cycle are 0 to 255.
-                                          * A prescribed duty cycle value is NOT stored in the inbuilt storage.
-                                          */
+#define CMD_2      "LOADPWM="
 
-#define CMD_3       "DLOAD?"             // Print and send to a client the current state of a digital (two-state) load.
+#define CMD_3      "LOADDIGITAL?"
 
-#define CMD_4       "LOCALSSID="         /* Change an SSID of a local Wi-Fi access point
-                                          * stored in the inbuilt storage.
-                                          */
+#define CMD_4      "WIFISSID="
 
-#define CMD_5       "LOCALSSID?"         /* Print and send to a client an SSID of a local Wi-Fi access point
-                                          * stored in the inbuilt storage.
-                                          */
+#define CMD_5      "WIFISSID?"
 
-#define CMD_6       "LOCALPSWD="         /* Change a password for a local Wi-Fi access point
-                                          * stored in the inbuilt storage.
-                                          */
+#define CMD_6      "WIFIPSWD="
 
-#define CMD_7       "LOCALPORT="         /* Change a local TCP server port number
-                                          * stored in the inbuilt storage.
-                                          */
+#define CMD_7      "WIFIRSSIOUTPUT="
 
-#define CMD_8       "LOCALPORT?"         /* Print and send to a client a local TCP server port number stored
-                                          * in the inbuilt storage.
-                                          */
+#define CMD_8      "WIFIAUTORECONN="
 
-#define CMD_9       "LOCALIP?"           // Print and send to a client the device's IP in a local Wi-Fi network.
+#define CMD_9      "LOCALIP?"
 
-#define CMD_10      "LOCALCONNRST"       // Reset local connections.
+#define CMD_10     "LOCALPORT="
 
-#define CMD_11      "IOT="
+#define CMD_11     "LOCALPORT?"
 
-#define CMD_12      "IOTIP="
+#define CMD_12     "IOT="
 
-#define CMD_13      "IOTIP?"
+#define CMD_13     "IOTIP="
 
-#define CMD_14      "IOTPORT="
+#define CMD_14     "IOTIP?"
 
-#define CMD_15      "IOTPORT?"
+#define CMD_15     "IOTPORT="
 
-#define CMD_16      "IOTREQMSG="
+#define CMD_16     "IOTPORT?"
 
-#define CMD_17      "IOTREQMSG?"
+#define CMD_17     "IOTREQMSG="
 
-#define CMD_18      "IOTREQPERIOD="
+#define CMD_18     "IOTREQMSG?"
 
-#define CMD_19      "BTCLASSIC="
+#define CMD_19     "IOTREQPERIOD="
 
-#define CMD_20      "BTCLASSICDEVNAME="
+#define CMD_20     "BTCLASSIC="
 
-#define CMD_21      "BTCLASSICDEVNAME?"
+#define CMD_21     "BTCLASSICDEVNAME="  /* 
+                                         *
+                                         */
 
-#define CMD_22      "LOCALAUTORECONN="
+#define CMD_22     "BTCLASSICDEVNAME?"
 
-#define CMD_23      "RSSIOUTPUT="
+#define CMD_23     "ALLCONNRST"
 
 
-/*--- Text commands' list length evaluation ---*/
+/*--- Text commands list length evaluation ---*/
 
 #ifdef CMD_1
     #define CMD_1_DEFINED 1
@@ -222,11 +211,23 @@
     #define CMD_23_DEFINED 0
 #endif
 
+#ifdef CMD_24
+    #define CMD_24_DEFINED 1
+#else
+    #define CMD_24_DEFINED 0
+#endif
+
+#ifdef CMD_25
+    #define CMD_25_DEFINED 1
+#else
+    #define CMD_25_DEFINED 0
+#endif
+
 #define CMD_LIST_LEN (CMD_1_DEFINED + CMD_2_DEFINED + CMD_3_DEFINED + CMD_4_DEFINED + CMD_5_DEFINED +      \
                       CMD_6_DEFINED + CMD_7_DEFINED + CMD_8_DEFINED + CMD_9_DEFINED + CMD_10_DEFINED +     \
                       CMD_11_DEFINED + CMD_12_DEFINED + CMD_13_DEFINED + CMD_14_DEFINED + CMD_15_DEFINED + \
                       CMD_16_DEFINED + CMD_17_DEFINED + CMD_18_DEFINED + CMD_19_DEFINED + CMD_20_DEFINED + \
-                      CMD_21_DEFINED + CMD_22_DEFINED + CMD_23_DEFINED)
+                      CMD_21_DEFINED + CMD_22_DEFINED + CMD_23_DEFINED + CMD_24_DEFINED + CMD_25_DEFINED)
 
 
 #endif  // Include guards.

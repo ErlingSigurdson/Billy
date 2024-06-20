@@ -13,7 +13,7 @@
 
 /*--- Includes ---*/
 
-// Main Arduino library.
+// Essential Arduino library.
 #include <Arduino.h>
 
 // Additional libraries for Arduino IDE.
@@ -36,8 +36,8 @@
 /*************** GLOBAL VARIABLES ***************/
 
 WiFiServer TCP_local_server(ESP_TCP_PORT_DUMMY);
-
 WiFiClient TCP_remote_client;
+
 WiFiClient TCP_local_client;
 
 

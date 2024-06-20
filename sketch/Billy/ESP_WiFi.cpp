@@ -1,4 +1,3 @@
-#include "WiFiType.h"
 /****************** DESCRIPTION *****************/
 
 /**
@@ -14,7 +13,7 @@
 
 /*--- Includes ---*/
 
-// Main Arduino library.
+// Essential Arduino library.
 #include <Arduino.h>
 
 // Additional libraries for Arduino IDE.
@@ -24,6 +23,8 @@
 #ifdef ESP8266
     #include <ESP8266WiFi.h>
 #endif
+
+//#include "WiFiType.h" // Du fuq??? _TODO_
 
 // Local modules.
 #include "ESP_WiFi.h"
