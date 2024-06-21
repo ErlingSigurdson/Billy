@@ -169,12 +169,11 @@ void loop()
     // Command buffer.
     char terminal_input[STR_MAX_LEN + 1] = {0};
 
-    bool BTClassic_was_connected = 0;
-
     receive_cmd_HW_UART(terminal_input);
     receive_cmd_TCP_local(terminal_input);
     receive_cmd_TCP_IoT(terminal_input, &stored_configs);
     receive_cmd_HTTP(terminal_input);
+    static bool BTClassic_was_connected = 0;
     receive_cmd_BTClassic(terminal_input, &stored_configs, &BTClassic_was_connected);
 
 
@@ -447,7 +446,9 @@ void setup_BTClassic(stored_configs_t *stored_configs)
         // Check for Bluetooth Classic functionality flag.
         Serial.print("Bluetooth Classic: ");
         if (stored_configs->BTClassic_flag != 0) {
+            Serial.println("DEBUG 1");
             ESP32_BTClassic_start(stored_configs->BTClassic_dev_name);
+            Serial.println("DEBUG 2");
             Serial.println("ON");
             Serial.print("Bluetooth Classic device name: ");
             Serial.println(stored_configs->BTClassic_dev_name);

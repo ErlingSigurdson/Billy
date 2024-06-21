@@ -83,9 +83,9 @@ uint32_t ESP32_BTClassic_read_line(char *buf, uint32_t str_max_len, uint32_t con
 
 void ESP32_BTClassic_send_msg(const char *msg)
 {
-    if (BTClassic_Serial.connected()) {
+    //if (BTClassic_Serial.connected()) {
         BTClassic_Serial.println(msg);
-    }
+    //}
 }
 
 void ESP32_BTClassic_disconnect(uint32_t shutdown_downtime)

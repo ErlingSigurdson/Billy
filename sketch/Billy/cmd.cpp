@@ -87,6 +87,7 @@ void cmd_aux_set_config(const char *cmd, uint32_t addr, const char *topic, bool 
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
+    Serial.println("-3");
     inbuilt_storage_write(cmd_val,
                           strlen(cmd_val),
                           INBUILT_STORAGE_STR_MAX_LEN,
@@ -98,7 +99,9 @@ void cmd_aux_set_config(const char *cmd, uint32_t addr, const char *topic, bool 
     if (echo_val) {
         strcat(msg, cmd_val);
     }
+    Serial.println("-2");
     cmd_aux_output(msg);
+    Serial.println("-1");
 
     *refresh_flag = 1;
 }
