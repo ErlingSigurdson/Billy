@@ -402,12 +402,13 @@ void cmd_handler_set_BTClassic_flag(const char *cmd,
         if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
             cmd_aux_set_config(cmd,
                                INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG,
-                               "Bluetooth Classic: ",
-                               ECHO_VAL_ON,
+                               "Bluetooth Classic status updated successfully!",
+                               ECHO_VAL_OFF,
                                refresh_flag);
-                               
-            *refresh_flag = 1;
+
+            stored_configs_read(stored_configs);
             setup_BTClassic_ptr(stored_configs);
+            *refresh_flag = 1;
         } else {
             cmd_handler_err_val();
         }
@@ -429,11 +430,12 @@ void cmd_handler_set_BTClassic_dev_name(const char *cmd,
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
         cmd_aux_set_config(cmd,
                            INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME,
-                           "Bluetooth Classic device name changed successfully! New name is: ",
-                           ECHO_VAL_ON,
+                           "Bluetooth Classic device name changed successfully!",
+                           ECHO_VAL_OFF,
                            refresh_flag);
 
         *refresh_flag = 1;
+        stored_configs_read(stored_configs);
         setup_BTClassic_ptr(stored_configs);
     #endif
 }

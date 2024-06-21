@@ -27,9 +27,7 @@
 
 /*--- Misc ---*/
 
-/* To print or not to print a new value of the changed config.
- * OFF for password, ON for other cases.
- */
+// To print or not to print a new value of the changed config.
 #define ECHO_VAL_ON 1
 #define ECHO_VAL_OFF 0
 

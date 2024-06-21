@@ -113,15 +113,6 @@ void setup()
 
     /*--- Starting wireless communications ---*/
 
-    /* Initializing certain objects (class instances) requires specifying
-     * their parameters compile-time, since the latter are to be passed
-     * to a constructor function. However, it's not possible to specify
-     * a proper port number for a WiFiServer class object in advance because
-     * the relevant port number is to be read from an inbuilt storage. Therefore
-     * the object gets initialized with a dummy value and then becomes updated.
-     */
-    ESP_TCP_server_port_update(stored_configs.local_server_port);
-
     setup_WiFi(&stored_configs);
     setup_BTClassic(&stored_configs);
 
@@ -239,15 +230,15 @@ void loop()
                 break;
 
             case 9:
-                cmd_handler_set_local_server_port(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_output_local_server_IP();
                 break;
 
             case 10:
-                cmd_handler_output_local_server_port();
+                cmd_handler_set_local_server_port(terminal_input, &time_to_refresh_stored_configs);
                 break;
 
             case 11:
-                cmd_handler_output_local_server_IP();
+                cmd_handler_output_local_server_port();
                 break;
 
             case 12:
@@ -332,7 +323,7 @@ void loop()
 
     /*--- Finishing communications ---*/
 
-    // TCP clients' disconnection.
+    // TCP clients disconnection.
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
 
     // Bluetooth Classic disconnection.
@@ -366,9 +357,10 @@ void loop()
             WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis;        
         } else {
             WiFi_autoreconnect_current_millis = millis();
-            WiFi_autoreconnect_due_time = (WiFi_autoreconnect_current_millis - WiFi_autoreconnect_previous_millis)
-                                           > WIFI_RECONNECT_CHECK_PERIOD;
         }
+
+        WiFi_autoreconnect_due_time = (WiFi_autoreconnect_current_millis - WiFi_autoreconnect_previous_millis)
+                                       > WIFI_RECONNECT_CHECK_PERIOD;
     }
 
 
@@ -379,6 +371,15 @@ void loop()
 
 void setup_WiFi(stored_configs_t *stored_configs)
 {
+    /* Initializing certain objects (class instances) requires specifying
+     * their parameters compile-time, since the latter are to be passed
+     * to a constructor function. However, it's not possible to specify
+     * a proper port number for a WiFiServer class object in advance because
+     * the relevant port number is to be read from an inbuilt storage. Therefore
+     * the object gets initialized with a dummy value and then becomes updated.
+     */
+    ESP_TCP_server_port_update(stored_configs->local_server_port);
+
     // Connect to Wi-Fi network.
     bool WiFi_connected = ESP_WiFi_set_connection(stored_configs->WiFi_SSID,
                                                   stored_configs->WiFi_pswd,
@@ -403,6 +404,24 @@ void setup_WiFi(stored_configs_t *stored_configs)
     }
     Serial.println("");
 
+    // Check for RSSI output flag.
+    Serial.print("RSSI output: ");
+    if (stored_configs->WiFi_RSSI_output_flag != 0) {
+        Serial.println("ON");
+    } else {
+        Serial.println("OFF");
+    }
+
+    // Check for automatic reconnect attempts flag.
+    Serial.print("Automatic reconnect attempts: ");
+    if (stored_configs->WiFi_autoreconnect_flag != 0) {
+        Serial.println("ON");
+    } else {
+        Serial.println("OFF");
+    }
+
+    Serial.println("");
+
     // Check for IoT mode flag.
     Serial.print("Requests to IoT server: ");
     if (stored_configs->IoT_flag != 0) {
@@ -419,22 +438,6 @@ void setup_WiFi(stored_configs_t *stored_configs)
         Serial.println("OFF");
     }
 
-    // Check for automatic reconnect attempts flag.
-    Serial.print("Automatic reconnect attempts: ");
-    if (stored_configs->WiFi_autoreconnect_flag != 0) {
-        Serial.println("ON");
-    } else {
-        Serial.println("OFF");
-    }
-
-    // Check for RSSI output flag.
-    Serial.print("RSSI output: ");
-    if (stored_configs->WiFi_RSSI_output_flag != 0) {
-        Serial.println("ON");
-    } else {
-        Serial.println("OFF");
-    }
-
     Serial.println("");
 }
 
@@ -444,16 +447,13 @@ void setup_BTClassic(stored_configs_t *stored_configs)
         // Check for Bluetooth Classic functionality flag.
         Serial.print("Bluetooth Classic: ");
         if (stored_configs->BTClassic_flag != 0) {
+            ESP32_BTClassic_start(stored_configs->BTClassic_dev_name);
             Serial.println("ON");
             Serial.print("Bluetooth Classic device name: ");
             Serial.println(stored_configs->BTClassic_dev_name);
         } else {
+            ESP32_BTClassic_stop(CONN_SHUTDOWN_DOWNTIME);
             Serial.println("OFF");
-        }
-
-        // Bluetooth Classic startup.
-        if (stored_configs->BTClassic_flag) {
-            ESP32_BTClassic_start(stored_configs->BTClassic_dev_name);
         }
     #endif
 }
