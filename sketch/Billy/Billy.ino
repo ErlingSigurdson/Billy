@@ -65,7 +65,7 @@ void receive_cmd_TCP_local(char *buf);
  */
 void receive_cmd_TCP_IoT(char *buf, stored_configs_t *stored_configs);
 
-/* A local HTTP server handles HTTP requests and retrieves a data
+/* A local HTTP server handles HTTP requests and reads a data
  * from a request body, which is then put into the buffer.
  */
 void receive_cmd_HTTP(char *buf);
@@ -120,6 +120,8 @@ void setup()
         pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
         digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_OUTPUT_LOAD_OFF);
     }
+
+    Serial.println("");
 
 
     /*--- Interaction with the inbuilt storage ---*/
