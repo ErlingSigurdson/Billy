@@ -71,6 +71,17 @@ void cmd_aux_output(const char *msg)
     #endif
 }
 
+bool cmd_aux_has_only_decimal(const char *str)
+{
+    for (uint32_t i = 0; i < (uint32_t)strlen(str); ++i) {
+        if (str[i] < '0' || str[i] > '9') {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 void cmd_aux_set_output_digital(uint8_t pin, uint8_t state, const char *topic)
 {
     if (pin == 0) {
@@ -200,28 +211,31 @@ void cmd_handler_set_load_PWM(const char *cmd)
         return;
     }
 
-    for (uint32_t i = 0; i < val_len; ++i) {
-        if (cmd_val[i] < '0' || cmd_val[i] > '9') {
-            cmd_handler_err_val();
-            return;
-        }
-    }
-
-    uint32_t val = strtol(cmd_val, 0, 10);  // Convert to decimal.
-    if (val > 255) {                        // Valid duty cycle values are 0 to 255.
+    if (!cmd_aux_has_only_decimal(cmd_val)) {
         cmd_handler_err_val();
         return;
     }
 
-    char msg[STR_MAX_LEN * 2 + 1] = "Analog load duty cycle set to ";
+    uint32_t duty_cycle = strtol(cmd_val, 0, 10);  // Convert to decimal.
+    if (duty_cycle > 255) {                        // Valid duty cycle values are 0 to 255.
+        cmd_handler_err_val();
+        return;
+    }
+
+    char msg[STR_MAX_LEN * 2 + 1] = "PWM duty cycle set to ";
     strcat(msg, cmd_val);
 
-    cmd_aux_set_output_PWM(PWM_OUTPUT_PIN, val, msg);
+    cmd_aux_set_output_PWM(PWM_OUTPUT_PIN, duty_cycle, msg);
 }
 
 // Command #3
 void cmd_handler_output_load_digital()
 {
+    if (DIGITAL_OUTPUT_PIN == 0) {
+        cmd_aux_output("Digital output pin not specified.");
+        return;
+    }
+
     if (digitalRead(DIGITAL_OUTPUT_PIN) == DIGITAL_OUTPUT_LOAD_ON) {
         cmd_aux_output("Current digital load state is ON");
     } else {
@@ -461,6 +475,7 @@ void cmd_handler_all_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *),
                               stored_configs_t *stored_configs)
 {
     cmd_aux_output("Resetting local connections...");
+    
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
 

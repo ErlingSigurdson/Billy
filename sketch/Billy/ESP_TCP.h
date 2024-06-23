@@ -24,7 +24,7 @@
 
 /*--- Misc ---*/
 
-#define DEFAULT_IOT_REQ_PERIOD 500
+#define IOT_DEFAULT_REQ_PERIOD 500
 
 
 /************** FUNCTION PROTOTYPES *************/

@@ -21,12 +21,27 @@
 // Essential Arduino library.
 #include <Arduino.h>
 
+// Local modules.
+#include "stored_configs.h"
+
 
 /*--- Misc ---*/
 
 // To print or not to print a new value of the changed config.
 #define ECHO_VAL_ON 1
 #define ECHO_VAL_OFF 0
+
+
+/****************** DATA TYPES ******************/
+
+typedef struct set_config_params_t {
+    char *buf;
+    uint32_t addr;
+    bool numeric_only;
+    const char *topic;
+    bool echo_val;
+    bool *refresh_flag;
+} set_config_params_t;
 
 
 /************** FUNCTION PROTOTYPES *************/
@@ -43,6 +58,11 @@ int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], u
  * Prints a message over a UART and sends it over wireless connections.
  */
 void cmd_aux_output(const char *msg);
+
+/* A generic accessory called by the other ones.
+ * Checks if the string contains anything aside from decimal digits.
+ */
+bool cmd_aux_has_only_decimal(const char *str);
 
 // Accessories for handler functions.
 void cmd_aux_set_output_digital(uint8_t pin, uint8_t state, const char *topic);

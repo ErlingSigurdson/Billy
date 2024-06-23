@@ -24,7 +24,7 @@
 
 /*--- Misc ---*/
 
-#define WIFI_DEFAULT_RSSI_OUTPUT_PERIOD 2000
+#define WIFI_RSSI_OUTPUT_PERIOD 2000
 
 
 /************** FUNCTION PROTOTYPES *************/

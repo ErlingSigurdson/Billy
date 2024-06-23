@@ -495,7 +495,7 @@ void receive_cmd_TCP_local(char *buf)
 void receive_cmd_TCP_IoT(char *buf, stored_configs_t *stored_configs)
 {
     if (stored_configs->IoT_req_period == 0) {
-        stored_configs->IoT_req_period = DEFAULT_IOT_REQ_PERIOD;  // Divide by zero prevention.
+        stored_configs->IoT_req_period = IOT_DEFAULT_REQ_PERIOD;  // Divide by zero prevention.
     }
 
     if (stored_configs->IoT_flag && millis() % stored_configs->IoT_req_period == 0) {
