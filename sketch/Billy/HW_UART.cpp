@@ -46,7 +46,7 @@ uint32_t HW_UART_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeou
         current_millis = millis();
 
         if (read_slowdown > 0) {
-            delay(read_slowdown);  /* Pause to ensure that the reading from the buffer
+            delay(read_slowdown);  /* A pause to ensure that reading from the buffer
                                     * won't run ahead of writing to it.
                                     */
         }

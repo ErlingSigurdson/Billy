@@ -3,11 +3,14 @@
 /**
  * Filename: Billy.ino
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: the main file of an Arduino sketch written for ESP32 and ESP8266
- *          systems-on-chip (SoCs). See README files for more information.
+ * Purpose:  The main file of an Arduino sketch written for ESP32 and ESP8266
+ *           systems-on-chip (SoCs). Provides a control over digital and PWM
+             outputs according to commands received over a UART and wireless
+             connections.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes: project homepages https://github.com/ErlingSigurdson/Billy
- *                          https://gitflic.ru/efimov-d-v/billy
+ * Notes:    See README files for more information.
+ *           Project homepages: https://github.com/ErlingSigurdson/Billy
+ *                              https://gitflic.ru/efimov-d-v/billy
  */
 
 
@@ -25,14 +28,14 @@
 // Additional Arduino libraries are included in the local modules.
 
 // Local modules.
-#include "utilities.h"
-#include "inbuilt_storage.h"
+#include "cmd.h"
 #include "stored_configs.h"
+#include "inbuilt_storage.h"
 #include "HW_UART.h"
 #include "ESP_WiFi.h"
 #include "ESP_TCP.h"
 #include "ESP_HTTP.h"
-#include "cmd.h"
+#include "utilities.h"
 
 #if defined ESP32 && defined BTCLASSIC_PROVIDED
     #include "ESP32_BTClassic.h"
@@ -52,18 +55,24 @@ void setup_BTClassic(stored_configs_t *stored_configs);
 // Put a data received by a hardware UART into the buffer.
 void receive_cmd_HW_UART(char *buf);
 
-// Local TCP server reads a data from a remote client.
+/* A local TCP server receives a data from a remote client,
+ * the data is then put into the buffer.
+ */
 void receive_cmd_TCP_local(char *buf);
 
-/* Local TCP client sends a request to a remote server
- * and reads a response.
+/* A local TCP client sends a request to a remote server and reads a response,
+ * the latter is then put into the buffer.
  */
 void receive_cmd_TCP_IoT(char *buf, stored_configs_t *stored_configs);
 
-// Handle HTTP request and write value from a request body into a buffer.
+/* A local HTTP server handles HTTP requests and retrieves a data
+ * from a request body, which is then put into the buffer.
+ */
 void receive_cmd_HTTP(char *buf);
 
-// Read data from a Bluetooth master device.
+/* A Bluetooth Classic slave device receives a data from a master device,
+ * the data is then put into the buffer.
+ */
 void receive_cmd_BTClassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected);
 
 
@@ -73,30 +82,44 @@ void receive_cmd_BTClassic(char *buf, stored_configs_t *stored_configs, bool *BT
 
 void setup()
 {
-    /*--- Starting hardware UART ---*/
+    /*--- Hardware UART startup ---*/
 
     Serial.begin(HW_UART_BAUD_RATE);
-    delay(HW_UART_STARTUP_PAUSE);     // A tiny pause to allow for the interface startup.
-
+    delay(HW_UART_STARTUP_PAUSE);     // A tiny pause to allow for an interface startup.
     Serial.println("");
     Serial.println("*** HELLO, HUMAN! ***");
-    
 
-    /*--- GPIO ---*/
 
-    if (DIGITAL_OUTPUT_PIN == PWM_OUTPUT_PIN) {
-        Serial.println("Warning! Digital and PWM output pins coincide. "
-                       "It will most probably render digital control inoperable.");
+    /*--- GPIO initial setup ---*/
+
+    // Check assigned pins.
+    if (DIGITAL_OUTPUT_PIN == 0 && PWM_OUTPUT_PIN == 0) {
+        Serial.println("Warning! No output pins specified.");
+    } else if (DIGITAL_OUTPUT_PIN == PWM_OUTPUT_PIN) {
+        Serial.println("Warning! Digital and PWM output pins coincide."
+                       "The digital control will be most probably rendered inoperable."
+                       "It is advised to reupload the sketch with separate pin numbers"
+                       "specified for the digital and the PWM outputs.");
     }
 
-    // Configuration.
-    pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
-    pinMode(PWM_OUTPUT_PIN, OUTPUT);
-    pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
+    if (WIFI_INDICATOR_LED_PIN == 0) {
+        Serial.println("Warning! No Wi-Fi indicator LED output pin specified.");
+    }
 
-    // Setting digital outputs to respective initial digital levels.
-    digitalWrite(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF);
-    digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_OUTPUT_LOAD_OFF);
+    // Pin configuration and setting digital outputs to respective initial digital levels. 
+    if (DIGITAL_OUTPUT_PIN != 0) {
+        pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
+        digitalWrite(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF);
+    }
+
+    if (PWM_OUTPUT_PIN != 0) {
+        pinMode(PWM_OUTPUT_PIN, OUTPUT);
+    }
+
+    if (WIFI_INDICATOR_LED_PIN != 0) {
+        pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
+        digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_OUTPUT_LOAD_OFF);
+    }
 
 
     /*--- Interaction with the inbuilt storage ---*/
@@ -111,7 +134,7 @@ void setup()
     stored_configs_read(&stored_configs);
 
 
-    /*--- Starting wireless communications ---*/
+    /*--- Wireless connectivity startup ---*/
 
     setup_WiFi(&stored_configs);
     setup_BTClassic(&stored_configs);
@@ -122,13 +145,13 @@ void setup()
 
 void loop()
 {
-    /*--- Interaction with inbuilt storage ---*/
+    /*--- Interaction with the inbuilt storage ---*/
 
     static bool time_to_refresh_stored_configs = 1;
 
-    // Read config values from inbuilt storage into struct.
+    // Read config values from the inbuilt storage into the struct.
     static stored_configs_t stored_configs;
-    if (time_to_refresh_stored_configs) {    // Check if update is necessary.
+    if (time_to_refresh_stored_configs) {    // Check if an update is necessary.
         stored_configs_read(&stored_configs);
         time_to_refresh_stored_configs = 0;
     }
@@ -137,47 +160,34 @@ void loop()
     /*--- Array of valid commands ---*/
 
     static const char *cmd_list[] = {
-        0,      // Placeholder to bump first command's index up to 1.
-        CMD_1,
-        CMD_2,
-        CMD_3,
-        CMD_4,
-        CMD_5,
-        CMD_6,
-        CMD_7,
-        CMD_8,
-        CMD_9,
-        CMD_10,
-        CMD_11,
-        CMD_12,
-        CMD_13,
-        CMD_14,
-        CMD_15,
-        CMD_16,
-        CMD_17,
-        CMD_18,
-        CMD_19,
-        CMD_20,
-        CMD_21,
-        CMD_22,
-        CMD_23
+        0,  // A placeholder to bump first command's index up to 1.
+        CMD_1, CMD_2, CMD_3, CMD_4, CMD_5,
+        CMD_6, CMD_7, CMD_8, CMD_9, CMD_10,
+        CMD_11, CMD_12, CMD_13, CMD_14, CMD_15,
+        CMD_16, CMD_17, CMD_18, CMD_19, CMD_20,
+        CMD_21, CMD_22, CMD_23
     };
 
 
-    /*--- Receiving commands ---*/
+    /*--- Commands reception ---*/
 
     // Command buffer.
     char terminal_input[STR_MAX_LEN + 1] = {0};
 
+    // Command reception subroutines.
     receive_cmd_HW_UART(terminal_input);
     receive_cmd_TCP_local(terminal_input);
     receive_cmd_TCP_IoT(terminal_input, &stored_configs);
     receive_cmd_HTTP(terminal_input);
-    static bool BTClassic_was_connected = 0;
+
+    /* Another call for the connected() method of the BluetoothSerial class
+     * caused an RTOS crash, hence the additional flag was introduced.
+     */
+    bool BTClassic_was_connected = 0;
     receive_cmd_BTClassic(terminal_input, &stored_configs, &BTClassic_was_connected);
 
 
-    /*--- Handling commands ---*/
+    /*--- Command handling ---*/
 
     // Essentially it's the central hub of the whole sketch.
 
@@ -275,14 +285,12 @@ void loop()
             case 20:
                 cmd_handler_set_BTClassic_flag(terminal_input,
                                                setup_BTClassic,
-                                               &stored_configs, 
                                                &time_to_refresh_stored_configs);
                 break;
 
             case 21:
                 cmd_handler_set_BTClassic_dev_name(terminal_input,
                                                    setup_BTClassic,
-                                                   &stored_configs, 
                                                    &time_to_refresh_stored_configs);
                 break;
 
@@ -302,19 +310,19 @@ void loop()
 
     /*--- Current RSSI output ---*/
 
-    uint32_t WiFi_RSSI_print_period = WIFI_RSSI_OUTPUT_PERIOD;
-    if (WiFi_RSSI_print_period == 0) {
-        WiFi_RSSI_print_period = DEFAULT_WIFI_RSSI_OUTPUT_PERIOD;  // Divide by zero prevention.
-    }
+    static uint64_t RSSI_output_current_millis = millis();
+    static uint64_t RSSI_output_previous_millis = RSSI_output_current_millis;
+    bool RSSI_output_due_time = (RSSI_output_current_millis -
+                                RSSI_output_previous_millis) >
+                                WIFI_RSSI_OUTPUT_PERIOD;
 
-    static bool RSSI_output_loaded = 0;
-    if (millis() % WiFi_RSSI_print_period != 0) {
-        RSSI_output_loaded = 1;
-    }
-
-    if (stored_configs.WiFi_RSSI_output_flag && millis() % WiFi_RSSI_print_period == 0 && RSSI_output_loaded) {
-        ESP_WiFi_RSSI_print();
-        RSSI_output_loaded = 0;
+    if (stored_configs.WiFi_RSSI_output_flag) {
+        if (RSSI_output_due_time) {
+            ESP_WiFi_RSSI_output();
+            RSSI_output_previous_millis = RSSI_output_current_millis;
+        } else {
+           RSSI_output_current_millis = millis();
+        }
     }
 
     Serial.flush();
@@ -327,10 +335,7 @@ void loop()
 
     // Bluetooth Classic disconnection.
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
-        if (BTClassic_was_connected) {  /* Another call for connected() method
-                                          * caused RTOS crash, hence additional
-                                          * flag was introduced.
-                                          */
+        if (BTClassic_was_connected) {
             ESP32_BTClassic_disconnect(CONN_SHUTDOWN_DOWNTIME);
         }
     #endif
@@ -340,9 +345,11 @@ void loop()
     
     static uint64_t WiFi_autoreconnect_current_millis = millis();
     static uint64_t WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis;
+    bool WiFi_autoreconnect_due_time = (WiFi_autoreconnect_current_millis -
+                                       WiFi_autoreconnect_previous_millis) >
+                                       WIFI_RECONNECT_CHECK_PERIOD;
 
     static bool WiFi_was_unconnected = !ESP_WiFi_is_connected();
-    static bool WiFi_autoreconnect_due_time = 0;
 
     if (stored_configs.WiFi_autoreconnect_flag) {
         if (WiFi_autoreconnect_due_time && !WiFi_was_unconnected) {
@@ -357,12 +364,7 @@ void loop()
         } else {
             WiFi_autoreconnect_current_millis = millis();
         }
-
-        WiFi_autoreconnect_due_time = (WiFi_autoreconnect_current_millis - WiFi_autoreconnect_previous_millis)
-                                       > WIFI_RECONNECT_CHECK_PERIOD;
     }
-
-
 }
 
 
@@ -374,8 +376,9 @@ void setup_WiFi(stored_configs_t *stored_configs)
      * their parameters compile-time, since the latter are to be passed
      * to a constructor function. However, it's not possible to specify
      * a proper port number for a WiFiServer class object in advance because
-     * the relevant port number is to be read from an inbuilt storage. Therefore
-     * the object gets initialized with a dummy value and then becomes updated.
+     * the assigned port number is to be read from the inbuilt storage.
+     * Therefore the object gets initialized with a dummy value and then
+     * becomes updated.
      */
     ESP_TCP_server_port_update(stored_configs->local_server_port);
 
@@ -446,9 +449,9 @@ void setup_BTClassic(stored_configs_t *stored_configs)
         // Check for Bluetooth Classic functionality flag.
         Serial.print("Bluetooth Classic: ");
         if (stored_configs->BTClassic_flag != 0) {
-            Serial.println("DEBUG 1");
+            ;
             ESP32_BTClassic_start(stored_configs->BTClassic_dev_name);
-            Serial.println("DEBUG 2");
+            ;
             Serial.println("ON");
             Serial.print("Bluetooth Classic device name: ");
             Serial.println(stored_configs->BTClassic_dev_name);
@@ -532,7 +535,7 @@ void receive_cmd_HTTP(char *buf)
 void receive_cmd_BTClassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected)
 {
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
-        *BTClassic_was_connected = 0;
+        *BTClassic_was_connected = 0;  // Just in case.
         if (stored_configs->BTClassic_flag && ESP32_BTClassic_check_connection()) {
             *BTClassic_was_connected = 1;
             uint32_t BTClassic_bytes_read = 0;

@@ -71,14 +71,24 @@ void cmd_aux_output(const char *msg)
     #endif
 }
 
-void cmd_aux_set_digital_output(uint8_t pin, uint8_t state, const char *topic)
+void cmd_aux_set_output_digital(uint8_t pin, uint8_t state, const char *topic)
 {
+    if (pin == 0) {
+        cmd_aux_output("Digital output pin not specified.");
+        return;
+    }
+
     digitalWrite(pin, state);
     cmd_aux_output(topic);
 }
 
-void cmd_aux_set_PWM(uint8_t pin, uint32_t val, const char *topic)
+void cmd_aux_set_output_PWM(uint8_t pin, uint32_t val, const char *topic)
 {
+    if (pin == 0) {
+        cmd_aux_output("PWM output pin not specified.");
+        return;
+    }
+
     analogWrite(pin, val);
     cmd_aux_output(topic);
 }
@@ -87,11 +97,11 @@ void cmd_aux_set_config(const char *cmd, uint32_t addr, const char *topic, bool 
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
-    Serial.println("-3");
     inbuilt_storage_write(cmd_val,
                           strlen(cmd_val),
                           INBUILT_STORAGE_STR_MAX_LEN,
                           addr);
+    *refresh_flag = 1;
 
     char msg[STR_MAX_LEN * 2 + 1] = {0};
     strcpy(msg, topic);
@@ -99,11 +109,8 @@ void cmd_aux_set_config(const char *cmd, uint32_t addr, const char *topic, bool 
     if (echo_val) {
         strcat(msg, cmd_val);
     }
-    Serial.println("-2");
-    cmd_aux_output(msg);
-    Serial.println("-1");
 
-    *refresh_flag = 1;
+    cmd_aux_output(msg);
 }
 
 void cmd_aux_output_config(uint32_t addr, const char *topic)
@@ -151,17 +158,17 @@ void cmd_handler_set_load_digital(const char *cmd)
 
     if (!strcmp(cmd_val, "TOGGLE")) {
         if (digitalRead(DIGITAL_OUTPUT_PIN) == DIGITAL_OUTPUT_LOAD_ON) {
-            cmd_aux_set_digital_output(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF, "Two-state load is now OFF");
+            cmd_aux_set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF, "Two-state load is now OFF");
             return;
         } else {
-            cmd_aux_set_digital_output(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_ON, "Two-state load is now ON");
+            cmd_aux_set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_ON, "Two-state load is now ON");
             return;
         }
     }
 
     if (!strcmp(cmd_val, "ON")) {
         if (digitalRead(DIGITAL_OUTPUT_PIN) != DIGITAL_OUTPUT_LOAD_ON) {
-            cmd_aux_set_digital_output(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_ON, "Two-state load is now ON");
+            cmd_aux_set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_ON, "Two-state load is now ON");
             return;
         } else {
             cmd_aux_output("Two-state load is already ON");
@@ -171,7 +178,7 @@ void cmd_handler_set_load_digital(const char *cmd)
 
     if (!strcmp(cmd_val, "OFF")) {
         if (digitalRead(DIGITAL_OUTPUT_PIN) != DIGITAL_OUTPUT_LOAD_OFF) {
-            cmd_aux_set_digital_output(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF, "Two-state load is now OFF");
+            cmd_aux_set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF, "Two-state load is now OFF");
             return;
         } else {
             cmd_aux_output("Two-state load is already OFF");
@@ -209,7 +216,7 @@ void cmd_handler_set_load_PWM(const char *cmd)
     char msg[STR_MAX_LEN * 2 + 1] = "Analog load duty cycle set to ";
     strcat(msg, cmd_val);
 
-    cmd_aux_set_PWM(PWM_OUTPUT_PIN, val, msg);
+    cmd_aux_set_output_PWM(PWM_OUTPUT_PIN, val, msg);
 }
 
 // Command #3
@@ -389,14 +396,12 @@ void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag)
 
 // Command #20
 void cmd_handler_set_BTClassic_flag(const char *cmd,
-                                    void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
-                                    stored_configs_t *stored_configs,
+                                    void (*setup_BTClassic_ptr)(stored_configs_t *),
                                     bool *refresh_flag)
 {
     // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)cmd;
     (void)setup_BTClassic_ptr;
-    (void)stored_configs;
     (void)refresh_flag;
 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
@@ -409,9 +414,9 @@ void cmd_handler_set_BTClassic_flag(const char *cmd,
                                ECHO_VAL_OFF,
                                refresh_flag);
 
-            stored_configs_read(stored_configs);
-            setup_BTClassic_ptr(stored_configs);
-            *refresh_flag = 1;
+            stored_configs_t _stored_configs;
+            stored_configs_read(&_stored_configs);
+            setup_BTClassic_ptr(&_stored_configs);
         } else {
             cmd_handler_err_val();
         }
@@ -420,14 +425,12 @@ void cmd_handler_set_BTClassic_flag(const char *cmd,
 
 // Command #21
 void cmd_handler_set_BTClassic_dev_name(const char *cmd,
-                                        void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
-                                        stored_configs_t *stored_configs,
+                                        void (*setup_BTClassic_ptr)(stored_configs_t *),
                                         bool *refresh_flag)
 {
     // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)cmd;
     (void)setup_BTClassic_ptr;
-    (void)stored_configs;
     (void)refresh_flag;
 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
@@ -437,9 +440,9 @@ void cmd_handler_set_BTClassic_dev_name(const char *cmd,
                            ECHO_VAL_OFF,
                            refresh_flag);
 
-        *refresh_flag = 1;
-        stored_configs_read(stored_configs);
-        setup_BTClassic_ptr(stored_configs);
+        stored_configs_t _stored_configs;
+        stored_configs_read(&_stored_configs);
+        setup_BTClassic_ptr(&_stored_configs);
     #endif
 }
 
@@ -453,8 +456,8 @@ void cmd_handler_output_BTClassic_dev_name()
 }
 
 // Command #23
-void cmd_handler_all_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *stored_configs),
-                              void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
+void cmd_handler_all_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *),
+                              void (*setup_BTClassic_ptr)(stored_configs_t *),
                               stored_configs_t *stored_configs)
 {
     cmd_aux_output("Resetting local connections...");

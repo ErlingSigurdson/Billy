@@ -72,6 +72,10 @@ bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeo
 
 void ESP_WiFi_indicate_connection(uint32_t led_pin, uint32_t cycles, uint32_t period)
 {
+    if (led_pin == 0) {
+        return;
+    }
+
     if (cycles % 2) {
         ++cycles;
     }
@@ -94,7 +98,7 @@ String ESP_WiFi_get_devices_current_IP()
     return WiFi.localIP().toString();
 }
 
-void ESP_WiFi_RSSI_print()
+void ESP_WiFi_RSSI_output()
 {
     int64_t RSSI = WiFi.RSSI();
     Serial.print("Current RSSI is: ");

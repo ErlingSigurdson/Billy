@@ -22,6 +22,11 @@
 #include <Arduino.h>
 
 
+/*--- Misc ---*/
+
+#define BTCLASSIC_READ_SLOWDOWN 2
+
+
 /************** FUNCTION PROTOTYPES *************/
 
 void ESP32_BTClassic_start(char *dev_name);

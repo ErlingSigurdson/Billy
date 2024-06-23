@@ -70,10 +70,9 @@ uint32_t ESP32_BTClassic_read_line(char *buf, uint32_t str_max_len, uint32_t con
 
             current_millis = millis();
 
-            #define BTCLASSIC_READ_SLOWDOWN 2
-            delay(BTCLASSIC_READ_SLOWDOWN);    /* Pause to ensure that the reading from the buffer
-                                                 * won't run ahead of writing to it.
-                                                 */
+            delay(BTCLASSIC_READ_SLOWDOWN);    /* A pause to ensure that reading from the buffer
+                                                * won't run ahead of writing to it.
+                                                */
         }
         current_millis = millis();
     }
@@ -83,9 +82,7 @@ uint32_t ESP32_BTClassic_read_line(char *buf, uint32_t str_max_len, uint32_t con
 
 void ESP32_BTClassic_send_msg(const char *msg)
 {
-    //if (BTClassic_Serial.connected()) {
-        BTClassic_Serial.println(msg);
-    //}
+    BTClassic_Serial.println(msg);
 }
 
 void ESP32_BTClassic_disconnect(uint32_t shutdown_downtime)

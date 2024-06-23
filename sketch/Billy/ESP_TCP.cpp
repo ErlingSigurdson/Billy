@@ -165,12 +165,10 @@ void ESP_TCP_clients_disconnect(uint32_t shutdown_downtime)
     if (TCP_remote_client.connected()) {
         delay(shutdown_downtime);
         TCP_remote_client.stop();
-        delay(shutdown_downtime);
     }
 
     if (TCP_local_client.connected()) {
         delay(shutdown_downtime);
         TCP_local_client.stop();
-        delay(shutdown_downtime);
     }
 }

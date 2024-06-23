@@ -3,7 +3,7 @@
 /**
  * Filename: cmd.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: text commands processing.
+ * Purpose:  text commands processing.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -21,9 +21,6 @@
 // Essential Arduino library.
 #include <Arduino.h>
 
-// Local modules.
-#include "stored_configs.h"
-
 
 /*--- Misc ---*/
 
@@ -34,7 +31,6 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-
 /*--- Buffer contents check ---*/
 
 // Look up for a valid prefix and for valid commands from a text commands list.
@@ -43,14 +39,14 @@ int32_t cmd_check(const char *buf, const char *prefix, const char *cmd_list[], u
 
 /*--- Auxiliary functions (helper functions, accessories) ---*/
 
-/* A generic accessory called by the others.
- * Prints a message over a UART and sends it over the wireless connections.
+/* A generic accessory called by the other ones.
+ * Prints a message over a UART and sends it over wireless connections.
  */
 void cmd_aux_output(const char *msg);
 
 // Accessories for handler functions.
-void cmd_aux_set_digital_output(uint8_t pin, uint8_t state, const char *topic);
-void cmd_aux_set_PWM(uint8_t pin, uint32_t val, const char *topic);
+void cmd_aux_set_output_digital(uint8_t pin, uint8_t state, const char *topic);
+void cmd_aux_set_output_PWM(uint8_t pin, uint32_t val, const char *topic);
 void cmd_aux_set_config(const char *cmd, uint32_t addr, const char *topic, bool echo_val, bool *refresh_flag);
 void cmd_aux_output_config(uint32_t addr, const char *topic);
 
@@ -188,8 +184,7 @@ void cmd_handler_set_IoT_req_period(const char *cmd, bool *refresh_flag);
  * set Bluetooth Classic functionality ON or OFF.
  */
 void cmd_handler_set_BTClassic_flag(const char *cmd,
-                                    void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
-                                    stored_configs_t *stored_configs,
+                                    void (*setup_BTClassic_ptr)(stored_configs_t *),
                                     bool *refresh_flag);
 
 /* Command #21:
@@ -197,8 +192,7 @@ void cmd_handler_set_BTClassic_flag(const char *cmd,
  * stored in the inbuilt storage.
  */
 void cmd_handler_set_BTClassic_dev_name(const char *cmd,
-                                        void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
-                                        stored_configs_t *stored_configs,
+                                        void (*setup_BTClassic_ptr)(stored_configs_t *),
                                         bool *refresh_flag);
 
 /* Command #22:
@@ -210,8 +204,8 @@ void cmd_handler_output_BTClassic_dev_name();
 /* Command #23:
  * reset all wireless connections and restart the wireless connectivity.
  */
-void cmd_handler_all_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *stored_configs),
-                              void (*setup_BTClassic_ptr)(stored_configs_t *stored_configs),
+void cmd_handler_all_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *),
+                              void (*setup_BTClassic_ptr)(stored_configs_t *),
                               stored_configs_t *stored_configs);
 
 

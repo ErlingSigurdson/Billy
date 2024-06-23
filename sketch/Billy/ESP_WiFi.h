@@ -24,7 +24,7 @@
 
 /*--- Misc ---*/
 
-#define DEFAULT_WIFI_RSSI_OUTPUT_PERIOD 2000
+#define WIFI_DEFAULT_RSSI_OUTPUT_PERIOD 2000
 
 
 /************** FUNCTION PROTOTYPES *************/
@@ -34,7 +34,7 @@ bool ESP_WiFi_autoreset_connection();
 void ESP_WiFi_indicate_connection(uint32_t LED_pin, uint32_t cycles, uint32_t period);
 
 String ESP_WiFi_get_devices_current_IP();
-void ESP_WiFi_RSSI_print();
+void ESP_WiFi_RSSI_output();
 bool ESP_WiFi_is_connected();
 
 
