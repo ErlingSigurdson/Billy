@@ -7,7 +7,8 @@ Billy is a program (an Arduino sketch) written for ESP32 and ESP8266 microcontro
 With this software an MCU can control a load using a digital (ON/OFF) and a pseudo-analog (PWM) output
 and receive commands over a UART and wireless networks.
 
-In the following the name "Billy" may refer both to the software and a device that runs it.
+In the following the name "Billy" may refer both to the software and a device that runs it
+(an MCU, a module, a development board, etc.).
 
 ### Project pages
 **GitHub**
@@ -21,7 +22,7 @@ In the following the name "Billy" may refer both to the software and a device th
 ### News and milestones
 - **14.01.2024** - the sketch is successfully run on a ESP32-C6 module using
 [3.0.0-alpha3 version of the ESP32 Arduino core by Espressif Systems](https://github.com/espressif/arduino-esp32/milestone/4).
-- **14.06.2024** - v.1.3 released, with certain major changes made:
+- **24.06.2024** - v.1.3 released, with certain major changes made:
     - PWM output support added, and thus the project's name changed from "Billy the Relay" to just "Billy".
     - The code was refactored significantly. Among other things, command handler functions
       are now declared and defined in separate files, not in the .ino file.
