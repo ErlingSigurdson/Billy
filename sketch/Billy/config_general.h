@@ -3,7 +3,7 @@
 /**
  * Filename: config_general.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  project basic configs.
+ * Purpose:  Project basic configs.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -20,7 +20,7 @@
 
 /* Comment following #define directive for ESP32 modules
  * which lack Bluetooth Classic functionality (e.g. ESP32-S2 and ESP32-C3).
- * For ESP8266 don't worry about it.
+ * For ESP8266, don't worry about it.
  */
 #ifdef ESP32  // This macro is provided by the Arduino framework for the respective SoC family.
     #define BTCLASSIC_PROVIDED

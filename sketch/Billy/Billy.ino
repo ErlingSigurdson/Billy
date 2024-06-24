@@ -120,14 +120,14 @@ void setup()
     Serial.println("");
 
 
-    /*--- Interaction with the inbuilt storage ---*/
+    /*--- Interaction with an inbuilt storage ---*/
 
     /* In contrast to AVR-based devices, ESP32 and ESP8266 SoCs'
      * inbuilt storage must be initialized before use.
      */
     inbuilt_storage_init(INBUILT_STORAGE_SIZE);
 
-    // Read stored configs from the inbuilt storage into the struct.
+    // Read stored configs from an inbuilt storage into the struct.
     stored_configs_t stored_configs;
     stored_configs_read(&stored_configs);
 
@@ -146,11 +146,11 @@ void setup()
 
 void loop()
 {
-    /*--- Interaction with the inbuilt storage ---*/
+    /*--- Interaction with an inbuilt storage ---*/
 
     static bool time_to_refresh_stored_configs = 1;
 
-    // Read config values from the inbuilt storage into the struct.
+    // Read config values from an inbuilt storage into the struct.
     static stored_configs_t stored_configs;
     if (time_to_refresh_stored_configs) {    // Check if an update is necessary.
         stored_configs_read(&stored_configs);
@@ -376,7 +376,7 @@ bool setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
      * their parameters compile-time, since the latter are to be passed
      * to a constructor function. However, it's not possible to specify
      * a proper port number for a WiFiServer class object in advance because
-     * an assigned port number is to be read from the inbuilt storage.
+     * an assigned port number is to be read from an inbuilt storage.
      * Therefore the object gets initialized with a dummy value and then
      * becomes updated.
      */

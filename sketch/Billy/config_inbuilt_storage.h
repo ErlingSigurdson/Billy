@@ -3,7 +3,7 @@
 /**
  * Filename: config_inbuilt_storage.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  project configs related to ESP8266/ESP32
+ * Purpose:  Project configs related to ESP32/ESP8266
  *           flash memory used as an inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
@@ -52,7 +52,7 @@
 /* Indicate that the project uses a device that requires
  * some additional calls for the EEPROM.h library methods.
  */
-#define THIS_IS_ESP8266_OR_ESP32_OR_STM32
+#define THIS_IS_ESP32_OR_ESP8266_OR_STM32
 
 
 #endif  // Include guards.

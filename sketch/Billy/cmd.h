@@ -3,7 +3,7 @@
 /**
  * Filename: cmd.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  text commands processing.
+ * Purpose:  Text commands processing.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -95,14 +95,14 @@ void cmd_handler_err_val();
 
 /* Command #1:
  * turn a two-state load ON or OFF. A main workhorse.
- * A prescribed state of the load is NOT stored in the inbuilt storage.
+ * A prescribed state of the load is NOT stored in an inbuilt storage.
  */
 void cmd_handler_set_load_digital(char *cmd);
 
 /* Command #2:
  * drive a load using PWM. Another main workhorse.
  * Valid values of a duty cycle are 0 to 255.
- * A prescribed duty cycle value is NOT stored in the inbuilt storage.
+ * A prescribed duty cycle value is NOT stored in an inbuilt storage.
  */
 void cmd_handler_set_load_PWM(char *cmd);
 
@@ -114,19 +114,19 @@ void cmd_handler_output_load_digital();
 
 /* Command #4:
  * change an SSID of a Wi-Fi access point
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_set_WiFi_SSID(char *cmd, bool *refresh_flag);
 
 /* Command #5:
  * print and send to a client/master an SSID of a Wi-Fi access point
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_output_WiFi_SSID();
 
 /* Command #6:
  * change a password used for connecting to a Wi-Fi access point
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_set_WiFi_pswd(char *cmd, bool *refresh_flag);
 
@@ -147,13 +147,13 @@ void cmd_handler_output_local_server_IP();
 
 /* Command #10:
  * change a local TCP server port number
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_set_local_server_port(char *cmd, bool *refresh_flag);
 
 /* Command #11:
  * print and send to a client/master a local TCP server port number
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_output_local_server_port();
 
@@ -164,43 +164,43 @@ void cmd_handler_set_IoT_flag(char *cmd, bool *refresh_flag);
 
 /* Command #13:
  * change an IP address of a remote server
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_set_IoT_server_IP(char *cmd, bool *refresh_flag);
 
 /* Command #14:
  * print and send to a client/master an IP address of a remote server
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_output_IoT_server_IP();
 
 /* Command #15:
  * change a port number presumably used by a remote server
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_set_IoT_server_port(char *cmd, bool *refresh_flag);
 
 /* Command #16:
  * print and send to a client/master a port number presumably used by a remote server
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_output_IoT_server_port();
 
 /* Command #17:
  * change a request message to be sent to a remote server
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_set_IoT_req_msg(char *cmd, bool *refresh_flag);
 
 /* Command #18:
  * print and send to a client/master a request message to be sent to a remote server
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_output_IoT_req_msg();
 
 /* Command #19:
  * change an interval (in ms) of sending requests to a remote server
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_set_IoT_req_period(char *cmd, bool *refresh_flag);
 
@@ -213,7 +213,7 @@ void cmd_handler_set_BTClassic_flag(char *cmd,
 
 /* Command #21:
  * change a name of the ESP32 as a Bluetooth Classic slave device
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_set_BTClassic_dev_name(char *cmd,
                                         void (*setup_BTClassic_ptr)(stored_configs_t *),
@@ -221,7 +221,7 @@ void cmd_handler_set_BTClassic_dev_name(char *cmd,
 
 /* Command #22:
  * print and send to a client/master a name of the ESP32 as a Bluetooth Classic slave device
- * stored in the inbuilt storage.
+ * stored in an inbuilt storage.
  */
 void cmd_handler_output_BTClassic_dev_name();
 

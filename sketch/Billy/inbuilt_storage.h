@@ -3,11 +3,11 @@
 /**
  * Filename: inbuilt_storage.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  reading and writing strings from and to an inbuilt storage
+ * Purpose:  Reading and writing strings to and from an inbuilt storage
  *           using EEPROM.h library.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:    AVR devices use inbuilt EEPROM.
- *           ESP8266, ESP32 and STM32 emulate EEPROM
+ *           ESP32, ESP8266 and STM32 emulate EEPROM
  *           in their inbuilt flash memory.
  */
 

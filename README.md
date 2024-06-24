@@ -1,9 +1,9 @@
 ![ESP modules](https://i.imgur.com/5ZhI7Su.png)
 
-# Project background
+# Background
 
 ### Concept
-Billy is a program (an Arduino sketch) written for ESP32 and ESP8266 microcontrollers.
+Billy is a program (an Arduino sketch) written for ESP32 and ESP8266 microcontrollers (systems-on-chip, SoCs).
 With this software an MCU can control a load using a digital (ON/OFF) and a pseudo-analog (PWM) output
 and receive commands over a UART and wireless networks.
 
@@ -20,18 +20,21 @@ In the following the name "Billy" may refer both to the software and a device th
 [![gitflic-ru](https://img.shields.io/badge/gitflic-ru-red)](https://gitflic.ru/project/efimov-d-v/billy/blob?file=README.ru.md&branch=main)
 
 ### News and milestones
-- **14.01.2024** - the sketch is successfully run on a ESP32-C6 module using
+- **14.01.2024** - the sketch is successfully run on an ESP32-C6 module using
 [3.0.0-alpha3 version of the ESP32 Arduino core by Espressif Systems](https://github.com/espressif/arduino-esp32/milestone/4).
-- **24.06.2024** - v.1.3 released, with certain major changes made:
-    - PWM output support added, and thus the project's name changed from "Billy the Relay" to just "Billy".
+- **25.06.2024** - v.1.3 released, with certain major changes made:
+    - PWM output support added, and thus the project name was changed from "Billy the Relay" to just "Billy".
     - The code was refactored significantly. Among other things, command handler functions
       are now declared and defined in separate files, not in the .ino file.
+    - Local TCP server will now restart automatically in case of a lost and subsequently restored connection
+      to an access point.
+    - Introduced a data format check for configs update commands.
 
 ### TODO list
 1. Add a PWM output control panel to the web interface.
 2. Add a Bluetooth Low Energy (BLE) support.
-3. Add support for switching between station (STA) and access point (AP) Wi-Fi modes,
-and afterwards make this switching runtime.
+3. Add a support for switching between station (STA) and access point (AP) Wi-Fi modes,
+   and afterwards make this switching possible in runtime.
 
 
 ***
@@ -48,15 +51,17 @@ A typical load for Billy would be:
 ### Indicator LED
 Billy uses a single additional GPIO pin for a digital control over an indicator LED.
 The LED indicates a Wi-Fi connection status: a low-frequency blinking for an ongoing connection attempt,
-a high-frequency blinking for a successful connection attempts.  
+a high-frequency blinking for a successful connection attempt.  
 
 ### Combined outputs
-A combination of digital and PWM outputs in one pin is to be avoided.
-A combination of digital outputs for a load control and for an indicator LED control is safe,
+A combination of digital and PWM outputs in one pin is to be avoided, since it will most probably
+render digital output inoperable.
+
+A combination of digital outputs for a load control and an indicator LED control is safe,
 but will effectively turn that same LED into the load to be controlled.
 
 ### Communications
-Billing can receive commands:
+Billy can receive commands:
 - Over UART through a cable connection.
 - Over Wi-Fi as a local TCP server, e.g. sent by a classic Unix utility `netcat` (`nc`)
 or by an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).

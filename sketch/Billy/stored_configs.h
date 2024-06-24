@@ -3,7 +3,7 @@
 /**
  * Filename: stored_configs_t
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  data type for config values stored in the inbuilt storage.
+ * Purpose:  Data type for config values stored in an inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -27,7 +27,7 @@
 
 /****************** DATA TYPES ******************/
 
-// Struct for holding values read from the inbuilt storage.
+// Struct for holding values read from an inbuilt storage.
 typedef struct stored_configs_t {
     char WiFi_SSID[STR_MAX_LEN + 1];
     char WiFi_pswd[STR_MAX_LEN + 1];
@@ -48,7 +48,7 @@ typedef struct stored_configs_t {
 
 /*--- Misc functions ---*/
 
-// Read config values from the inbuilt storage into the struct.
+// Read config values from an inbuilt storage into the struct.
 void stored_configs_read(stored_configs_t *stored_configs);
 
 

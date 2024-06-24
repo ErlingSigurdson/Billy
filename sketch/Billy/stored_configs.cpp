@@ -3,7 +3,7 @@
 /**
  * Filename: stored_configs_t
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  data type for config values stored in the inbuilt storage.
+ * Purpose:  Data type for config values stored in an inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -24,10 +24,10 @@
 
 /******************* FUNCTIONS ******************/
 
-// Read config values from the inbuilt storage into the struct.
+// Read config values from an inbuilt storage into the struct.
 void stored_configs_read(stored_configs_t *stored_configs)
 {
-    // Indices in the array of strings read from the inbuilt storage.
+    // Indices in the array of strings read from an inbuilt storage.
     #define INDEX_WIFI_SSID               0
     #define INDEX_WIFI_PSWD               1
     #define INDEX_WIFI_RSSI_OUTPUT_FLAG   2
@@ -42,7 +42,7 @@ void stored_configs_read(stored_configs_t *stored_configs)
     #define INDEX_BTCLASSIC_DEV_NAME      11
 
 
-    /*--- Reading strings from the inbuilt storage ---*/
+    /*--- Reading strings from an inbuilt storage ---*/
 
     char stored_configs_str[INBUILT_STORAGE_ITEM_LIST_LEN][INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
     uint32_t stored_configs_addr[] = {
@@ -63,7 +63,7 @@ void stored_configs_read(stored_configs_t *stored_configs)
     uint32_t stored_configs_addr_list_len = sizeof(stored_configs_addr) / sizeof(uint32_t);
     if (INBUILT_STORAGE_ITEM_LIST_LEN != stored_configs_addr_list_len) {
         Serial.println("");
-        Serial.println("Error reading from the inbuilt storage: function stored_configs_read().");
+        Serial.println("Error reading from inbuilt storage: function stored_configs_read().");
 
         return;
     }

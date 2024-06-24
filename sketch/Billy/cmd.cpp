@@ -3,7 +3,7 @@
 /**
  * Filename: cmd.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  text commands processing.
+ * Purpose:  Text commands processing.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -469,6 +469,8 @@ void cmd_handler_set_BTClassic_flag(char *cmd,
         } else {
             cmd_handler_err_val();
         }
+    #else
+        cmd_handler_err_cmd();
     #endif
 }
 
@@ -494,6 +496,8 @@ void cmd_handler_set_BTClassic_dev_name(char *cmd,
         stored_configs_t stored_configs;
         stored_configs_read(&stored_configs);
         setup_BTClassic_ptr(&stored_configs);
+    #else
+        cmd_handler_err_cmd();
     #endif
 }
 
@@ -503,6 +507,8 @@ void cmd_handler_output_BTClassic_dev_name()
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
         cmd_aux_output_config(INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME,
                               "Current Bluetooth Classic device name is: ");
+    #else
+        cmd_handler_err_cmd();
     #endif
 }
 
