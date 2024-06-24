@@ -3,7 +3,7 @@
 /**
  * Filename: ESP_TCP.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: TCP/IP-related functions.
+ * Purpose:  TCP/IP wrapper functions.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -44,6 +44,10 @@ void ESP_TCP_server_stop(uint32_t shutdown_downtime);
 bool ESP_TCP_client_get_server(char *tcp_client_target_IP, uint32_t tcp_client_target_port);
 void ESP_TCP_client_send_msg(const char *msg);
 uint32_t ESP_TCP_client_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout);
+
+
+/*-- All clients ---*/
+
 void ESP_TCP_clients_disconnect(uint32_t shutdown_downtime);
 
 

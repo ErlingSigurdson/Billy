@@ -3,8 +3,8 @@
 /**
  * Filename: config_inbuilt_storage.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: projects configs related to ESP32/ESP8266
- *          flash memory used as an inbuilt storage.
+ * Purpose:  project configs related to ESP8266/ESP32
+ *           flash memory used as an inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -26,13 +26,13 @@
 
 /*--- Config strings addresses ---*/
 
-// Wi-Fi network settings.
+// Wi-Fi settings.
 #define INBUILT_STORAGE_ADDR_WIFI_SSID 0
 #define INBUILT_STORAGE_ADDR_WIFI_PSWD 101
 #define INBUILT_STORAGE_ADDR_WIFI_RSSI_OUTPUT_FLAG 202
 #define INBUILT_STORAGE_ADDR_WIFI_AUTORECONNECT_FLAG 303
 
-// Local server settings.
+// Local TCP server settings.
 #define INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT 404
 
 // IoT mode (attempts to connect to a remote server) settings.
@@ -49,8 +49,8 @@
 
 /*--- Misc ---*/
 
-/* Directive indicating that the project uses a device (ESP32/ESP8266)
- * that requires some additional calls for EEPROM.h library methods.
+/* Indicate that the project uses a device that requires
+ * some additional calls for the EEPROM.h library methods.
  */
 #define THIS_IS_ESP32_OR_ESP8266_OR_STM32
 

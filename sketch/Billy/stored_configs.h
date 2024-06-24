@@ -3,7 +3,7 @@
 /**
  * Filename: stored_configs_t
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: data type for config values stored in the inbuilt storage.
+ * Purpose:  data type for config values stored in the inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -49,7 +49,7 @@ typedef struct stored_configs_t {
 /*--- Misc functions ---*/
 
 // Read config values from the inbuilt storage into the struct.
-void stored_configs_read(stored_configs_t *_stored_configs);
+void stored_configs_read(stored_configs_t *stored_configs);
 
 
 #endif  // Include guards.

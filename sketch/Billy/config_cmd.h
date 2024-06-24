@@ -20,55 +20,29 @@
 
 #define CMD_PREFIX "AT+"
 
-#define CMD_1      "LOADDIGITAL="       /* 
-                                         *
-                                         */
-
-#define CMD_2      "LOADPWM="
-
-#define CMD_3      "LOADDIGITAL?"
-
-#define CMD_4      "WIFISSID="
-
-#define CMD_5      "WIFISSID?"
-
-#define CMD_6      "WIFIPSWD="
-
-#define CMD_7      "WIFIRSSIOUTPUT="
-
-#define CMD_8      "WIFIAUTORECONN="
-
-#define CMD_9      "LOCALIP?"
-
-#define CMD_10     "LOCALPORT="
-
-#define CMD_11     "LOCALPORT?"
-
-#define CMD_12     "IOT="
-
-#define CMD_13     "IOTIP="
-
-#define CMD_14     "IOTIP?"
-
-#define CMD_15     "IOTPORT="
-
-#define CMD_16     "IOTPORT?"
-
-#define CMD_17     "IOTREQMSG="
-
-#define CMD_18     "IOTREQMSG?"
-
-#define CMD_19     "IOTREQPERIOD="
-
-#define CMD_20     "BTCLASSIC="
-
-#define CMD_21     "BTCLASSICDEVNAME="  /* 
-                                         *
-                                         */
-
-#define CMD_22     "BTCLASSICDEVNAME?"
-
-#define CMD_23     "ALLCONNRST"
+#define CMD_1      "LOADDIGITAL="       // Turn a two-state load ON or OFF. Valid values are ON, OFF and TOGGLE.
+#define CMD_2      "LOADPWM="           // Drive a load using PWM. Valid values of a duty cycle are 0 to 255.
+#define CMD_3      "LOADDIGITAL?"       // Output current state of a two-state load.
+#define CMD_4      "WIFISSID="          // Change an SSID of a Wi-Fi access point.
+#define CMD_5      "WIFISSID?"          // Output an SSID of a Wi-Fi access point
+#define CMD_6      "WIFIPSWD="          // Change a password used for connecting to a Wi-Fi access point.
+#define CMD_7      "WIFIRSSIOUTPUT="    // Turn periodical printing of a current RSSI value ON or OFF.
+#define CMD_8      "WIFIAUTORECONN="    // Turn periodical attempts to reconnect to a Wi-Fi network ON or OFF.
+#define CMD_9      "LOCALIP?"           // Output the device's IP in a Wi-Fi network
+#define CMD_10     "LOCALPORT="         // Change a local TCP server port number.
+#define CMD_11     "LOCALPORT?"         // Output a local TCP server port number.
+#define CMD_12     "IOT="               // Set the IoT mode (attempts to connect to a remote server) ON or OFF.
+#define CMD_13     "IOTIP="             // Change an IP address of a remote server.
+#define CMD_14     "IOTIP?"             // Output an IP address of a remote server.
+#define CMD_15     "IOTPORT="           // Change a port number presumably used by a remote server.
+#define CMD_16     "IOTPORT?"           // Output a port number presumably used by a remote server.
+#define CMD_17     "IOTREQMSG="         // Change a request message to be sent to a remote server.
+#define CMD_18     "IOTREQMSG?"         // Output a request message to be sent to a remote server.
+#define CMD_19     "IOTREQPERIOD="      // Change an interval (in ms) of sending requests to a remote server.
+#define CMD_20     "BTCLASSIC="         // Turn Bluetooth Classic functionality ON or OFF.
+#define CMD_21     "BTCLASSICDEVNAME="  // Change a name of the ESP32 as a Bluetooth Classic slave device.
+#define CMD_22     "BTCLASSICDEVNAME?"  // Output a name of the ESP32 as a Bluetooth Classic slave device.
+#define CMD_23     "ALLCONNRST"         // Reset all wireless connections and restart a wireless connectivity.
 
 
 /*--- Text commands list length evaluation ---*/

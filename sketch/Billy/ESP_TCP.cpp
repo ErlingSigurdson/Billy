@@ -3,7 +3,7 @@
 /**
  * Filename: ESP_TCP.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: TCP/IP-related functions.
+ * Purpose:  TCP/IP wrapper functions.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -58,10 +58,7 @@ void ESP_TCP_server_start()
 
 bool ESP_TCP_server_get_client()
 {
-    TCP_remote_client = TCP_local_server.accept();  /* Previously available() method was used,
-                                                     * but nowadays it's deprecated.
-                                                     */
-    if (TCP_remote_client) {
+    if (TCP_local_server.accept()) {  // Previously available() method was used, but nowadays it's deprecated.
         return 1;
     } else {
         return 0;
@@ -159,6 +156,9 @@ uint32_t ESP_TCP_client_read_line(char *buf, uint32_t str_max_len, uint32_t conn
 
     return i;
 }
+
+
+/*-- All clients ---*/
 
 void ESP_TCP_clients_disconnect(uint32_t shutdown_downtime)
 {

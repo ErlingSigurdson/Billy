@@ -3,7 +3,7 @@
 /**
  * Filename: ESP32_Bluetooth.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: Bluetooth Classic-related functions for ESP32 modules.
+ * Purpose:  Bluetooth Classic wrapper functions for ESP32 SoC.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -36,7 +36,7 @@ BluetoothSerial BTClassic_Serial;
 
 /******************* FUNCTIONS ******************/
 
-void ESP32_BTClassic_start(char *dev_name)
+void ESP32_BTClassic_start(const char *dev_name)
 {
     BTClassic_Serial.begin(dev_name);
 }
@@ -70,7 +70,7 @@ uint32_t ESP32_BTClassic_read_line(char *buf, uint32_t str_max_len, uint32_t con
 
             current_millis = millis();
 
-            delay(BTCLASSIC_READ_SLOWDOWN);    /* A pause to ensure that reading from the buffer
+            delay(BTCLASSIC_READ_SLOWDOWN);    /* A pause to ensure that reading from a buffer
                                                 * won't run ahead of writing to it.
                                                 */
         }

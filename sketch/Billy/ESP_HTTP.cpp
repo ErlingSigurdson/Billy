@@ -204,8 +204,8 @@ String ESP_HTTP_send_HTML(uint32_t previous_cmd)
                     site+= "<label for=\"AT\">Issue a command</label>";
                     site+= "<p>";
                         site+= "<select name=\"AT\" id=\"AT\">";
-                            site+= "<option value=\"" "SETLOAD=ON" "\">ON</option>";
-                            site+= "<option value=\"" "SETLOAD=OFF" "\">OFF</option>";
+                            site+= "<option value=\"" "LOADDIGITAL=ON" "\">ON</option>";
+                            site+= "<option value=\"" "LOADDIGITAL=OFF" "\">OFF</option>";
                         site+= "</select>";
                         site+= "<button type=\"submit\">Send</button>";
                     site+= "</p>";

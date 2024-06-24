@@ -46,7 +46,7 @@
 
 /*--- Wireless connectivity setup functions ---*/
 
-void setup_WiFi(stored_configs_t *stored_configs);
+void setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout);
 void setup_BTClassic(stored_configs_t *stored_configs);
 
 
@@ -55,9 +55,7 @@ void setup_BTClassic(stored_configs_t *stored_configs);
 // Put a data received by a hardware UART into the buffer.
 void receive_cmd_HW_UART(char *buf);
 
-/* A local TCP server receives a data from a remote client,
- * the data is then put into the buffer.
- */
+// Put a data received by a local TCP server from a client into the buffer.
 void receive_cmd_TCP_local(char *buf);
 
 /* A local TCP client sends a request to a remote server and reads a response,
@@ -70,9 +68,7 @@ void receive_cmd_TCP_IoT(char *buf, stored_configs_t *stored_configs);
  */
 void receive_cmd_HTTP(char *buf);
 
-/* A Bluetooth Classic slave device receives a data from a master device,
- * the data is then put into the buffer.
- */
+// Put a data received by a Bluetooth Classic slave device from a master device into the buffer.
 void receive_cmd_BTClassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected);
 
 
@@ -96,10 +92,10 @@ void setup()
     if (DIGITAL_OUTPUT_PIN == 0 && PWM_OUTPUT_PIN == 0) {
         Serial.println("Warning! No output pins specified.");
     } else if (DIGITAL_OUTPUT_PIN == PWM_OUTPUT_PIN) {
-        Serial.println("Warning! Digital and PWM output pins coincide."
-                       "The digital control will be most probably rendered inoperable."
-                       "It is advised to reupload the sketch with separate pin numbers"
-                       "specified for the digital and the PWM outputs.");
+        Serial.println("Warning! Digital and PWM output pins coincide.");
+        Serial.println("The digital control will be most probably rendered inoperable.");
+        Serial.println("It is advised to reupload the sketch with separate pin numbers");
+        Serial.println("specified for the digital and the PWM outputs.");
     }
 
     if (WIFI_INDICATOR_LED_PIN == 0) {
@@ -138,8 +134,11 @@ void setup()
 
     /*--- Wireless connectivity startup ---*/
 
-    setup_WiFi(&stored_configs);
+    setup_WiFi(&stored_configs, CONN_TIMEOUT);
     setup_BTClassic(&stored_configs);
+
+
+    /*--- Finishing setup ---*/
 
     Serial.println("");
     Serial.flush();
@@ -321,9 +320,9 @@ void loop()
     if (stored_configs.WiFi_RSSI_output_flag) {
         if (RSSI_output_due_time) {
             ESP_WiFi_RSSI_output();
-            RSSI_output_previous_millis = RSSI_output_current_millis;
+            RSSI_output_previous_millis = RSSI_output_current_millis = millis();
         } else {
-           RSSI_output_current_millis = millis();
+            RSSI_output_current_millis = millis();
         }
     }
 
@@ -351,18 +350,14 @@ void loop()
                                        WiFi_autoreconnect_previous_millis) >
                                        WIFI_RECONNECT_CHECK_PERIOD;
 
-    static bool WiFi_was_unconnected = !ESP_WiFi_is_connected();
-
     if (stored_configs.WiFi_autoreconnect_flag) {
-        if (WiFi_autoreconnect_due_time && !WiFi_was_unconnected) {
-            WiFi_was_unconnected = !ESP_WiFi_is_connected();
-            WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis; 
-        } else if (WiFi_autoreconnect_due_time && WiFi_was_unconnected) {
-            ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
-            ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
-            setup_WiFi(&stored_configs);
-            WiFi_was_unconnected = !ESP_WiFi_is_connected();
-            WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis;        
+        if (WiFi_autoreconnect_due_time) {
+            if (!ESP_WiFi_is_connected()) {
+                ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
+                ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
+                setup_WiFi(&stored_configs, CONN_TIMEOUT * 2);
+            }
+            WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis = millis();        
         } else {
             WiFi_autoreconnect_current_millis = millis();
         }
@@ -372,13 +367,13 @@ void loop()
 
 /*--- Wireless connectivity setup functions ---*/
 
-void setup_WiFi(stored_configs_t *stored_configs)
+void setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
 {
     /* Initializing certain objects (class instances) requires specifying
      * their parameters compile-time, since the latter are to be passed
      * to a constructor function. However, it's not possible to specify
      * a proper port number for a WiFiServer class object in advance because
-     * the assigned port number is to be read from the inbuilt storage.
+     * an assigned port number is to be read from the inbuilt storage.
      * Therefore the object gets initialized with a dummy value and then
      * becomes updated.
      */
@@ -387,7 +382,7 @@ void setup_WiFi(stored_configs_t *stored_configs)
     // Connect to Wi-Fi network.
     bool WiFi_connected = ESP_WiFi_set_connection(stored_configs->WiFi_SSID,
                                                   stored_configs->WiFi_pswd,
-                                                  CONN_TIMEOUT);
+                                                  conn_attempt_timeout);
 
     if (WiFi_connected) {
         ESP_WiFi_indicate_connection(WIFI_INDICATOR_LED_PIN,
@@ -417,7 +412,7 @@ void setup_WiFi(stored_configs_t *stored_configs)
     }
 
     // Check for automatic reconnect attempts flag.
-    Serial.print("Automatic reconnect attempts: ");
+    Serial.print("Automatic Wi-Fi reconnect attempts: ");
     if (stored_configs->WiFi_autoreconnect_flag != 0) {
         Serial.println("ON");
     } else {
@@ -447,13 +442,14 @@ void setup_WiFi(stored_configs_t *stored_configs)
 
 void setup_BTClassic(stored_configs_t *stored_configs)
 {
+    // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
+    (void)stored_configs;
+
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
         // Check for Bluetooth Classic functionality flag.
         Serial.print("Bluetooth Classic: ");
         if (stored_configs->BTClassic_flag != 0) {
-            ;
             ESP32_BTClassic_start(stored_configs->BTClassic_dev_name);
-            ;
             Serial.println("ON");
             Serial.print("Bluetooth Classic device name: ");
             Serial.println(stored_configs->BTClassic_dev_name);
@@ -536,12 +532,16 @@ void receive_cmd_HTTP(char *buf)
 
 void receive_cmd_BTClassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected)
 {
+    // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
+    (void)buf;
+    (void)stored_configs;
+    (void)BTClassic_was_connected;
+
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
         *BTClassic_was_connected = 0;  // Just in case.
         if (stored_configs->BTClassic_flag && ESP32_BTClassic_check_connection()) {
             *BTClassic_was_connected = 1;
-            uint32_t BTClassic_bytes_read = 0;
-            BTClassic_bytes_read = ESP32_BTClassic_read_line(buf, STR_MAX_LEN, CONN_TIMEOUT);
+            uint32_t BTClassic_bytes_read = ESP32_BTClassic_read_line(buf, STR_MAX_LEN, CONN_TIMEOUT);
 
             if (BTClassic_bytes_read > STR_MAX_LEN) {
                 buf[0] = '\0';

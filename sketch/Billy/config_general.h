@@ -3,7 +3,7 @@
 /**
  * Filename: config_general.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: project basic configs.
+ * Purpose:  project basic configs.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -31,13 +31,13 @@
 
 // Assign load control pins.
 #define DIGITAL_OUTPUT_PIN 2
-#define PWM_OUTPUT_PIN 5
+#define PWM_OUTPUT_PIN 0
 
 // Assign indicator LED control pin.
 #define WIFI_INDICATOR_LED_PIN 2
 
-/* Choose between an uninverted (load turned ON at high logic level, default)
- * and an inverted (load turned ON at low logic level) digital output.
+/* Choose between an uninverted (load turned ON at a high logic level, default)
+ * and an inverted (load turned ON at a low logic level) digital control.
  * The latter is handy if your load is driven by a PNP transistor, for example.
  */
 //#define INVERTED_DIGITAL_OUTPUT
@@ -56,12 +56,12 @@
 // Hardware UART baud rate.
 #define HW_UART_BAUD_RATE 115200
 
-/* Pause to ensure that the reading from the buffer
+/* A pause to ensure that reading from a buffer
  * won't run ahead of writing to it.
  */
 #define HW_UART_READ_SLOWDOWN 2
 
-// Tiny pause to allow interface startup.
+// A tiny pause to allow for an interface startup.
 #define HW_UART_STARTUP_PAUSE 100
 
 

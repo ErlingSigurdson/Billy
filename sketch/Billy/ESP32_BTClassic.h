@@ -3,7 +3,7 @@
 /**
  * Filename: ESP32_BTClassic.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: Bluetooth Classic-related functions for ESP32 modules.
+ * Purpose:  Bluetooth Classic wrapper functions for ESP32 SoC.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -29,7 +29,7 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-void ESP32_BTClassic_start(char *dev_name);
+void ESP32_BTClassic_start(const char *dev_name);
 bool ESP32_BTClassic_check_connection();
 uint32_t ESP32_BTClassic_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout);
 void ESP32_BTClassic_send_msg(const char *msg);

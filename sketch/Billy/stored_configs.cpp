@@ -3,7 +3,7 @@
 /**
  * Filename: stored_configs_t
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: data type for config values stored in the inbuilt storage.
+ * Purpose:  data type for config values stored in the inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -25,7 +25,7 @@
 /******************* FUNCTIONS ******************/
 
 // Read config values from the inbuilt storage into the struct.
-void stored_configs_read(stored_configs_t *_stored_configs)
+void stored_configs_read(stored_configs_t *stored_configs)
 {
     // Indices in the array of strings read from the inbuilt storage.
     #define INDEX_WIFI_SSID               0
@@ -46,7 +46,7 @@ void stored_configs_read(stored_configs_t *_stored_configs)
 
     char stored_configs_str[INBUILT_STORAGE_ITEM_LIST_LEN][INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
     uint32_t stored_configs_addr[] = {
-        INBUILT_STORAGE_ADDR_WIFI_SSID ,
+        INBUILT_STORAGE_ADDR_WIFI_SSID,
         INBUILT_STORAGE_ADDR_WIFI_PSWD,
         INBUILT_STORAGE_ADDR_WIFI_RSSI_OUTPUT_FLAG,
         INBUILT_STORAGE_ADDR_WIFI_AUTORECONNECT_FLAG,
@@ -76,59 +76,47 @@ void stored_configs_read(stored_configs_t *_stored_configs)
     }
 
 
-    /*--- Writing of strings and extracted integers into struct ---*/
+    /*--- Writing strings and extracted integers into the struct ---*/
 
-    // Wi-Fi network SSID.
-    strcpy(_stored_configs->WiFi_SSID, stored_configs_str[INDEX_WIFI_SSID]);
+    strcpy(stored_configs->WiFi_SSID, stored_configs_str[INDEX_WIFI_SSID]);
 
-    // Wi-Fi access point password.
-    strcpy(_stored_configs->WiFi_pswd, stored_configs_str[INDEX_WIFI_PSWD]);
+    strcpy(stored_configs->WiFi_pswd, stored_configs_str[INDEX_WIFI_PSWD]);
 
-    // Wi-Fi RSSI output flag.
     if (!strcmp(stored_configs_str[INDEX_WIFI_RSSI_OUTPUT_FLAG], "ON")) {
-        _stored_configs->WiFi_RSSI_output_flag = 1;
+        stored_configs->WiFi_RSSI_output_flag = 1;
     } else {
-        _stored_configs->WiFi_RSSI_output_flag = 0;
+        stored_configs->WiFi_RSSI_output_flag = 0;
     }
 
-    // Wi-Fi autoreconnect flag.
     if (!strcmp(stored_configs_str[INDEX_WIFI_AUTORECONNECT_FLAG], "ON")) {
-        _stored_configs->WiFi_autoreconnect_flag = 1;
+        stored_configs->WiFi_autoreconnect_flag = 1;
     } else {
-        _stored_configs->WiFi_autoreconnect_flag = 0;
+        stored_configs->WiFi_autoreconnect_flag = 0;
     }    
 
-    // Local TCP server port.
-    _stored_configs->local_server_port = strtol(stored_configs_str[INDEX_LOCAL_SERVER_PORT], NULL, 10);
+    stored_configs->local_server_port = strtol(stored_configs_str[INDEX_LOCAL_SERVER_PORT], NULL, 10);
 
-    // IoT mode (attempts to connect to a remote server) flag.
     if (!strcmp(stored_configs_str[INDEX_IOT_FLAG], "ON")) {
-        _stored_configs->IoT_flag = 1;
+        stored_configs->IoT_flag = 1;
     } else {
-        _stored_configs->IoT_flag = 0;
+        stored_configs->IoT_flag = 0;
     }
 
-    // IoT (remote) server IP.
-    strcpy(_stored_configs->IoT_server_IP, stored_configs_str[INDEX_IOT_SERVER_IP]);
+    strcpy(stored_configs->IoT_server_IP, stored_configs_str[INDEX_IOT_SERVER_IP]);
 
-    // IoT (remote) server port.
-    _stored_configs->IoT_server_port = strtol(stored_configs_str[INDEX_IOT_SERVER_PORT], NULL, 10);
+    stored_configs->IoT_server_port = strtol(stored_configs_str[INDEX_IOT_SERVER_PORT], NULL, 10);
 
-    // Text of a request to an IoT (remote) server.
-    strcpy(_stored_configs->IoT_req_msg, stored_configs_str[INDEX_IOT_REQ_MSG]);
+    strcpy(stored_configs->IoT_req_msg, stored_configs_str[INDEX_IOT_REQ_MSG]);
 
-    // Interval for sending requests to an IoT (remote) server.
-    _stored_configs->IoT_req_period = strtol(stored_configs_str[INDEX_IOT_REQ_PERIOD], NULL, 10);
+    stored_configs->IoT_req_period = strtol(stored_configs_str[INDEX_IOT_REQ_PERIOD], NULL, 10);
 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
-        // Bluetooth Classic functionality flag.
         if (!strcmp(stored_configs_str[INDEX_BTCLASSIC_FLAG], "ON")) {
-            _stored_configs->BTClassic_flag = 1;
+            stored_configs->BTClassic_flag = 1;
         } else {
-            _stored_configs->BTClassic_flag = 0;
+            stored_configs->BTClassic_flag = 0;
         }
 
-        // ESP's name as a Bluetooth Classic slave device
-        strcpy(_stored_configs->BTClassic_dev_name, stored_configs_str[INDEX_BTCLASSIC_DEV_NAME]);
+        strcpy(stored_configs->BTClassic_dev_name, stored_configs_str[INDEX_BTCLASSIC_DEV_NAME]);
     #endif
 }
