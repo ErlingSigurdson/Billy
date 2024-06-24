@@ -61,10 +61,10 @@ void cmd_aux_output(const char *msg)
 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
         char config_val[STR_MAX_LEN + 1] = {0};
-        inbuilt_storage_read(config_val,
-                             sizeof(config_val),
-                             INBUILT_STORAGE_STR_MAX_LEN,
-                             INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
+        inbuilt_storage_read_string(config_val,
+                                    sizeof(config_val),
+                                    INBUILT_STORAGE_STR_MAX_LEN,
+                                    INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
         if (!strcmp(config_val, "ON")) {
             ESP32_BTClassic_send_msg(msg);
         }
@@ -116,10 +116,10 @@ void cmd_aux_set_config(set_config_params_t *params)
         }
     }
 
-    inbuilt_storage_write(cmd_val,
-                          strlen(cmd_val),
-                          INBUILT_STORAGE_STR_MAX_LEN,
-                          params->addr);
+    inbuilt_storage_write_string(cmd_val,
+                                 strlen(cmd_val),
+                                 INBUILT_STORAGE_STR_MAX_LEN,
+                                 params->addr);
     *(params->refresh_flag) = 1;
 
     char msg[STR_MAX_LEN * 2 + 1] = {0};
@@ -138,10 +138,10 @@ void cmd_aux_output_config(uint32_t addr, const char *topic)
     strcpy(msg, topic);
 
     char config_val[STR_MAX_LEN + 1] = {0};
-    inbuilt_storage_read(config_val,
-                         sizeof(config_val),
-                         INBUILT_STORAGE_STR_MAX_LEN,
-                         addr);
+    inbuilt_storage_read_string(config_val,
+                                sizeof(config_val),
+                                INBUILT_STORAGE_STR_MAX_LEN,
+                                addr);
     strcat(msg, config_val);
 
     cmd_aux_output(msg);
@@ -507,7 +507,7 @@ void cmd_handler_output_BTClassic_dev_name()
 }
 
 // Command #23
-void cmd_handler_all_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *, uint32_t),
+void cmd_handler_all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint32_t),
                               void (*setup_BTClassic_ptr)(stored_configs_t *),
                               stored_configs_t *stored_configs)
 {

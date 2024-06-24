@@ -46,7 +46,7 @@
 
 /*--- Wireless connectivity setup functions ---*/
 
-void setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout);
+bool setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout);
 void setup_BTClassic(stored_configs_t *stored_configs);
 
 
@@ -350,12 +350,15 @@ void loop()
                                        WiFi_autoreconnect_previous_millis) >
                                        WIFI_RECONNECT_CHECK_PERIOD;
 
+    // A small trick to ensure a reconnection attempt regardless of ESP-IDF event-based connection check.
+    static bool WiFi_connection_attempt_failed = !ESP_WiFi_is_connected();
+
     if (stored_configs.WiFi_autoreconnect_flag) {
         if (WiFi_autoreconnect_due_time) {
-            if (!ESP_WiFi_is_connected()) {
+            if (!ESP_WiFi_is_connected() || WiFi_connection_attempt_failed) {
                 ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
                 ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
-                setup_WiFi(&stored_configs, CONN_TIMEOUT * 2);
+                WiFi_connection_attempt_failed = !setup_WiFi(&stored_configs, CONN_TIMEOUT);
             }
             WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis = millis();        
         } else {
@@ -367,7 +370,7 @@ void loop()
 
 /*--- Wireless connectivity setup functions ---*/
 
-void setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
+bool setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
 {
     /* Initializing certain objects (class instances) requires specifying
      * their parameters compile-time, since the latter are to be passed
@@ -438,6 +441,8 @@ void setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
     }
 
     Serial.println("");
+
+    return WiFi_connected;
 }
 
 void setup_BTClassic(stored_configs_t *stored_configs)

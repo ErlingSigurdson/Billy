@@ -228,7 +228,7 @@ void cmd_handler_output_BTClassic_dev_name();
 /* Command #23:
  * reset all wireless connections and restart a wireless connectivity.
  */
-void cmd_handler_all_conn_rst(void (*setup_WiFi_ptr)(stored_configs_t *, uint32_t),
+void cmd_handler_all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint32_t),
                               void (*setup_BTClassic_ptr)(stored_configs_t *),
                               stored_configs_t *stored_configs);
 

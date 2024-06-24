@@ -3,12 +3,12 @@
 /**
  * Filename: inbuilt_storage.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: reading and writing strings from and to an inbuilt storage
- *          using EEPROM.h library.
+ * Purpose:  reading and writing strings from and to an inbuilt storage
+ *           using EEPROM.h library.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:
- * AVR devices use inbuilt EEPROM.
- * ESP32, ESP8266 and STM32 emulate EEPROM in their inbuilt flash memory.
+ * Notes:    AVR devices use inbuilt EEPROM.
+ *           ESP8266, ESP32 and STM32 emulate EEPROM
+ *           in their inbuilt flash memory.
  */
 
 
@@ -31,23 +31,20 @@
 
 /******************* FUNCTIONS ******************/
 
-// Storage initialization. Necessary for ESP32, ESP8266 and STM32. Not to be used with AVR devices.
 void inbuilt_storage_init(uint32_t emulated_EEPROM_size)
 {
-    /* Conditional compilation is used because EEPROM.h variant for AVR devices
-     * just lacks the respective method.
+    /* Conditional compilation is used because the EEPROM.h variant
+     * for AVR devices just lacks the respective method.
      */
-    #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32
+    #ifdef THIS_IS_ESP8266_OR_ESP32_OR_STM32
         EEPROM.begin(emulated_EEPROM_size);
     #endif
 }
 
-// Read string.
-void inbuilt_storage_read(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr)
+void inbuilt_storage_read_string(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr)
 {
     if (buf_size < str_max_len + 1) {
         Serial.println("Error reading from inbuilt storage.");
-
         return;
     }
 
@@ -60,8 +57,7 @@ void inbuilt_storage_read(char *buf, size_t buf_size, uint32_t str_max_len, uint
     }
 }
 
-// Write string.
-void inbuilt_storage_write(char *str, uint32_t str_len, uint32_t str_max_len, uint32_t addr)
+void inbuilt_storage_write_string(char *str, uint32_t str_len, uint32_t str_max_len, uint32_t addr)
 {
     if (str_len > str_max_len) {
         Serial.println("Error reading from inbuilt storage.");
@@ -83,10 +79,10 @@ void inbuilt_storage_write(char *str, uint32_t str_len, uint32_t str_max_len, ui
     }
     EEPROM.write(addr, '\0');
 
-    /* Conditional compilation is used because EEPROM.h variant for AVR devices
-     * just lacks the respective method.
+    /* Conditional compilation is used because the EEPROM.h variant
+     * for AVR devices just lacks the respective method.
      */
-    #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32
+    #ifdef THIS_IS_ESP8266_OR_ESP32_OR_STM32
         EEPROM.commit();
     #endif
 }
