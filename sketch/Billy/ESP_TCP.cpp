@@ -58,7 +58,10 @@ void ESP_TCP_server_start()
 
 bool ESP_TCP_server_get_client()
 {
-    if (TCP_local_server.accept()) {  // Previously available() method was used, but nowadays it's deprecated.
+    TCP_remote_client = TCP_local_server.accept();  /* Previously the available() method was used,
+                                                     * but nowadays it's deprecated.
+                                                     */
+    if (TCP_remote_client) {  
         return 1;
     } else {
         return 0;
