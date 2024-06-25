@@ -67,6 +67,8 @@
 
 /*--- Wi-Fi ---*/
 
+#define WIFI_FAILED_CONN_ATTEMPT_PAUSE 1000
+
 // Connection indication.
 #define WIFI_INDICATE_CONNECTION_CYCLES 20
 #define WIFI_INDICATE_CONNECTION_PERIOD 90
@@ -83,6 +85,7 @@
 /*--- Misc ---*/
 
 #define STR_MAX_LEN 100
+#define ANTINOISE_PAUSE 1000
 #define CONN_TIMEOUT 8000
 #define CONN_SHUTDOWN_DOWNTIME 100
 

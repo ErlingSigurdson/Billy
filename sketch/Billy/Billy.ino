@@ -80,7 +80,7 @@ void setup()
 {
     /*--- Hardware UART startup ---*/
 
-    delay(1000);                      // Wait for an input noise to stop.
+    delay(ANTINOISE_PAUSE);           // Wait for an input noise to stop.
     Serial.begin(HW_UART_BAUD_RATE);
     delay(HW_UART_STARTUP_PAUSE);     // A tiny pause to allow for an interface startup.
     Serial.println("");
