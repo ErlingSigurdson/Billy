@@ -466,6 +466,8 @@ void cmd_handler_set_BTClassic_flag(char *cmd,
             stored_configs_t stored_configs;
             stored_configs_read(&stored_configs);
             setup_BTClassic_ptr(&stored_configs);
+
+            Serial.println("");
         } else {
             cmd_handler_err_val();
         }
@@ -496,6 +498,8 @@ void cmd_handler_set_BTClassic_dev_name(char *cmd,
         stored_configs_t stored_configs;
         stored_configs_read(&stored_configs);
         setup_BTClassic_ptr(&stored_configs);
+
+        Serial.println("");
     #else
         cmd_handler_err_cmd();
     #endif
@@ -528,4 +532,6 @@ void cmd_handler_all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint32_
 
     setup_WiFi_ptr(stored_configs, CONN_TIMEOUT);
     setup_BTClassic_ptr(stored_configs);
+
+    Serial.println("");
 }

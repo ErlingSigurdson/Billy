@@ -80,6 +80,7 @@ void setup()
 {
     /*--- Hardware UART startup ---*/
 
+    delay(1000);                      // Wait for an input noise to stop.
     Serial.begin(HW_UART_BAUD_RATE);
     delay(HW_UART_STARTUP_PAUSE);     // A tiny pause to allow for an interface startup.
     Serial.println("");
@@ -90,8 +91,10 @@ void setup()
 
     // Check assigned pins.
     if (DIGITAL_OUTPUT_PIN == 0 && PWM_OUTPUT_PIN == 0) {
+        Serial.println("");
         Serial.println("Warning! No output pins specified.");
     } else if (DIGITAL_OUTPUT_PIN == PWM_OUTPUT_PIN) {
+        Serial.println("");
         Serial.println("Warning! Digital and PWM output pins coincide.");
         Serial.println("The digital control will be most probably rendered inoperable.");
         Serial.println("It is advised to reupload the sketch with separate pin numbers");
@@ -99,6 +102,7 @@ void setup()
     }
 
     if (WIFI_INDICATOR_LED_PIN == 0) {
+        Serial.println("");
         Serial.println("Warning! No Wi-Fi indicator LED output pin specified.");
     }
 
@@ -116,8 +120,6 @@ void setup()
         pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
         digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_OUTPUT_LOAD_OFF);
     }
-
-    Serial.println("");
 
 
     /*--- Interaction with an inbuilt storage ---*/
@@ -365,6 +367,8 @@ void loop()
             WiFi_autoreconnect_current_millis = millis();
         }
     }
+
+    Serial.flush();
 }
 
 
@@ -372,6 +376,8 @@ void loop()
 
 bool setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
 {
+    Serial.println("");
+
     /* Initializing certain objects (class instances) requires specifying
      * their parameters compile-time, since the latter are to be passed
      * to a constructor function. However, it's not possible to specify
@@ -404,7 +410,6 @@ bool setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
         Serial.print("Local HTTP server started at port ");
         Serial.println(HTTP_PORT);
     }
-    Serial.println("");
 
     // Check for RSSI output flag.
     Serial.print("RSSI output: ");
@@ -422,8 +427,6 @@ bool setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
         Serial.println("OFF");
     }
 
-    Serial.println("");
-
     // Check for IoT mode flag.
     Serial.print("Requests to IoT server: ");
     if (stored_configs->IoT_flag != 0) {
@@ -440,8 +443,6 @@ bool setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
         Serial.println("OFF");
     }
 
-    Serial.println("");
-
     return WiFi_connected;
 }
 
@@ -451,6 +452,8 @@ void setup_BTClassic(stored_configs_t *stored_configs)
     (void)stored_configs;
 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
+        Serial.println("");
+
         // Check for Bluetooth Classic functionality flag.
         Serial.print("Bluetooth Classic: ");
         if (stored_configs->BTClassic_flag != 0) {
