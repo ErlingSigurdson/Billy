@@ -254,12 +254,19 @@ void cmd_handler_output_load_digital()
 // Command #4
 void cmd_handler_set_WiFi_SSID(char *cmd, bool *refresh_flag)
 {
-    set_config_params_t params = {cmd,
-                                  INBUILT_STORAGE_ADDR_WIFI_SSID,
-                                  ANY_CHAR,
-                                  "SSID changed successfully! New SSID is: ",
-                                  ECHO_VAL_ON,
-                                  refresh_flag};
+    static set_config_params_t params;
+    static bool was_called = 0;
+
+    if (!was_called) {
+        params.cmd = cmd;
+        params.addr = INBUILT_STORAGE_ADDR_WIFI_SSID;
+        params.decimal_only = ANY_CHAR;
+        params.topic = "SSID changed successfully! New SSID is: ";
+        params.echo_val = ECHO_VAL_ON;
+        params.refresh_flag = refresh_flag;
+        was_called = 1;
+    }
+
     cmd_aux_set_config(&params);
 }
 
