@@ -72,15 +72,15 @@ or a different app capable of sending HTTP requests.
 - Over Wi-Fi as a TCP client (inter alia via Internet). To do so Billy sends requests to a custom-programmed TCP server
 and receives commands as a response (this implementation is described in detail below).
 
-Billy works within a local Wi-Fi network in a station (STA) mode.
-Billy uses an Internet access provided by a local access point.
+Billy works within a Wi-Fi network in a station (STA) mode.
+Billy uses an Internet access provided by an access point.
 
 ### IoT: Billy as a TCP client and control over Internet
 A remote TCP server (an IoT server) to which Billy sends requests must be able to:
-- Send messages (strings) with valid commands in a response to Billy's requests (e.g. string `"UPD_REQ"`).
+- Send messages (strings) with valid commands in a response to Billy's requests (e.g. string `"AT+SERVETOPIC"`).
 - Update a message prepared to be sent to Billy according to remote commands sent by other devices.
 
-Say, the IoT server receives "turn load ON" command from your web browser and prepares to send `AT+DLOAD=ON` string
+Say, an IoT server receives "turn load ON" command from your web browser and prepares to send `AT+LOADDIGITAL=ON` string
 in a response to Billy's next request. Billy receives the string and puts it into a buffer to check for valid commands,
 as it would do with a message received over any other communication channel.
 
@@ -96,16 +96,16 @@ A current load state (a current digital output level or a PWM duty cycle) isn't 
 and thus it's not stored in the flash storage. Any load will be turned off in case of a device reboot.
 
 ### Complete command list
-Refer to the file `config_сmd.h` to see all available commands.
+Refer to `config_сmd.h` to see all available commands.
 
 ### Quickstart
 Code configuration and upload, minimal runtime configuration and initial testing are made as follows:
 
 1. In the file `config_general.h`:
 - Specify a digital output pin using directive `#define DIGITAL_OUTPUT_PIN`.
-- Specify a PWM ouput pin using directive `#define PWM_OUTPUT_PIN`.
+- Specify a PWM output pin using directive `#define PWM_OUTPUT_PIN`.
 - Specify an indicator LED control pin using directive `#define WIFI_INDICATOR_LED_PIN`.
-- If your digitally controlled load is turned on by a low logical level on the respective pin,
+- If your digitally controlled load is turned on by a low logical level on a respective pin,
 uncomment the directive `#define INVERTED_DIGITAL_OUTPUT`.
 - Comment out the directive `#define BT_CLASSIC_PROVIDED` if your ESP32 device doesn't support Bluetooth Classic
 or you just don't want to use this technology. Ignore for ESP8266.
@@ -116,28 +116,28 @@ by Espressif Systems.
 4. Turn on your device and connect to it by a cable (via USB-UART adapter or, if supported by your device,
 via UART over native USB).
 5. Open a serial terminal and set an appropriate baud rate (115200 by default). 
-6. Send command `AT+LOCALSSID=<value>` to specify your Wi-Fi network SSID.
+6. Send command `AT+LOCALSSID=<value>` to specify your Wi-Fi network access point SSID.
 7. Send command `AT+LOCALPSWD=<value>` to specify your Wi-Fi network access point password.
 8. Send command `AT+LOCALPORT=<value>` to specify a port number to be used by Billy as a local TCP server.
-9. Reset Billy and send a `AT+LOCALCONNRST` command.
+9. Reset Billy or send `AT+ALLCONNRST` command.
 10. Make sure your device has established a connection to your Wi-Fi network.
-11. Send commands `AT+DLOAD=ON`, `AT+DLOAD=OFF`, `AT+DLOAD=TOGGLE` и `AT+ALOAD=<значение от 0 до 255>`,
-over the UART and via a Wi-Fi serial terminal, try controlling your load in different ways.
-12. Start any web browser and insert Billy's local IP. Try controlling the load using the web interface.
+11. Send commands `AT+LOADDIGITAL=ON`, `AT+LOADDIGITAL=OFF`, `AT+LOADDIGITAL=TOGGLE`
+and `AT+LOADPWM=<value from 0 to 255>` over a UART and via a Wi-Fi serial terminal, try controlling
+your load in different ways.
+12. Start any web browser and insert Billy's local IP. Try controlling a load using the web interface.
 
 Test Bluetooth Classic functionality (if supported) as follows:
 
 1. Send command `AT+BTCLASSICDEVNAME=<value>` to specify Billy's name as a slave device.
 2. Send command `AT+BTCLASSIC=ON` to turn Bluetooth Classic functionality on.
-3. Send commands `AT+DLOAD=ON`, `AT+DLOAD=OFF`, `AT+DLOAD=TOGGLE` and `AT+ALOAD=<value from 0 to 255>`,
-over a Bluetooth terminal, try controlling your load in different ways.
+3. Try using aforementioned load control commands.
 
 Test IoT functionality as follows:
 
-1. Send command `AT+IOTIP=<value>` assign an IP address of a remote server that will send commands to Billy.
-2. Send command `AT+IOTPORT=<value>` assign a port number of a remote server opened for the requests from Billy. 
-3. Send command `AT+IOTREQMSG=<value>` assign a request message that suits the remote server's settings.
-4. Send command `AT+IOT=OFF` turn IoT functionality on.
+1. Send command `AT+IOTIP=<value>` to assign an IP address of a remote server that will send commands to Billy.
+2. Send command `AT+IOTPORT=<value>` to assign a port number of a remote server opened for requests from Billy. 
+3. Send command `AT+IOTREQMSG=<value>` to assign a request message that suits the remote server's settings.
+4. Send command `AT+IOT=ON` to turn IoT functionality on.
 5. Make sure Billy receives commands from the remote server.
 
 
@@ -146,7 +146,7 @@ Test IoT functionality as follows:
 
 ### Sketch layout
 Breaking a sketch into a basic `.ino` file and local modules (pairs of `.h` and `.cpp` files) may not be a very popular
-approach for writing an Arduino sketch (multiple `.ino` files concatenated by the IDE and packing functions into
+approach for writing an Arduino sketch (multiple `.ino` files concatenated by the IDE or packing functions into
 libraries seem to be more widespread), but it has an advantage of a more transparent code structure.  
 
 ### Global variables
@@ -159,7 +159,7 @@ Method calls are mostly packed into wrapper functions declared and defined in th
 It's handy since method calls are usually accompanied with related lines of code.
 
 Local modules mostly do not refer to each other. Instead, their wrapper functions are called in the code
-listed in `Billy.ino`, `cmd.cpp` and `setup_wireless.cpp` files. This allows for an easier sketch customization.
+listed in `Billy.ino` and `cmd.cpp` files. This allows for an easier sketch customization.
 
 
 ***
@@ -174,11 +174,11 @@ A reference to an eponymous programmer parrot, a protagonist of
 by [Mr. P Solver](https://www.youtube.com/c/mrpsolver).
 
 ### What about security?
-Within your local Wi-Fi network your best protection is your access point password. You can even run additional Wi-Fi
+Within your Wi-Fi network your best protection is your access point password. You can even run additional Wi-Fi
 network on the same router if you want to separate Billy and other IoT devices from your regular consumer electronics.
 
 As for Bluetooth (and lack of PIN code for BT access), you can change a command prefix syntax in `config_cmd.h` file
-and make commands look like `ATMYPSWD+DLOAD=TOGGLE`, effectively introducing a password specific to your device.
+and make commands look like `ATMYPSWD+LOADDIGITAL=TOGGLE`, effectively introducing a password specific to your device.
 
 [^1]: Not supported for ESP8266 and those ESP32 models which lack Bluetooth Classic functionality
 (e.g. ESP32-S2 and ESP32-C3).
