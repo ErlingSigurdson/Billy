@@ -60,6 +60,9 @@ render digital output inoperable.
 A combination of digital outputs for a load control and an indicator LED control is safe,
 but will effectively turn that same LED into the load to be controlled.
 
+### Disabling an output
+Specifying in `config_general.h` a respective `#define` directive value as 0 disables an output.
+
 ### Communications
 Billy can receive commands:
 - Over UART through a cable connection.
