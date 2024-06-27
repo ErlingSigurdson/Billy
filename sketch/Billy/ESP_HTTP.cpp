@@ -77,30 +77,28 @@ void ESP_HTTP_handle_not_found()
 
 void ESP_HTTP_handle_ctrl()
 {
-    if (HTTP_server.hasArg("AT")) {
-        String Str_cmd_buf = HTTP_server.arg("AT");
+    char cmd_1[STR_MAX_LEN + 1] = CMD_1;
+    char *cmd_1_ptr = strchr(cmd_1, '=');
+    *cmd_1_ptr = '\0';
 
-        if (strlen(Str_cmd_buf.c_str()) > STR_MAX_LEN) {
-            HTTP_server.send(200, "text/plain", "Command buffer overflow.");
+    char cmd_2[STR_MAX_LEN + 1] = CMD_2;
+    char *cmd_2_ptr = strchr(cmd_2, '=');
+    *cmd_2_ptr = '\0';
 
-            return;
-        }
+    if (HTTP_server.hasArg(cmd_1)) {
+        char cmd_buf[STR_MAX_LEN + 1] = HTTP_server.arg(cmd_1).c_str();
+
+        if (!strcmp())
 
         char cmd_buf[STR_MAX_LEN + 1] = CMD_PREFIX;
+        strcat(cmd_buf, cmd_1);
+        strcat(cmd_buf, "=");
         strcat(cmd_buf, Str_cmd_buf.c_str());
 
         // If a command immediately follows the prefix.
         if (strstr(cmd_buf, CMD_1) == cmd_buf + strlen(CMD_PREFIX)) {
             if (strstr(cmd_buf, "=") == NULL) {
                 HTTP_server.send(200, "text/plain", "No valid command issued.");
-
-                return;
-            }
-
-            char *cmd_val = strstr(cmd_buf, "=") + 1;
-
-            if (*cmd_val == '\0') {
-                HTTP_server.send(200, "text/plain", "No valid value submitted.");
 
                 return;
             }
@@ -171,14 +169,7 @@ String ESP_HTTP_send_HTML(uint32_t previous_cmd)
             site+= "<style>";
                 if (previous_cmd) site+= prev_style;
 
-                site+= "div {";
-                    site+= "width: 500px;";
-                    site+= "height: 200px;";
-                    site+= "margin: 0 auto;";
-                    site+= "margin-top: 40px;";
-                    site+= "text-align: center;";
-                    site+= "font-size: 50px;";
-                site+= "}";
+                site+= CSS_STYLE_DIV;
 
                 site+= "p {";
                     site+= "margin: 0;";

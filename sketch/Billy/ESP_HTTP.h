@@ -22,6 +22,54 @@
 #include <Arduino.h>
 
 
+/*--- Misc ---*/
+
+// CSS styles.
+
+#define CSS_STYLE_DIV \
+"div { \
+    width: 500px; \
+    height: 250px; \
+    margin: 0 auto; \
+    margin-top: 120px; \
+    text-align: center; \
+};"
+
+#define CSS_STYLE_FORM \
+"form { \
+    margin-bottom: 40px; \
+};"
+
+#define CSS_STYLE_LABEL \
+"label { \
+    font-size: 50px; \
+};"
+
+#define CSS_STYLE_P \
+"p { \
+    margin: 0px; \
+    margin-top: 10px; \
+    font-size: 30px; \
+};"
+
+#define CSS_STYLE_SELECT \
+"select { \
+    font-size: inherit; \
+};"
+
+#define CSS_STYLE_INPUT \
+"input { \
+    width: 80px; \
+    height: 35px; \
+    font-size: inherit; \
+    text-align: inherit; \
+};"
+
+#define CSS_STYLE_BUTTON \
+"button { \
+    font-size: inherit; \
+};"
+
 /************** FUNCTION PROTOTYPES *************/
 
 void ESP_HTTP_server_start();
