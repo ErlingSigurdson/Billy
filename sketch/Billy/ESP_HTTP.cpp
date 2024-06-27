@@ -173,7 +173,7 @@ String ESP_HTTP_send_HTML(uint32_t previous_cmd)
 
                 site+= "div {";
                     site+= "width: 500px;";
-                    site+= "height: 300px;";
+                    site+= "height: 200px;";
                     site+= "margin: 0 auto;";
                     site+= "margin-top: 40px;";
                     site+= "text-align: center;";
