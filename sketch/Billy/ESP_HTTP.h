@@ -24,8 +24,12 @@
 
 /*--- Misc ---*/
 
-// CSS styles.
+// Modifying the web page according to a previous command.
+#define NO_PREVIOUS_CMD  0
+#define PREVIOUS_CMD_ON  1
+#define PREVIOUS_CMD_OFF 2
 
+// CSS styles.
 #define CSS_STYLE_DIV \
 "div { \
     width: 500px; \
@@ -73,13 +77,15 @@
 /************** FUNCTION PROTOTYPES *************/
 
 void ESP_HTTP_server_start();
+void ESP_HTTP_set_handlers();
 void ESP_HTTP_handle_client_in_loop();
 void ESP_HTTP_handle_root();
 void ESP_HTTP_handle_not_found();
 void ESP_HTTP_handle_ctrl();
-void ESP_HTTP_copy_value(char *buf, uint32_t str_max_len);
 String ESP_HTTP_send_HTML(uint32_t previous_cmd);
-void ESP_HTTP_set_handlers();
+void ESP_HTTP_copy_buf(char *buf, uint32_t str_max_len);
+
+
 
 
 #endif  // Include guards.

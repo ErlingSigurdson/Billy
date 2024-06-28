@@ -535,7 +535,7 @@ void receive_cmd_TCP_IoT(char *buf, stored_configs_t *stored_configs)
 void receive_cmd_HTTP(char *buf)
 {
     ESP_HTTP_handle_client_in_loop();
-    ESP_HTTP_copy_value(buf, STR_MAX_LEN);
+    ESP_HTTP_copy_buf(buf, STR_MAX_LEN);
 }
 
 void receive_cmd_BTClassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected)
