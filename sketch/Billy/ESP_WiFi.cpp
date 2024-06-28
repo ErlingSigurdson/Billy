@@ -38,7 +38,7 @@ bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeo
     if (WiFi.isConnected()) {
         WiFi.disconnect();
     }
-    
+
     while (WiFi.status() == WL_CONNECTED) {  // A pause to ensure a termination of the previous connection.
         yield();                             // Avoiding a reset caused by the watchdog timer.
     }
@@ -51,11 +51,18 @@ bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeo
     uint64_t current_millis = millis();
     uint64_t previous_millis = current_millis;
     while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);  // Once a second.
+        delay(WIFI_FAILED_CONN_ATTEMPT_PAUSE);
         Serial.print(".");
-        digitalWrite(WIFI_INDICATOR_LED_PIN, !digitalRead(WIFI_INDICATOR_LED_PIN));
+
+        if (WIFI_INDICATOR_LED_PIN != 0) {
+            digitalWrite(WIFI_INDICATOR_LED_PIN, !digitalRead(WIFI_INDICATOR_LED_PIN));
+        }
+
         delay(WIFI_INDICATE_CONNECTION_PERIOD);
-        digitalWrite(WIFI_INDICATOR_LED_PIN, !digitalRead(WIFI_INDICATOR_LED_PIN));
+
+        if (WIFI_INDICATOR_LED_PIN != 0) {
+            digitalWrite(WIFI_INDICATOR_LED_PIN, !digitalRead(WIFI_INDICATOR_LED_PIN));
+        }
 
         current_millis = millis();
         if (current_millis - previous_millis >= conn_attempt_timeout) {

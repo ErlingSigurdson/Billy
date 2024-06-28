@@ -80,6 +80,7 @@ void setup()
 {
     /*--- Hardware UART startup ---*/
 
+    delay(ANTINOISE_PAUSE);           // Wait for an input noise to stop.
     Serial.begin(HW_UART_BAUD_RATE);
     delay(HW_UART_STARTUP_PAUSE);     // A tiny pause to allow for an interface startup.
     Serial.println("");
@@ -90,8 +91,10 @@ void setup()
 
     // Check assigned pins.
     if (DIGITAL_OUTPUT_PIN == 0 && PWM_OUTPUT_PIN == 0) {
+        Serial.println("");
         Serial.println("Warning! No output pins specified.");
     } else if (DIGITAL_OUTPUT_PIN == PWM_OUTPUT_PIN) {
+        Serial.println("");
         Serial.println("Warning! Digital and PWM output pins coincide.");
         Serial.println("The digital control will be most probably rendered inoperable.");
         Serial.println("It is advised to reupload the sketch with separate pin numbers");
@@ -99,10 +102,11 @@ void setup()
     }
 
     if (WIFI_INDICATOR_LED_PIN == 0) {
+        Serial.println("");
         Serial.println("Warning! No Wi-Fi indicator LED output pin specified.");
     }
 
-    // Pin configuration and setting digital outputs to respective initial digital levels. 
+    // Pin configuration and setting digital outputs to respective initial digital levels.
     if (DIGITAL_OUTPUT_PIN != 0) {
         pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
         digitalWrite(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF);
@@ -116,8 +120,6 @@ void setup()
         pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
         digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_OUTPUT_LOAD_OFF);
     }
-
-    Serial.println("");
 
 
     /*--- Interaction with an inbuilt storage ---*/
@@ -343,7 +345,7 @@ void loop()
 
 
     /*--- Wi-Fi autoreconnect ---*/
-    
+
     static uint64_t WiFi_autoreconnect_current_millis = millis();
     static uint64_t WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis;
     bool WiFi_autoreconnect_due_time = (WiFi_autoreconnect_current_millis -
@@ -360,11 +362,13 @@ void loop()
                 ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
                 WiFi_connection_attempt_failed = !setup_WiFi(&stored_configs, CONN_TIMEOUT);
             }
-            WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis = millis();        
+            WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis = millis();
         } else {
             WiFi_autoreconnect_current_millis = millis();
         }
     }
+
+    Serial.flush();
 }
 
 
@@ -372,6 +376,8 @@ void loop()
 
 bool setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
 {
+    Serial.println("");
+
     /* Initializing certain objects (class instances) requires specifying
      * their parameters compile-time, since the latter are to be passed
      * to a constructor function. However, it's not possible to specify
@@ -404,7 +410,6 @@ bool setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
         Serial.print("Local HTTP server started at port ");
         Serial.println(HTTP_PORT);
     }
-    Serial.println("");
 
     // Check for RSSI output flag.
     Serial.print("RSSI output: ");
@@ -422,8 +427,6 @@ bool setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
         Serial.println("OFF");
     }
 
-    Serial.println("");
-
     // Check for IoT mode flag.
     Serial.print("Requests to IoT server: ");
     if (stored_configs->IoT_flag != 0) {
@@ -440,8 +443,6 @@ bool setup_WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
         Serial.println("OFF");
     }
 
-    Serial.println("");
-
     return WiFi_connected;
 }
 
@@ -451,6 +452,8 @@ void setup_BTClassic(stored_configs_t *stored_configs)
     (void)stored_configs;
 
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
+        Serial.println("");
+
         // Check for Bluetooth Classic functionality flag.
         Serial.print("Bluetooth Classic: ");
         if (stored_configs->BTClassic_flag != 0) {
@@ -469,7 +472,7 @@ void setup_BTClassic(stored_configs_t *stored_configs)
 /*--- Command reception functions ---*/
 
 void receive_cmd_HW_UART(char *buf)
-{   
+{
     uint32_t HW_UART_bytes_read = HW_UART_read_line(buf,
                                                     STR_MAX_LEN,
                                                     CONN_TIMEOUT,
@@ -532,7 +535,7 @@ void receive_cmd_TCP_IoT(char *buf, stored_configs_t *stored_configs)
 void receive_cmd_HTTP(char *buf)
 {
     ESP_HTTP_handle_client_in_loop();
-    ESP_HTTP_copy_value(buf, STR_MAX_LEN);
+    ESP_HTTP_copy_buf(buf, STR_MAX_LEN);
 }
 
 void receive_cmd_BTClassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected)

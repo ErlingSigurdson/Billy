@@ -32,14 +32,6 @@
 #include "ESP_HTTP.h"
 
 
-/*--- Misc ---*/
-
-// Modifying the web page according to a previous command.
-#define NO_PREVIOUS_CMD  0
-#define PREVIOUS_CMD_ON  1
-#define PREVIOUS_CMD_OFF 2
-
-
 /*************** GLOBAL VARIABLES ***************/
 
 #ifdef ESP32
@@ -49,7 +41,7 @@
     ESP8266WebServer HTTP_server(HTTP_PORT);
 #endif
 
-char ESP_HTTP_current_val[STR_MAX_LEN + 1] = {0};
+char ESP_HTTP_buf[STR_MAX_LEN + 1] = {0};
 
 
 /******************* FUNCTIONS ******************/
@@ -57,6 +49,14 @@ char ESP_HTTP_current_val[STR_MAX_LEN + 1] = {0};
 void ESP_HTTP_server_start()
 {
     HTTP_server.begin();
+}
+
+void ESP_HTTP_set_handlers()
+{
+    // Assigning HTTP request handler functions to particular URIs.
+    HTTP_server.on("/", ESP_HTTP_handle_root);
+    HTTP_server.onNotFound(ESP_HTTP_handle_not_found);
+    HTTP_server.on("/ctrl", ESP_HTTP_handle_ctrl);
 }
 
 void ESP_HTTP_handle_client_in_loop()
@@ -67,7 +67,7 @@ void ESP_HTTP_handle_client_in_loop()
 
 void ESP_HTTP_handle_root()
 {
-    HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(NO_PREVIOUS_CMD));
+    HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(""));
 }
 
 void ESP_HTTP_handle_not_found()
@@ -77,90 +77,75 @@ void ESP_HTTP_handle_not_found()
 
 void ESP_HTTP_handle_ctrl()
 {
-    if (HTTP_server.hasArg("AT")) {
-        String Str_cmd_buf = HTTP_server.arg("AT");
+    char cmd_1[STR_MAX_LEN + 1] = CMD_1;
+    cmd_1[strlen(cmd_1) - 1] = '\0';
 
-        if (strlen(Str_cmd_buf.c_str()) > STR_MAX_LEN) {
+    char cmd_2[STR_MAX_LEN + 1] = CMD_2;
+    cmd_2[strlen(cmd_2) - 1] = '\0';
+
+    if (HTTP_server.hasArg(cmd_1)) {
+        if (HTTP_server.arg(cmd_1).length() > STR_MAX_LEN) {
             HTTP_server.send(200, "text/plain", "Command buffer overflow.");
-
             return;
         }
 
-        char cmd_buf[STR_MAX_LEN + 1] = CMD_PREFIX;
-        strcat(cmd_buf, Str_cmd_buf.c_str());
+        char val[STR_MAX_LEN + 1] = {0};
+        strcpy(val, HTTP_server.arg(cmd_1).c_str());
 
-        // If a command immediately follows the prefix.
-        if (strstr(cmd_buf, CMD_1) == cmd_buf + strlen(CMD_PREFIX)) {
-            if (strstr(cmd_buf, "=") == NULL) {
-                HTTP_server.send(200, "text/plain", "No valid command issued.");
+        if (strcmp(val, "ON") && strcmp(val, "OFF")) {
+            HTTP_server.send(200, "text/plain", "No valid value submitted.");
+            return;
+        }
 
-                return;
-            }
+        strcpy(ESP_HTTP_buf, CMD_PREFIX);
+        strcat(ESP_HTTP_buf, CMD_1);
+        strcat(ESP_HTTP_buf, val);
 
-            char *cmd_val = strstr(cmd_buf, "=") + 1;
+        char msg[STR_MAX_LEN + 1] = "Two-state load is ";
+        strcat(msg, val);
+        HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(msg));
 
-            if (*cmd_val == '\0') {
+        return;
+    } else if (HTTP_server.hasArg(cmd_2)) {
+        uint32_t val_len = HTTP_server.arg(cmd_2).length();
+
+        if (val_len < 1 || val_len > 3) {  // Valid duty cycle values are 0 to 255.
+            HTTP_server.send(200, "text/plain", "No valid value submitted.");
+            return;
+        }
+
+        char val[STR_MAX_LEN + 1] = {0};
+        strcpy(val, HTTP_server.arg(cmd_2).c_str());
+
+        for (uint32_t i = 0; i < (uint32_t)strlen(val); ++i) {
+            if (val[i] < '0' || val[i] > '9') {
                 HTTP_server.send(200, "text/plain", "No valid value submitted.");
-
-                return;
-            }
-
-            if (!strcmp(cmd_val, "ON")) {
-                HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(PREVIOUS_CMD_ON));
-                strcpy(ESP_HTTP_current_val, cmd_buf);
-
-                return;
-            }
-
-            if (!strcmp(cmd_val, "OFF")) {
-                HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(PREVIOUS_CMD_OFF));
-                strcpy(ESP_HTTP_current_val, cmd_buf);
-
                 return;
             }
         }
-    }
 
-    HTTP_server.send(200, "text/plain", "No valid command entered.");
+        uint32_t duty_cycle = strtol(val, 0, 10);  // Convert to decimal.
+        if (duty_cycle > 255) {                    // Valid duty cycle values are 0 to 255.
+            HTTP_server.send(200, "text/plain", "No valid value submitted.");
+            return;
+        }
+
+        strcpy(ESP_HTTP_buf, CMD_PREFIX);
+        strcat(ESP_HTTP_buf, CMD_2);
+        strcat(ESP_HTTP_buf, val);
+
+        char msg[STR_MAX_LEN + 1] = "PWM duty cycle is set to ";
+        strcat(msg, val);
+        HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(msg));
+
+        return;
+    } else {
+        HTTP_server.send(200, "text/plain", "No valid command entered.");
+    }
 }
 
-void ESP_HTTP_copy_value(char *buf, uint32_t str_max_len)
+String ESP_HTTP_send_HTML(const char *prev_cmd)
 {
-    if (ESP_HTTP_current_val[0] != '\0' && strlen(ESP_HTTP_current_val) <= str_max_len) {
-        strcpy(buf, ESP_HTTP_current_val);
-    }
-    ESP_HTTP_current_val[0] = '\0';
-}
-
-String ESP_HTTP_send_HTML(uint32_t previous_cmd)
-{
-    // Mention of a previous command.
-    String prev_style;
-    String prev_text;
-
-    if (previous_cmd == PREVIOUS_CMD_ON) {
-        prev_style+= "#prev {";
-            prev_style+= "color: red;";        // Difference is here.
-            prev_style+= "text-align: left;";
-            prev_style+= "font-size: 20px;";
-        prev_style+= "}";
-
-        prev_text+= "<p id=\"prev\">";
-            prev_text+= "Load ON";             // Difference is here.
-        prev_text+= "</p>";
-    } else if (previous_cmd == PREVIOUS_CMD_OFF) {
-        prev_style+= "#prev {";
-            prev_style+= "color: blue;";       // Difference is here.
-            prev_style+= "text-align: left;";
-            prev_style+= "font-size: 20px;";
-        prev_style+= "}";
-
-        prev_text+= "<p id=\"prev\">";
-            prev_text+= "Load OFF";            // Difference is here.
-        prev_text+= "</p>";
-    }
-
-    // Basic site.
     String site = "";
 
     site+= "<!DOCTYPE html>";
@@ -169,47 +154,50 @@ String ESP_HTTP_send_HTML(uint32_t previous_cmd)
         site+= "<head>";
             site+= "<meta name=\"viewport\" content=\"width=device-width\">";
             site+= "<style>";
-                if (previous_cmd) site+= prev_style;
-
-                site+= "div {";
-                    site+= "width: 500px;";
-                    site+= "height: 300px;";
-                    site+= "margin: 0 auto;";
-                    site+= "margin-top: 40px;";
-                    site+= "text-align: center;";
-                    site+= "font-size: 50px;";
-                site+= "}";
-
-                site+= "p {";
-                    site+= "margin: 0;";
-                site+= "}";
-
-                site+= "select {";
-                    site+= "font-size: 30px;";
-                    site+= "margin-right: 20px;";
-                site+= "}";
-
-                site+= "button {";
-                    site+= "font-size: 30px;";
-                site+= "}";
+                site+= CSS_STYLE_DIV;
+                site+= CSS_STYLE_FORM;
+                site+= CSS_STYLE_LABEL;
+                site+= CSS_STYLE_P;
+                site+= CSS_STYLE_SELECT;
+                site+= CSS_STYLE_INPUT;
+                site+= CSS_STYLE_BUTTON;
+                site+= CSS_STYLE_PREV_CMD;
+                site+= CSS_STYLE_OUTPUT_DISABLED;
             site+= "</style>";
         site+= "</head>";
 
         site+= "<body>";
-
-            if (previous_cmd) site+= prev_text;
+            site+= "<p id=\"prev_cmd\">";
+                site+= String(prev_cmd);
+            site+= "</p>";
 
             site+= "<div>";
-                site+= "<form action=\"/ctrl\" method=\"POST\">";
-                    site+= "<label for=\"AT\">Issue a command</label>";
-                    site+= "<p>";
-                        site+= "<select name=\"AT\" id=\"AT\">";
-                            site+= "<option value=\"" "LOADDIGITAL=ON" "\">ON</option>";
-                            site+= "<option value=\"" "LOADDIGITAL=OFF" "\">OFF</option>";
-                        site+= "</select>";
-                        site+= "<button type=\"submit\">Send</button>";
-                    site+= "</p>";
-                site+= "</form>";
+                if (DIGITAL_OUTPUT_PIN != 0) {
+                    site+= "<form action=\"/ctrl\" method=\"POST\">";
+                        site+= "<label for=\"LOADDIGITAL\">Digital control</label>";
+                        site+= "<p>";
+                            site+= "<select name=\"LOADDIGITAL\" id=\"LOADDIGITAL\">";
+                                site+= "<option value=\"ON\">ON</option>";
+                                site+= "<option value=\"OFF\">OFF</option>";
+                            site+= "</select>";
+                            site+= "<button type=\"submit\">Send</button>";
+                        site+= "</p>";
+                    site+= "</form>";
+                } else {
+                    site+= "<p id=\"output_disabled\">Digital control disabled</p>";
+                }
+
+                if (PWM_OUTPUT_PIN != 0) {
+                    site+= "<form action=\"/ctrl\" method=\"POST\">";
+                        site+= "<label for=\"LOADPWM\">PWM control</label>";
+                        site+= "<p>";
+                            site+= "<input name=\"LOADPWM\" id=\"LOADPWM\" type=\"text\">";
+                            site+= "<button type=\"submit\">Send</button>";
+                        site+= "</p>";
+                    site+= "</form>";
+                } else {
+                    site+= "<p id=\"output_disabled\">PWM control disabled</p>";
+                }
             site+= "</div>";
         site+= "</body>";
 
@@ -218,10 +206,11 @@ String ESP_HTTP_send_HTML(uint32_t previous_cmd)
     return site;
 }
 
-void ESP_HTTP_set_handlers()
+void ESP_HTTP_copy_buf(char *buf, uint32_t str_max_len)
 {
-    // Assigning HTTP request handler functions to particular URIs.
-    HTTP_server.on("/", ESP_HTTP_handle_root);
-    HTTP_server.onNotFound(ESP_HTTP_handle_not_found);
-    HTTP_server.on("/ctrl", ESP_HTTP_handle_ctrl);
+    if (ESP_HTTP_buf[0] != '\0' && strlen(ESP_HTTP_buf) <= str_max_len) {
+        strcpy(buf, ESP_HTTP_buf);
+    }
+
+    ESP_HTTP_buf[0] = '\0';
 }
