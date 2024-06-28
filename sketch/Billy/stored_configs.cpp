@@ -92,7 +92,7 @@ void stored_configs_read(stored_configs_t *stored_configs)
         stored_configs->WiFi_autoreconnect_flag = 1;
     } else {
         stored_configs->WiFi_autoreconnect_flag = 0;
-    }    
+    }
 
     stored_configs->local_server_port = strtol(stored_configs_str[INDEX_LOCAL_SERVER_PORT], NULL, 10);
 

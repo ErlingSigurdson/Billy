@@ -38,7 +38,7 @@ bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeo
     if (WiFi.isConnected()) {
         WiFi.disconnect();
     }
-    
+
     while (WiFi.status() == WL_CONNECTED) {  // A pause to ensure a termination of the previous connection.
         yield();                             // Avoiding a reset caused by the watchdog timer.
     }

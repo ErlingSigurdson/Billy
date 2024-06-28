@@ -106,7 +106,7 @@ void setup()
         Serial.println("Warning! No Wi-Fi indicator LED output pin specified.");
     }
 
-    // Pin configuration and setting digital outputs to respective initial digital levels. 
+    // Pin configuration and setting digital outputs to respective initial digital levels.
     if (DIGITAL_OUTPUT_PIN != 0) {
         pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
         digitalWrite(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF);
@@ -345,7 +345,7 @@ void loop()
 
 
     /*--- Wi-Fi autoreconnect ---*/
-    
+
     static uint64_t WiFi_autoreconnect_current_millis = millis();
     static uint64_t WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis;
     bool WiFi_autoreconnect_due_time = (WiFi_autoreconnect_current_millis -
@@ -362,7 +362,7 @@ void loop()
                 ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
                 WiFi_connection_attempt_failed = !setup_WiFi(&stored_configs, CONN_TIMEOUT);
             }
-            WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis = millis();        
+            WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis = millis();
         } else {
             WiFi_autoreconnect_current_millis = millis();
         }
@@ -472,7 +472,7 @@ void setup_BTClassic(stored_configs_t *stored_configs)
 /*--- Command reception functions ---*/
 
 void receive_cmd_HW_UART(char *buf)
-{   
+{
     uint32_t HW_UART_bytes_read = HW_UART_read_line(buf,
                                                     STR_MAX_LEN,
                                                     CONN_TIMEOUT,

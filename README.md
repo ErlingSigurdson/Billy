@@ -29,11 +29,11 @@ In the following the name "Billy" may refer both to the software and a device th
     - Local TCP server will now restart automatically in case of a lost and subsequently restored connection
       to an access point.
     - Introduced a data format check for configs update commands.
+- **28.06.2024** - v.1.3.1 released, with a PWM output control panel added to the web interface.
 
 ### TODO list
-1. Add a PWM output control panel to the web interface.
-2. Add a Bluetooth Low Energy (BLE) support.
-3. Add a support for switching between station (STA) and access point (AP) Wi-Fi modes,
+1. Add a Bluetooth Low Energy (BLE) support.
+2. Add a support for switching between station (STA) and access point (AP) Wi-Fi modes,
    and afterwards make this switching possible in runtime.
 
 

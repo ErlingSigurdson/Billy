@@ -74,7 +74,7 @@ void cmd_aux_output(const char *msg)
 bool cmd_aux_has_decimal_only(const char *str)
 {
     for (uint32_t i = 0; i < (uint32_t)strlen(str); ++i) {
-        if ((str[i] < '0' && str[i] != '.') || 
+        if ((str[i] < '0' && str[i] != '.') ||
             (str[i] > '9' && str[i] != '.')) {
             return 0;
         }
@@ -230,7 +230,7 @@ void cmd_handler_set_load_PWM(char *cmd)
         return;
     }
 
-    char msg[STR_MAX_LEN * 2 + 1] = "PWM duty cycle set to ";
+    char msg[STR_MAX_LEN * 2 + 1] = "PWM duty cycle is set to ";
     strcat(msg, cmd_val);
 
     cmd_aux_set_output_PWM(PWM_OUTPUT_PIN, duty_cycle, msg);
@@ -341,7 +341,7 @@ void cmd_handler_set_local_server_port(char *cmd, bool *refresh_flag)
 
     stored_configs_t stored_configs;
     stored_configs_read(&stored_configs);
-    
+
     ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
     ESP_TCP_server_port_update(stored_configs.local_server_port);
     ESP_TCP_server_start();
@@ -507,7 +507,7 @@ void cmd_handler_set_BTClassic_dev_name(char *cmd,
 
 // Command #22
 void cmd_handler_output_BTClassic_dev_name()
-{ 
+{
     #if defined ESP32 && defined BTCLASSIC_PROVIDED
         cmd_aux_output_config(INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME,
                               "Current Bluetooth Classic device name is: ");
@@ -522,7 +522,7 @@ void cmd_handler_all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint32_
                               stored_configs_t *stored_configs)
 {
     cmd_aux_output("Resetting local connections...");
-    
+
     ESP_TCP_clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     ESP_TCP_server_stop(CONN_SHUTDOWN_DOWNTIME);
 

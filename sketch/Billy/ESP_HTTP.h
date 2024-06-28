@@ -66,12 +66,12 @@
 
 #define CSS_STYLE_BUTTON \
 "button { \
-    margin-left: 8px; \
+    margin-left: 10px; \
     font-size: inherit; \
 }"
 
 #define CSS_STYLE_PREV_CMD \
-"#prev { \
+"#prev_cmd { \
     text-align: left; \
     font-size: 30; \
     color: red; \
@@ -91,7 +91,7 @@ void ESP_HTTP_handle_client_in_loop();
 void ESP_HTTP_handle_root();
 void ESP_HTTP_handle_not_found();
 void ESP_HTTP_handle_ctrl();
-String ESP_HTTP_send_HTML(char *prev_cmd);
+String ESP_HTTP_send_HTML(const char *prev_cmd);
 void ESP_HTTP_copy_buf(char *buf, uint32_t str_max_len);
 
 

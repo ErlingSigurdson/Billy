@@ -92,12 +92,7 @@ void ESP_HTTP_handle_ctrl()
         char val[STR_MAX_LEN + 1] = {0};
         strcpy(val, HTTP_server.arg(cmd_1).c_str());
 
-        uint32_t prev = 0;
-        if (!strcmp(val, "ON")) {
-            prev = 1;
-        } else if (!strcmp(val, "OFF")) {
-            prev = 0;
-        } else {
+        if (strcmp(val, "ON") && strcmp(val, "OFF")) {
             HTTP_server.send(200, "text/plain", "No valid value submitted.");
             return;
         }
@@ -139,7 +134,7 @@ void ESP_HTTP_handle_ctrl()
         strcat(ESP_HTTP_buf, CMD_2);
         strcat(ESP_HTTP_buf, val);
 
-        char msg[STR_MAX_LEN + 1] = "PWM duty cycle set to ";
+        char msg[STR_MAX_LEN + 1] = "PWM duty cycle is set to ";
         strcat(msg, val);
         HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(msg));
 
@@ -149,7 +144,7 @@ void ESP_HTTP_handle_ctrl()
     }
 }
 
-String ESP_HTTP_send_HTML(char *prev_cmd)
+String ESP_HTTP_send_HTML(const char *prev_cmd)
 {
     String site = "";
 
@@ -172,7 +167,7 @@ String ESP_HTTP_send_HTML(char *prev_cmd)
         site+= "</head>";
 
         site+= "<body>";
-            site+= "<p id=\"prev\">";
+            site+= "<p id=\"prev_cmd\">";
                 site+= String(prev_cmd);
             site+= "</p>";
 
@@ -192,14 +187,17 @@ String ESP_HTTP_send_HTML(char *prev_cmd)
                     site+= "<p id=\"output_disabled\">Digital control disabled</p>";
                 }
 
-                site+= "<form action=\"/ctrl\" method=\"POST\">";
-                    site+= "<label for=\"LOADPWM\">PWM control</label>";
-                    site+= "<p>";
-                        site+= "<input name=\"LOADPWM\" id=\"LOADPWM\" type=\"text\">";
-                        site+= "<button type=\"submit\">Send</button>";
-                    site+= "</p>";
-                site+= "</form>";
-
+                if (PWM_OUTPUT_PIN != 0) {
+                    site+= "<form action=\"/ctrl\" method=\"POST\">";
+                        site+= "<label for=\"LOADPWM\">PWM control</label>";
+                        site+= "<p>";
+                            site+= "<input name=\"LOADPWM\" id=\"LOADPWM\" type=\"text\">";
+                            site+= "<button type=\"submit\">Send</button>";
+                        site+= "</p>";
+                    site+= "</form>";
+                } else {
+                    site+= "<p id=\"output_disabled\">PWM control disabled</p>";
+                }
             site+= "</div>";
         site+= "</body>";
 
