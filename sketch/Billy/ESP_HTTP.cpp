@@ -67,7 +67,7 @@ void ESP_HTTP_handle_client_in_loop()
 
 void ESP_HTTP_handle_root()
 {
-    HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(NO_PREVIOUS_CMD));
+    HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(""));
 }
 
 void ESP_HTTP_handle_not_found()
@@ -94,9 +94,9 @@ void ESP_HTTP_handle_ctrl()
 
         uint32_t prev = 0;
         if (!strcmp(val, "ON")) {
-            prev = PREVIOUS_CMD_ON;
+            prev = 1;
         } else if (!strcmp(val, "OFF")) {
-            prev = PREVIOUS_CMD_OFF;
+            prev = 0;
         } else {
             HTTP_server.send(200, "text/plain", "No valid value submitted.");
             return;
@@ -105,45 +105,52 @@ void ESP_HTTP_handle_ctrl()
         strcpy(ESP_HTTP_buf, CMD_PREFIX);
         strcat(ESP_HTTP_buf, CMD_1);
         strcat(ESP_HTTP_buf, val);
-        HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(prev));
+
+        char msg[STR_MAX_LEN + 1] = "Two-state load is ";
+        strcat(msg, val);
+        HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(msg));
 
         return;
     } else if (HTTP_server.hasArg(cmd_2)) {
-        // TODO.
+        uint32_t val_len = HTTP_server.arg(cmd_2).length();
+
+        if (val_len < 1 || val_len > 3) {  // Valid duty cycle values are 0 to 255.
+            HTTP_server.send(200, "text/plain", "No valid value submitted.");
+            return;
+        }
+
+        char val[STR_MAX_LEN + 1] = {0};
+        strcpy(val, HTTP_server.arg(cmd_2).c_str());
+
+        for (uint32_t i = 0; i < (uint32_t)strlen(val); ++i) {
+            if (val[i] < '0' || val[i] > '9') {
+                HTTP_server.send(200, "text/plain", "No valid value submitted.");
+                return;
+            }
+        }
+
+        uint32_t duty_cycle = strtol(val, 0, 10);  // Convert to decimal.
+        if (duty_cycle > 255) {                    // Valid duty cycle values are 0 to 255.
+            HTTP_server.send(200, "text/plain", "No valid value submitted.");
+            return;
+        }
+
+        strcpy(ESP_HTTP_buf, CMD_PREFIX);
+        strcat(ESP_HTTP_buf, CMD_2);
+        strcat(ESP_HTTP_buf, val);
+
+        char msg[STR_MAX_LEN + 1] = "PWM duty cycle set to ";
+        strcat(msg, val);
+        HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(msg));
+
+        return;
     } else {
         HTTP_server.send(200, "text/plain", "No valid command entered.");
     }
 }
 
-String ESP_HTTP_send_HTML(uint32_t previous_cmd)
+String ESP_HTTP_send_HTML(char *prev_cmd)
 {
-    // Mention of a previous command.
-    String prev_style;
-    String prev_text;
-
-    if (previous_cmd == PREVIOUS_CMD_ON) {
-        prev_style+= "#prev {";
-            prev_style+= "color: red;";        // Difference is here.
-            prev_style+= "text-align: left;";
-            prev_style+= "font-size: 20px;";
-        prev_style+= "}";
-
-        prev_text+= "<p id=\"prev\">";
-            prev_text+= "Load ON";             // Difference is here.
-        prev_text+= "</p>";
-    } else if (previous_cmd == PREVIOUS_CMD_OFF) {
-        prev_style+= "#prev {";
-            prev_style+= "color: blue;";       // Difference is here.
-            prev_style+= "text-align: left;";
-            prev_style+= "font-size: 20px;";
-        prev_style+= "}";
-
-        prev_text+= "<p id=\"prev\">";
-            prev_text+= "Load OFF";            // Difference is here.
-        prev_text+= "</p>";
-    }
-
-    // Basic site.
     String site = "";
 
     site+= "<!DOCTYPE html>";
@@ -152,40 +159,47 @@ String ESP_HTTP_send_HTML(uint32_t previous_cmd)
         site+= "<head>";
             site+= "<meta name=\"viewport\" content=\"width=device-width\">";
             site+= "<style>";
-                if (previous_cmd) site+= prev_style;
-
                 site+= CSS_STYLE_DIV;
-
-                site+= "p {";
-                    site+= "margin: 0;";
-                site+= "}";
-
-                site+= "select {";
-                    site+= "font-size: 30px;";
-                    site+= "margin-right: 20px;";
-                site+= "}";
-
-                site+= "button {";
-                    site+= "font-size: 30px;";
-                site+= "}";
+                site+= CSS_STYLE_FORM;
+                site+= CSS_STYLE_LABEL;
+                site+= CSS_STYLE_P;
+                site+= CSS_STYLE_SELECT;
+                site+= CSS_STYLE_INPUT;
+                site+= CSS_STYLE_BUTTON;
+                site+= CSS_STYLE_PREV_CMD;
+                site+= CSS_STYLE_OUTPUT_DISABLED;
             site+= "</style>";
         site+= "</head>";
 
         site+= "<body>";
-
-            if (previous_cmd) site+= prev_text;
+            site+= "<p id=\"prev\">";
+                site+= String(prev_cmd);
+            site+= "</p>";
 
             site+= "<div>";
+                if (DIGITAL_OUTPUT_PIN != 0) {
+                    site+= "<form action=\"/ctrl\" method=\"POST\">";
+                        site+= "<label for=\"LOADDIGITAL\">Digital control</label>";
+                        site+= "<p>";
+                            site+= "<select name=\"LOADDIGITAL\" id=\"LOADDIGITAL\">";
+                                site+= "<option value=\"ON\">ON</option>";
+                                site+= "<option value=\"OFF\">OFF</option>";
+                            site+= "</select>";
+                            site+= "<button type=\"submit\">Send</button>";
+                        site+= "</p>";
+                    site+= "</form>";
+                } else {
+                    site+= "<p id=\"output_disabled\">Digital control disabled</p>";
+                }
+
                 site+= "<form action=\"/ctrl\" method=\"POST\">";
-                    site+= "<label for=\"LOADDIGITAL\">Issue a command</label>";
+                    site+= "<label for=\"LOADPWM\">PWM control</label>";
                     site+= "<p>";
-                        site+= "<select name=\"LOADDIGITAL\" id=\"LOADDIGITAL\">";
-                            site+= "<option value=\"" "ON" "\">ON</option>";
-                            site+= "<option value=\"" "OFF" "\">OFF</option>";
-                        site+= "</select>";
+                        site+= "<input name=\"LOADPWM\" id=\"LOADPWM\" type=\"text\">";
                         site+= "<button type=\"submit\">Send</button>";
                     site+= "</p>";
                 site+= "</form>";
+
             site+= "</div>";
         site+= "</body>";
 
@@ -199,5 +213,6 @@ void ESP_HTTP_copy_buf(char *buf, uint32_t str_max_len)
     if (ESP_HTTP_buf[0] != '\0' && strlen(ESP_HTTP_buf) <= str_max_len) {
         strcpy(buf, ESP_HTTP_buf);
     }
+
     ESP_HTTP_buf[0] = '\0';
 }
