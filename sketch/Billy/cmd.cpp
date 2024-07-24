@@ -26,6 +26,8 @@
 #include "inbuilt_storage.h"
 #include "ESP_WiFi.h"
 #include "ESP_TCP.h"
+#include "utilities.h"
+#include "version.h"
 
 #if defined ESP32 && defined BTCLASSIC_PROVIDED
     #include "ESP32_BTClassic.h"
@@ -534,4 +536,31 @@ void cmd_handler_all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint32_
     setup_BTClassic_ptr(stored_configs);
 
     Serial.println("");
+}
+
+// Command #24
+void cmd_handler_output_version()
+{
+    char msg[STR_MAX_LEN * 4] = "\"Billy\" firmware version: ";
+    strcat(msg, VERSION "\n");
+
+    if (DIGITAL_OUTPUT_PIN != 0) {
+        strcat(msg, "Digital output pin number (Arduino pinout): " STRINGIFY(DIGITAL_OUTPUT_PIN) "\n");
+    } else {
+        strcat(msg, "Digital output pin not specified\n");
+    }
+
+    if (PWM_OUTPUT_PIN != 0) {
+        strcat(msg, "PWM output pin number (Arduino pinout): " STRINGIFY(PWM_OUTPUT_PIN) "\n");
+    } else {
+        strcat(msg, "PWM output pin not specified\n");
+    }
+
+    if (WIFI_INDICATOR_LED_PIN != 0) {
+        strcat(msg, "Wi-Fi indicator LED pin number (Arduino pinout): " STRINGIFY(DIGITAL_OUTPUT_PIN) "\n");
+    } else {
+        strcat(msg, "Wi-Fi indicator LED pin number not specified\n");
+    }
+
+    cmd_aux_output(msg);
 }

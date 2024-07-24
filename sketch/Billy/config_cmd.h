@@ -43,6 +43,7 @@
 #define CMD_21     "BTCLASSICDEVNAME="  // Change a name of the ESP32 as a Bluetooth Classic slave device.
 #define CMD_22     "BTCLASSICDEVNAME?"  // Output a name of the ESP32 as a Bluetooth Classic slave device.
 #define CMD_23     "ALLCONNRST"         // Reset all wireless connections and restart a wireless connectivity.
+#define CMD_24     "VERSION?"           // Output a firmware version and specified pins information.
 
 
 /*--- Text commands list length evaluation ---*/

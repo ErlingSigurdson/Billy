@@ -168,7 +168,7 @@ void loop()
         CMD_6, CMD_7, CMD_8, CMD_9, CMD_10,
         CMD_11, CMD_12, CMD_13, CMD_14, CMD_15,
         CMD_16, CMD_17, CMD_18, CMD_19, CMD_20,
-        CMD_21, CMD_22, CMD_23
+        CMD_21, CMD_22, CMD_23, CMD_24
     };
 
 
@@ -303,6 +303,10 @@ void loop()
 
             case 23:
                 cmd_handler_all_conn_rst(setup_WiFi, setup_BTClassic, &stored_configs);
+                break;
+
+            case 24:
+                cmd_handler_output_version();
                 break;
 
             default:
