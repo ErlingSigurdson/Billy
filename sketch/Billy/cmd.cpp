@@ -557,7 +557,7 @@ void cmd_handler_output_version()
     }
 
     if (WIFI_INDICATOR_LED_PIN != 0) {
-        strcat(msg, "Wi-Fi indicator LED pin number (Arduino pinout): " STRINGIFY(DIGITAL_OUTPUT_PIN) "\n");
+        strcat(msg, "Wi-Fi indicator LED pin number (Arduino pinout): " STRINGIFY(WIFI_INDICATOR_LED_PIN) "\n");
     } else {
         strcat(msg, "Wi-Fi indicator LED pin number not specified\n");
     }
