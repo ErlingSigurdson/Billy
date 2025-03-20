@@ -154,6 +154,7 @@ String ESP_HTTP_send_HTML(const char *prev_cmd)
         site+= "<head>";
             site+= "<meta name=\"viewport\" content=\"width=device-width\">";
             site+= "<style>";
+                site+= CSS_STYLE_BODY;
                 site+= CSS_STYLE_DIV;
                 site+= CSS_STYLE_FORM;
                 site+= CSS_STYLE_LABEL;

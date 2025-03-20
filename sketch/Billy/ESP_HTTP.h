@@ -25,9 +25,14 @@
 /*--- Misc ---*/
 
 // CSS styles.
+#define CSS_STYLE_BODY \
+"body { \
+    background-color: #ebcb8a; \
+}"
+
 #define CSS_STYLE_DIV \
 "div { \
-    width: 500px, \
+    width: 500px; \
     height: 250px; \
     margin: 0 auto; \
     margin-top: 80px; \
