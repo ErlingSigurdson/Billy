@@ -75,11 +75,16 @@
     font-size: inherit; \
 }"
 
-#define CSS_STYLE_PREV_CMD \
-"#prev_cmd { \
-    text-align: left; \
-    font-size: 30; \
+#define CSS_STYLE_PREV_CMD_ON \
+".prev_cmd_on { \
     color: red; \
+    text-align: left; \
+}"
+
+#define CSS_STYLE_PREV_CMD_OFF \
+".prev_cmd_off { \
+    color: blue; \
+    text-align: left; \
 }"
 
 #define CSS_STYLE_OUTPUT_DISABLED \

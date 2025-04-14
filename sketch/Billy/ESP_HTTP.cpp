@@ -162,13 +162,24 @@ String ESP_HTTP_send_HTML(const char *prev_cmd)
                 site+= CSS_STYLE_SELECT;
                 site+= CSS_STYLE_INPUT;
                 site+= CSS_STYLE_BUTTON;
-                site+= CSS_STYLE_PREV_CMD;
+                site+= CSS_STYLE_PREV_CMD_ON;
+                site+= CSS_STYLE_PREV_CMD_OFF;
                 site+= CSS_STYLE_OUTPUT_DISABLED;
             site+= "</style>";
         site+= "</head>";
 
         site+= "<body>";
-            site+= "<p id=\"prev_cmd\">";
+
+            site+= "<p class=";
+
+            if (strstr(prev_cmd, "ON") != NULL) {
+                site+= "\"prev_cmd_on\">";
+            } else if (strstr(prev_cmd, "OFF") != NULL) {
+                site+= "\"prev_cmd_off\">";
+            } else {                         // If a PWM duty cycle value was sent.
+                site+= "\"prev_cmd_on\">";
+            }
+
                 site+= String(prev_cmd);
             site+= "</p>";
 
