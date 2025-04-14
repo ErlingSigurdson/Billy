@@ -27,7 +27,7 @@
 // CSS styles.
 #define CSS_STYLE_BODY \
 "body { \
-    background-color: #ebcb8a; \
+    background-color: #f7e8be; \
 }"
 
 #define CSS_STYLE_DIV \
