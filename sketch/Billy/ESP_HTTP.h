@@ -24,7 +24,11 @@
 
 /*--- Misc ---*/
 
-// CSS styles.
+// HTML code macros.
+#define HTML_DOCTYPE "<!DOCTYPE html>"
+#define HTML_META    "<meta name=\"viewport\" content=\"width=device-width\">"
+
+// CSS styles macros.
 #define CSS_STYLE_BODY \
 "body { \
     background-color: #f7e8be; \
@@ -87,6 +91,12 @@
     text-align: left; \
 }"
 
+#define CSS_STYLE_PREV_CMD_NEUTRAL \
+".prev_cmd_neutral { \
+    color: black; \
+    text-align: left; \
+}"
+
 #define CSS_STYLE_OUTPUT_DISABLED \
 "#output_disabled { \
     font-size: 50px; \
@@ -101,7 +111,7 @@ void ESP_HTTP_handle_client_in_loop();
 void ESP_HTTP_handle_root();
 void ESP_HTTP_handle_not_found();
 void ESP_HTTP_handle_ctrl();
-String ESP_HTTP_send_HTML(const char *prev_cmd);
+String ESP_HTTP_send_HTML(const char *prev_cmd_val);
 void ESP_HTTP_copy_buf(char *buf, uint32_t str_max_len);
 
 
