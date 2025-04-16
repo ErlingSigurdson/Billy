@@ -77,13 +77,13 @@ void ESP_HTTP_handle_not_found()
 
 void ESP_HTTP_handle_ctrl()
 {
-    char cmd_1[STR_MAX_LEN + 1] = CMD_1;
+    char cmd_1[STR_MAX_LEN + 1] = CMD_1;  // Digital output command.
     cmd_1[strlen(cmd_1) - 1] = '\0';
 
-    char cmd_2[STR_MAX_LEN + 1] = CMD_2;
+    char cmd_2[STR_MAX_LEN + 1] = CMD_2;  // PWM output command.
     cmd_2[strlen(cmd_2) - 1] = '\0';
 
-    if (HTTP_server.hasArg(cmd_1)) {
+    if (HTTP_server.hasArg(cmd_1)) {  // Digital output command was received.
         if (HTTP_server.arg(cmd_1).length() > STR_MAX_LEN) {
             HTTP_server.send(200, "text/plain", "Command buffer overflow.");
             return;
@@ -92,21 +92,23 @@ void ESP_HTTP_handle_ctrl()
         char val[STR_MAX_LEN + 1] = {0};
         strcpy(val, HTTP_server.arg(cmd_1).c_str());
 
-        if (strcmp(val, "ON") && strcmp(val, "OFF")) {
+        bool val_is_loaddigital_on  = (!strcmp(val, "ON"));
+        bool val_is_loaddigital_off = (!strcmp(val, "OFF"));
+
+        if (!val_is_loaddigital_on && !val_is_loaddigital_off) {
             HTTP_server.send(200, "text/plain", "No valid value submitted.");
             return;
         }
 
+        // Passing the valid command and its value to the main buffer.
         strcpy(ESP_HTTP_buf, CMD_PREFIX);
         strcat(ESP_HTTP_buf, CMD_1);
         strcat(ESP_HTTP_buf, val);
 
-        char msg[STR_MAX_LEN + 1] = "Two-state load is ";
-        strcat(msg, val);
-        HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(msg));
+        HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(val));
 
         return;
-    } else if (HTTP_server.hasArg(cmd_2)) {
+    } else if (HTTP_server.hasArg(cmd_2)) {  // PWM output command was received.
         uint32_t val_len = HTTP_server.arg(cmd_2).length();
 
         if (val_len < 1 || val_len > 3) {  // Valid duty cycle values are 0 to 255.
@@ -130,13 +132,12 @@ void ESP_HTTP_handle_ctrl()
             return;
         }
 
+        // Passing the valid command and its value to the main buffer.
         strcpy(ESP_HTTP_buf, CMD_PREFIX);
         strcat(ESP_HTTP_buf, CMD_2);
         strcat(ESP_HTTP_buf, val);
 
-        char msg[STR_MAX_LEN + 1] = "PWM duty cycle is set to ";
-        strcat(msg, val);
-        HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(msg));
+        HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(val));
 
         return;
     } else {
@@ -144,16 +145,19 @@ void ESP_HTTP_handle_ctrl()
     }
 }
 
-String ESP_HTTP_send_HTML(const char *prev_cmd)
+String ESP_HTTP_send_HTML(const char *prev_cmd_val)
 {
+    String _prev_cmd_val = String(prev_cmd_val);
+
     String site = "";
 
-    site+= "<!DOCTYPE html>";
+    site+= HTML_DOCTYPE;
     site+= "<html>\n";
 
         site+= "<head>";
-            site+= "<meta name=\"viewport\" content=\"width=device-width\">";
+            site+= HTML_META;
             site+= "<style>";
+                site+= CSS_STYLE_BODY;
                 site+= CSS_STYLE_DIV;
                 site+= CSS_STYLE_FORM;
                 site+= CSS_STYLE_LABEL;
@@ -161,15 +165,30 @@ String ESP_HTTP_send_HTML(const char *prev_cmd)
                 site+= CSS_STYLE_SELECT;
                 site+= CSS_STYLE_INPUT;
                 site+= CSS_STYLE_BUTTON;
-                site+= CSS_STYLE_PREV_CMD;
+                site+= CSS_STYLE_PREV_CMD_ON;
+                site+= CSS_STYLE_PREV_CMD_OFF;
+                site+= CSS_STYLE_PREV_CMD_NEUTRAL;
                 site+= CSS_STYLE_OUTPUT_DISABLED;
             site+= "</style>";
         site+= "</head>";
 
         site+= "<body>";
-            site+= "<p id=\"prev_cmd\">";
-                site+= String(prev_cmd);
-            site+= "</p>";
+
+            if (_prev_cmd_val.length() != 0) {  // If there was a previous command.
+                site+= "<p class=";
+                    if (_prev_cmd_val == "ON") {
+                        site+= "\"prev_cmd_on\">";
+                        site+= "Two-state load is ";
+                    } else if (_prev_cmd_val == "OFF") {
+                        site+= "\"prev_cmd_off\">";
+                        site+= "Two-state load is ";
+                    } else {                    // If a PWM duty cycle value was passed.
+                        site+= "\"prev_cmd_neutral\">";
+                        site+= "PWM duty cycle is set to ";
+                    }
+                    site+= String(prev_cmd_val);
+                site+= "</p>";
+            }
 
             site+= "<div>";
                 if (DIGITAL_OUTPUT_PIN != 0) {
