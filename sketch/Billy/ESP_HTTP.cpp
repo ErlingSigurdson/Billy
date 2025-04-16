@@ -99,7 +99,7 @@ void ESP_HTTP_handle_ctrl()
             HTTP_server.send(200, "text/plain", "No valid value submitted.");
             return;
         }
-        
+
         // Passing the valid command and its value to the main buffer.
         strcpy(ESP_HTTP_buf, CMD_PREFIX);
         strcat(ESP_HTTP_buf, CMD_1);
@@ -148,7 +148,7 @@ void ESP_HTTP_handle_ctrl()
 String ESP_HTTP_send_HTML(const char *prev_cmd_val)
 {
     String _prev_cmd_val = String(prev_cmd_val);
-    
+
     String site = "";
 
     site+= HTML_DOCTYPE;
@@ -173,7 +173,7 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
         site+= "</head>";
 
         site+= "<body>";
-            
+
             if (_prev_cmd_val.length() != 0) {  // If there was a previous command.
                 site+= "<p class=";
                     if (_prev_cmd_val == "ON") {
