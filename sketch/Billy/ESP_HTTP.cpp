@@ -99,7 +99,8 @@ void ESP_HTTP_handle_ctrl()
             HTTP_server.send(200, "text/plain", "No valid value submitted.");
             return;
         }
-
+        
+        // Passing the valid command and its value to the main buffer.
         strcpy(ESP_HTTP_buf, CMD_PREFIX);
         strcat(ESP_HTTP_buf, CMD_1);
         strcat(ESP_HTTP_buf, val);
@@ -131,6 +132,7 @@ void ESP_HTTP_handle_ctrl()
             return;
         }
 
+        // Passing the valid command and its value to the main buffer.
         strcpy(ESP_HTTP_buf, CMD_PREFIX);
         strcat(ESP_HTTP_buf, CMD_2);
         strcat(ESP_HTTP_buf, val);
