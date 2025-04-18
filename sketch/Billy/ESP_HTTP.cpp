@@ -151,76 +151,76 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
 
     String site = "";
 
-    site+= HTML_DOCTYPE;
-    site+= "<html>\n";
+    site+=HTML_DOCTYPE;
+    site+="<html>\n";
 
-        site+= "<head>";
-            site+= HTML_META;
-            site+= "<style>";
-                site+= CSS_STYLE_BODY;
-                site+= CSS_STYLE_DIV;
-                site+= CSS_STYLE_FORM;
-                site+= CSS_STYLE_LABEL;
-                site+= CSS_STYLE_P;
-                site+= CSS_STYLE_SELECT;
-                site+= CSS_STYLE_INPUT;
-                site+= CSS_STYLE_BUTTON;
-                site+= CSS_STYLE_PREV_CMD_ON;
-                site+= CSS_STYLE_PREV_CMD_OFF;
-                site+= CSS_STYLE_PREV_CMD_NEUTRAL;
-                site+= CSS_STYLE_OUTPUT_DISABLED;
-            site+= "</style>";
-        site+= "</head>";
+        site+="<head>";
+            site+=HTML_META;
+            site+="<style>";
+                site+=CSS_STYLE_BODY;
+                site+=CSS_STYLE_DIV;
+                site+=CSS_STYLE_FORM;
+                site+=CSS_STYLE_LABEL;
+                site+=CSS_STYLE_P;
+                site+=CSS_STYLE_SELECT;
+                site+=CSS_STYLE_INPUT;
+                site+=CSS_STYLE_BUTTON;
+                site+=CSS_STYLE_PREV_CMD_ON;
+                site+=CSS_STYLE_PREV_CMD_OFF;
+                site+=CSS_STYLE_PREV_CMD_NEUTRAL;
+                site+=CSS_STYLE_OUTPUT_DISABLED;
+            site+="</style>";
+        site+="</head>";
 
-        site+= "<body>";
+        site+="<body>";
 
             if (_prev_cmd_val.length() != 0) {  // If there was a previous command.
-                site+= "<p class=";
+                site+="<p class=";
                     if (_prev_cmd_val == "ON") {
-                        site+= "\"prev_cmd_on\">";
-                        site+= "Two-state load is ";
+                        site+="\"prev_cmd_on\">";
+                        site+="Two-state load is ";
                     } else if (_prev_cmd_val == "OFF") {
-                        site+= "\"prev_cmd_off\">";
-                        site+= "Two-state load is ";
+                        site+="\"prev_cmd_off\">";
+                        site+="Two-state load is ";
                     } else {                    // If a PWM duty cycle value was passed.
-                        site+= "\"prev_cmd_neutral\">";
-                        site+= "PWM duty cycle is set to ";
+                        site+="\"prev_cmd_neutral\">";
+                        site+="PWM duty cycle is set to ";
                     }
-                    site+= String(prev_cmd_val);
-                site+= "</p>";
+                    site+=String(prev_cmd_val);
+                site+="</p>";
             }
 
-            site+= "<div>";
+            site+="<div>";
                 if (DIGITAL_OUTPUT_PIN != 0) {
-                    site+= "<form action=\"/ctrl\" method=\"POST\">";
-                        site+= "<label for=\"LOADDIGITAL\">Digital control</label>";
-                        site+= "<p>";
-                            site+= "<select name=\"LOADDIGITAL\" id=\"LOADDIGITAL\">";
-                                site+= "<option value=\"ON\">ON</option>";
-                                site+= "<option value=\"OFF\">OFF</option>";
-                            site+= "</select>";
-                            site+= "<button type=\"submit\">Send</button>";
-                        site+= "</p>";
-                    site+= "</form>";
+                    site+="<form action=\"/ctrl\" method=\"POST\">";
+                        site+="<label for=\"LOADDIGITAL\">Digital control</label>";
+                        site+="<p>";
+                            site+="<select name=\"LOADDIGITAL\" id=\"LOADDIGITAL\">";
+                                site+="<option value=\"ON\">ON</option>";
+                                site+="<option value=\"OFF\">OFF</option>";
+                            site+="</select>";
+                            site+="<button type=\"submit\">Send</button>";
+                        site+="</p>";
+                    site+="</form>";
                 } else {
-                    site+= "<p id=\"output_disabled\">Digital control disabled</p>";
+                    site+="<p id=\"output_disabled\">Digital control disabled</p>";
                 }
 
                 if (PWM_OUTPUT_PIN != 0) {
-                    site+= "<form action=\"/ctrl\" method=\"POST\">";
-                        site+= "<label for=\"LOADPWM\">PWM control</label>";
-                        site+= "<p>";
-                            site+= "<input name=\"LOADPWM\" id=\"LOADPWM\" type=\"text\">";
-                            site+= "<button type=\"submit\">Send</button>";
-                        site+= "</p>";
-                    site+= "</form>";
+                    site+="<form action=\"/ctrl\" method=\"POST\">";
+                        site+="<label for=\"LOADPWM\">PWM control</label>";
+                        site+="<p>";
+                            site+="<input name=\"LOADPWM\" id=\"LOADPWM\" type=\"text\">";
+                            site+="<button type=\"submit\">Send</button>";
+                        site+="</p>";
+                    site+="</form>";
                 } else {
-                    site+= "<p id=\"output_disabled\">PWM control disabled</p>";
+                    site+="<p id=\"output_disabled\">PWM control disabled</p>";
                 }
-            site+= "</div>";
-        site+= "</body>";
+            site+="</div>";
+        site+="</body>";
 
-    site+= "</html>";
+    site+="</html>";
 
     return site;
 }
