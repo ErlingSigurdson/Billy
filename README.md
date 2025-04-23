@@ -37,7 +37,7 @@ In the following the name "Billy" may refer both to the software and a device th
 ### TODO list
 1. Add a Bluetooth Low Energy (BLE) support.
 2. Add a support for switching between station (STA) and access point (AP) Wi-Fi modes,
-   and afterwards make this switching possible in runtime.
+   and then make this switching possible in runtime.
 
 
 ***
@@ -71,7 +71,7 @@ Billy can receive commands:
 - Over UART through a cable connection.
 - Over Wi-Fi as a local TCP server, e.g. sent by a classic Unix utility `netcat` (`nc`)
 or by an Anroid app like [Serial Wi-Fi terminal](https://serial-wifi-terminal.en.softonic.com/android).
-- Over Wi-Fi as a local HTTP server, e.g. from a web browser (sketch provides a simplistic web interface)
+- Over Wi-Fi as a local HTTP server, e.g. from a web browser (the sketch provides a simplistic web interface)
 or a different app capable of sending HTTP requests.
 - Over Bluetooth Classic as a slave device[^1], e.g. from a desktop Bluetooth terminal or an Android app like
 [Serial Bluetooth Controller](https://bluetooth-serial-controller.en.softonic.com/android).
