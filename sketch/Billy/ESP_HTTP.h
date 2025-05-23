@@ -45,7 +45,7 @@
 
 #define CSS_STYLE_FORM \
 "form { \
-    margin-bottom: 60px; \
+    margin-bottom: 30px; \
 }"
 
 #define CSS_STYLE_LABEL \

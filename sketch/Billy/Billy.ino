@@ -90,33 +90,33 @@ void setup()
     /*--- GPIO initial setup ---*/
 
     // Check assigned pins.
-    if (DIGITAL_OUTPUT_PIN == 0 && PWM_OUTPUT_PIN == 0) {
+    if (DIGITAL_OUTPUT_PIN <= 0 && PWM_OUTPUT_PIN <= 0) {
         Serial.println("");
         Serial.println("Warning! No output pins specified.");
-    } else if (DIGITAL_OUTPUT_PIN == PWM_OUTPUT_PIN) {
+    } else if ((DIGITAL_OUTPUT_PIN > 0 || PWM_OUTPUT_PIN > 0) && (DIGITAL_OUTPUT_PIN == PWM_OUTPUT_PIN)) {
         Serial.println("");
         Serial.println("Warning! Digital and PWM output pins coincide.");
-        Serial.println("The digital control will be most probably rendered inoperable.");
-        Serial.println("It is advised to reupload the sketch with separate pin numbers");
-        Serial.println("specified for the digital and the PWM outputs.");
+        Serial.println("The digital (two-state) control will be most probably rendered inoperable.");
+        Serial.println("It is advised to reupload the sketch with separate pin numbers specified");
+        Serial.println("for the digital and the PWM outputs.");
     }
 
-    if (WIFI_INDICATOR_LED_PIN == 0) {
+    if (WIFI_INDICATOR_LED_PIN <= 0) {
         Serial.println("");
         Serial.println("Warning! No Wi-Fi indicator LED output pin specified.");
     }
 
     // Pin configuration and setting digital outputs to respective initial digital levels.
-    if (DIGITAL_OUTPUT_PIN != 0) {
+    if (DIGITAL_OUTPUT_PIN > 0) {
         pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
         digitalWrite(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF);
     }
 
-    if (PWM_OUTPUT_PIN != 0) {
+    if (PWM_OUTPUT_PIN > 0) {
         pinMode(PWM_OUTPUT_PIN, OUTPUT);
     }
 
-    if (WIFI_INDICATOR_LED_PIN != 0) {
+    if (WIFI_INDICATOR_LED_PIN > 0) {
         pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
         digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_OUTPUT_LOAD_OFF);
     }

@@ -541,25 +541,30 @@ void cmd_handler_all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint32_
 // Command #24
 void cmd_handler_output_version()
 {
-    char msg[STR_MAX_LEN * 4] = "\"Billy\" firmware version: ";
-    strcat(msg, STRINGIFY(VERSION) "\n");
+    char msg[STR_MAX_LEN * 4] = "\n" \
+                                "\"Billy\" firmware version: " STRINGIFY(VERSION) "\n" \
+                                LINK_MESSAGE "\n" \
+                                LINK_GITHUB "\n" \
+                                LINK_GITFLIC "\n" \
+                                "\n";
 
-    if (DIGITAL_OUTPUT_PIN != 0) {
-        strcat(msg, "Digital output pin number (Arduino pinout): " STRINGIFY(DIGITAL_OUTPUT_PIN) "\n");
+    strcat(msg, "Output settings:" "\n");
+    if (DIGITAL_OUTPUT_PIN > 0) {
+        strcat(msg, "Two-state output pin number (Arduino pinout): " STRINGIFY(DIGITAL_OUTPUT_PIN) "\n");
     } else {
-        strcat(msg, "Digital output pin not specified\n");
+        strcat(msg, "Two-state output pin not specified" "\n");
     }
 
-    if (PWM_OUTPUT_PIN != 0) {
+    if (PWM_OUTPUT_PIN > 0) {
         strcat(msg, "PWM output pin number (Arduino pinout): " STRINGIFY(PWM_OUTPUT_PIN) "\n");
     } else {
-        strcat(msg, "PWM output pin not specified\n");
+        strcat(msg, "PWM output pin not specified" "\n");
     }
 
-    if (WIFI_INDICATOR_LED_PIN != 0) {
+    if (WIFI_INDICATOR_LED_PIN > 0) {
         strcat(msg, "Wi-Fi indicator LED pin number (Arduino pinout): " STRINGIFY(WIFI_INDICATOR_LED_PIN) "\n");
     } else {
-        strcat(msg, "Wi-Fi indicator LED pin number not specified\n");
+        strcat(msg, "Wi-Fi indicator LED pin number not specified" "\n");
     }
 
     cmd_aux_output(msg);
