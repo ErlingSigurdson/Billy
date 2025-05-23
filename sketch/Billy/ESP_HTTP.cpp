@@ -177,20 +177,30 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
 
         site+="<body>";
 
-            if (_prev_cmd_val.length() != 0) {  // If there was a previous command.
+            if (_prev_cmd_val.length() != 0) {
+            // If there was a previous command.
                 site+="<p class=";
                     if (_prev_cmd_val == "ON") {
+                    // If a two-state load ON value was passed.
                         site+="\"prev_cmd_on\">";
                         site+="Two-state load is ";
                     } else if (_prev_cmd_val == "OFF") {
+                    // If a two-state load OFF value was passed.
                         site+="\"prev_cmd_off\">";
                         site+="Two-state load is ";
-                    } else {                    // If a PWM duty cycle value was passed.
+                    } else {
+                    // If a PWM duty cycle value was passed.
                         site+="\"prev_cmd_neutral\">";
                         site+="PWM duty cycle is set to ";
                     }
                     site+=String(prev_cmd_val);
                 site+="</p>";
+            } else {
+              // If there was no previous command (if the root page is to be served).
+                  /* Insert a rather unnecessary paragraph so that the web page contents wouldn't drift
+                   * based on the web page variant (depending on whether there was a previous command).
+                   */
+                  site+="<p class=\"prev_cmd_neutral\">Welcome to Billy's web control interface!</p>";
             }
 
             site+="<div>";
