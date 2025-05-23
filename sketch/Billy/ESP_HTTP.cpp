@@ -78,10 +78,10 @@ void ESP_HTTP_handle_not_found()
 void ESP_HTTP_handle_ctrl()
 {
     char cmd_1[STR_MAX_LEN + 1] = CMD_1;  // Digital output command.
-    cmd_1[strlen(cmd_1) - 1] = '\0';
+    cmd_1[strlen(cmd_1) - 1] = '\0';      // Remove an equality sign.
 
     char cmd_2[STR_MAX_LEN + 1] = CMD_2;  // PWM output command.
-    cmd_2[strlen(cmd_2) - 1] = '\0';
+    cmd_2[strlen(cmd_2) - 1] = '\0';      // Remove an equality sign.
 
     if (HTTP_server.hasArg(cmd_1)) {  // Digital output command was received.
         if (HTTP_server.arg(cmd_1).length() > STR_MAX_LEN) {
@@ -169,38 +169,53 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
                 site+=CSS_STYLE_PREV_CMD_OFF;
                 site+=CSS_STYLE_PREV_CMD_NEUTRAL;
                 site+=CSS_STYLE_OUTPUT_DISABLED;
+                site+=CSS_STYLE_SQUARE;
+                site+=CSS_STYLE_SQUARE_ON;
+                site+=CSS_STYLE_SQUARE_OFF;
             site+="</style>";
         site+="</head>";
 
         site+="<body>";
 
-            if (_prev_cmd_val.length() != 0) {  // If there was a previous command.
+            if (_prev_cmd_val.length() != 0) {
+            // If there was a previous command.
                 site+="<p class=";
                     if (_prev_cmd_val == "ON") {
+                    // If a two-state load ON value was passed.
                         site+="\"prev_cmd_on\">";
                         site+="Two-state load is ";
                     } else if (_prev_cmd_val == "OFF") {
+                    // If a two-state load OFF value was passed.
                         site+="\"prev_cmd_off\">";
                         site+="Two-state load is ";
-                    } else {                    // If a PWM duty cycle value was passed.
+                    } else {
+                    // If a PWM duty cycle value was passed.
                         site+="\"prev_cmd_neutral\">";
                         site+="PWM duty cycle is set to ";
                     }
                     site+=String(prev_cmd_val);
                 site+="</p>";
+            } else {
+              // If there was no previous command (if the root page is to be served).
+                  /* Insert a rather unnecessary paragraph so that the web page contents wouldn't drift
+                   * based on the web page variant (depending on whether there was a previous command).
+                   */
+                  site+="<p class=\"prev_cmd_neutral\">Welcome to Billy's web control interface!</p>";
             }
 
             site+="<div>";
                 if (DIGITAL_OUTPUT_PIN != 0) {
-                    site+="<form action=\"/ctrl\" method=\"POST\">";
-                        site+="<label for=\"LOADDIGITAL\">Digital control</label>";
-                        site+="<p>";
-                            site+="<select name=\"LOADDIGITAL\" id=\"LOADDIGITAL\">";
-                                site+="<option value=\"ON\">ON</option>";
-                                site+="<option value=\"OFF\">OFF</option>";
-                            site+="</select>";
-                            site+="<button type=\"submit\">Send</button>";
-                        site+="</p>";
+                    site+="<form action=\"/ctrl\" method=\"post\">";
+                        site+="<button type=\"submit\" name=\"LOADDIGITAL\" value=\"ON\" \
+                               class=\"square square_on\">ON</button>";
+                        site+="<button type=\"submit\" name=\"LOADDIGITAL\" value=\"OFF\" \
+                               class=\"square square_off\">OFF</button>";
+
+                        /* Deprecated variant. GET requests with payload are possible,
+                         * but considered to be a bad practice.
+                         */
+                        //site+="<a href=\"/ctrl?LOADDIGITAL=ON\" class=\"square square_on\">ON</a>";
+                        //site+="<a href=\"/ctrl?LOADDIGITAL=OFF\" class=\"square square_off\">OFF</a>";
                     site+="</form>";
                 } else {
                     site+="<p id=\"output_disabled\">Digital control disabled</p>";

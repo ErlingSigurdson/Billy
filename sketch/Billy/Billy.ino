@@ -5,8 +5,8 @@
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  The main file of an Arduino sketch written for ESP32 and ESP8266
  *           systems-on-chip (SoCs). Provides a control over digital and PWM
-             outputs according to commands received over a UART and wireless
-             connections.
+ *           outputs according to commands received over a UART and wireless
+ *           connections.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:    See README files for more information.
  *           Project homepages: https://github.com/ErlingSigurdson/Billy
