@@ -195,8 +195,8 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
 
             site+="<div>";
                 if (DIGITAL_OUTPUT_PIN != 0) {
-                    <a href="/ctrl?LOADDIGITAL=ON" class="square square_on">ON</a>
-	                <a href="/ctrl?LOADDIGITAL=OFF" class="square square_off">OFF</a>
+                    site+="<a href=\"/ctrl?LOADDIGITAL=ON\" class=\"square square_on\">ON</a>";
+                    site+="<a href=\"/ctrl?LOADDIGITAL=OFF\" class=\"square square_off\">OFF</a>";
                 } else {
                     site+="<p id=\"output_disabled\">Digital control disabled</p>";
                 }

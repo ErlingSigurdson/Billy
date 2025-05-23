@@ -105,23 +105,24 @@
 
 #define CSS_STYLE_SQUARE \
 ".square { \
-    display: inline-block;
-    padding: 50px;
-
-    border-radius: 25%;
-    color: white;
-    text-align: inline;
-    text-decoration: none;
+    display: inline-block; \
+    padding: 50px; \
+    border-radius: 25%; \
+    color: white; \
+    text-align: inline; \
+    text-decoration: none; \
+    margin-right: 15px; \
+    margin-bottom: 60px; \
 }"
 
 #define CSS_STYLE_SQUARE_ON \
 ".square_on { \
-    background-color: red;
+    background-color: red; \
 }"
 
 #define CSS_STYLE_SQUARE_OFF \
-".square_on { \
-    background-color: blue;
+".square_off { \
+    background-color: blue; \
 }"
 
 
