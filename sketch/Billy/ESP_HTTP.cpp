@@ -195,8 +195,14 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
 
             site+="<div>";
                 if (DIGITAL_OUTPUT_PIN != 0) {
-                    site+="<a href=\"/ctrl?LOADDIGITAL=ON\" class=\"square square_on\">ON</a>";
-                    site+="<a href=\"/ctrl?LOADDIGITAL=OFF\" class=\"square square_off\">OFF</a>";
+                    site+="<form action=\"/ctrl\" method=\"post\">";
+                        site+="<button type=\"submit\" name=\"LOADDIGITAL\" value=\"ON\"class=\"square square_on\">ON</button>";
+                        site+="<button type=\"submit\" name=\"LOADDIGITAL\" value=\"OFF\"class=\"square square_off\">OFF</button>";
+
+                        // Deprecated variant. GET requests with payload are possible, but considered to be a bad practice.
+                        //site+="<a href=\"/ctrl?LOADDIGITAL=ON\" class=\"square square_on\">ON</a>";
+                        //site+="<a href=\"/ctrl?LOADDIGITAL=OFF\" class=\"square square_off\">OFF</a>";
+                    site+="</form>";
                 } else {
                     site+="<p id=\"output_disabled\">Digital control disabled</p>";
                 }
