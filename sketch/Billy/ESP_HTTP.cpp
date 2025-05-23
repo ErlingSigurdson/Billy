@@ -169,6 +169,9 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
                 site+=CSS_STYLE_PREV_CMD_OFF;
                 site+=CSS_STYLE_PREV_CMD_NEUTRAL;
                 site+=CSS_STYLE_OUTPUT_DISABLED;
+                site+=CSS_STYLE_SQUARE;
+                site+=CSS_STYLE_SQUARE_ON;
+                site+=CSS_STYLE_SQUARE_OFF;
             site+="</style>";
         site+="</head>";
 
