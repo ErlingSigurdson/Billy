@@ -78,10 +78,10 @@ void ESP_HTTP_handle_not_found()
 void ESP_HTTP_handle_ctrl()
 {
     char cmd_1[STR_MAX_LEN + 1] = CMD_1;  // Digital output command.
-    cmd_1[strlen(cmd_1) - 1] = '\0';
+    cmd_1[strlen(cmd_1) - 1] = '\0';      // Remove an equality sign.
 
     char cmd_2[STR_MAX_LEN + 1] = CMD_2;  // PWM output command.
-    cmd_2[strlen(cmd_2) - 1] = '\0';
+    cmd_2[strlen(cmd_2) - 1] = '\0';      // Remove an equality sign.
 
     if (HTTP_server.hasArg(cmd_1)) {  // Digital output command was received.
         if (HTTP_server.arg(cmd_1).length() > STR_MAX_LEN) {
@@ -195,16 +195,8 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
 
             site+="<div>";
                 if (DIGITAL_OUTPUT_PIN != 0) {
-                    site+="<form action=\"/ctrl\" method=\"POST\">";
-                        site+="<label for=\"LOADDIGITAL\">Digital control</label>";
-                        site+="<p>";
-                            site+="<select name=\"LOADDIGITAL\" id=\"LOADDIGITAL\">";
-                                site+="<option value=\"ON\">ON</option>";
-                                site+="<option value=\"OFF\">OFF</option>";
-                            site+="</select>";
-                            site+="<button type=\"submit\">Send</button>";
-                        site+="</p>";
-                    site+="</form>";
+                    <a href="/ctrl?LOADDIGITAL=ON" class="square square_on">ON</a>
+	                <a href="/ctrl?LOADDIGITAL=OFF" class="square square_off">OFF</a>
                 } else {
                     site+="<p id=\"output_disabled\">Digital control disabled</p>";
                 }
