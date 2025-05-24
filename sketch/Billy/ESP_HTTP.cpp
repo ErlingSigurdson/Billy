@@ -30,6 +30,7 @@
 
 // Local modules.
 #include "ESP_HTTP.h"
+#include "utilities.h"
 
 
 /*************** GLOBAL VARIABLES ***************/
@@ -126,8 +127,8 @@ void ESP_HTTP_handle_ctrl()
             }
         }
 
-        uint32_t duty_cycle = strtol(val, 0, 10);  // Convert to decimal.
-        if (duty_cycle > 255) {                    // Valid duty cycle values are 0 to 255.
+        uint32_t duty_cycle = strtol(val, 0, 10);     // Convert to decimal.
+        if (duty_cycle > PWM_DUTY_CYCLE_MAX_VALUE) {  // Valid duty cycle values are 0 to 255.
             HTTP_server.send(200, "text/plain", "No valid value submitted.");
             return;
         }
@@ -205,7 +206,7 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
 
             site+="<div>";
                 if (DIGITAL_OUTPUT_PIN != 0) {
-                    site+="<form action=\"/ctrl\" method=\"post\">";
+                    site+="<form action=\"/ctrl\" method=\"POST\">";
                         site+="<button type=\"submit\" name=\"LOADDIGITAL\" value=\"ON\" \
                                class=\"square square_on\">ON</button>";
                         site+="<button type=\"submit\" name=\"LOADDIGITAL\" value=\"OFF\" \
@@ -224,6 +225,19 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
                 if (PWM_OUTPUT_PIN != 0) {
                     site+="<form action=\"/ctrl\" method=\"POST\">";
                         site+="<label for=\"LOADPWM\">PWM control</label>";
+
+                        // Pure HTML slider was a disappointment.
+                        /*
+                        site+=" \
+                                  <input name=\"LOADPWM\" id=\"LOADPWM\" \
+                                  type=\"range\" min=\"0\" \
+                                  max=\"" \
+                                      STRINGIFY(PWM_DUTY_CYCLE_MAX_VALUE) \
+                                  "\"" \
+                                  "step=\"1\" value=\"0\" \
+                              ";
+                        */
+
                         site+="<p>";
                             site+="<input name=\"LOADPWM\" id=\"LOADPWM\" type=\"text\">";
                             site+="<button type=\"submit\">Send</button>";

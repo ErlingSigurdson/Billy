@@ -24,6 +24,9 @@
 
 /*--- Misc ---*/
 
+// PWM duty cycle maximum value.
+#define PWM_DUTY_CYCLE_MAX_VALUE 255
+
 // HTML code macros.
 #define HTML_DOCTYPE "<!DOCTYPE html>"
 #define HTML_META    "<meta name=\"viewport\" content=\"width=device-width\">"
