@@ -42,7 +42,7 @@
     width: 500px; \
     height: 250px; \
     margin: 0 auto; \
-    margin-top: 80px; \
+    margin-top: 50px; \
     text-align: center; \
 }"
 
@@ -53,14 +53,14 @@
 
 #define CSS_STYLE_LABEL \
 "label { \
-    font-size: 50px; \
+    font-size: 25px; \
 }"
 
 #define CSS_STYLE_P \
 "p { \
     margin: 0px; \
     margin-top: 10px; \
-    font-size: 30px; \
+    font-size: 25px; \
 }"
 
 #define CSS_STYLE_SELECT \
@@ -100,10 +100,21 @@
     text-align: left; \
 }"
 
+#define CSS_STYLE_OUTPUT_SECTION \
+".output_section { \
+    margin-top: 30px; \
+    margin-bottom: 30px; \
+    padding: 0px; \
+    line-height: 0.8; \
+}"
+
 #define CSS_STYLE_OUTPUT_DISABLED \
-"#output_disabled { \
-    font-size: 50px; \
-    margin-bottom: 60px; \
+".output_disabled { \
+    font-size: 25px; \
+    margin-top: 30px; \
+    margin-bottom: 30px; \
+    padding: 0px; \
+    line-height: 0.8; \
 }"
 
 #define CSS_STYLE_SQUARE \
@@ -115,7 +126,6 @@
     text-align: inline; \
     text-decoration: none; \
     margin-right: 15px; \
-    margin-bottom: 60px; \
 }"
 
 #define CSS_STYLE_SQUARE_ON \

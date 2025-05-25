@@ -54,13 +54,13 @@ bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeo
         delay(WIFI_FAILED_CONN_ATTEMPT_PAUSE);
         Serial.print(".");
 
-        if (WIFI_INDICATOR_LED_PIN != 0) {
+        if (WIFI_INDICATOR_LED_PIN > 0) {
             digitalWrite(WIFI_INDICATOR_LED_PIN, !digitalRead(WIFI_INDICATOR_LED_PIN));
         }
 
         delay(WIFI_INDICATE_CONNECTION_PERIOD);
 
-        if (WIFI_INDICATOR_LED_PIN != 0) {
+        if (WIFI_INDICATOR_LED_PIN > 0) {
             digitalWrite(WIFI_INDICATOR_LED_PIN, !digitalRead(WIFI_INDICATOR_LED_PIN));
         }
 

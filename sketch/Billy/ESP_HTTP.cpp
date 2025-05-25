@@ -169,6 +169,7 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
                 site+=CSS_STYLE_PREV_CMD_ON;
                 site+=CSS_STYLE_PREV_CMD_OFF;
                 site+=CSS_STYLE_PREV_CMD_NEUTRAL;
+                site+=CSS_STYLE_OUTPUT_SECTION;
                 site+=CSS_STYLE_OUTPUT_DISABLED;
                 site+=CSS_STYLE_SQUARE;
                 site+=CSS_STYLE_SQUARE_ON;
@@ -192,7 +193,7 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
                     } else {
                     // If a PWM duty cycle value was passed.
                         site+="\"prev_cmd_neutral\">";
-                        site+="PWM duty cycle is set to ";
+                        site+="PWM duty cycle value is set to ";
                     }
                     site+=String(prev_cmd_val);
                 site+="</p>";
@@ -201,12 +202,12 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
                   /* Insert a rather unnecessary paragraph so that the web page contents wouldn't drift
                    * based on the web page variant (depending on whether there was a previous command).
                    */
-                  site+="<p class=\"prev_cmd_neutral\">Welcome to Billy's web control interface!</p>";
+                  site+="<p class=\"prev_cmd_neutral\">Billy's load control web interface</p>";
             }
 
             site+="<div>";
-                if (DIGITAL_OUTPUT_PIN != 0) {
-                    site+="<form action=\"/ctrl\" method=\"POST\">";
+                if (DIGITAL_OUTPUT_PIN > 0) {
+                    site+="<form action=\"/ctrl\" method=\"POST\" class=\"output_section\">";
                         site+="<button type=\"submit\" name=\"LOADDIGITAL\" value=\"ON\" \
                                class=\"square square_on\">ON</button>";
                         site+="<button type=\"submit\" name=\"LOADDIGITAL\" value=\"OFF\" \
@@ -219,12 +220,14 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
                         //site+="<a href=\"/ctrl?LOADDIGITAL=OFF\" class=\"square square_off\">OFF</a>";
                     site+="</form>";
                 } else {
-                    site+="<p id=\"output_disabled\">Digital control disabled</p>";
+                    site+="<p class=\"output_disabled\">Digital control disabled</p>";
                 }
 
-                if (PWM_OUTPUT_PIN != 0) {
-                    site+="<form action=\"/ctrl\" method=\"POST\">";
-                        site+="<label for=\"LOADPWM\">PWM control</label>";
+                site+="<hr>";
+
+                if (PWM_OUTPUT_PIN > 0) {
+                    site+="<form action=\"/ctrl\" method=\"POST\" class=\"output_section\">";
+                        site+="<label for=\"LOADPWM\">PWM control (insert value from 0 to 255)</label>";
 
                         // Pure HTML slider was a disappointment.
                         /*
@@ -244,7 +247,7 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
                         site+="</p>";
                     site+="</form>";
                 } else {
-                    site+="<p id=\"output_disabled\">PWM control disabled</p>";
+                    site+="<p class=\"output_disabled\">PWM control disabled</p>";
                 }
             site+="</div>";
         site+="</body>";
