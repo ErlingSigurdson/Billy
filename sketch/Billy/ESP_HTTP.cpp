@@ -227,7 +227,7 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
 
                 if (PWM_OUTPUT_PIN > 0) {
                     site+="<form action=\"/ctrl\" method=\"POST\" class=\"output_section\">";
-                        site+="<label for=\"LOADPWM\">PWM control (insert value from 0 to 255)</label>";
+                        site+="<label for=\"LOADPWM\">PWM control</label>";
 
                         // Pure HTML slider was a disappointment.
                         /*
@@ -241,6 +241,7 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
                               ";
                         */
 
+                        site+="<p>(insert value from 0 to 255)</p>";
                         site+="<p>";
                             site+="<input name=\"LOADPWM\" id=\"LOADPWM\" type=\"text\">";
                             site+="<button type=\"submit\">Send</button>";
