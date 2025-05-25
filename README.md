@@ -33,13 +33,13 @@ In the following the name "Billy" may refer both to the software and a device th
 - **28.06.2024** - v.1.3.1 released. Added a PWM output control panel to the web interface.
 - **29.07.2024** - v.1.3.2 released. Added a new command that outputs the information
                    on the firmware version and the assigned pins.
-- **24.05.2024** - v.1.3.6 released. Fixed various minor bugs, updated the web interface.
+- **26.05.2025** - v.1.3.7 released. Fixed various minor bugs, updated the web interface.
 
 ### TODO list
 1. Add a Bluetooth Low Energy (BLE) support.
 2. Add a support for switching between station (STA) and access point (AP) Wi-Fi modes,
    and then make this switching possible in runtime.
-3. Replace the text input form for a PWM duty cycle value with a slider powered by frontend JavaScript.
+3. Replace the text input form for a PWM duty cycle control value with a slider powered by frontend JavaScript.
 
 
 ***
