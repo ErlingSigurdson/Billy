@@ -85,6 +85,11 @@ void ESP_HTTP_handle_ctrl()
     cmd_2[strlen(cmd_2) - 1] = '\0';      // Remove an equality sign.
 
     if (HTTP_server.hasArg(cmd_1)) {  // Digital output command was received.
+        if (DIGITAL_OUTPUT_PIN <= 0) {
+            HTTP_server.send(200, "text/plain", "Digital output disabled.");
+            return;
+        }
+
         if (HTTP_server.arg(cmd_1).length() > STR_MAX_LEN) {
             HTTP_server.send(200, "text/plain", "Command buffer overflow.");
             return;
@@ -110,6 +115,11 @@ void ESP_HTTP_handle_ctrl()
 
         return;
     } else if (HTTP_server.hasArg(cmd_2)) {  // PWM output command was received.
+        if (PWM_OUTPUT_PIN <= 0) {
+            HTTP_server.send(200, "text/plain", "PWM output disabled.");
+            return;
+        }
+
         uint32_t val_len = HTTP_server.arg(cmd_2).length();
 
         if (val_len < 1 || val_len > 3) {  // Valid duty cycle values are 0 to 255.
