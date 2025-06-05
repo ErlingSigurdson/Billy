@@ -33,7 +33,8 @@ In the following the name "Billy" may refer both to the software and a device th
 - **28.06.2024** - v.1.3.1 released. Added a PWM output control panel to the web interface.
 - **29.07.2024** - v.1.3.2 released. Added a new command that outputs the information
                    on the firmware version and the assigned pins.
-- **26.05.2025** - v.1.3.7 released. Fixed various minor bugs, updated the web interface.
+- **04.06.2025** - v.1.4.0 released. The web interface has been improved significantly,
+                   and numerous pesky bugs have been mended.
 
 ### TODO list
 1. Add a Bluetooth Low Energy (BLE) support.
