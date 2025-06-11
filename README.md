@@ -4,7 +4,7 @@
 
 ### Concept
 Billy is a program (an Arduino sketch) written for ESP32 and ESP8266 microcontrollers (systems-on-chip, SoCs).
-With this software an MCU can control a load using a digital (ON/OFF) and a pseudo-analog (PWM) output
+With this software an MCU can control a load using a digital (two-state, ON/OFF) and a pseudo-analog (PWM) output
 and receive commands over a UART and wireless networks.
 
 In the following the name "Billy" may refer both to the software and a device that runs it
@@ -33,7 +33,8 @@ In the following the name "Billy" may refer both to the software and a device th
 - **28.06.2024** - v.1.3.1 released. Added a PWM output control panel to the web interface.
 - **29.07.2024** - v.1.3.2 released. Added a new command that outputs the information
                    on the firmware version and the assigned pins.
-- **26.05.2025** - v.1.3.7 released. Fixed various minor bugs, updated the web interface.
+- **11.06.2025** - v.1.4.0 released. The web interface has been improved significantly,
+                   and numerous pesky bugs have been mended.
 
 ### TODO list
 1. Add a Bluetooth Low Energy (BLE) support.
@@ -124,9 +125,9 @@ by Espressif Systems.
 4. Turn on your device and connect to it by a cable (via USB-UART adapter or, if supported by your device,
 via UART over native USB).
 5. Open a serial terminal and set an appropriate baud rate (115200 by default). 
-6. Send command `AT+LOCALSSID=<value>` to specify your Wi-Fi network access point SSID.
-7. Send command `AT+LOCALPSWD=<value>` to specify your Wi-Fi network access point password.
-8. Send command `AT+LOCALPORT=<value>` to specify a port number to be used by Billy as a local TCP server.
+6. Send command `AT+WIFISSID=<value>` to specify your Wi-Fi network access point SSID.
+7. Send command `AT+WIFIPSWD=<value>` to specify your Wi-Fi network access point password.
+8. Send command `AT+LOCALPORT=<value>` to specify a port number to be used by the local TCP server as the incoming port.
 9. Reset Billy or send `AT+ALLCONNRST` command.
 10. Make sure your device has established a connection to your Wi-Fi network.
 11. Send commands `AT+LOADDIGITAL=ON`, `AT+LOADDIGITAL=OFF`, `AT+LOADDIGITAL=TOGGLE`
