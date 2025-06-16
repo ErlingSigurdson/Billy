@@ -46,8 +46,7 @@
 #ifndef INVERTED_DIGITAL_OUTPUT
     #define DIGITAL_OUTPUT_LOAD_ON 1
     #define DIGITAL_OUTPUT_LOAD_OFF 0
-#endif
-#ifdef INVERTED_DIGITAL_OUTPUT
+#else
     #define DIGITAL_OUTPUT_LOAD_ON 0
     #define DIGITAL_OUTPUT_LOAD_OFF 1
 #endif
