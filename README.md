@@ -23,18 +23,19 @@ In the following the name "Billy" may refer both to the software and a device th
 - **14.01.2024** - the sketch is successfully run on an ESP32-C6 module using
 [3.0.0-alpha3 version of the ESP32 Arduino core by Espressif Systems](https://github.com/espressif/arduino-esp32/milestone/4).
 - **25.06.2024** - v.1.3 released, with numerous major changes made:
-    - PWM output support added, and thus the project name was changed
-      from "Billy the Relay" to just "Billy".
-    - The code was refactored significantly. Among other things, command handler functions
-      are now declared and defined in separate files, not in the .ino file.
-    - Local TCP server will now restart automatically in case of a lost
-      and subsequently restored connection to an access point.
-    - Introduced a data format check for the config update commands.
+                 - PWM output support added, and thus the project name was changed
+                   from "Billy the Relay" to just "Billy".
+                 - The code was refactored significantly. Among other things, command handler functions
+                   are now declared and defined in separate files, not in the .ino file.
+                 - Local TCP server will now restart automatically in case of a lost
+                   and subsequently restored connection to an access point.
+                 - Introduced a data format check for the config update commands.
 - **28.06.2024** - v.1.3.1 released. Added a PWM output control panel to the web interface.
 - **29.07.2024** - v.1.3.2 released. Added a new command that outputs the information
-                   on the firmware version and the assigned pins.
-- **11.06.2025** - v.1.4.0 released. The web interface has been improved significantly,
-                   and numerous pesky bugs have been mended.
+                   on the uploaded sketch version and the assigned pins.
+- **17.06.2025** - v.1.4.0 released. The web interface two-state load controls now use buttons
+                   instead of a text input field. Also numerous pesky bugs have been mended,
+                   and numerous minor improvements have been implemented.
 
 ### TODO list
 1. Add a Bluetooth Low Energy (BLE) support.
