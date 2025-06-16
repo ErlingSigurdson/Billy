@@ -542,7 +542,7 @@ void cmd_handler_all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint32_
 void cmd_handler_output_version()
 {
     char msg[STR_MAX_LEN * 4] = "\n" \
-                                "\"Billy\" firmware version: " STRINGIFY(VERSION) "\n" \
+                                "\"Billy\" firmware version: " VERSION "\n" \
                                 LINK_MESSAGE "\n" \
                                 LINK_GITHUB "\n" \
                                 LINK_GITFLIC "\n" \
