@@ -56,4 +56,16 @@
     #define THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
 #endif
 
+/* From https://onlinedocs.microchip.com:
+ *
+ * Options for the C compiler avr-gcc
+ *
+ * Machine-specific options for the AVR
+ *
+ * The following machine-specific options are recognized by the C compiler frontend.
+ * In addition to the preprocessor macros indicated in the tables below, the preprocessor will define the macros
+ * __AVR and __AVR__ (to the value 1) when compiling for an AVR target. The macro AVR will be defined as well
+ * when using the standard levels gnu89 (default) and gnu99 but not with c89 and c99.
+ */
+
 #endif  // Include guards.
