@@ -20,6 +20,9 @@
 #include "config_general.h"
 
 // Conditional compilation
+/* ESP32 is the macro provided by the Arduino framework or the compiler
+ * (not exactly sure by which one of those two) for the respective SoC family.
+ */
 #if defined ESP32 && defined BTCLASSIC_PROVIDED
 
 // Additional libraries for Arduino IDE.

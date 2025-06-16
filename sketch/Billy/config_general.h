@@ -18,13 +18,15 @@
 
 /*--- Bluetooth Classic ---*/
 
-/* Comment following #define directive for ESP32 modules
- * which lack Bluetooth Classic functionality (e.g. ESP32-S2 and ESP32-C3).
- * For ESP8266, don't worry about it.
+/* Uncomment the following #define directive if your ESP32 module
+ * supports the Bluetooth Classic functionality and you're willing to use it.
+ *
+ * For ESP32 modules which lack that functionality (e.g. ESP32-S2, ESP32-C3,
+ * ESP32-C6) the directive must remain commented out.
+ *
+ * For ESP8266 it's irrelevant, don't worry about it.
  */
-#ifdef ESP32  // This macro is provided by the Arduino framework for the respective SoC family.
-    #define BTCLASSIC_PROVIDED
-#endif
+//#define BTCLASSIC_PROVIDED
 
 
 /*--- GPIO ---*/
