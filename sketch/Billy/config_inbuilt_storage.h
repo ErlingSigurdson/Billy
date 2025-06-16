@@ -52,7 +52,8 @@
 /* Indicate that the project uses a device that requires
  * some additional calls for the EEPROM.h library methods.
  */
-#define THIS_IS_ESP32_OR_ESP8266_OR_STM32
-
+#ifndef __AVR__
+    #define THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
+#endif
 
 #endif  // Include guards.
