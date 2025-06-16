@@ -116,8 +116,8 @@ Code configuration and upload, minimal runtime configuration and initial testing
 - Specify an indicator LED control pin using directive `#define WIFI_INDICATOR_LED_PIN`.
 - If your digitally controlled load is turned on by a low logical level on a respective pin,
 uncomment the directive `#define INVERTED_DIGITAL_OUTPUT`.
-- Comment out the directive `#define BT_CLASSIC_PROVIDED` if your ESP32 device doesn't support Bluetooth Classic
-or you just don't want to use this technology. Ignore for ESP8266.
+- Uncomment the directive `#define BTCLASSIC_PROVIDED` if your ESP32 device supports the Bluetooth Classic functionality
+and you're willing to use it. Ignore for ESP8266.
 2. Make sure your Arduino IDE (or Arduino SDK for a third-party IDE) has an appropriate core for 
 [ESP32](https://github.com/espressif/arduino-esp32) or [ESP8266](https://github.com/esp8266/Arduino)
 by Espressif Systems.
@@ -137,7 +137,7 @@ your load in different ways.
 
 Test Bluetooth Classic functionality (if supported) as follows:
 
-1. Send command `AT+BTCLASSICDEVNAME=<value>` to specify Billy's name as a slave device.
+1. Send command `AT+BTCLASSICDEVNAME=<value>` to specify Billy's name as a Bluetooth Classic slave device.
 2. Send command `AT+BTCLASSIC=ON` to turn Bluetooth Classic functionality on.
 3. Try using aforementioned load control commands.
 
