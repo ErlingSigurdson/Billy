@@ -14,11 +14,12 @@
 
 /************ PREPROCESSOR DIRECTIVES ***********/
 
-/*--- Includes ---*/
-
 // Include guards.
 #ifndef INBUILT_STORAGE_H
 #define INBUILT_STORAGE_H
+
+
+/*--- Includes ---*/
 
 // Essential Arduino library.
 #include <Arduino.h>
