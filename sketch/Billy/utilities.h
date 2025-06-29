@@ -18,8 +18,9 @@
 
 /*--- Includes ---*/
 
-// Essential Arduino library.
-#include <Arduino.h>
+// Relevant standard libraries.
+#include <cstdint>
+#include <cstring>
 
 
 /*--- Misc ---*/
