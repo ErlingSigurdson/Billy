@@ -16,12 +16,6 @@
 #define ESP32_BTCLASSIC_H
 
 
-/*--- Includes ---*/
-
-// Essential Arduino library.
-#include <Arduino.h>
-
-
 /*--- Misc ---*/
 
 #define BTCLASSIC_READ_SLOWDOWN 2

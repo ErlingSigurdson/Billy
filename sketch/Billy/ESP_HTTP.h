@@ -16,12 +16,6 @@
 #define ESP_HTTP_H
 
 
-/*--- Includes ---*/
-
-// Essential Arduino library.
-#include <Arduino.h>
-
-
 /*--- Misc ---*/
 
 // PWM duty cycle maximum value.

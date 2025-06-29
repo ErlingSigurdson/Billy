@@ -16,12 +16,6 @@
 #define ESP_TCP_H
 
 
-/*--- Includes ---*/
-
-// Essential Arduino library.
-#include <Arduino.h>
-
-
 /*--- Misc ---*/
 
 #define IOT_DEFAULT_REQ_PERIOD 500
