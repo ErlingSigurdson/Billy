@@ -19,6 +19,12 @@
 #define INBUILT_STORAGE_H
 
 
+/*--- Includes ---*/
+
+// Essential Arduino library.
+#include <Arduino.h>
+
+
 /************** FUNCTION PROTOTYPES *************/
 
 // Storage initialization. Necessary for ESP32, ESP8266 and STM32. Not to be used with AVR devices.

@@ -16,6 +16,12 @@
 #define ESP_WIFI_H
 
 
+/*--- Includes ---*/
+
+// Essential Arduino library.
+#include <Arduino.h>
+
+
 /************** FUNCTION PROTOTYPES *************/
 
 bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeout);

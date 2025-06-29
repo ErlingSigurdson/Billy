@@ -18,6 +18,9 @@
 
 /*--- Includes ---*/
 
+// Essential Arduino library.
+#include <Arduino.h>
+
 // Local modules.
 #include "stored_configs.h"
 
