@@ -30,7 +30,6 @@
 
 // Local modules.
 #include "ESP_HTTP.h"
-#include "utilities.h"
 
 
 /*************** GLOBAL VARIABLES ***************/
