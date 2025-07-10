@@ -78,8 +78,8 @@
 #define DRV7SEG4D2X595_SPI
 #ifdef DRV7SEG4D2X595_SPI
     #define DRV7SEG4D2X595_SEG_STR                   "ED@CGAFB"
-    #define DRV7SEG4D2X595_MOSI                      13
-    #define DRV7SEG4D2X595_SCK                       14
+    #define DRV7SEG4D2X595_MOSI_PIN                  13
+    #define DRV7SEG4D2X595_SCK_PIN                   14
     #define DRV7SEG4D2X595_LATCH_PIN                 27
     #define DRV7SEG4D2X595_D1                        7
     #define DRV7SEG4D2X595_D2                        5

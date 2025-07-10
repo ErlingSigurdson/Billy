@@ -50,7 +50,7 @@ void Drv7seg4d2x595::init_bb(uint32_t data_pin, uint32_t latch_pin, uint32_t clo
 }
 
 void Drv7seg4d2x595::init_spi(uint32_t mosi_pin, uint32_t latch_pin, uint32_t sck_pin, \
-                              uint32_t ghosting_prevention_delay);
+                              uint32_t ghosting_prevention_delay)
 {
     this->variant = DRV7SEG4D2X595_VARIANT_SPI;
     this->latch_pin = latch_pin;
