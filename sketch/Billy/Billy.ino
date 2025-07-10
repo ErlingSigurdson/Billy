@@ -43,6 +43,11 @@
     #include "ESP32_BTClassic.h"
 #endif
 
+#if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
+    #include "SegMap595.h"
+    #include "Drv7seg4d2x595.h"
+#endif
+
 
 /************** FUNCTION PROTOTYPES *************/
 
@@ -108,6 +113,45 @@ void setup()
         Serial.println("Warning! No Wi-Fi indicator LED output pin specified.");
     }
 
+    #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
+        #if DRV7SEG4D2X595_DATA_PIN  == DIGITAL_OUTPUT_PIN     || \
+            DRV7SEG4D2X595_DATA_PIN  == PWM_OUTPUT_PIN         || \
+            DRV7SEG4D2X595_DATA_PIN  == WIFI_INDICATOR_LED_PIN || \
+            DRV7SEG4D2X595_MOSI_PIN  == DIGITAL_OUTPUT_PIN     || \
+            DRV7SEG4D2X595_MOSI_PIN  == PWM_OUTPUT_PIN         || \
+            DRV7SEG4D2X595_MOSI_PIN  == WIFI_INDICATOR_LED_PIN || \
+            DRV7SEG4D2X595_LATCH_PIN == DIGITAL_OUTPUT_PIN     || \
+            DRV7SEG4D2X595_LATCH_PIN == PWM_OUTPUT_PIN         || \
+            DRV7SEG4D2X595_LATCH_PIN == WIFI_INDICATOR_LED_PIN || \
+            DRV7SEG4D2X595_CLOCK_PIN == DIGITAL_OUTPUT_PIN     || \
+            DRV7SEG4D2X595_CLOCK_PIN == PWM_OUTPUT_PIN         || \
+            DRV7SEG4D2X595_CLOCK_PIN == WIFI_INDICATOR_LED_PIN || \
+            DRV7SEG4D2X595_SCK_PIN == DIGITAL_OUTPUT_PIN       || \
+            DRV7SEG4D2X595_SCK_PIN == PWM_OUTPUT_PIN           || \
+            DRV7SEG4D2X595_SCK_PIN == WIFI_INDICATOR_LED_PIN
+
+            Serial.println("");
+            Serial.println("Warning! One or more of the pins assigned to control daisy-chained 74HC595 ICs \
+                            coincide with either a digital output pin, a PWM output pin or a Wi-Fi indicator LED \
+                            control pin. Most probably it will prevent Billy from controlling any load properly.");
+        #endif
+    #endif
+
+    #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
+        #if DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
+            DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_CLOCK_PIN || \
+            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_CLOCK_PIN || \
+            DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
+            DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_CLOCK_PIN || \
+            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_CLOCK_PIN || \
+
+            Serial.println("");
+            Serial.println("Warning! One or more of the pins assigned to control daisy-chained 74HC595 ICs \
+                            coincide with the other one. It will prevent Billy from controlling \
+                            a 7-segment indicator properly.");
+        #endif
+    #endif
+
     // Pin configuration and setting digital outputs to respective initial digital levels.
     if (DIGITAL_OUTPUT_PIN > 0) {
         pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
@@ -146,6 +190,23 @@ void setup()
 
     Serial.println("");
     Serial.flush();
+
+
+    /*--- Drv7seg4d2x595 ---*/
+
+    SegMap.init(DRV7SEG4D2X595_SEG_STR);
+
+    /*
+    Daisy16.init_bb(DRV7SEG4D2X595_DATA_PIN, DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_CLOCK_PIN, \
+                    DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
+    */
+
+    Daisy16.init_spi(DRV7SEG4D2X595_MOSI_PIN, DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_SCK_PIN, \
+                     DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
+
+    /*
+    Daisy16.init_bb(DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
+    */
 }
 
 void loop()
@@ -375,6 +436,45 @@ void loop()
     }
 
     Serial.flush();
+
+
+    /*--- Drv7seg4d2x595 ---*/
+
+    #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
+        static uint64_t current_millis;
+        static uint64_t previous_millis;
+
+        static uint32_t current_minutes;
+        static uint32_t current_seconds;
+
+        current_millis = millis();
+        if (current_millis - previous_millis >= 1000) {
+            previous_millis = current_millis;
+            ++current_seconds;
+        }
+
+        if (current_seconds > 59) {
+            current_seconds = 0;
+            ++current_minutes;
+        }
+
+        if (current_minutes > 59) {
+            current_minutes = 0;
+        }
+
+        uint8_t mapped_character_with_handled_dot_bit = 0;
+        if (current_seconds % 2) {
+            mapped_character_with_handled_dot_bit = SegMap.mapped_characters[current_minutes % 10] | \
+                                                    (1 << SegMap.get_dot_bit_pos());
+        } else {
+            mapped_character_with_handled_dot_bit = SegMap.mapped_characters[current_minutes % 10];
+        }
+
+        Daisy16.shift_out((1 << DRV7SEG4D2X595_D1), SegMap.mapped_characters[current_minutes / 10]);
+        Daisy16.shift_out((1 << DRV7SEG4D2X595_D2), mapped_character_with_handled_dot_bit);
+        Daisy16.shift_out((1 << DRV7SEG4D2X595_D3), SegMap.mapped_characters[current_seconds / 10]);
+        Daisy16.shift_out((1 << DRV7SEG4D2X595_D4), SegMap.mapped_characters[current_seconds % 10]);
+    #endif
 }
 
 
