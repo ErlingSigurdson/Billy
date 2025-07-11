@@ -58,7 +58,7 @@
  * to control a 7-segment 4-digit display using two
  * daisy-chained 74HC595 ICs with a bit banging.
  */
-#define DRV7SEG4D2X595_BIT_BANGING
+//#define DRV7SEG4D2X595_BIT_BANGING
 #ifdef DRV7SEG4D2X595_BIT_BANGING
     #define DRV7SEG4D2X595_SEG_STR                   "ED@CGAFB"
     #define DRV7SEG4D2X595_DATA_PIN                  16
@@ -78,14 +78,14 @@
 #define DRV7SEG4D2X595_SPI
 #ifdef DRV7SEG4D2X595_SPI
     #define DRV7SEG4D2X595_SEG_STR                   "ED@CGAFB"
-    #define DRV7SEG4D2X595_MOSI_PIN                  13
-    #define DRV7SEG4D2X595_SCK_PIN                   14
+    #define DRV7SEG4D2X595_MOSI_PIN                  23
+    #define DRV7SEG4D2X595_SCK_PIN                   19
     #define DRV7SEG4D2X595_LATCH_PIN                 27
     #define DRV7SEG4D2X595_D1                        7
     #define DRV7SEG4D2X595_D2                        5
     #define DRV7SEG4D2X595_D3                        3
     #define DRV7SEG4D2X595_D4                        1
-    #define DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY 2
+    #define DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY 4
 #endif
 
 
