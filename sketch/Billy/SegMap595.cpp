@@ -23,21 +23,21 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-SegMap595 SegMap = SegMap595();
+SegMap595_t SegMap595 = SegMap595_t();
 
 
 /******************* FUNCTIONS ******************/
 
 /*--- Constructor ---*/
 
-SegMap595::SegMap595()
+SegMap595_t::SegMap595_t()
 {
 }
 
 
 /*--- Misc functions ---*/
 
-uint32_t SegMap595::init(const char* map_str)
+uint32_t SegMap595_t::init(const char* map_str)
 {
     this->status = check_map_str(map_str);
 
@@ -56,7 +56,7 @@ uint32_t SegMap595::init(const char* map_str)
     return this->status;
 }
 
-uint32_t SegMap595::check_map_str(const char* map_str)
+uint32_t SegMap595_t::check_map_str(const char* map_str)
 {
     if (strlen(map_str) != SEGMAP595_SEG_NUM) {
         return this->status = SEGMAP595_STATUS_ERR_MAP_STR_LEN;
@@ -71,7 +71,7 @@ uint32_t SegMap595::check_map_str(const char* map_str)
     return this->status = SEGMAP595_STATUS_OK;
 }
 
-uint32_t SegMap595::read_map_str(const char* map_str)
+uint32_t SegMap595_t::read_map_str(const char* map_str)
 {
     uint32_t bit_pos_set = 0;
 
@@ -92,7 +92,7 @@ uint32_t SegMap595::read_map_str(const char* map_str)
     }
 }
 
-void SegMap595::map_characters()
+void SegMap595_t::map_characters()
 {
     for (uint32_t i = 0; i < SEGMAP595_CHAR_NUM; ++i) {
         for (uint32_t j = 0; j < SEGMAP595_SEG_NUM; ++j) {
@@ -105,7 +105,7 @@ void SegMap595::map_characters()
     }
 }
 
-uint32_t SegMap595::get_dot_bit_pos()
+uint32_t SegMap595_t::get_dot_bit_pos()
 {
     return this->bit_pos[0];  /* Dot (represented by the @ sign) is the first character whose position
                                * is determined when a segment string gets analyzed.

@@ -194,7 +194,7 @@ void setup()
 
     /*--- Drv7seg4d2x595 ---*/
 
-    SegMap.init(DRV7SEG4D2X595_SEG_STR);
+    SegMap595.init(DRV7SEG4D2X595_SEG_STR);
 
     /*
     Daisy16.init_bb(DRV7SEG4D2X595_DATA_PIN, DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_CLOCK_PIN, \
@@ -464,16 +464,16 @@ void loop()
 
         uint8_t mapped_character_with_handled_dot_bit = 0;
         if (current_seconds % 2) {
-            mapped_character_with_handled_dot_bit = SegMap.mapped_characters[current_minutes % 10] | \
-                                                    (1 << SegMap.get_dot_bit_pos());
+            mapped_character_with_handled_dot_bit = SegMap595.mapped_characters[current_minutes % 10] | \
+                                                    (1 << SegMap595.get_dot_bit_pos());
         } else {
-            mapped_character_with_handled_dot_bit = SegMap.mapped_characters[current_minutes % 10];
+            mapped_character_with_handled_dot_bit = SegMap595.mapped_characters[current_minutes % 10];
         }
 
-        Daisy16.shift_out((1 << DRV7SEG4D2X595_D1), SegMap.mapped_characters[current_minutes / 10]);
+        Daisy16.shift_out((1 << DRV7SEG4D2X595_D1), SegMap595.mapped_characters[current_minutes / 10]);
         Daisy16.shift_out((1 << DRV7SEG4D2X595_D2), mapped_character_with_handled_dot_bit);
-        Daisy16.shift_out((1 << DRV7SEG4D2X595_D3), SegMap.mapped_characters[current_seconds / 10]);
-        Daisy16.shift_out((1 << DRV7SEG4D2X595_D4), SegMap.mapped_characters[current_seconds % 10]);
+        Daisy16.shift_out((1 << DRV7SEG4D2X595_D3), SegMap595.mapped_characters[current_seconds / 10]);
+        Daisy16.shift_out((1 << DRV7SEG4D2X595_D4), SegMap595.mapped_characters[current_seconds % 10]);
     #endif
 }
 
