@@ -50,9 +50,7 @@ SegMap595_t::SegMap595_t()
 
 int32_t SegMap595_t::init(const char* map_str)
 {
-    strncpy(this->map_str, map_str, SEGMAP595_SEG_NUM);
-
-    this->status = check_map_str();
+    this->status = check_map_str(map_str);
 
     if (this->status) {
         return this->status;
@@ -69,15 +67,17 @@ int32_t SegMap595_t::init(const char* map_str)
     return this->status;
 }
 
-uint32_t SegMap595_t::check_map_str()
+uint32_t SegMap595_t::check_map_str(const char* map_str)
 {
-    if (strlen(this->map_str) != SEGMAP595_SEG_NUM) {
+    if (strlen(map_str) != SEGMAP595_SEG_NUM) {
         return this->status = SEGMAP595_STATUS_ERR_MAP_STR_LEN;
     }
 
+    strncpy(this->map_str, map_str, SEGMAP595_SEG_NUM);
+
     for (uint32_t i = 0; i < SEGMAP595_SEG_NUM; ++i) {
-        if (map_str[i] >= 'a' && map_str[i] <= 'g') {
-            map_str[i] -= SEGMAP595_UPPERCASE_TO_LOWERCASE_ACII_CODE_MARGIN;
+        if (this->map_str[i] >= 'a' && this->map_str[i] <= 'g') {
+            this->map_str[i] -= SEGMAP595_UPPERCASE_TO_LOWERCASE_ACII_CODE_MARGIN;
         }
     }
 

@@ -164,7 +164,7 @@ class SegMap595_t {
         uint8_t mapped_alphabetical[SEGMAP595_CHAR_NUM] = {SEGMAP595_MAP_ALPHABETICAL_ALL_CHARS};
         uint32_t bit_pos[SEGMAP595_SEG_NUM] = {0};
 
-        uint32_t check_map_str();
+        uint32_t check_map_str(const char* map_str);
         uint32_t read_map_str();
         void map_characters();
 };
