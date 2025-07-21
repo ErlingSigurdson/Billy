@@ -18,7 +18,8 @@
 
              If the string is valid, mapped character bytes (bytes which correspond to the intelligible symbols to be
              output on the 7-segment display) will be placed to the member array named mapped_characters
-             in the ascending order (from 0 to Z).
+             in the ascending order (from 0 to Z). Dot bit will be cleared in all mapped character bytes, therefore you
+             will have to set this bit in your implementation if necessary (get_dot_bit_pos method can be helpful).
  */
 
 
