@@ -6,7 +6,18 @@
  * Purpose:  A class for mapping a 74HC595 IC's outputs and
  *           a 7-segment display's segments.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:
+ * Notes:    The init method takes a single argument: a string that must reflect the order of the connections made
+             between the parallel outputs of the 74HC595 and the segment control pins of the 7-segment display.
+             The string must consist of exactly 7 characters: @, A, B, C, D, E, F and G. Every character corresponds
+             to a single segment (@ stands for a dot). The character order must correspond to the order
+             of the connections, that is, first (leftmost) character in the string corresponds to the 7th bit
+             of the IC's parallel output (Q7 output), second character corresponds to the 6th bit (Q6 output), etc.
+
+             Any other characters are invalid. Duplicating characters in the string is illegal.
+
+             If the string is valid, mapped character bytes (bytes which correspond to the intelligible symbols to be
+             output on the 7-segment display) will be placed to the member array named mapped_characters
+             in the ascending order (from 0 to Z).
  */
 
 
