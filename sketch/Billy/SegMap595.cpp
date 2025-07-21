@@ -37,7 +37,7 @@ SegMap595_t::SegMap595_t()
 
 /*--- Misc functions ---*/
 
-uint32_t SegMap595_t::init(const char* map_str)
+int32_t SegMap595_t::init(const char* map_str)
 {
     this->status = check_map_str(map_str);
 

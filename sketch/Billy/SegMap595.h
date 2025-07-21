@@ -142,7 +142,7 @@ class SegMap595_t {
         uint8_t mapped_characters[SEGMAP595_CHAR_NUM] = {0};
 
         SegMap595_t();
-        uint32_t init(const char* map_str);
+        int32_t init(const char* map_str);
         uint32_t get_dot_bit_pos();
 
     private:
