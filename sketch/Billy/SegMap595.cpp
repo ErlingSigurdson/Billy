@@ -50,13 +50,15 @@ SegMap595_t::SegMap595_t()
 
 int32_t SegMap595_t::init(const char* map_str)
 {
-    this->status = check_map_str(map_str);
+    strncpy(this->map_str, map_str, SEGMAP595_SEG_NUM);
+
+    this->status = check_map_str();
 
     if (this->status) {
         return this->status;
     }
 
-    this->status = read_map_str(map_str);
+    this->status = read_map_str();
 
     if (this->status) {
         return this->status;
@@ -67,14 +69,20 @@ int32_t SegMap595_t::init(const char* map_str)
     return this->status;
 }
 
-uint32_t SegMap595_t::check_map_str(const char* map_str)
+uint32_t SegMap595_t::check_map_str()
 {
-    if (strlen(map_str) != SEGMAP595_SEG_NUM) {
+    if (strlen(this->map_str) != SEGMAP595_SEG_NUM) {
         return this->status = SEGMAP595_STATUS_ERR_MAP_STR_LEN;
     }
 
     for (uint32_t i = 0; i < SEGMAP595_SEG_NUM; ++i) {
-        if (map_str[i] < '@' || map_str[i] > 'G') {
+        if (map_str[i] >= 'a' && map_str[i] <= 'g') {
+            map_str[i] -= SEGMAP595_UPPERCASE_TO_LOWERCASE_ACII_CODE_MARGIN;
+        }
+    }
+
+    for (uint32_t i = 0; i < SEGMAP595_SEG_NUM; ++i) {
+        if (this->map_str[i] < '@' || this->map_str[i] > 'G') {
             return this->status = SEGMAP595_STATUS_ERR_MAP_STR_CHAR;
         }
     }
@@ -82,7 +90,7 @@ uint32_t SegMap595_t::check_map_str(const char* map_str)
     char current_char = '@';
     for (uint32_t i = 0; i < SEGMAP595_SEG_NUM; ++i, ++current_char) {
         for (uint32_t j = i + 1; j < SEGMAP595_SEG_NUM; ++j) {
-            if (map_str[i] == map_str[j]) {
+            if (this->map_str[i] == this->map_str[j]) {
                 return this->status = SEGMAP595_STATUS_ERR_MAP_STR_DUPLICATION;
             }
         }
@@ -91,14 +99,14 @@ uint32_t SegMap595_t::check_map_str(const char* map_str)
     return this->status = SEGMAP595_STATUS_OK;
 }
 
-uint32_t SegMap595_t::read_map_str(const char* map_str)
+uint32_t SegMap595_t::read_map_str()
 {
     uint32_t bit_pos_set = 0;
 
     char current_char = '@';
     for (uint32_t i = 0; i < SEGMAP595_SEG_NUM; ++i, ++current_char) {
         for (uint32_t j = 0; j < SEGMAP595_SEG_NUM; ++j) {
-            if (map_str[j] == current_char) {
+            if (this->map_str[j] == current_char) {
                 this->bit_pos[i] = SEGMAP595_MSB - j;
                 ++bit_pos_set;
             }

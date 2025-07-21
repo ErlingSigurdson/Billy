@@ -42,6 +42,8 @@
 #define SEGMAP595_MSB          7
 #define SEGMAP595_ONLY_MSB_SET (1 << SEGMAP595_MSB)
 
+#define SEGMAP595_UPPERCASE_TO_LOWERCASE_ACII_CODE_MARGIN 32
+
 #define SEGMAP595_STATUS_OK                      0
 #define SEGMAP595_STATUS_INIT                    -1
 #define SEGMAP595_STATUS_ERR_MAP_STR_LEN         1
@@ -150,6 +152,7 @@
 
 class SegMap595_t {
     public:
+        char map_str[SEGMAP595_SEG_NUM + 1] = {0};
         int32_t status = SEGMAP595_STATUS_INIT;
         uint8_t mapped_characters[SEGMAP595_CHAR_NUM] = {0};
 
@@ -161,8 +164,8 @@ class SegMap595_t {
         uint8_t mapped_alphabetical[SEGMAP595_CHAR_NUM] = {SEGMAP595_MAP_ALPHABETICAL_ALL_CHARS};
         uint32_t bit_pos[SEGMAP595_SEG_NUM] = {0};
 
-        uint32_t check_map_str(const char* map_str);
-        uint32_t read_map_str(const char* map_str);
+        uint32_t check_map_str();
+        uint32_t read_map_str();
         void map_characters();
 };
 
