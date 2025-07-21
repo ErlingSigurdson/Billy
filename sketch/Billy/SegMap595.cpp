@@ -68,6 +68,15 @@ uint32_t SegMap595_t::check_map_str(const char* map_str)
         }
     }
 
+    char current_char = '@';
+    for (uint32_t i = 0; i < SEGMAP595_SEG_NUM; ++i, ++current_char) {
+        for (uint32_t j = i + 1; j < SEGMAP595_SEG_NUM; ++j) {
+            if (map_str[i] == map_str[j]) {
+                return this->status = SEGMAP595_STATUS_ERR_MAP_STR_DUPLICATION;
+            }
+        }
+    }
+
     return this->status = SEGMAP595_STATUS_OK;
 }
 
