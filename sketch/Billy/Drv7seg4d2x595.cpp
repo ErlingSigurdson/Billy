@@ -80,10 +80,10 @@ void Drv7seg4d2x595_t::shift_out(uint8_t ubyte, uint8_t lbyte)
             shiftOut(data_pin, clock_pin, MSBFIRST, lbyte);
             digitalWrite(latch_pin, 1);
 
+            delay(this->ghosting_prevention_delay);
             digitalWrite(latch_pin, 0);
             shiftOut(data_pin, clock_pin, MSBFIRST, 0);
             digitalWrite(latch_pin, 1);
-            delay(this->ghosting_prevention_delay);
             break;
 
         case DRV7SEG4D2X595_VARIANT_SPI:
