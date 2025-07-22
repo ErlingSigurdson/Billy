@@ -5,6 +5,7 @@
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Reading and writing strings to and from an inbuilt storage
  *           using EEPROM.h library.
+ *           Written for use with the Arduino framework.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:    AVR devices use inbuilt EEPROM.
  *           ESP32, ESP8266 and STM32 emulate EEPROM
