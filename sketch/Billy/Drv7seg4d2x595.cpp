@@ -26,17 +26,17 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-Drv7seg4d2x595 Daisy16 = Drv7seg4d2x595();
+Drv7seg4d2x595_t Drv7seg4d2x595 = Drv7seg4d2x595_t();
 
 
 /******************* FUNCTIONS ******************/
 
-Drv7seg4d2x595::Drv7seg4d2x595()
+Drv7seg4d2x595_t::Drv7seg4d2x595_t()
 {
 }
 
-void Drv7seg4d2x595::init_bb(uint32_t data_pin, uint32_t latch_pin, uint32_t clock_pin, \
-                             uint32_t ghosting_prevention_delay)
+void Drv7seg4d2x595_t::init_bb(uint32_t data_pin, uint32_t latch_pin, uint32_t clock_pin, \
+                               uint32_t ghosting_prevention_delay)
 {
     this->variant = DRV7SEG4D2X595_VARIANT_BIT_BANGING;
     this->data_pin = data_pin;
@@ -49,8 +49,8 @@ void Drv7seg4d2x595::init_bb(uint32_t data_pin, uint32_t latch_pin, uint32_t clo
     pinMode(clock_pin, OUTPUT);
 }
 
-void Drv7seg4d2x595::init_spi(uint32_t mosi_pin, uint32_t latch_pin, uint32_t sck_pin, \
-                              uint32_t ghosting_prevention_delay)
+void Drv7seg4d2x595_t::init_spi(uint32_t mosi_pin, uint32_t latch_pin, uint32_t sck_pin, \
+                                uint32_t ghosting_prevention_delay)
 {
     this->variant = DRV7SEG4D2X595_VARIANT_SPI;
     this->latch_pin = latch_pin;
@@ -60,7 +60,7 @@ void Drv7seg4d2x595::init_spi(uint32_t mosi_pin, uint32_t latch_pin, uint32_t sc
     SPI.begin(sck_pin, -1, mosi_pin, -1);
 }
 
-void Drv7seg4d2x595::init_spi(uint32_t latch_pin, uint32_t ghosting_prevention_delay)
+void Drv7seg4d2x595_t::init_spi(uint32_t latch_pin, uint32_t ghosting_prevention_delay)
 {
     this->variant = DRV7SEG4D2X595_VARIANT_SPI;
     this->latch_pin = latch_pin;
@@ -70,7 +70,7 @@ void Drv7seg4d2x595::init_spi(uint32_t latch_pin, uint32_t ghosting_prevention_d
     SPI.begin();
 }
 
-void Drv7seg4d2x595::shift_out(uint8_t ubyte, uint8_t lbyte)
+void Drv7seg4d2x595_t::shift_out(uint8_t ubyte, uint8_t lbyte)
 {
     switch (this->variant) {
         case DRV7SEG4D2X595_VARIANT_BIT_BANGING:

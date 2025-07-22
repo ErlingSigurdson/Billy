@@ -30,10 +30,9 @@
 
 /****************** DATA TYPES ******************/
 
-class Drv7seg4d2x595 {
+class Drv7seg4d2x595_t {
     public:
-        Drv7seg4d2x595();
-
+        Drv7seg4d2x595_t();
         void init_bb(uint32_t data_pin, uint32_t latch_pin, uint32_t clock_pin, \
                      uint32_t ghosting_prevention_delay);
         void init_spi(uint32_t mosi_pin, uint32_t latch_pin, uint32_t sck_pin, \
@@ -54,7 +53,7 @@ class Drv7seg4d2x595 {
 
 /*************** GLOBAL VARIABLES ***************/
 
-extern Drv7seg4d2x595 Daisy16;
+extern Drv7seg4d2x595_t Drv7seg4d2x595;
 
 
 #endif  // Include guards.
