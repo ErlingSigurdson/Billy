@@ -75,27 +75,27 @@ void Drv7seg4d2x595_t::shift_out(uint8_t ubyte, uint8_t lbyte)
 {
     switch (this->variant) {
         case DRV7SEG4D2X595_VARIANT_BIT_BANGING:
-            digitalWrite(latch_pin, 0);
-            shiftOut(data_pin, clock_pin, MSBFIRST, ubyte);
-            shiftOut(data_pin, clock_pin, MSBFIRST, lbyte);
-            digitalWrite(latch_pin, 1);
+            digitalWrite(this->latch_pin, 0);
+            shiftOut(this->data_pin, this->clock_pin, MSBFIRST, ubyte);
+            shiftOut(this->data_pin, this->clock_pin, MSBFIRST, lbyte);
+            digitalWrite(this->latch_pin, 1);
 
             delay(this->ghosting_prevention_delay);
-            digitalWrite(latch_pin, 0);
-            shiftOut(data_pin, clock_pin, MSBFIRST, 0);
-            digitalWrite(latch_pin, 1);
+            digitalWrite(this->latch_pin, 0);
+            shiftOut(this->data_pin, this->clock_pin, MSBFIRST, 0);
+            digitalWrite(this->latch_pin, 1);
             break;
 
         case DRV7SEG4D2X595_VARIANT_SPI:
-            digitalWrite(latch_pin, 0);
+            digitalWrite(this->latch_pin, 0);
             SPI.transfer(ubyte);
             SPI.transfer(lbyte);
-            digitalWrite(latch_pin, 1);
+            digitalWrite(this->latch_pin, 1);
 
             delay(this->ghosting_prevention_delay);
-            digitalWrite(latch_pin, 0);
+            digitalWrite(this->latch_pin, 0);
             SPI.transfer(0);
-            digitalWrite(latch_pin, 1);
+            digitalWrite(this->latch_pin, 1);
             break;
 
         default:
