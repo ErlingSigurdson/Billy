@@ -25,8 +25,6 @@
     #include <ESP8266WiFi.h>
 #endif
 
-//#include "WiFiType.h" // Du fuq??? _TODO_
-
 // Local modules.
 #include "ESP_WiFi.h"
 #include "config_general.h"
