@@ -44,10 +44,8 @@ class Drv7seg4d2x595_t {
     private:
         uint32_t variant;
         uint32_t data_pin;
-        uint32_t mosi_pin;
         uint32_t latch_pin;
         uint32_t clock_pin;
-        uint32_t sck_pin;
         uint32_t ghosting_prevention_delay;
 };
 
