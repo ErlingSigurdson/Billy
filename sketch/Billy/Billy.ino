@@ -94,7 +94,7 @@ void setup()
     Serial.println("*** HELLO, HUMAN! ***");
 
 
-    /*--- GPIO initial setup ---*/
+    /*--- Pin setup ---*/
 
     // Check assigned pins.
     if (DIGITAL_OUTPUT_PIN <= 0 && PWM_OUTPUT_PIN <= 0) {
@@ -171,7 +171,7 @@ void setup()
     }
 
 
-    /*--- Interaction with an inbuilt storage ---*/
+    /*--- Inbuilt storage setup ---*/
 
     /* In contrast to AVR-based devices, ESP32 and ESP8266 SoCs'
      * inbuilt storage must be initialized before use.
@@ -243,19 +243,19 @@ void loop()
     /*--- Commands reception ---*/
 
     // Command buffer.
-    char terminal_input[STR_MAX_LEN + 1] = {0};
+    char cmd_buffer[STR_MAX_LEN + 1] = {0};
 
     // Command reception subroutines.
-    receive_cmd_HW_UART(terminal_input);
-    receive_cmd_TCP_local(terminal_input);
-    receive_cmd_TCP_IoT(terminal_input, &stored_configs);
-    receive_cmd_HTTP(terminal_input);
+    receive_cmd_HW_UART(cmd_buffer);
+    receive_cmd_TCP_local(cmd_buffer);
+    receive_cmd_TCP_IoT(cmd_buffer, &stored_configs);
+    receive_cmd_HTTP(cmd_buffer);
 
     /* Another call for the connected() method of the BluetoothSerial class
      * caused an RTOS crash, hence the additional flag was introduced.
      */
     bool BTClassic_was_connected = 0;
-    receive_cmd_BTClassic(terminal_input, &stored_configs, &BTClassic_was_connected);
+    receive_cmd_BTClassic(cmd_buffer, &stored_configs, &BTClassic_was_connected);
 
 
     /*--- Command handling ---*/
@@ -263,11 +263,11 @@ void loop()
     // Essentially it's the central hub of the whole sketch.
 
     // Check for a non-empty buffer string.
-    if (terminal_input[0] != '\0' ) {
-        utilities_nullify_first_CR_or_LF_in_string(terminal_input);
+    if (cmd_buffer[0] != '\0' ) {
+        utilities_nullify_first_CR_or_LF_in_string(cmd_buffer);
 
         // Check for valid commands.
-        int32_t func_to_call = cmd_check(terminal_input, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
+        int32_t func_to_call = cmd_check(cmd_buffer, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
         switch (func_to_call) {
             case -1:
                 cmd_handler_err_prefix();
@@ -278,11 +278,11 @@ void loop()
                 break;
 
             case 1:
-                cmd_handler_set_load_digital(terminal_input);
+                cmd_handler_set_load_digital(cmd_buffer);
                 break;
 
             case 2:
-                cmd_handler_set_load_PWM(terminal_input);
+                cmd_handler_set_load_PWM(cmd_buffer);
                 break;
 
             case 3:
@@ -290,7 +290,7 @@ void loop()
                 break;
 
             case 4:
-                cmd_handler_set_WiFi_SSID(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_WiFi_SSID(cmd_buffer, &time_to_refresh_stored_configs);
                 break;
 
             case 5:
@@ -298,15 +298,15 @@ void loop()
                 break;
 
             case 6:
-                cmd_handler_set_WiFi_pswd(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_WiFi_pswd(cmd_buffer, &time_to_refresh_stored_configs);
                 break;
 
             case 7:
-                cmd_handler_set_WiFi_RSSI_output_flag(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_WiFi_RSSI_output_flag(cmd_buffer, &time_to_refresh_stored_configs);
                 break;
 
             case 8:
-                cmd_handler_set_WiFi_autoreconnect_flag(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_WiFi_autoreconnect_flag(cmd_buffer, &time_to_refresh_stored_configs);
                 break;
 
             case 9:
@@ -314,7 +314,7 @@ void loop()
                 break;
 
             case 10:
-                cmd_handler_set_local_server_port(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_local_server_port(cmd_buffer, &time_to_refresh_stored_configs);
                 break;
 
             case 11:
@@ -322,11 +322,11 @@ void loop()
                 break;
 
             case 12:
-                cmd_handler_set_IoT_flag(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_IoT_flag(cmd_buffer, &time_to_refresh_stored_configs);
                 break;
 
             case 13:
-                cmd_handler_set_IoT_server_IP(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_IoT_server_IP(cmd_buffer, &time_to_refresh_stored_configs);
                 break;
 
             case 14:
@@ -334,7 +334,7 @@ void loop()
                 break;
 
             case 15:
-                cmd_handler_set_IoT_server_port(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_IoT_server_port(cmd_buffer, &time_to_refresh_stored_configs);
                 break;
 
             case 16:
@@ -342,7 +342,7 @@ void loop()
                 break;
 
             case 17:
-                cmd_handler_set_IoT_req_msg(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_IoT_req_msg(cmd_buffer, &time_to_refresh_stored_configs);
                 break;
 
             case 18:
@@ -350,17 +350,17 @@ void loop()
                 break;
 
             case 19:
-                cmd_handler_set_IoT_req_period(terminal_input, &time_to_refresh_stored_configs);
+                cmd_handler_set_IoT_req_period(cmd_buffer, &time_to_refresh_stored_configs);
                 break;
 
             case 20:
-                cmd_handler_set_BTClassic_flag(terminal_input,
+                cmd_handler_set_BTClassic_flag(cmd_buffer,
                                                setup_BTClassic,
                                                &time_to_refresh_stored_configs);
                 break;
 
             case 21:
-                cmd_handler_set_BTClassic_dev_name(terminal_input,
+                cmd_handler_set_BTClassic_dev_name(cmd_buffer,
                                                    setup_BTClassic,
                                                    &time_to_refresh_stored_configs);
                 break;
