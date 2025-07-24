@@ -171,6 +171,14 @@ It's handy since method calls are usually accompanied with related lines of code
 Local modules mostly do not refer to each other. Instead, their wrapper functions are called in the code
 listed in `Billy.ino` and `cmd.cpp` files. This allows for an easier sketch customization.
 
+### Customization
+Adding a new command is as easy as following this steps:
+- Add your command to the macro list in `config_cmd.h`.
+- Declare and define a handler function for your command in `cmd.h` and `cmd.cpp`.
+- Insert your command macro as another (separated by a comma) value assigned to `cmd_list` in `Billy.ino`.
+- Add another `case` statement to the "Check for valid commands" section in `Billy.ino` and add
+your handler function call to its case body.
+
 
 ***
 # Expected questions
