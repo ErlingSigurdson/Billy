@@ -124,7 +124,7 @@ void setup()
     }
 
 
-    /*--- Interaction with an inbuilt storage ---*/
+    /*--- Inbuilt storage setup ---*/
 
     /* In contrast to AVR-based devices, ESP32 and ESP8266 SoCs'
      * inbuilt storage must be initialized before use.
