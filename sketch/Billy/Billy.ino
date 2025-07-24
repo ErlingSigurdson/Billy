@@ -89,7 +89,7 @@ void setup()
     Serial.println("*** HELLO, HUMAN! ***");
 
 
-    /*--- GPIO initial setup ---*/
+    /*--- Pin setup ---*/
 
     // Check assigned pins.
     if (DIGITAL_OUTPUT_PIN <= 0 && PWM_OUTPUT_PIN <= 0) {
