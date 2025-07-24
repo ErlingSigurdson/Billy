@@ -126,9 +126,9 @@ void setup()
             DRV7SEG4D2X595_CLOCK_PIN == DIGITAL_OUTPUT_PIN     || \
             DRV7SEG4D2X595_CLOCK_PIN == PWM_OUTPUT_PIN         || \
             DRV7SEG4D2X595_CLOCK_PIN == WIFI_INDICATOR_LED_PIN || \
-            DRV7SEG4D2X595_SCK_PIN == DIGITAL_OUTPUT_PIN       || \
-            DRV7SEG4D2X595_SCK_PIN == PWM_OUTPUT_PIN           || \
-            DRV7SEG4D2X595_SCK_PIN == WIFI_INDICATOR_LED_PIN
+            DRV7SEG4D2X595_SCK_PIN   == DIGITAL_OUTPUT_PIN     || \
+            DRV7SEG4D2X595_SCK_PIN   == PWM_OUTPUT_PIN         || \
+            DRV7SEG4D2X595_SCK_PIN   == WIFI_INDICATOR_LED_PIN
 
             Serial.println("");
             Serial.println("Warning! One or more of the pins assigned to control daisy-chained 74HC595 ICs \
