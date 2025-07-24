@@ -43,7 +43,10 @@
     #include "ESP32_BTClassic.h"
 #endif
 
-#if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
+#if defined DRV7SEG4D2X595_BIT_BANGING      || \
+    defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
+    defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
+
     #include "SegMap595.h"
     #include "Drv7seg4d2x595.h"
 #endif
@@ -113,7 +116,10 @@ void setup()
         Serial.println("Warning! No Wi-Fi indicator LED output pin specified.");
     }
 
-    #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
+    #if defined DRV7SEG4D2X595_BIT_BANGING      || \
+        defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
+        defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
+
         #if DRV7SEG4D2X595_DATA_PIN  == DIGITAL_OUTPUT_PIN     || \
             DRV7SEG4D2X595_DATA_PIN  == PWM_OUTPUT_PIN         || \
             DRV7SEG4D2X595_DATA_PIN  == WIFI_INDICATOR_LED_PIN || \
@@ -137,7 +143,7 @@ void setup()
         #endif
     #endif
 
-    #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
+    #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI_CUSTOM_PINS
         #if DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_MOSI_PIN  || \
             DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
             DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_CLOCK_PIN || \
@@ -197,20 +203,25 @@ void setup()
 
     /*--- Initialize the objects that drive a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
 
-    #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
-        SegMap595.init(DRV7SEG4D2X595_SEG_STR);
+    #if defined DRV7SEG4D2X595_BIT_BANGING      || \
+        defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
+        defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
 
+        SegMap595.init(DRV7SEG4D2X595_SEG_STR);
+    #endif
+
+    #ifdef DRV7SEG4D2X595_BIT_BANGING
         Drv7seg4d2x595.init_bb(DRV7SEG4D2X595_DATA_PIN, DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_CLOCK_PIN, \
                                DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
+    #endif
 
-        /*
+    #ifdef DRV7SEG4D2X595_SPI_CUSTOM_PINS
         Drv7seg4d2x595.init_spi(DRV7SEG4D2X595_MOSI_PIN, DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_SCK_PIN, \
                                 DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
-        */
+    #endif
 
-        /*
+    #ifdef DRV7SEG4D2X595_SPI_DEFAULT_PINS
         Drv7seg4d2x595.init_bb(DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
-        */
     #endif
 }
 
@@ -445,7 +456,10 @@ void loop()
 
     /*--- Drive a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
 
-    #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
+    #if defined DRV7SEG4D2X595_BIT_BANGING      || \
+        defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
+        defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
+
         static uint64_t current_millis;
         static uint64_t previous_millis;
 
