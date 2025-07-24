@@ -202,11 +202,104 @@
     #define CMD_25_DEFINED 0
 #endif
 
-#define CMD_LIST_LEN (CMD_1_DEFINED + CMD_2_DEFINED + CMD_3_DEFINED + CMD_4_DEFINED + CMD_5_DEFINED +      \
-                      CMD_6_DEFINED + CMD_7_DEFINED + CMD_8_DEFINED + CMD_9_DEFINED + CMD_10_DEFINED +     \
+#ifdef CMD_26
+    #define CMD_26_DEFINED 1
+#else
+    #define CMD_26_DEFINED 0
+#endif
+
+#ifdef CMD_27
+    #define CMD_27_DEFINED 1
+#else
+    #define CMD_27_DEFINED 0
+#endif
+
+#ifdef CMD_28
+    #define CMD_28_DEFINED 1
+#else
+    #define CMD_28_DEFINED 0
+#endif
+
+#ifdef CMD_29
+    #define CMD_29_DEFINED 1
+#else
+    #define CMD_29_DEFINED 0
+#endif
+
+#ifdef CMD_30
+    #define CMD_30_DEFINED 1
+#else
+    #define CMD_30_DEFINED 0
+#endif
+
+#ifdef CMD_31
+    #define CMD_31_DEFINED 1
+#else
+    #define CMD_31_DEFINED 0
+#endif
+
+#ifdef CMD_32
+    #define CMD_32_DEFINED 1
+#else
+    #define CMD_32_DEFINED 0
+#endif
+
+#ifdef CMD_33
+    #define CMD_33_DEFINED 1
+#else
+    #define CMD_33_DEFINED 0
+#endif
+
+#ifdef CMD_34
+    #define CMD_34_DEFINED 1
+#else
+    #define CMD_34_DEFINED 0
+#endif
+
+#ifdef CMD_35
+    #define CMD_35_DEFINED 1
+#else
+    #define CMD_35_DEFINED 0
+#endif
+
+#ifdef CMD_36
+    #define CMD_36_DEFINED 1
+#else
+    #define CMD_36_DEFINED 0
+#endif
+
+#ifdef CMD_37
+    #define CMD_37_DEFINED 1
+#else
+    #define CMD_37_DEFINED 0
+#endif
+
+#ifdef CMD_38
+    #define CMD_38_DEFINED 1
+#else
+    #define CMD_38_DEFINED 0
+#endif
+
+#ifdef CMD_39
+    #define CMD_39_DEFINED 1
+#else
+    #define CMD_39_DEFINED 0
+#endif
+
+#ifdef CMD_40
+    #define CMD_40_DEFINED 1
+#else
+    #define CMD_40_DEFINED 0
+#endif
+
+#define CMD_LIST_LEN (CMD_1_DEFINED + CMD_2_DEFINED + CMD_3_DEFINED + CMD_4_DEFINED + CMD_5_DEFINED + \
+                      CMD_6_DEFINED + CMD_7_DEFINED + CMD_8_DEFINED + CMD_9_DEFINED + CMD_10_DEFINED + \
                       CMD_11_DEFINED + CMD_12_DEFINED + CMD_13_DEFINED + CMD_14_DEFINED + CMD_15_DEFINED + \
                       CMD_16_DEFINED + CMD_17_DEFINED + CMD_18_DEFINED + CMD_19_DEFINED + CMD_20_DEFINED + \
-                      CMD_21_DEFINED + CMD_22_DEFINED + CMD_23_DEFINED + CMD_24_DEFINED + CMD_25_DEFINED)
+                      CMD_21_DEFINED + CMD_22_DEFINED + CMD_23_DEFINED + CMD_24_DEFINED + CMD_25_DEFINED + \
+                      CMD_26_DEFINED + CMD_27_DEFINED + CMD_28_DEFINED + CMD_29_DEFINED + CMD_30_DEFINED + \
+                      CMD_31_DEFINED + CMD_32_DEFINED + CMD_33_DEFINED + CMD_34_DEFINED + CMD_35_DEFINED + \
+                      CMD_36_DEFINED + CMD_37_DEFINED + CMD_38_DEFINED + CMD_39_DEFINED + CMD_40_DEFINED)
 
 
 #endif  // Include guards.
