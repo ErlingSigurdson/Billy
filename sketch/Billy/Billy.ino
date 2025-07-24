@@ -195,7 +195,7 @@ void setup()
     Serial.flush();
 
 
-    /*--- Drive a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
+    /*--- Initialize the objects that drive a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
 
     SegMap595.init(DRV7SEG4D2X595_SEG_STR);
 
@@ -441,7 +441,7 @@ void loop()
     Serial.flush();
 
 
-    /*--- Drv7seg4d2x595 ---*/
+    /*--- Drive a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
 
     #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
         static uint64_t current_millis;
