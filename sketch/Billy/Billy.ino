@@ -131,24 +131,27 @@ void setup()
             DRV7SEG4D2X595_SCK_PIN   == WIFI_INDICATOR_LED_PIN
 
             Serial.println("");
-            Serial.println("Warning! One or more of the pins assigned to control daisy-chained 74HC595 ICs \
+            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs \
                             coincide with either a digital output pin, a PWM output pin or a Wi-Fi indicator LED \
-                            control pin. Most probably it will prevent Billy from controlling any load properly.");
+                            control pin. It can and, most probably, will interfere with the output.");
         #endif
     #endif
 
     #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
-        #if DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
-            DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_CLOCK_PIN || \
-            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_CLOCK_PIN || \
+        #if DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_MOSI_PIN  || \
             DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
             DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_CLOCK_PIN || \
-            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_CLOCK_PIN
+            DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_SCK_PIN   || \
+            DRV7SEG4D2X595_MOSI_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
+            DRV7SEG4D2X595_MOSI_PIN  == DRV7SEG4D2X595_CLOCK_PIN || \
+            DRV7SEG4D2X595_MOSI_PIN  == DRV7SEG4D2X595_SCK_PIN   || \
+            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_CLOCK_PIN || \
+            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_SCK_PIN   || \
+            DRV7SEG4D2X595_CLOCK_PIN == DRV7SEG4D2X595_SCK_PIN
 
             Serial.println("");
-            Serial.println("Warning! One or more of the pins assigned to control daisy-chained 74HC595 ICs \
-                            coincide with the other one. It will prevent Billy from controlling \
-                            a 7-segment indicator properly.");
+            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs \
+                            coincide with the other one. It can and, most probably, will interfere with the output.");
         #endif
     #endif
 
