@@ -197,19 +197,21 @@ void setup()
 
     /*--- Initialize the objects that drive a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
 
-    SegMap595.init(DRV7SEG4D2X595_SEG_STR);
+    #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI
+        SegMap595.init(DRV7SEG4D2X595_SEG_STR);
 
-    Drv7seg4d2x595.init_bb(DRV7SEG4D2X595_DATA_PIN, DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_CLOCK_PIN, \
-                           DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
+        Drv7seg4d2x595.init_bb(DRV7SEG4D2X595_DATA_PIN, DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_CLOCK_PIN, \
+                               DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
 
-    /*
-    Drv7seg4d2x595.init_spi(DRV7SEG4D2X595_MOSI_PIN, DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_SCK_PIN, \
-                            DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
-    */
+        /*
+        Drv7seg4d2x595.init_spi(DRV7SEG4D2X595_MOSI_PIN, DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_SCK_PIN, \
+                                DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
+        */
 
-    /*
-    Drv7seg4d2x595.init_bb(DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
-    */
+        /*
+        Drv7seg4d2x595.init_bb(DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
+        */
+    #endif
 }
 
 void loop()
