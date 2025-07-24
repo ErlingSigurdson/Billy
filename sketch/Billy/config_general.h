@@ -52,7 +52,7 @@
 #endif
 
 
-/*--- Drv7seg4d2x595 ---*/
+/*--- Drive a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
 
 /* Uncomment the following #define directive if you wish
  * to control a 7-segment 4-digit display using two
