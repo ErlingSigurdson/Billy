@@ -7,6 +7,8 @@ Billy is a program (an Arduino sketch) written for ESP32 and ESP8266 microcontro
 With this software an MCU can control a load using a digital (two-state, ON/OFF) and a pseudo-analog (PWM) output
 and receive commands over a UART and wireless networks.
 
+Drive a 7-segment 4-digit display using two daisy-chained 74HC595 ICs _TODO_
+
 In the following the name "Billy" may refer both to the software and a device that runs it
 (an MCU, a module, a development board, etc.).
 
@@ -149,6 +151,9 @@ Test IoT functionality as follows:
 3. Send command `AT+IOTREQMSG=<value>` to assign a request message that suits the remote server's settings.
 4. Send command `AT+IOT=ON` to turn IoT functionality on.
 5. Make sure Billy receives commands from the remote server.
+
+Test the functionality that lets you drive a 7-segment 4-digit display using two daisy-chained 74HC595 ICs as follows:
+1. _TODO_
 
 
 ***
