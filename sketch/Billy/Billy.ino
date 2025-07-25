@@ -116,48 +116,76 @@ void setup()
         Serial.println("Warning! No Wi-Fi indicator LED output pin specified.");
     }
 
-    #if defined DRV7SEG4D2X595_BIT_BANGING      || \
-        defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
-        defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
-
+    #if defined DRV7SEG4D2X595_BIT_BANGING
         #if DRV7SEG4D2X595_DATA_PIN  == DIGITAL_OUTPUT_PIN     || \
             DRV7SEG4D2X595_DATA_PIN  == PWM_OUTPUT_PIN         || \
             DRV7SEG4D2X595_DATA_PIN  == WIFI_INDICATOR_LED_PIN || \
-            DRV7SEG4D2X595_MOSI_PIN  == DIGITAL_OUTPUT_PIN     || \
-            DRV7SEG4D2X595_MOSI_PIN  == PWM_OUTPUT_PIN         || \
-            DRV7SEG4D2X595_MOSI_PIN  == WIFI_INDICATOR_LED_PIN || \
             DRV7SEG4D2X595_LATCH_PIN == DIGITAL_OUTPUT_PIN     || \
             DRV7SEG4D2X595_LATCH_PIN == PWM_OUTPUT_PIN         || \
             DRV7SEG4D2X595_LATCH_PIN == WIFI_INDICATOR_LED_PIN || \
             DRV7SEG4D2X595_CLOCK_PIN == DIGITAL_OUTPUT_PIN     || \
             DRV7SEG4D2X595_CLOCK_PIN == PWM_OUTPUT_PIN         || \
-            DRV7SEG4D2X595_CLOCK_PIN == WIFI_INDICATOR_LED_PIN || \
+            DRV7SEG4D2X595_CLOCK_PIN == WIFI_INDICATOR_LED_PIN
+
+            Serial.println("");
+            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs
+                            coincide with either a digital output pin, a PWM output pin
+                            or a Wi-Fi indicator LED control pin.
+                            It can, and most probably will, interfere with the output.");
+        #endif
+    #endif
+
+    #if defined DRV7SEG4D2X595_SPI_CUSTOM_PINS
+        #if DRV7SEG4D2X595_MOSI_PIN  == DIGITAL_OUTPUT_PIN     || \
+            DRV7SEG4D2X595_MOSI_PIN  == PWM_OUTPUT_PIN         || \
+            DRV7SEG4D2X595_MOSI_PIN  == WIFI_INDICATOR_LED_PIN || \
+            DRV7SEG4D2X595_LATCH_PIN == DIGITAL_OUTPUT_PIN     || \
+            DRV7SEG4D2X595_LATCH_PIN == PWM_OUTPUT_PIN         || \
+            DRV7SEG4D2X595_LATCH_PIN == WIFI_INDICATOR_LED_PIN || \
             DRV7SEG4D2X595_SCK_PIN   == DIGITAL_OUTPUT_PIN     || \
             DRV7SEG4D2X595_SCK_PIN   == PWM_OUTPUT_PIN         || \
             DRV7SEG4D2X595_SCK_PIN   == WIFI_INDICATOR_LED_PIN
 
             Serial.println("");
-            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs \
-                            coincide with either a digital output pin, a PWM output pin or a Wi-Fi indicator LED \
-                            control pin. It can and, most probably, will interfere with the output.");
+            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs
+                            coincide with either a digital output pin, a PWM output pin
+                            or a Wi-Fi indicator LED control pin.
+                            It can, and most probably will, interfere with the output.");
         #endif
     #endif
 
-    #if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI_CUSTOM_PINS
-        #if DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_MOSI_PIN  || \
-            DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
-            DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_CLOCK_PIN || \
-            DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_SCK_PIN   || \
-            DRV7SEG4D2X595_MOSI_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
-            DRV7SEG4D2X595_MOSI_PIN  == DRV7SEG4D2X595_CLOCK_PIN || \
-            DRV7SEG4D2X595_MOSI_PIN  == DRV7SEG4D2X595_SCK_PIN   || \
-            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_CLOCK_PIN || \
-            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_SCK_PIN   || \
-            DRV7SEG4D2X595_CLOCK_PIN == DRV7SEG4D2X595_SCK_PIN
+    #if defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
+        #if DRV7SEG4D2X595_LATCH_PIN  == DIGITAL_OUTPUT_PIN     || \
+            DRV7SEG4D2X595_LATCH_PIN  == PWM_OUTPUT_PIN         || \
+            DRV7SEG4D2X595_LATCH_PIN  == WIFI_INDICATOR_LED_PIN
 
             Serial.println("");
-            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs \
-                            coincide with the other one. It can and, most probably, will interfere with the output.");
+            Serial.println("Warning! The latch pin assigned to control the daisy-chained 74HC595 ICs
+                            coincide with either a digital output pin, a PWM output pin
+                            or a Wi-Fi indicator LED control pin.
+                            It can, and most probably will, interfere with the output.");
+        #endif
+    #endif
+
+    #if defined DRV7SEG4D2X595_BIT_BANGING
+        #if DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
+            DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_CLOCK_PIN || \
+            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_CLOCK_PIN
+
+            Serial.println("");
+            Serial.println("Warning! Some of the pins assigned to control the daisy-chained 74HC595 ICs
+                            coincide with each other. It can, and most probably will, interfere with the output.");
+        #endif
+    #endif
+
+    #if defined DRV7SEG4D2X595_SPI_CUSTOM_PINS
+        #if DRV7SEG4D2X595_MOSI_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
+            DRV7SEG4D2X595_MOSI_PIN  == DRV7SEG4D2X595_SCK_PIN   || \
+            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_SCK_PIN
+
+            Serial.println("");
+            Serial.println("Warning! Some of the pins assigned to control the daisy-chained 74HC595 ICs
+                            coincide with each other. It can, and most probably will, interfere with the output.");
         #endif
     #endif
 
