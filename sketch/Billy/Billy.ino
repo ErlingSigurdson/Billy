@@ -49,6 +49,7 @@
 
     #include "SegMap595.h"
     #include "Drv7seg4d2x595.h"
+    #include "SimpleCounter.h"
 #endif
 
 
@@ -488,39 +489,20 @@ void loop()
         defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
         defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
 
-        static uint64_t current_millis;
-        static uint64_t previous_millis;
-
-        static uint32_t current_minutes;
-        static uint32_t current_seconds;
-
-        current_millis = millis();
-        if (current_millis - previous_millis >= 1000) {
-            previous_millis = current_millis;
-            ++current_seconds;
-        }
-
-        if (current_seconds > 59) {
-            current_seconds = 0;
-            ++current_minutes;
-        }
-
-        if (current_minutes > 59) {
-            current_minutes = 0;
-        }
+        SimpleCounter.update();
 
         uint8_t mapped_character_with_handled_dot_bit = 0;
-        if (current_seconds % 2) {
-            mapped_character_with_handled_dot_bit = SegMap595.mapped_characters[current_minutes % 10] | \
+        if (SimpleCounter.seconds % 2) {
+            mapped_character_with_handled_dot_bit = SegMap595.mapped_characters[SimpleCounter.minutes % 10] | \
                                                     (1 << SegMap595.get_dot_bit_pos());
         } else {
-            mapped_character_with_handled_dot_bit = SegMap595.mapped_characters[current_minutes % 10];
+            mapped_character_with_handled_dot_bit = SegMap595.mapped_characters[SimpleCounter.minutes % 10];
         }
 
-        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D1), SegMap595.mapped_characters[current_minutes / 10]);
+        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D1), SegMap595.mapped_characters[SimpleCounter.minutes / 10]);
         Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D2), mapped_character_with_handled_dot_bit);
-        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D3), SegMap595.mapped_characters[current_seconds / 10]);
-        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D4), SegMap595.mapped_characters[current_seconds % 10]);
+        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D3), SegMap595.mapped_characters[SimpleCounter.seconds / 10]);
+        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D4), SegMap595.mapped_characters[SimpleCounter.seconds % 10]);
     #endif
 }
 
