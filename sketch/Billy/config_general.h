@@ -60,6 +60,22 @@
 
 // Bit-banging version.
 #define DRV7SEG4D2X595_BIT_BANGING
+
+// SPI version, custom MOSI and SCK pins.
+//#define DRV7SEG4D2X595_SPI_CUSTOM_PINS
+
+// SPI version, default MOSI and SCK pins.
+//#define DRV7SEG4D2X595_SPI_DEFAULT_PINS
+
+// These directives make sure that only one variant will be enabled.
+#if defined DRV7SEG4D2X595_BIT_BANGING
+    #undef DRV7SEG4D2X595_SPI_CUSTOM_PINS
+#endif
+
+#if defined DRV7SEG4D2X595_BIT_BANGING || defined DRV7SEG4D2X595_SPI_CUSTOM_PINS
+    #undef DRV7SEG4D2X595_SPI_DEFAULT_PINS
+#endif
+
 #ifdef DRV7SEG4D2X595_BIT_BANGING
     #define DRV7SEG4D2X595_SEG_STR                   "ED@CGAFB"
     #define DRV7SEG4D2X595_DATA_PIN                  16
@@ -72,8 +88,6 @@
     #define DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY 4
 #endif
 
-// SPI version, custom MOSI and SCK pins.
-//#define DRV7SEG4D2X595_SPI_CUSTOM_PINS
 #ifdef DRV7SEG4D2X595_SPI_CUSTOM_PINS
     #define DRV7SEG4D2X595_SEG_STR                   "ED@CGAFB"
     #define DRV7SEG4D2X595_MOSI_PIN                  23
@@ -86,8 +100,6 @@
     #define DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY 4
 #endif
 
-// SPI version, default MOSI and SCK pins.
-//#define DRV7SEG4D2X595_SPI_DEFAULT_PINS
 #ifdef DRV7SEG4D2X595_SPI_DEFAULT_PINS
     #define DRV7SEG4D2X595_SEG_STR                   "ED@CGAFB"
     #define DRV7SEG4D2X595_LATCH_PIN                 27
