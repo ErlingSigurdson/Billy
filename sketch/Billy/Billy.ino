@@ -129,10 +129,10 @@ void setup()
             DRV7SEG4D2X595_CLOCK_PIN == WIFI_INDICATOR_LED_PIN
 
             Serial.println("");
-            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs
-                            coincide with either a digital output pin, a PWM output pin
-                            or a Wi-Fi indicator LED control pin.
-                            It can, and most probably will, interfere with the output.");
+            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs");
+            Serial.println("coincide with either a digital output pin, a PWM output pin");
+            Serial.println("or a Wi-Fi indicator LED control pin.");
+            Serial.println("It can, and most probably will, interfere with the output.");
         #endif
     #endif
 
@@ -148,10 +148,10 @@ void setup()
             DRV7SEG4D2X595_SCK_PIN   == WIFI_INDICATOR_LED_PIN
 
             Serial.println("");
-            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs
-                            coincide with either a digital output pin, a PWM output pin
-                            or a Wi-Fi indicator LED control pin.
-                            It can, and most probably will, interfere with the output.");
+            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs");
+            Serial.println("coincide with either a digital output pin, a PWM output pin");
+            Serial.println("or a Wi-Fi indicator LED control pin.");
+            Serial.println("It can, and most probably will, interfere with the output.");
         #endif
     #endif
 
@@ -161,10 +161,10 @@ void setup()
             DRV7SEG4D2X595_LATCH_PIN  == WIFI_INDICATOR_LED_PIN
 
             Serial.println("");
-            Serial.println("Warning! The latch pin assigned to control the daisy-chained 74HC595 ICs
-                            coincide with either a digital output pin, a PWM output pin
-                            or a Wi-Fi indicator LED control pin.
-                            It can, and most probably will, interfere with the output.");
+            Serial.println("Warning! The latch pin assigned to control the daisy-chained 74HC595 ICs");
+            Serial.println("coincide with either a digital output pin, a PWM output pin");
+            Serial.println("or a Wi-Fi indicator LED control pin.");
+            Serial.println("It can, and most probably will, interfere with the output.");
         #endif
     #endif
 
