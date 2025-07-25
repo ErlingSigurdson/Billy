@@ -32,9 +32,14 @@ Drv7seg4d2x595_t Drv7seg4d2x595 = Drv7seg4d2x595_t();
 
 /******************* FUNCTIONS ******************/
 
+/*--- Constructor ---*/
+
 Drv7seg4d2x595_t::Drv7seg4d2x595_t()
 {
 }
+
+
+/*--- Misc functions ---*/
 
 void Drv7seg4d2x595_t::init_bb(uint32_t data_pin, uint32_t latch_pin, uint32_t clock_pin, \
                                uint32_t ghosting_prevention_delay)
