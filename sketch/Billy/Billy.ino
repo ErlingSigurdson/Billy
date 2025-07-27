@@ -491,18 +491,26 @@ void loop()
 
         SimpleCounter.update();
 
-        uint8_t mapped_character_with_handled_dot_bit = 0;
+        uint32_t minutes_tens = SimpleCounter.minutes / 10;
+        uint32_t minutes_ones = SimpleCounter.minutes % 10;
+        uint32_t seconds_tens = SimpleCounter.seconds / 10;
+        uint32_t seconds_ones = SimpleCounter.seconds % 10;
+
+        uint8_t digit_1 = SegMap595.mapped_characters[minutes_tens];
+        uint8_t digit_2 = SegMap595.mapped_characters[minutes_ones];
+        uint8_t digit_3 = SegMap595.mapped_characters[seconds_tens];
+        uint8_t digit_4 = SegMap595.mapped_characters[seconds_ones];
+
         if (SimpleCounter.seconds % 2) {
-            mapped_character_with_handled_dot_bit = SegMap595.mapped_characters[SimpleCounter.minutes % 10] | \
-                                                    (1 << SegMap595.get_dot_bit_pos());
-        } else {
-            mapped_character_with_handled_dot_bit = SegMap595.mapped_characters[SimpleCounter.minutes % 10];
+            uint32_t dot_bit_pos = SegMap595.get_dot_bit_pos();
+            uint8_t dot_bit_pos_mask = 1 << dot_bit_pos;
+            digit_2 |= dot_bit_pos_mask;
         }
 
-        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D1), SegMap595.mapped_characters[SimpleCounter.minutes / 10]);
-        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D2), mapped_character_with_handled_dot_bit);
-        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D3), SegMap595.mapped_characters[SimpleCounter.seconds / 10]);
-        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D4), SegMap595.mapped_characters[SimpleCounter.seconds % 10]);
+        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D1), digit_1);
+        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D2), digit_2);
+        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D3), digit_3);
+        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D4), digit_4);
     #endif
 }
 
