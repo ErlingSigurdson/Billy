@@ -43,6 +43,11 @@
     #include "ESP32_BTClassic.h"
 #endif
 
+// Dependency: https://github.com/GyverLibs/GRGB
+#if defined RGB_LED
+    #include <RGBLED.h>
+#endif
+
 
 /************** FUNCTION PROTOTYPES *************/
 

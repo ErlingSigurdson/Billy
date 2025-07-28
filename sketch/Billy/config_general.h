@@ -52,6 +52,11 @@
 #endif
 
 
+/*--- RGB LED control ---*/
+
+#define RGB_LED
+
+
 /*--- Hardware UART ---*/
 
 // Hardware UART baud rate.
