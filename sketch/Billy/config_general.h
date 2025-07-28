@@ -85,10 +85,10 @@
     #define DRV7SEG4D2X595_DATA_PIN                  16
     #define DRV7SEG4D2X595_LATCH_PIN                 27
     #define DRV7SEG4D2X595_CLOCK_PIN                 14
-    #define DRV7SEG4D2X595_D1                        7   // The bit that controls the 1st digit of a display.
-    #define DRV7SEG4D2X595_D2                        5   // The bit that controls the 2nd digit of a display.
-    #define DRV7SEG4D2X595_D3                        3   // The bit that controls the 3rd digit of a display.
-    #define DRV7SEG4D2X595_D4                        1   // The bit that controls the 4th digit of a display.
+    #define DRV7SEG4D2X595_D1                        7           // The bit that controls the 1st digit of a display.
+    #define DRV7SEG4D2X595_D2                        5           // The bit that controls the 2nd digit of a display.
+    #define DRV7SEG4D2X595_D3                        3           // The bit that controls the 3rd digit of a display.
+    #define DRV7SEG4D2X595_D4                        1           // The bit that controls the 4th digit of a display.
     #define DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY 4
 #endif
 
@@ -101,10 +101,10 @@
     #define DRV7SEG4D2X595_MOSI_PIN                  23
     #define DRV7SEG4D2X595_LATCH_PIN                 27
     #define DRV7SEG4D2X595_SCK_PIN                   19
-    #define DRV7SEG4D2X595_D1                        7   // The bit that controls the 1st digit of a display.
-    #define DRV7SEG4D2X595_D2                        5   // The bit that controls the 2nd digit of a display.
-    #define DRV7SEG4D2X595_D3                        3   // The bit that controls the 3rd digit of a display.
-    #define DRV7SEG4D2X595_D4                        1   // The bit that controls the 4th digit of a display.
+    #define DRV7SEG4D2X595_D1                        7           // The bit that controls the 1st digit of a display.
+    #define DRV7SEG4D2X595_D2                        5           // The bit that controls the 2nd digit of a display.
+    #define DRV7SEG4D2X595_D3                        3           // The bit that controls the 3rd digit of a display.
+    #define DRV7SEG4D2X595_D4                        1           // The bit that controls the 4th digit of a display.
     #define DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY 4
 #endif
 
@@ -115,10 +115,10 @@
                                                                   * of a 7-segment display.
                                                                   */
     #define DRV7SEG4D2X595_LATCH_PIN                 27
-    #define DRV7SEG4D2X595_D1                        7   // The bit that controls the 1st digit of a display.
-    #define DRV7SEG4D2X595_D2                        5   // The bit that controls the 2nd digit of a display.
-    #define DRV7SEG4D2X595_D3                        3   // The bit that controls the 3rd digit of a display.
-    #define DRV7SEG4D2X595_D4                        1   // The bit that controls the 4th digit of a display.
+    #define DRV7SEG4D2X595_D1                        7           // The bit that controls the 1st digit of a display.
+    #define DRV7SEG4D2X595_D2                        5           // The bit that controls the 2nd digit of a display.
+    #define DRV7SEG4D2X595_D3                        3           // The bit that controls the 3rd digit of a display.
+    #define DRV7SEG4D2X595_D4                        1           // The bit that controls the 4th digit of a display.
     #define DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY 4
 #endif
 
