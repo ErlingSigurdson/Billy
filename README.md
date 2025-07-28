@@ -155,6 +155,10 @@ Test IoT functionality as follows:
 Test the functionality that lets you drive a 7-segment 4-digit display using two daisy-chained 74HC595 ICs as follows:
 1. _TODO_
 
+NTP and resprective commands _TODO_
+Command to set current time _TODO_
+Communication with RTC (I2C/SPI) _TODO_
+
 
 ***
 # General notes on code
