@@ -10,7 +10,7 @@
  *           Output state changes are commenced according to the commands
  *           received over a UART and wireless connections.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:    See README files for more information.
+ * Notes:    See the README files for more information.
  *           Project homepages: https://github.com/ErlingSigurdson/Billy
  *                              https://gitflic.ru/efimov-d-v/billy
  */
@@ -100,7 +100,7 @@ void setup()
 
     /*--- Pin setup ---*/
 
-    // Check assigned pins.
+    // Check the assigned pins.
     if (DIGITAL_OUTPUT_PIN <= 0 && PWM_OUTPUT_PIN <= 0) {
         Serial.println("");
         Serial.println("Warning! No output pins specified.");
@@ -190,7 +190,7 @@ void setup()
         #endif
     #endif
 
-    // Pin configuration and setting digital outputs to respective initial digital levels.
+    // Pin configuration and setting the digital outputs to respective initial digital levels.
     if (DIGITAL_OUTPUT_PIN > 0) {
         pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
         digitalWrite(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF);
@@ -213,7 +213,7 @@ void setup()
      */
     inbuilt_storage_init(INBUILT_STORAGE_SIZE);
 
-    // Read stored configs from an inbuilt storage into the struct.
+    // Read the stored configs from an inbuilt storage into the struct.
     stored_configs_t stored_configs;
     stored_configs_read(&stored_configs);
 
