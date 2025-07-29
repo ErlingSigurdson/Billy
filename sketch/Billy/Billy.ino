@@ -297,17 +297,6 @@ void loop()
     bool BTClassic_was_connected = 0;
     receive_cmd_BTClassic(cmd_buffer, &stored_configs, &BTClassic_was_connected);
 
-    // Optional digital load toggling aligned with the timer.
-    static bool digital_load_toggle_flag = 0;
-    if (SimpleCounter.minutes % 2 == 0 && SimpleCounter.seconds == 0) {  // Toggles every minute.
-        if (digital_load_toggle_flag) {
-            strcpy(cmd_buffer, CMD_PREFIX CMD_1 "TOGGLE");
-            digital_load_toggle_flag = 0;
-        }
-    } else {
-        digital_load_toggle_flag = 1;
-    }
-
 
     /*--- Command handling ---*/
 
@@ -522,6 +511,17 @@ void loop()
         Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D2), digit_2);
         Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D3), digit_3);
         Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D4), digit_4);
+
+        // Optional digital load toggling aligned with the timer.
+        static bool digital_load_toggle_flag = 0;
+        if (SimpleCounter.minutes % 5 == 0 && SimpleCounter.seconds == 0) {  // Toggles every five minutes.
+            if (digital_load_toggle_flag) {
+                cmd_handler_set_load_digital(CMD_PREFIX CMD_1 "TOGGLE");
+                digital_load_toggle_flag = 0;
+            }
+        } else {
+            digital_load_toggle_flag = 1;
+        }
     #endif
 }
 
