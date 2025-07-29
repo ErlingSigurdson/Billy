@@ -297,6 +297,17 @@ void loop()
     bool BTClassic_was_connected = 0;
     receive_cmd_BTClassic(cmd_buffer, &stored_configs, &BTClassic_was_connected);
 
+    // Optional digital load toggling aligned with the timer.
+    static bool digital_load_toggle_flag = 0;
+    if (SimpleCounter.minutes % 2 == 0 && SimpleCounter.seconds == 0) {  // Toggles every minute.
+        if (digital_load_toggle_flag) {
+            strcpy(cmd_buffer, CMD_PREFIX CMD_1 "TOGGLE");
+            digital_load_toggle_flag = 0;
+        }
+    } else {
+        digital_load_toggle_flag = 1;
+    }
+
 
     /*--- Command handling ---*/
 
