@@ -27,11 +27,6 @@
 #include "config_cmd.h"
 #include "config_inbuilt_storage.h"
 
-// Dependency: https://github.com/GyverLibs/RGBLED
-#if defined RGB_LED
-    #include <RGBLED.h>
-#endif
-
 // Additional Arduino libraries are included in the local modules.
 
 // Local modules.

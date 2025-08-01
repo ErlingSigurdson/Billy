@@ -20,6 +20,11 @@
 #include "config_general.h"
 #include "config_inbuilt_storage.h"
 
+// Additional libraries for Arduino IDE.
+#if defined RGB_LED
+    #include <RGBLED.h>  // https://github.com/GyverLibs/RGBLED
+#endif
+
 // Local modules.
 #include "cmd.h"
 #include "stored_configs.h"
