@@ -50,7 +50,7 @@ SegMap595_t::SegMap595_t()
 
 /*--- Misc functions ---*/
 
-int32_t SegMap595_t::init(const char* map_str)
+int32_t SegMap595_t::init(const char *map_str)
 {
     this->status = check_map_str(map_str);
 
@@ -69,7 +69,7 @@ int32_t SegMap595_t::init(const char* map_str)
     return this->status;
 }
 
-uint32_t SegMap595_t::check_map_str(const char* map_str)
+uint32_t SegMap595_t::check_map_str(const char *map_str)
 {
     if (strlen(map_str) != SEGMAP595_SEG_NUM) {
         return this->status = SEGMAP595_STATUS_ERR_MAP_STR_LEN;
