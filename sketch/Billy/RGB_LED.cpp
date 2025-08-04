@@ -39,57 +39,57 @@ void RGB_LED_init(uint32_t red_pin, uint32_t green_pin, uint32_t blue_pin, bool 
     p_Billy_RGB = &Billy_RGB;
 }
 
-void RGB_LED_color_output(const char *cmd_buf)
+uint32_t RGB_LED_output_color(const char *cmd_val)
 {
-    char *cmd_val = strstr(cmd_buf, "=") + 1;
-
     if (!strcmp(cmd_val, "RED")) {
         p_Billy_RGB->setColor(RGB::Color::Red);
-        return;
+        return 0;
     }
 
     if (!strcmp(cmd_val, "GREEN")) {
         p_Billy_RGB->setColor(RGB::Color::Green);
-        return;
+        return 0;
     }
 
     if (!strcmp(cmd_val, "BLUE")) {
         p_Billy_RGB->setColor(RGB::Color::Blue);
-        return;
+        return 0;
     }
 
     if (!strcmp(cmd_val, "WHITE")) {
         p_Billy_RGB->setColor(RGB::Color::White);
-        return;
+        return 0;
     }
 
     if (!strcmp(cmd_val, "YELLOW")) {
         p_Billy_RGB->setColor(RGB::Color::Yellow);
-        return;
+        return 0;
     }
 
     if (!strcmp(cmd_val, "ORANGE")) {
         p_Billy_RGB->setColor(RGB::Color::Orange);
-        return;
+        return 0;
     }
 
     if (!strcmp(cmd_val, "PINK")) {
         p_Billy_RGB->setColor(RGB::Color::Pink);
-        return;
+        return 0;
     }
 
     if (!strcmp(cmd_val, "MAGENTA")) {
         p_Billy_RGB->setColor(RGB::Color::Magenta);
-        return;
+        return 0;
     }
 
     if (!strcmp(cmd_val, "LIME")) {
         p_Billy_RGB->setColor(RGB::Color::Lime);
-        return;
+        return 0;
     }
 
     if (!strcmp(cmd_val, "CYAN")) {
         p_Billy_RGB->setColor(RGB::Color::Cyan);
-        return;
+        return 0;
     }
+
+    return 1;
 }
