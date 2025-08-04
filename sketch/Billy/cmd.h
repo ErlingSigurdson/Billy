@@ -237,5 +237,10 @@ void cmd_handler_all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint32_
  */
 void cmd_handler_output_version();
 
+/* Command #25:
+ * output a given RGB color.
+ */
+void cmd_handler_RGB_output_color(char *cmd);
+
 
 #endif  // Include guards.

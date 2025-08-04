@@ -20,11 +20,6 @@
 #include "config_general.h"
 #include "config_inbuilt_storage.h"
 
-// Additional libraries for Arduino IDE.
-#if defined RGB_LED
-    #include <RGBLED.h>  // https://github.com/GyverLibs/RGBLED
-#endif
-
 // Local modules.
 #include "cmd.h"
 #include "stored_configs.h"
@@ -36,6 +31,10 @@
 
 #if defined ESP32 && defined BTCLASSIC_PROVIDED
     #include "ESP32_BTClassic.h"
+#endif
+
+#ifdef RGB_LED
+    #include "RGB_LED.h"
 #endif
 
 
@@ -573,4 +572,21 @@ void cmd_handler_output_version()
     }
 
     cmd_aux_output(msg);
+}
+
+// Command #25
+void cmd_handler_RGB_output_color(char *cmd)
+{
+    char *cmd_val = strstr(cmd, "=") + 1;
+
+    uint32_t retval = RGB_LED_output_color(cmd_val);
+
+    if (!retval) {
+        char msg[STR_MAX_LEN * 2 + 1] = {0};
+        strcpy(msg, "Outputting RGB color ");
+        strcat(msg, cmd_val);
+        cmd_aux_output(msg);
+    } else {
+        cmd_handler_err_val();
+    }
 }
