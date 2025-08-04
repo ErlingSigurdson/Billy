@@ -311,6 +311,10 @@ void loop()
                 cmd_handler_output_version();
                 break;
 
+            case 25:
+                cmd_handler_RGB_output_color(cmd_buffer);
+                break;
+
             default:
                 break;  // Do nothing and hail MISRA.
         }
