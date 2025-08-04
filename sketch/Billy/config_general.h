@@ -56,9 +56,10 @@
 
 #define RGB_LED
 #ifdef RGB_LED
-    #define RED_PIN   16
-    #define GREEN_PIN 17
-    #define BLUE_PIN  18
+    #define RED_PIN         16
+    #define GREEN_PIN       17
+    #define BLUE_PIN        18
+    #define IS_COMMON_ANODE 0
 #endif
 
 
