@@ -150,6 +150,11 @@ void setup()
 
     Serial.println("");
     Serial.flush();
+
+
+    /*--- RGB output initialization ---*/
+
+    RGB_LED_init(RED_PIN, GREEN_PIN, BLUE_PIN, IS_COMMON_ANODE);
 }
 
 void loop()
