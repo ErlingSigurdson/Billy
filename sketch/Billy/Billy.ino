@@ -43,6 +43,10 @@
     #include "ESP32_BTClassic.h"
 #endif
 
+#ifdef RGB_LED
+    #include "RGB_LED.h"
+#endif
+
 
 /************** FUNCTION PROTOTYPES *************/
 
