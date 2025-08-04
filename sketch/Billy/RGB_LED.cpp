@@ -28,15 +28,15 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-RGBLED Billy_RGB(0, 0, 0);
+RGBLED *p_Billy_RGB;
 
 
 /******************* FUNCTIONS ******************/
 
 void RGB_LED_init(uint32_t red_pin, uint32_t green_pin, uint32_t blue_pin, bool is_common_anode)
 {
-    RGBLED tmp(red_pin, green_pin, blue_pin, is_common_anode);
-    Billy_RGB = tmp;
+    static RGBLED Billy_RGB(red_pin, green_pin, blue_pin, is_common_anode);
+    p_Billy_RGB = &Billy_RGB;
 }
 
 void RGB_LED_color_output(const char *cmd_buf)
@@ -44,52 +44,52 @@ void RGB_LED_color_output(const char *cmd_buf)
     char *cmd_val = strstr(cmd_buf, "=") + 1;
 
     if (!strcmp(cmd_val, "RED")) {
-        Billy_RGB.setColor(RGB::Color::Red);
+        p_Billy_RGB->setColor(RGB::Color::Red);
         return;
     }
 
     if (!strcmp(cmd_val, "GREEN")) {
-        Billy_RGB.setColor(RGB::Color::Green);
+        p_Billy_RGB->setColor(RGB::Color::Green);
         return;
     }
 
     if (!strcmp(cmd_val, "BLUE")) {
-        Billy_RGB.setColor(RGB::Color::Blue);
+        p_Billy_RGB->setColor(RGB::Color::Blue);
         return;
     }
 
     if (!strcmp(cmd_val, "WHITE")) {
-        Billy_RGB.setColor(RGB::Color::White);
+        p_Billy_RGB->setColor(RGB::Color::White);
         return;
     }
 
     if (!strcmp(cmd_val, "YELLOW")) {
-        Billy_RGB.setColor(RGB::Color::Yellow);
+        p_Billy_RGB->setColor(RGB::Color::Yellow);
         return;
     }
 
     if (!strcmp(cmd_val, "ORANGE")) {
-        Billy_RGB.setColor(RGB::Color::Orange);
+        p_Billy_RGB->setColor(RGB::Color::Orange);
         return;
     }
 
     if (!strcmp(cmd_val, "PINK")) {
-        Billy_RGB.setColor(RGB::Color::Pink);
+        p_Billy_RGB->setColor(RGB::Color::Pink);
         return;
     }
 
     if (!strcmp(cmd_val, "MAGENTA")) {
-        Billy_RGB.setColor(RGB::Color::Magenta);
+        p_Billy_RGB->setColor(RGB::Color::Magenta);
         return;
     }
 
     if (!strcmp(cmd_val, "LIME")) {
-        Billy_RGB.setColor(RGB::Color::Lime);
+        p_Billy_RGB->setColor(RGB::Color::Lime);
         return;
     }
 
     if (!strcmp(cmd_val, "CYAN")) {
-        Billy_RGB.setColor(RGB::Color::Cyan);
+        p_Billy_RGB->setColor(RGB::Color::Cyan);
         return;
     }
 }
