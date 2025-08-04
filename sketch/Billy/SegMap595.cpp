@@ -36,7 +36,7 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-SegMap595_t SegMap595 = SegMap595_t();
+SegMap595_t SegMap595;
 
 
 /******************* FUNCTIONS ******************/

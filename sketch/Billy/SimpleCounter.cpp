@@ -22,7 +22,7 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-SimpleCounter_t SimpleCounter = SimpleCounter_t();
+SimpleCounter_t SimpleCounter;
 
 
 /******************* FUNCTIONS ******************/

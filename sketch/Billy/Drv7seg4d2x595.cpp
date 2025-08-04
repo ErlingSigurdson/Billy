@@ -27,7 +27,7 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-Drv7seg4d2x595_t Drv7seg4d2x595 = Drv7seg4d2x595_t();
+Drv7seg4d2x595_t Drv7seg4d2x595;
 
 
 /******************* FUNCTIONS ******************/
