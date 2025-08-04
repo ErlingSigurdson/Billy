@@ -28,66 +28,66 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-RGBLED *p_Billy_RGB;
+RGBLED *p_RGB_LED;
 
 
 /******************* FUNCTIONS ******************/
 
 void RGB_LED_init(uint32_t red_pin, uint32_t green_pin, uint32_t blue_pin, bool is_common_anode)
 {
-    static RGBLED Billy_RGB(red_pin, green_pin, blue_pin, is_common_anode);
-    p_Billy_RGB = &Billy_RGB;
+    static RGBLED RGB_LED(red_pin, green_pin, blue_pin, is_common_anode);
+    p_RGB_LED = &RGB_LED;
 }
 
 uint32_t RGB_LED_output_color(const char *cmd_val)
 {
     if (!strcmp(cmd_val, "RED")) {
-        p_Billy_RGB->setColor(RGB::Color::Red);
+        p_RGB_LED->setColor(RGB::Color::Red);
         return 0;
     }
 
     if (!strcmp(cmd_val, "GREEN")) {
-        p_Billy_RGB->setColor(RGB::Color::Green);
+        p_RGB_LED->setColor(RGB::Color::Green);
         return 0;
     }
 
     if (!strcmp(cmd_val, "BLUE")) {
-        p_Billy_RGB->setColor(RGB::Color::Blue);
+        p_RGB_LED->setColor(RGB::Color::Blue);
         return 0;
     }
 
     if (!strcmp(cmd_val, "WHITE")) {
-        p_Billy_RGB->setColor(RGB::Color::White);
+        p_RGB_LED->setColor(RGB::Color::White);
         return 0;
     }
 
     if (!strcmp(cmd_val, "YELLOW")) {
-        p_Billy_RGB->setColor(RGB::Color::Yellow);
+        p_RGB_LED->setColor(RGB::Color::Yellow);
         return 0;
     }
 
     if (!strcmp(cmd_val, "ORANGE")) {
-        p_Billy_RGB->setColor(RGB::Color::Orange);
+        p_RGB_LED->setColor(RGB::Color::Orange);
         return 0;
     }
 
     if (!strcmp(cmd_val, "PINK")) {
-        p_Billy_RGB->setColor(RGB::Color::Pink);
+        p_RGB_LED->setColor(RGB::Color::Pink);
         return 0;
     }
 
     if (!strcmp(cmd_val, "MAGENTA")) {
-        p_Billy_RGB->setColor(RGB::Color::Magenta);
+        p_RGB_LED->setColor(RGB::Color::Magenta);
         return 0;
     }
 
     if (!strcmp(cmd_val, "LIME")) {
-        p_Billy_RGB->setColor(RGB::Color::Lime);
+        p_RGB_LED->setColor(RGB::Color::Lime);
         return 0;
     }
 
     if (!strcmp(cmd_val, "CYAN")) {
-        p_Billy_RGB->setColor(RGB::Color::Cyan);
+        p_RGB_LED->setColor(RGB::Color::Cyan);
         return 0;
     }
 
