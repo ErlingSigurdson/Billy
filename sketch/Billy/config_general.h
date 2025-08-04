@@ -55,6 +55,11 @@
 /*--- RGB LED control ---*/
 
 #define RGB_LED
+#ifdef RGB_LED
+    #define RED_PIN   16
+    #define GREEN_PIN 17
+    #define BLUE_PIN  18
+#endif
 
 
 /*--- Hardware UART ---*/
