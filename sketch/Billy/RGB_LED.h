@@ -20,9 +20,7 @@
 /*--- Includes ---*/
 
 // Essential Arduino library.
-#include <Arduino.h>  /* I guess I could do with <cstdint> and <cstring>, but I decided to keep it
-                       * in case I need to use millis() or something.
-                       */
+#include <cstdint>
 
 
 /************** FUNCTION PROTOTYPES *************/
