@@ -24,9 +24,9 @@
 
 /****************** DATA TYPES ******************/
 
-class SimpleCounter_t {
+class SimpleCounterClass {
     public:
-        SimpleCounter_t();
+        SimpleCounterClass();
         void update();
 
         bool launch_flag = 0;
@@ -39,7 +39,7 @@ class SimpleCounter_t {
 
 /*************** GLOBAL VARIABLES ***************/
 
-extern SimpleCounter_t SimpleCounter;
+extern SimpleCounterClass SimpleCounter;
 
 
 #endif  // Include guards.

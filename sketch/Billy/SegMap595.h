@@ -152,13 +152,13 @@
 
 /****************** DATA TYPES ******************/
 
-class SegMap595_t {
+class SegMap595Class {
     public:
         char map_str[SEGMAP595_SEG_NUM + 1] = {0};
         int32_t status = SEGMAP595_STATUS_INIT;
         uint8_t mapped_characters[SEGMAP595_CHAR_NUM] = {0};
 
-        SegMap595_t();
+        SegMap595Class();
         int32_t init(const char *map_str);
         uint32_t get_dot_bit_pos();
 
@@ -174,7 +174,7 @@ class SegMap595_t {
 
 /*************** GLOBAL VARIABLES ***************/
 
-extern SegMap595_t SegMap595;
+extern SegMap595Class SegMap595;
 
 
 #endif  // Include guards.

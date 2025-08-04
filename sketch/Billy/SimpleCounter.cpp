@@ -22,21 +22,21 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-SimpleCounter_t SimpleCounter;
+SimpleCounterClass SimpleCounter;
 
 
 /******************* FUNCTIONS ******************/
 
 /*--- Constructor ---*/
 
-SimpleCounter_t::SimpleCounter_t()
+SimpleCounterClass::SimpleCounterClass()
 {
 }
 
 
 /*--- Misc functions ---*/
 
-void SimpleCounter_t::update()
+void SimpleCounterClass::update()
 {
     uint64_t current_millis = millis();
 
