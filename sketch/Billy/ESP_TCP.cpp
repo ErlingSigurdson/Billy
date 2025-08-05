@@ -29,14 +29,9 @@
 #include "ESP_TCP.h"
 
 
-/*--- Misc ---*/
-
-#define ESP_TCP_PORT_DUMMY 0
-
-
 /*************** GLOBAL VARIABLES ***************/
 
-WiFiServer TCP_local_server(ESP_TCP_PORT_DUMMY);
+WiFiServer *p_TCP_local_server;
 WiFiClient TCP_remote_client;
 
 WiFiClient TCP_local_client;
@@ -48,20 +43,20 @@ WiFiClient TCP_local_client;
 
 void ESP_TCP_server_port_update(uint32_t port)
 {
-    WiFiServer tmp_TCP_local_server(port);
-    TCP_local_server = tmp_TCP_local_server;
+    delete p_TCP_local_server;
+    p_TCP_local_server = new WiFiServer(port);
 }
 
 void ESP_TCP_server_start()
 {
-    TCP_local_server.begin();
+    p_TCP_local_server->begin();
 }
 
 bool ESP_TCP_server_get_client()
 {
-    TCP_remote_client = TCP_local_server.accept();  /* Previously the available() method was used,
-                                                     * but nowadays it's deprecated.
-                                                     */
+    TCP_remote_client = p_TCP_local_server->accept();  /* Previously the available() method was used,
+                                                        * but nowadays it's deprecated.
+                                                        */
     if (TCP_remote_client) {
         return 1;
     } else {
@@ -109,7 +104,7 @@ void ESP_TCP_server_send_msg(const char *msg)
 void ESP_TCP_server_stop(uint32_t shutdown_downtime)
 {
     delay(shutdown_downtime);
-    TCP_local_server.close();
+    p_TCP_local_server->close();
 }
 
 
