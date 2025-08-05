@@ -48,8 +48,8 @@ WiFiClient TCP_local_client;
 
 void ESP_TCP_server_port_update(uint32_t port)
 {
-    static WiFiServer TCP_local_server(port);
-    p_TCP_local_server = &TCP_local_server;
+    delete p_TCP_local_server;
+    p_TCP_local_server = new WiFiServer(port);
 }
 
 void ESP_TCP_server_start()
