@@ -29,11 +29,6 @@
 #include "ESP_TCP.h"
 
 
-/*--- Misc ---*/
-
-#define ESP_TCP_PORT_DUMMY 0
-
-
 /*************** GLOBAL VARIABLES ***************/
 
 WiFiServer *p_TCP_local_server;
