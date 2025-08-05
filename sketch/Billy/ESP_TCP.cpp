@@ -41,22 +41,37 @@ WiFiClient TCP_local_client;
 
 /*--- Local server ---*/
 
-void ESP_TCP_server_port_update(uint32_t port)
+bool ESP_TCP_server_port_update(uint32_t port)
 {
     delete p_TCP_local_server;
     p_TCP_local_server = new WiFiServer(port);
+
+    if (p_TCP_local_server) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
-void ESP_TCP_server_start()
+bool ESP_TCP_server_start()
 {
-    p_TCP_local_server->begin();
+    if (p_TCP_local_server) {
+        p_TCP_local_server->begin();
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 bool ESP_TCP_server_get_client()
 {
-    TCP_remote_client = p_TCP_local_server->accept();  /* Previously the available() method was used,
-                                                        * but nowadays it's deprecated.
-                                                        */
+    if (p_TCP_local_server) {
+        // Previously the available() method was used, but nowadays it's deprecated.
+        TCP_remote_client = p_TCP_local_server->accept();
+    } else {
+        return 0;
+    }
+
     if (TCP_remote_client) {
         return 1;
     } else {
@@ -94,17 +109,25 @@ uint32_t ESP_TCP_server_read_line(char *buf, uint32_t str_max_len, uint32_t conn
     return i;
 }
 
-void ESP_TCP_server_send_msg(const char *msg)
+bool ESP_TCP_server_send_msg(const char *msg)
 {
     if (TCP_remote_client.connected()) {
         TCP_remote_client.println(msg);
+        return 1;
+    } else {
+        return 0;
     }
 }
 
-void ESP_TCP_server_stop(uint32_t shutdown_downtime)
+bool ESP_TCP_server_stop(uint32_t shutdown_downtime)
 {
-    delay(shutdown_downtime);
-    p_TCP_local_server->close();
+    if (p_TCP_local_server) {
+        delay(shutdown_downtime);
+        p_TCP_local_server->close();
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 
