@@ -579,9 +579,9 @@ void cmd_handler_RGB_output_color(char *cmd)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
-    uint32_t retval = RGB_LED_output_color(cmd_val);
+    uint32_t ret_val = RGB_LED_output_color(cmd_val);
 
-    if (!retval) {
+    if (ret_val) {
         char msg[STR_MAX_LEN * 2 + 1] = {0};
         strcpy(msg, "Outputting RGB color ");
         strcat(msg, cmd_val);

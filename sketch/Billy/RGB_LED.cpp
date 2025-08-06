@@ -33,63 +33,73 @@ RGBLED *p_RGB_LED;
 
 /******************* FUNCTIONS ******************/
 
-void RGB_LED_init(uint32_t red_pin, uint32_t green_pin, uint32_t blue_pin, bool is_common_anode)
+bool RGB_LED_init(uint32_t red_pin, uint32_t green_pin, uint32_t blue_pin, bool is_common_anode)
 {
     static RGBLED RGB_LED(red_pin, green_pin, blue_pin, is_common_anode);
     p_RGB_LED = &RGB_LED;
+
+    if (p_RGB_LED) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 uint32_t RGB_LED_output_color(const char *cmd_val)
 {
+    if (!p_RGB_LED) {
+        return 0;
+    }
+
     if (!strcmp(cmd_val, "RED")) {
         p_RGB_LED->setColor(RGB::Color::Red);
-        return 0;
+        return 1;
     }
 
     if (!strcmp(cmd_val, "GREEN")) {
         p_RGB_LED->setColor(RGB::Color::Green);
-        return 0;
+        return 1;
     }
 
     if (!strcmp(cmd_val, "BLUE")) {
         p_RGB_LED->setColor(RGB::Color::Blue);
-        return 0;
+        return 1;
     }
 
     if (!strcmp(cmd_val, "WHITE")) {
         p_RGB_LED->setColor(RGB::Color::White);
-        return 0;
+        return 1;
     }
 
     if (!strcmp(cmd_val, "YELLOW")) {
         p_RGB_LED->setColor(RGB::Color::Yellow);
-        return 0;
+        return 1;
     }
 
     if (!strcmp(cmd_val, "ORANGE")) {
         p_RGB_LED->setColor(RGB::Color::Orange);
-        return 0;
+        return 1;
     }
 
     if (!strcmp(cmd_val, "PINK")) {
         p_RGB_LED->setColor(RGB::Color::Pink);
-        return 0;
+        return 1;
     }
 
     if (!strcmp(cmd_val, "MAGENTA")) {
         p_RGB_LED->setColor(RGB::Color::Magenta);
-        return 0;
+        return 1;
     }
 
     if (!strcmp(cmd_val, "LIME")) {
         p_RGB_LED->setColor(RGB::Color::Lime);
-        return 0;
+        return 1;
     }
 
     if (!strcmp(cmd_val, "CYAN")) {
         p_RGB_LED->setColor(RGB::Color::Cyan);
-        return 0;
+        return 1;
     }
 
-    return 1;
+    return 0;
 }

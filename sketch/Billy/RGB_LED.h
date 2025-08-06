@@ -25,7 +25,7 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-void RGB_LED_init(uint32_t red_pin, uint32_t green_pin, uint32_t blue_pin, bool is_common_anode);
+bool RGB_LED_init(uint32_t red_pin, uint32_t green_pin, uint32_t blue_pin, bool is_common_anode);
 uint32_t RGB_LED_output_color(const char *cmd_val);
 
 
