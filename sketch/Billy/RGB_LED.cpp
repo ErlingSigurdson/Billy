@@ -71,8 +71,23 @@ uint32_t RGB_LED_output_color(const char *cmd_val)
         return 1;
     }
 
+    if (!strcmp(cmd_val, "LIGHTGRAY")) {
+        p_RGB_LED->setColor(RGB::Color::LightGray);
+        return 1;
+    }
+
+    if (!strcmp(cmd_val, "DARKGRAY")) {
+        p_RGB_LED->setColor(RGB::Color::DarkGray);
+        return 1;
+    }
+
     if (!strcmp(cmd_val, "YELLOW")) {
         p_RGB_LED->setColor(RGB::Color::Yellow);
+        return 1;
+    }
+
+    if (!strcmp(cmd_val, "GOLD")) {
+        p_RGB_LED->setColor(RGB::Color::Gold);
         return 1;
     }
 
@@ -81,8 +96,18 @@ uint32_t RGB_LED_output_color(const char *cmd_val)
         return 1;
     }
 
+    if (!strcmp(cmd_val, "MAROON")) {
+        p_RGB_LED->setColor(RGB::Color::Maroon);
+        return 1;
+    }
+
     if (!strcmp(cmd_val, "PINK")) {
         p_RGB_LED->setColor(RGB::Color::Pink);
+        return 1;
+    }
+
+    if (!strcmp(cmd_val, "CORAL")) {
+        p_RGB_LED->setColor(RGB::Color::Coral);
         return 1;
     }
 
@@ -91,13 +116,43 @@ uint32_t RGB_LED_output_color(const char *cmd_val)
         return 1;
     }
 
+    if (!strcmp(cmd_val, "PURPLE")) {
+        p_RGB_LED->setColor(RGB::Color::Purple);
+        return 1;
+    }
+
+    if (!strcmp(cmd_val, "VIOLET")) {
+        p_RGB_LED->setColor(RGB::Color::Violet);
+        return 1;
+    }
+
     if (!strcmp(cmd_val, "LIME")) {
         p_RGB_LED->setColor(RGB::Color::Lime);
         return 1;
     }
 
+    if (!strcmp(cmd_val, "SKYBLUE")) {
+        p_RGB_LED->setColor(RGB::Color::SkyBlue);
+        return 1;
+    }
+
+    if (!strcmp(cmd_val, "STEELBLUE")) {
+        p_RGB_LED->setColor(RGB::Color::SteelBlue);
+        return 1;
+    }
+
     if (!strcmp(cmd_val, "CYAN")) {
         p_RGB_LED->setColor(RGB::Color::Cyan);
+        return 1;
+    }
+
+    if (!strcmp(cmd_val, "TEAL")) {
+        p_RGB_LED->setColor(RGB::Color::Teal);
+        return 1;
+    }
+
+    if (!strcmp(cmd_val, "NAVY")) {
+        p_RGB_LED->setColor(RGB::Color::Navy);
         return 1;
     }
 

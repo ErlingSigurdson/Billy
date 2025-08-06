@@ -59,7 +59,7 @@
     #define RED_PIN         16
     #define GREEN_PIN       17
     #define BLUE_PIN        18
-    #define IS_COMMON_ANODE 0
+    #define IS_COMMON_ANODE 1
 #endif
 
 
