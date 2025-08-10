@@ -41,6 +41,50 @@ WiFiClient TCP_local_client;
 
 /*--- Local server ---*/
 
+#ifdef WIFISERVER_INIT_VARIANT_STATIC_ALLOC
+bool ESP_TCP_server_port_update(uint32_t port)
+{
+    static uint32_t i = 1;
+
+    if (i == 1) {
+	    ++i;
+	    static WiFiServer TCP_local_server_1(port);
+	    p_TCP_local_server = &TCP_local_server_1;
+	    return 1;
+    }
+
+    if (i == 2) {
+        ++i;
+        static WiFiServer TCP_local_server_2(port);
+        p_TCP_local_server = &TCP_local_server_2;
+        return 1;
+    }
+
+    if (i == 3) {
+        ++i;
+        static WiFiServer TCP_local_server_3(port);
+        p_TCP_local_server = &TCP_local_server_3;
+        return 1;
+    }
+
+    if (i == 4) {
+        ++i;
+        static WiFiServer TCP_local_server_4(port);
+        p_TCP_local_server = &TCP_local_server_4;
+        return 1;
+    }
+
+    if (i == 5) {
+        ++i;
+        static WiFiServer TCP_local_server_5(port);
+        p_TCP_local_server = &TCP_local_server_5;
+        return 1;
+    }
+
+    return 0;
+}
+
+#elif defined WIFISERVER_INIT_VARIANT_DYNAMIC_ALLOC
 bool ESP_TCP_server_port_update(uint32_t port)
 {
     delete p_TCP_local_server;
@@ -52,6 +96,7 @@ bool ESP_TCP_server_port_update(uint32_t port)
         return 0;
     }
 }
+#endif
 
 bool ESP_TCP_server_start()
 {
