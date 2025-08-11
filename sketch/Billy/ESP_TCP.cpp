@@ -43,7 +43,11 @@ WiFiClient TCP_local_client;
 
 uint32_t ESP_TCP_server_port_update(uint32_t port)
 {
+    /* Static and dynamic allocation take place in sequence
+     * (dynamic allocation is used after the program runs out of predefined static allocations).
+     */
     static bool dynamic_alloc = false;
+
     static uint32_t i = 0;
     ++i;
 
@@ -71,6 +75,8 @@ uint32_t ESP_TCP_server_port_update(uint32_t port)
         static WiFiServer TCP_local_server_5(port);
         p_TCP_local_server = &TCP_local_server_5;
     }
+
+    // The program runs out of predefined static allocations.
 
     if (i == 6) {
         p_TCP_local_server = new WiFiServer(port);
