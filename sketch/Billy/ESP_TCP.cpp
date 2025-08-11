@@ -41,15 +41,59 @@ WiFiClient TCP_local_client;
 
 /*--- Local server ---*/
 
-bool ESP_TCP_server_port_update(uint32_t port)
+uint32_t ESP_TCP_server_port_update(uint32_t port)
 {
-    delete p_TCP_local_server;
-    p_TCP_local_server = new WiFiServer(port);
+    /* Static and dynamic allocation take place in sequence
+     * (dynamic allocation is used after the program runs out of predefined static allocations).
+     */
+    static bool dynamic_alloc = false;
 
-    if (p_TCP_local_server) {
-        return 1;
+    static uint32_t i = 0;
+    ++i;
+
+    if (i == 1) {
+	    static WiFiServer TCP_local_server_1(port);
+	    p_TCP_local_server = &TCP_local_server_1;
+    }
+
+    if (i == 2) {
+        static WiFiServer TCP_local_server_2(port);
+        p_TCP_local_server = &TCP_local_server_2;
+    }
+
+    if (i == 3) {
+        static WiFiServer TCP_local_server_3(port);
+        p_TCP_local_server = &TCP_local_server_3;
+    }
+
+    if (i == 4) {
+        static WiFiServer TCP_local_server_4(port);
+        p_TCP_local_server = &TCP_local_server_4;
+    }
+
+    if (i == 5) {
+        static WiFiServer TCP_local_server_5(port);
+        p_TCP_local_server = &TCP_local_server_5;
+    }
+
+    // The program runs out of predefined static allocations.
+
+    if (i == 6) {
+        p_TCP_local_server = new WiFiServer(port);
+        dynamic_alloc = true;
+    }
+
+    if (i > 6) {
+        delete p_TCP_local_server;
+        p_TCP_local_server = new WiFiServer(port);
+    }
+
+    if (!p_TCP_local_server) {
+        return WIFISERVER_ALLOC_NULLPTR;
+    } else if (!dynamic_alloc) {
+        return WIFISERVER_ALLOC_STATIC;
     } else {
-        return 0;
+        return WIFISERVER_ALLOC_DYNAMIC;
     }
 }
 
