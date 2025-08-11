@@ -592,8 +592,15 @@ void cmd_handler_RGB_output_color(char *cmd)
 }
 
 // Command #26
+void cmd_handler_RGB_output_on()
+{
+    RGB_LED_output_on();
+    cmd_aux_output("RGB output ON.");
+}
+
+// Command #27
 void cmd_handler_RGB_output_off()
 {
     RGB_LED_output_off();
-    cmd_aux_output("RGB output off.");
+    cmd_aux_output("RGB output OFF.");
 }

@@ -243,7 +243,12 @@ void cmd_handler_output_version();
 void cmd_handler_RGB_output_color(char *cmd);
 
 /* Command #26:
- * turn off the RGB output.
+ * turn RGB output ON.
+ */
+void cmd_handler_RGB_output_on();
+
+/* Command #27:
+ * turn RGB output OFF.
  */
 void cmd_handler_RGB_output_off();
 
