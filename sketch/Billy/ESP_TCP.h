@@ -27,15 +27,16 @@
 
 #define IOT_DEFAULT_REQ_PERIOD 500
 
-#define WIFISERVER_INIT_VARIANT_STATIC_ALLOC
-//#define WIFISERVER_INIT_VARIANT_DYNAMIC_ALLOC
+#define WIFISERVER_ALLOC_NULLPTR 0
+#define WIFISERVER_ALLOC_STATIC  1
+#define WIFISERVER_ALLOC_DYNAMIC 2
 
 
 /************** FUNCTION PROTOTYPES *************/
 
 /*--- Local server ---*/
 
-bool ESP_TCP_server_port_update(uint32_t port);
+uint32_t ESP_TCP_server_port_update(uint32_t port);
 bool ESP_TCP_server_start();
 bool ESP_TCP_server_get_client();
 uint32_t ESP_TCP_server_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout);
