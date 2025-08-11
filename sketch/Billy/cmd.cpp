@@ -585,6 +585,7 @@ void cmd_handler_RGB_output_color(char *cmd)
         char msg[STR_MAX_LEN * 2 + 1] = {0};
         strcpy(msg, "Outputting RGB color ");
         strcat(msg, cmd_val);
+        strcat(msg, ".");
         cmd_aux_output(msg);
     } else {
         cmd_handler_err_val();
