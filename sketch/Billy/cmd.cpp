@@ -595,6 +595,5 @@ void cmd_handler_RGB_output_color(char *cmd)
 void cmd_handler_RGB_output_off()
 {
     RGB_LED_output_off();
-    char msg[STR_MAX_LEN * 2 + 1] = "RGB output off.";
-    cmd_aux_output(msg);
+    cmd_aux_output("RGB output off.");
 }
