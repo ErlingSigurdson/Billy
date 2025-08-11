@@ -158,3 +158,8 @@ uint32_t RGB_LED_output_color(const char *cmd_val)
 
     return 0;
 }
+
+void RGB_LED_output_off()
+{    
+    p_RGB_LED->disable();
+}

@@ -49,6 +49,7 @@
 #define CMD_23     "ALLCONNRST"         // Reset all wireless connections and restart a wireless connectivity.
 #define CMD_24     "VERSION?"           // Output the firmware version, contact details and specified pins information.
 #define CMD_25     "RGBCOLOR="          // Simple output of a given RGB color.
+#define CMD_26     "RGBOFF"             // Turn off the RGB output.
 
 
 /*--- Text commands list length evaluation ---*/
