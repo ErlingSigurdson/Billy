@@ -3,7 +3,7 @@
 /**
  * Filename: Billy.ino
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  The main file of Billy - the Arduino sketch written for ESP32
+ * Purpose:  The main file of Billy — the Arduino sketch written for ESP32
  *           and ESP8266 systems-on-chip (SoCs).
  *
  *           Billy provides the control over an SoC's digital and PWM outputs.
