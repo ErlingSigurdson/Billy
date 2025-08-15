@@ -29,6 +29,19 @@
 //#define BTCLASSIC_PROVIDED
 
 
+/*--- Bluetooth Low Energy ---*/
+
+/* Uncomment the following #define directive if your ESP32 module
+ * supports the Bluetooth Low Energy functionality and you're willing to use it.
+ *
+ * For ESP32 modules which lack that functionality (e.g. generic ESP32 modules,
+ * ones without ESP32-xx designation) the directive must remain commented out.
+ *
+ * For ESP8266 it's irrelevant, don't worry about it.
+ */
+#define BTLE_PROVIDED
+
+
 /*--- GPIO ---*/
 
 // Assign load control pins.

@@ -33,6 +33,10 @@
     #include "ESP32_BTClassic.h"
 #endif
 
+#if defined ESP32 && defined BTLE_PROVIDED
+    #include "esp32_btle.h"
+#endif
+
 
 /******************* FUNCTIONS ******************/
 
