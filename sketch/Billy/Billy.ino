@@ -324,8 +324,8 @@ void loop()
     static uint64_t RSSI_output_current_millis = millis();
     static uint64_t RSSI_output_previous_millis = RSSI_output_current_millis;
     bool RSSI_output_due_time = (RSSI_output_current_millis -
-                                RSSI_output_previous_millis) >
-                                WIFI_RSSI_OUTPUT_PERIOD;
+                                 RSSI_output_previous_millis) >
+                                 WIFI_RSSI_OUTPUT_PERIOD;
 
     if (stored_configs.WiFi_RSSI_output_flag) {
         if (RSSI_output_due_time) {
