@@ -41,7 +41,7 @@ WiFiClient TCP_local_client;
 
 /*--- Local server ---*/
 
-uint32_t ESP_TCP_server_port_update(uint32_t port)
+uint32_t ESP_TCP::server_port_update(uint32_t port)
 {
     /* Static and dynamic allocation take place in sequence
      * (dynamic allocation is used after the program runs out of predefined static allocations).
@@ -97,7 +97,7 @@ uint32_t ESP_TCP_server_port_update(uint32_t port)
     }
 }
 
-bool ESP_TCP_server_start()
+bool ESP_TCP::server_start()
 {
     if (p_TCP_local_server) {
         p_TCP_local_server->begin();
@@ -107,7 +107,7 @@ bool ESP_TCP_server_start()
     }
 }
 
-bool ESP_TCP_server_get_client()
+bool ESP_TCP::server_get_client()
 {
     if (p_TCP_local_server) {
         // Previously the available() method was used, but nowadays it's deprecated.
@@ -123,7 +123,7 @@ bool ESP_TCP_server_get_client()
     }
 }
 
-uint32_t ESP_TCP_server_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
+uint32_t ESP_TCP::server_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
 {
     // Connection timeout counter.
     uint64_t current_millis = millis();
@@ -153,7 +153,7 @@ uint32_t ESP_TCP_server_read_line(char *buf, uint32_t str_max_len, uint32_t conn
     return i;
 }
 
-bool ESP_TCP_server_send_msg(const char *msg)
+bool ESP_TCP::server_send_msg(const char *msg)
 {
     if (TCP_remote_client.connected()) {
         TCP_remote_client.println(msg);
@@ -163,7 +163,7 @@ bool ESP_TCP_server_send_msg(const char *msg)
     }
 }
 
-bool ESP_TCP_server_stop(uint32_t shutdown_downtime)
+bool ESP_TCP::server_stop(uint32_t shutdown_downtime)
 {
     if (p_TCP_local_server) {
         delay(shutdown_downtime);
@@ -177,7 +177,7 @@ bool ESP_TCP_server_stop(uint32_t shutdown_downtime)
 
 /*--- Local client ---*/
 
-bool ESP_TCP_client_get_server(char *target_IP, uint32_t target_port)
+bool ESP_TCP::client_get_server(char *target_IP, uint32_t target_port)
 {
     if (TCP_local_client.connect(target_IP, target_port)) {
         return 1;
@@ -186,14 +186,14 @@ bool ESP_TCP_client_get_server(char *target_IP, uint32_t target_port)
     }
 }
 
-void ESP_TCP_client_send_msg(const char *msg)
+void ESP_TCP::client_send_msg(const char *msg)
 {
     if (TCP_local_client.connected()) {
        TCP_local_client.println(msg);
     }
 }
 
-uint32_t ESP_TCP_client_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
+uint32_t ESP_TCP::client_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
 {
     // Connection timeout counter.
     uint64_t current_millis = millis();
@@ -226,7 +226,7 @@ uint32_t ESP_TCP_client_read_line(char *buf, uint32_t str_max_len, uint32_t conn
 
 /*-- All clients ---*/
 
-void ESP_TCP_clients_disconnect(uint32_t shutdown_downtime)
+void ESP_TCP::clients_disconnect(uint32_t shutdown_downtime)
 {
     if (TCP_remote_client.connected()) {
         delay(shutdown_downtime);

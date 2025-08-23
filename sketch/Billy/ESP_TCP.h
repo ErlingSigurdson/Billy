@@ -34,26 +34,28 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-/*--- Local server ---*/
+namespace ESP_TCP {
 
-uint32_t ESP_TCP_server_port_update(uint32_t port);
-bool ESP_TCP_server_start();
-bool ESP_TCP_server_get_client();
-uint32_t ESP_TCP_server_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout);
-bool ESP_TCP_server_send_msg(const char *msg);
-bool ESP_TCP_server_stop(uint32_t shutdown_downtime);
+    /*--- Local server ---*/
 
-
-/*--- Local client ---*/
-
-bool ESP_TCP_client_get_server(char *tcp_client_target_IP, uint32_t tcp_client_target_port);
-void ESP_TCP_client_send_msg(const char *msg);
-uint32_t ESP_TCP_client_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout);
+    uint32_t server_port_update(uint32_t port);
+    bool server_start();
+    bool server_get_client();
+    uint32_t server_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout);
+    bool server_send_msg(const char *msg);
+    bool server_stop(uint32_t shutdown_downtime);
 
 
-/*-- All clients ---*/
+    /*--- Local client ---*/
 
-void ESP_TCP_clients_disconnect(uint32_t shutdown_downtime);
+    bool client_get_server(char *tcp_client_target_IP, uint32_t tcp_client_target_port);
+    void client_send_msg(const char *msg);
+    uint32_t client_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout);
 
+
+    /*-- All clients ---*/
+
+    void clients_disconnect(uint32_t shutdown_downtime);
+}
 
 #endif  // Include guards.
