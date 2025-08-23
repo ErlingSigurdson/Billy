@@ -13,8 +13,8 @@
 /************ PREPROCESSOR DIRECTIVES ***********/
 
 // Include guards.
-#ifndef ESP32_BTLE_H
-#define ESP32_BTLE_H
+#ifndef ESP32_BLE_H
+#define ESP32_BLE_H
 
 
 /*--- Includes ---*/
