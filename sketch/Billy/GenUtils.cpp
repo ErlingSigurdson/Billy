@@ -1,9 +1,9 @@
 /****************** DESCRIPTION *****************/
 
 /**
- * Filename: utilities.cpp
+ * Filename: GenUtils.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  Several general purpose macros and functions.
+ * Purpose:  Some general purpose macros and functions.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -18,14 +18,14 @@
 #include <cstring>
 
 // Local modules.
-#include "utilities.h"
+#include "GenUtils.h"
 
 
 /******************* FUNCTIONS ******************/
 
 /*--- String operations ---*/
 
-bool utilities_nullify_first_CR_or_LF_in_string(char *buf)
+bool GenUtils::nullify_first_CR_or_LF_in_string(char *buf)
 {
     for (uint32_t i = 0; i < strlen(buf); ++i) {
         if (buf[i] == '\r' || buf[i] == '\n') {
@@ -38,7 +38,7 @@ bool utilities_nullify_first_CR_or_LF_in_string(char *buf)
     return 0;
 }
 
-bool utilities_nullify_all_CR_and_LF_in_char_array(char *buf, size_t buf_size)
+bool GenUtils::nullify_all_CR_and_LF_in_char_array(char *buf, size_t buf_size)
 {
     uint32_t i = 0;
     for (uint32_t j = 0; j < buf_size - 1; ++j) {
@@ -51,7 +51,7 @@ bool utilities_nullify_all_CR_and_LF_in_char_array(char *buf, size_t buf_size)
     return i;
 }
 
-bool utilities_nullify_all_trailing_CR_and_LF_in_string(char *buf)
+bool GenUtils::nullify_all_trailing_CR_and_LF_in_string(char *buf)
 {
     uint32_t i = 0;
     while (buf[strlen(buf) - 1] == '\r' || buf[strlen(buf) - 1] == '\n') {
@@ -62,7 +62,7 @@ bool utilities_nullify_all_trailing_CR_and_LF_in_string(char *buf)
     return i;
 }
 
-bool utilities_substitute_all_CR_and_LF_in_char_array(char *buf, size_t buf_size, char character)
+bool GenUtils::substitute_all_CR_and_LF_in_char_array(char *buf, size_t buf_size, char character)
 {
     uint32_t i = 0;
     for (uint32_t j = 0; j < buf_size - 1; ++j) {
@@ -75,7 +75,7 @@ bool utilities_substitute_all_CR_and_LF_in_char_array(char *buf, size_t buf_size
     return i;
 }
 
-bool utilities_append_LF_to_string(char *buf, size_t buf_size)
+bool GenUtils::append_LF_to_string(char *buf, size_t buf_size)
 {
     if (buf_size - strlen(buf) >= 2) {  // One byte for LF, another byte for null.
         buf[strlen(buf)] = '\n';
@@ -86,7 +86,7 @@ bool utilities_append_LF_to_string(char *buf, size_t buf_size)
     return 0;
 }
 
-bool utilities_append_LF_if_absent_to_string(char *buf, size_t buf_size)
+bool GenUtils::append_LF_if_absent_to_string(char *buf, size_t buf_size)
 {
     if (buf[strlen(buf) - 1] == '\n') {
         return 0;
@@ -99,7 +99,7 @@ bool utilities_append_LF_if_absent_to_string(char *buf, size_t buf_size)
     return 0;
 }
 
-bool utilities_append_CR_to_string(char *buf, size_t buf_size)
+bool GenUtils::append_CR_to_string(char *buf, size_t buf_size)
 {
     if (buf_size - strlen(buf) >= 2) {  // One byte for CR, another byte for null.
         buf[strlen(buf)] = '\r';
@@ -110,7 +110,7 @@ bool utilities_append_CR_to_string(char *buf, size_t buf_size)
     return 0;
 }
 
-void utilities_to_lowercase_string(char *buf)
+void GenUtils::to_lowercase_string(char *buf)
 {
     for (uint32_t i = 0; i < strlen(buf); ++i) {
         if (buf[i] >= 'A' && buf[i] <= 'Z') {

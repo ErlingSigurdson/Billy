@@ -1,9 +1,9 @@
 /****************** DESCRIPTION *****************/
 
 /**
- * Filename: utilities.h
+ * Filename: GenUtils.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  Several general purpose macros and functions.
+ * Purpose:  Some general purpose macros and functions.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -12,8 +12,8 @@
 /************ PREPROCESSOR DIRECTIVES ***********/
 
 // Include guards.
-#ifndef UTILITIES_H
-#define UTILITIES_H
+#ifndef GENUTILS_H
+#define GENUTILS_H
 
 
 /*--- Includes ---*/
@@ -32,16 +32,18 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-/*--- String operations ---*/
+namespace GenUtils {
 
-bool utilities_nullify_first_CR_or_LF_in_string(char *buf);
-bool utilities_nullify_all_CR_and_LF_in_char_array(char *buf, size_t buf_size);
-bool utilities_nullify_all_trailing_CR_and_LF_in_string(char *buf);
-bool utilities_substitute_all_CR_and_LF_in_char_array(char *buf, size_t buf_size, char character);
-bool utilities_append_LF_to_string(char *buf, size_t buf_size);
-bool utilities_append_LF_if_absent_to_string(char *buf, size_t buf_size);
-bool utilities_append_CR_to_string(char *buf, size_t buf_size);
-void utilities_to_lowercase_string(char *buf);
+    /*--- String operations ---*/
 
+    bool nullify_first_CR_or_LF_in_string(char *buf);
+    bool nullify_all_CR_and_LF_in_char_array(char *buf, size_t buf_size);
+    bool nullify_all_trailing_CR_and_LF_in_string(char *buf);
+    bool substitute_all_CR_and_LF_in_char_array(char *buf, size_t buf_size, char character);
+    bool append_LF_to_string(char *buf, size_t buf_size);
+    bool append_LF_if_absent_to_string(char *buf, size_t buf_size);
+    bool append_CR_to_string(char *buf, size_t buf_size);
+    void to_lowercase_string(char *buf);
+}
 
 #endif  // Include guards.
