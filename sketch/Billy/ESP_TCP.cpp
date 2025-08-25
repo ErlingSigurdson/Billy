@@ -31,7 +31,7 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-WiFiServer *p_TCP_local_server;
+WiFiServer *gp_TCP_local_server;
 WiFiClient TCP_remote_client;
 
 WiFiClient TCP_local_client;
@@ -53,42 +53,42 @@ uint32_t ESP_TCP::server_port_update(uint32_t port)
 
     if (i == 1) {
 	    static WiFiServer TCP_local_server_1(port);
-	    p_TCP_local_server = &TCP_local_server_1;
+	    gp_TCP_local_server = &TCP_local_server_1;
     }
 
     if (i == 2) {
         static WiFiServer TCP_local_server_2(port);
-        p_TCP_local_server = &TCP_local_server_2;
+        gp_TCP_local_server = &TCP_local_server_2;
     }
 
     if (i == 3) {
         static WiFiServer TCP_local_server_3(port);
-        p_TCP_local_server = &TCP_local_server_3;
+        gp_TCP_local_server = &TCP_local_server_3;
     }
 
     if (i == 4) {
         static WiFiServer TCP_local_server_4(port);
-        p_TCP_local_server = &TCP_local_server_4;
+        gp_TCP_local_server = &TCP_local_server_4;
     }
 
     if (i == 5) {
         static WiFiServer TCP_local_server_5(port);
-        p_TCP_local_server = &TCP_local_server_5;
+        gp_TCP_local_server = &TCP_local_server_5;
     }
 
     // The program runs out of predefined static allocations.
 
     if (i == 6) {
-        p_TCP_local_server = new WiFiServer(port);
+        gp_TCP_local_server = new WiFiServer(port);
         dynamic_alloc = true;
     }
 
     if (i > 6) {
-        delete p_TCP_local_server;
-        p_TCP_local_server = new WiFiServer(port);
+        delete gp_TCP_local_server;
+        gp_TCP_local_server = new WiFiServer(port);
     }
 
-    if (!p_TCP_local_server) {
+    if (!gp_TCP_local_server) {
         return WIFISERVER_ALLOC_NULLPTR;
     } else if (!dynamic_alloc) {
         return WIFISERVER_ALLOC_STATIC;
@@ -99,8 +99,8 @@ uint32_t ESP_TCP::server_port_update(uint32_t port)
 
 bool ESP_TCP::server_start()
 {
-    if (p_TCP_local_server) {
-        p_TCP_local_server->begin();
+    if (gp_TCP_local_server) {
+        gp_TCP_local_server->begin();
         return 1;
     } else {
         return 0;
@@ -109,9 +109,10 @@ bool ESP_TCP::server_start()
 
 bool ESP_TCP::server_get_client()
 {
-    if (p_TCP_local_server) {
+    if (gp_TCP_local_server) {
         // Previously the available() method was used, but nowadays it's deprecated.
-        TCP_remote_client = p_TCP_local_server->accept();
+        TCP_remote_client = 
+        gp_TCP_local_server->accept();
     } else {
         return 0;
     }
@@ -165,9 +166,9 @@ bool ESP_TCP::server_send_msg(const char *msg)
 
 bool ESP_TCP::server_stop(uint32_t shutdown_downtime)
 {
-    if (p_TCP_local_server) {
+    if (gp_TCP_local_server) {
         delay(shutdown_downtime);
-        p_TCP_local_server->close();
+        gp_TCP_local_server->close();
         return 1;
     } else {
         return 0;
