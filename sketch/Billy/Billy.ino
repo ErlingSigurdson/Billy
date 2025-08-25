@@ -33,7 +33,7 @@
 #include "cmd.h"
 #include "stored_configs.h"
 #include "inbuilt_storage.h"
-#include "HW_UART.h"
+#include "HWUART.h"
 #include "ESP_WiFi.h"
 #include "ESP_TCP.h"
 #include "ESP_HTTP.h"
