@@ -31,7 +31,7 @@ int32_t string_utils::to_lowercase_string(char *buf)
     }
 
     int32_t i = 0;
-    for (uint32_t j = 0, len = strlen(buf); j < len; ++j) {
+    for (int32_t j = 0, len = strlen(buf); j < len; ++j) {
         if (buf[j] >= 'A' && buf[j] <= 'Z') {
             buf[j] += 'a' - 'A';  // Difference between an ASCII code of an uppercase and a lowercase letter.
             ++i;
@@ -48,7 +48,7 @@ int32_t string_utils::to_uppercase_string(char *buf)
     }
 
     int32_t i = 0;
-    for (uint32_t j = 0, len = strlen(buf); j < len; ++j) {
+    for (int32_t j = 0, len = strlen(buf); j < len; ++j) {
         if (buf[j] >= 'a' && buf[j] <= 'z') {
             buf[j] -= 'a' - 'A';  // Difference between an ASCII code of an uppercase and a lowercase letter.
             ++i;
@@ -65,7 +65,7 @@ int32_t string_utils::nullify_first_cr_or_lf_in_string(char *buf)
         return STRING_UTILS_MEM_ERR;
     }
     
-    for (uint32_t i = 0, len = strlen(buf); i < len; ++i) {
+    for (int32_t i = 0, len = strlen(buf); i < len; ++i) {
         if (buf[i] == '\r' || buf[i] == '\n') {
             buf[i] = '\0';
 
@@ -82,7 +82,11 @@ int32_t string_utils::nullify_all_trailing_cr_and_lf_in_string(char *buf)
         return STRING_UTILS_MEM_ERR;
     }
 
-    uint32_t len = strlen(buf);
+    int32_t len = strlen(buf);
+    if (!len) {
+        return STRING_UTILS_NOT_TRIGGERED;
+    }
+    
     int32_t i = 0;
     while (buf[len - 1] == '\r' || buf[len - 1] == '\n') {
         buf[len - 1] = '\0';
@@ -134,6 +138,10 @@ int32_t string_utils::append_lf_to_string_if_no_trailing(char *buf, size_t buf_s
     }
 
     int32_t len = strlen(buf);
+    if (!len) {
+        return STRING_UTILS_NOT_TRIGGERED;
+    }
+    
     if (buf[len - 1] == '\n') {
         return STRING_UTILS_NOT_TRIGGERED;
     } else if (buf_size - len >= 2) {  // One byte for LF, another byte for a null.
@@ -153,7 +161,7 @@ int32_t string_utils::nullify_all_cr_and_lf_in_char_array(char *buf, size_t buf_
     }
 
     int32_t i = 0;
-    for (uint32_t j = 0; j < buf_size; ++j) {
+    for (int32_t j = 0; j < buf_size; ++j) {
         if (buf[j] == '\r' || buf[j] == '\n') {
             buf[j] = '\0';
             ++i;
@@ -170,7 +178,7 @@ int32_t string_utils::substitute_all_cr_and_lf_in_char_array(char *buf, size_t b
     }
 
     int32_t i = 0;
-    for (uint32_t j = 0; j < buf_size - 1; ++j) {
+    for (int32_t j = 0; j < buf_size - 1; ++j) {
         if (buf[j] == '\r' || buf[j] == '\n') {
             buf[j] = character;
             ++i;
