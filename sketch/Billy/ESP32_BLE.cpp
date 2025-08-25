@@ -1,4 +1,4 @@
-/****************** DESCRIPTION *****************/
+/*************** FILE DESCRIPTION ***************/
 
 /**
  * Filename: ESP32_BLE.cpp

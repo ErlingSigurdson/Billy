@@ -1,4 +1,4 @@
-/****************** DESCRIPTION *****************/
+/*************** FILE DESCRIPTION ***************/
 
 /**
  * Filename: HWUART.h

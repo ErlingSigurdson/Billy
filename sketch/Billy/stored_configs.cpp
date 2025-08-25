@@ -1,4 +1,4 @@
-/****************** DESCRIPTION *****************/
+/*************** FILE DESCRIPTION ***************/
 
 /**
  * Filename: stored_configs_t

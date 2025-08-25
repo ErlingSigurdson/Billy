@@ -1,14 +1,14 @@
-/****************** DESCRIPTION *****************/
+/*************** FILE DESCRIPTION ***************/
 
 /**
  * Filename: Billy.ino
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  The main file of Billy — the Arduino sketch written for ESP32
+ * Purpose:  The main file of Billy, an Arduino sketch written for ESP32
  *           and ESP8266 systems-on-chip (SoCs).
  *
- *           Billy provides the control over an SoC's digital and PWM outputs.
- *           Output state changes are commenced according to the commands
- *           received over a UART and wireless connections.
+ *           Billy receives commands over UART and wireless connections
+ *           and executes them. Most commonly, Billy provides control over
+ *           an SoC's outputs.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:    See the README files for more information.
  *           Project homepages: https://github.com/ErlingSigurdson/Billy
