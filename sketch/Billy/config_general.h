@@ -39,7 +39,7 @@
  *
  * For ESP8266 it's irrelevant, don't worry about it.
  */
-#define BTLE_PROVIDED
+//#define BTLE_PROVIDED
 
 
 /*--- GPIO ---*/
