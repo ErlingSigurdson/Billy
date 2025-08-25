@@ -324,7 +324,7 @@ void loop()
                 break;
 
             case 25:
-                cmd_handler_RGB_output_color(cmd_buffer);
+                cmd_handler_RGB_output_color(main_cmd_buf);
                 break;
 
             case 26:
