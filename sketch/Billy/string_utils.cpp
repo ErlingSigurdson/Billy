@@ -3,7 +3,8 @@
 /**
  * Filename: string_utils.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  Several general-purpose macros and functions for use with strings.
+ * Purpose:  General-purpose macros and functions for use with
+ *           null-terminated (C-style) strings and similar data.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -23,7 +24,24 @@
 
 /******************* FUNCTIONS ******************/
 
-/*--- String operations ---*/
+void string_utils::to_lowercase_string(char *buf)
+{
+    for (uint32_t i = 0; i < strlen(buf); ++i) {
+        if (buf[i] >= 'A' && buf[i] <= 'Z') {
+            buf[i] += 32;  // Difference between an ASCII code of an uppercase and a lowercase letter.
+        }
+    }
+}
+
+void string_utils::to_uppercase_string(char *buf)
+{
+    for (uint32_t i = 0; i < strlen(buf); ++i) {
+        if (buf[i] >= 'a' && buf[i] <= 'z') {
+            buf[i] -= 32;  // Difference between an ASCII code of an uppercase and a lowercase letter.
+        }
+    }
+}
+
 
 bool string_utils::nullify_first_cr_or_lf_in_string(char *buf)
 {
@@ -38,20 +56,7 @@ bool string_utils::nullify_first_cr_or_lf_in_string(char *buf)
     return 0;
 }
 
-bool string_utils::nullify_all_cr_and_lf_in_char_array(char *buf, size_t buf_size)
-{
-    uint32_t i = 0;
-    for (uint32_t j = 0; j < buf_size - 1; ++j) {
-        if (buf[j] == '\r' || buf[i] == '\n') {
-            buf[j] = '\0';
-            ++i;
-        }
-    }
-
-    return i;
-}
-
-bool string_utils::nullify_all_trailing_cr_and_lf_in_string(char *buf)
+uint32_t string_utils::nullify_all_trailing_cr_and_lf_in_string(char *buf)
 {
     uint32_t i = 0;
     while (buf[strlen(buf) - 1] == '\r' || buf[strlen(buf) - 1] == '\n') {
@@ -62,17 +67,15 @@ bool string_utils::nullify_all_trailing_cr_and_lf_in_string(char *buf)
     return i;
 }
 
-bool string_utils::substitute_all_cr_and_lf_in_char_array(char *buf, size_t buf_size, char character)
+bool string_utils::append_cr_to_string(char *buf, size_t buf_size)
 {
-    uint32_t i = 0;
-    for (uint32_t j = 0; j < buf_size - 1; ++j) {
-        if (buf[j] == '\r' || buf[i] == '\n') {
-            buf[j] = character;
-            ++i;
-        }
-    }
+    if (buf_size - strlen(buf) >= 2) {  // One byte for CR, another byte for null.
+        buf[strlen(buf)] = '\r';
 
-    return i;
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 bool string_utils::append_lf_to_string(char *buf, size_t buf_size)
@@ -81,12 +84,12 @@ bool string_utils::append_lf_to_string(char *buf, size_t buf_size)
         buf[strlen(buf)] = '\n';
 
         return 1;
+    } else {
+        return 0;
     }
-
-    return 0;
 }
 
-bool string_utils::append_lf_if_absent_to_string(char *buf, size_t buf_size)
+int32_t string_utils::append_lf_to_string_if_no_trailing(char *buf, size_t buf_size)
 {
     if (buf[strlen(buf) - 1] == '\n') {
         return 0;
@@ -94,27 +97,33 @@ bool string_utils::append_lf_if_absent_to_string(char *buf, size_t buf_size)
         buf[strlen(buf)] = '\n';
 
         return 1;
+    } else {
+        return -1;
     }
-
-    return 0;
 }
 
-bool string_utils::append_cr_to_string(char *buf, size_t buf_size)
+uint32_t string_utils::nullify_all_cr_and_lf_in_char_array(char *buf, size_t buf_size)
 {
-    if (buf_size - strlen(buf) >= 2) {  // One byte for CR, another byte for null.
-        buf[strlen(buf)] = '\r';
-
-        return 1;
-    }
-
-    return 0;
-}
-
-void string_utils::to_lowercase_string(char *buf)
-{
-    for (uint32_t i = 0; i < strlen(buf); ++i) {
-        if (buf[i] >= 'A' && buf[i] <= 'Z') {
-            buf[i] += 32;  // Difference between an ASCII code of an uppercase and a lowercase letter.
+    uint32_t i = 0;
+    for (uint32_t j = 0; j < buf_size; ++j) {
+        if (buf[j] == '\r' || buf[j] == '\n') {
+            buf[j] = '\0';
+            ++i;
         }
     }
+
+    return i;
+}
+
+uint32_t string_utils::substitute_all_cr_and_lf_in_char_array(char *buf, size_t buf_size, char character)
+{
+    uint32_t i = 0;
+    for (uint32_t j = 0; j < buf_size - 1; ++j) {
+        if (buf[j] == '\r' || buf[j] == '\n') {
+            buf[j] = character;
+            ++i;
+        }
+    }
+
+    return i;
 }
