@@ -3,7 +3,7 @@
 /**
  * Filename: string_utils.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  Some general purpose macros and functions.
+ * Purpose:  Several general-purpose macros and functions for use with strings.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -13,11 +13,11 @@
 
 /*--- Includes ---*/
 
-// Relevant standard libraries.
+// Relevant standard libraries
 #include <cstdint>
 #include <cstring>
 
-// Local modules.
+// Local modules
 #include "string_utils.h"
 
 

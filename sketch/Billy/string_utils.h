@@ -3,7 +3,7 @@
 /**
  * Filename: string_utils.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  Some general purpose macros and functions.
+ * Purpose:  Several general-purpose macros and functions for use with strings.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -11,16 +11,12 @@
 
 /************ PREPROCESSOR DIRECTIVES ***********/
 
-// Include guards.
-#ifndef GENUTILS_H
-#define GENUTILS_H
+// Include guards
+#ifndef STRING_UTILS_H
+#define STRING_UTILS_H
 
 
 /*--- Includes ---*/
-
-// Relevant standard libraries.
-#include <cstdint>
-#include <cstring>
 
 
 /*--- Misc ---*/
