@@ -29,19 +29,24 @@
 #define STRINGIFY(x) INTERMEDIATE_STRINGIFY(x)
 #define INTERMEDIATE_STRINGIFY(x) #x
 
+// Function return codes.
+#define STRING_UTILS_MEM_ERR       -1
+#define STRING_UTILS_NOT_TRIGGERED  0
+#define STRING_UTILS_TRIGGERED      1
+
 
 /************** FUNCTION PROTOTYPES *************/
 
 namespace string_utils {
-    void to_lowercase_string(char *buf);
-    void to_uppercase_string(char *buf);
-    bool nullify_first_cr_or_lf_in_string(char *buf);
-    uint32_t nullify_all_trailing_cr_and_lf_in_string(char *buf);
-    bool append_cr_to_string(char *buf, size_t buf_size);
-    bool append_lf_to_string(char *buf, size_t buf_size);
+    int32_t to_lowercase_string(char *buf);
+    int32_t to_uppercase_string(char *buf);
+    int32_t nullify_first_cr_or_lf_in_string(char *buf);
+    int32_t nullify_all_trailing_cr_and_lf_in_string(char *buf);
+    int32_t append_cr_to_string(char *buf, size_t buf_size);
+    int32_t append_lf_to_string(char *buf, size_t buf_size);
     int32_t append_lf_to_string_if_no_trailing(char *buf, size_t buf_size);
-    uint32_t nullify_all_cr_and_lf_in_char_array(char *buf, size_t buf_size);
-    uint32_t substitute_all_cr_and_lf_in_char_array(char *buf, size_t buf_size, char character);
+    int32_t nullify_all_cr_and_lf_in_char_array(char *buf, size_t buf_size);
+    int32_t substitute_all_cr_and_lf_in_char_array(char *buf, size_t buf_size, char character);
 }
 
 

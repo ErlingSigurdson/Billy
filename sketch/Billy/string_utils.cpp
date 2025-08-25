@@ -24,87 +24,135 @@
 
 /******************* FUNCTIONS ******************/
 
-void string_utils::to_lowercase_string(char *buf)
+int32_t string_utils::to_lowercase_string(char *buf)
 {
-    for (uint32_t i = 0; i < strlen(buf); ++i) {
-        if (buf[i] >= 'A' && buf[i] <= 'Z') {
-            buf[i] += 32;  // Difference between an ASCII code of an uppercase and a lowercase letter.
+    if (!buf) {
+        return STRING_UTILS_MEM_ERR;
+    }
+
+    int32_t i = 0;
+    for (uint32_t j = 0, len = strlen(buf); j < len; ++j) {
+        if (buf[j] >= 'A' && buf[j] <= 'Z') {
+            buf[j] += 'a' - 'A';  // Difference between an ASCII code of an uppercase and a lowercase letter.
+            ++i;
         }
     }
+
+    return i;
 }
 
-void string_utils::to_uppercase_string(char *buf)
+int32_t string_utils::to_uppercase_string(char *buf)
 {
-    for (uint32_t i = 0; i < strlen(buf); ++i) {
-        if (buf[i] >= 'a' && buf[i] <= 'z') {
-            buf[i] -= 32;  // Difference between an ASCII code of an uppercase and a lowercase letter.
+    if (!buf) {
+        return STRING_UTILS_MEM_ERR;
+    }
+
+    int32_t i = 0;
+    for (uint32_t j = 0, len = strlen(buf); j < len; ++j) {
+        if (buf[j] >= 'a' && buf[j] <= 'z') {
+            buf[j] -= 'a' - 'A';  // Difference between an ASCII code of an uppercase and a lowercase letter.
+            ++i;
         }
     }
+
+    return i;
 }
 
 
-bool string_utils::nullify_first_cr_or_lf_in_string(char *buf)
+int32_t string_utils::nullify_first_cr_or_lf_in_string(char *buf)
 {
-    for (uint32_t i = 0; i < strlen(buf); ++i) {
+    if (!buf) {
+        return STRING_UTILS_MEM_ERR;
+    }
+    
+    for (uint32_t i = 0, len = strlen(buf); i < len; ++i) {
         if (buf[i] == '\r' || buf[i] == '\n') {
             buf[i] = '\0';
 
-            return 1;
+            return STRING_UTILS_TRIGGERED;
         }
     }
 
-    return 0;
+    return STRING_UTILS_NOT_TRIGGERED;
 }
 
-uint32_t string_utils::nullify_all_trailing_cr_and_lf_in_string(char *buf)
+int32_t string_utils::nullify_all_trailing_cr_and_lf_in_string(char *buf)
 {
-    uint32_t i = 0;
-    while (buf[strlen(buf) - 1] == '\r' || buf[strlen(buf) - 1] == '\n') {
-        buf[strlen(buf) - 1] = '\0';
+    if (!buf) {
+        return STRING_UTILS_MEM_ERR;
+    }
+
+    uint32_t len = strlen(buf);
+    int32_t i = 0;
+    while (buf[len - 1] == '\r' || buf[len - 1] == '\n') {
+        buf[len - 1] = '\0';
+        --len;
         ++i;
     }
 
     return i;
 }
 
-bool string_utils::append_cr_to_string(char *buf, size_t buf_size)
+int32_t string_utils::append_cr_to_string(char *buf, size_t buf_size)
 {
-    if (buf_size - strlen(buf) >= 2) {  // One byte for CR, another byte for null.
-        buf[strlen(buf)] = '\r';
+    if (!buf) {
+        return STRING_UTILS_MEM_ERR;
+    }
 
-        return 1;
+    int32_t len = strlen(buf);
+    if (buf_size - len >= 2) {  // One byte for CR, another byte for null.
+        buf[len] = '\r';
+        buf[len + 1] = '\0';
+ 
+        return STRING_UTILS_TRIGGERED;
     } else {
-        return 0;
+        return STRING_UTILS_NOT_TRIGGERED;
     }
 }
 
-bool string_utils::append_lf_to_string(char *buf, size_t buf_size)
+int32_t string_utils::append_lf_to_string(char *buf, size_t buf_size)
 {
-    if (buf_size - strlen(buf) >= 2) {  // One byte for LF, another byte for null.
-        buf[strlen(buf)] = '\n';
+    if (!buf) {
+        return STRING_UTILS_MEM_ERR;
+    }
 
-        return 1;
+    int32_t len = strlen(buf);
+    if (buf_size - len >= 2) {  // One byte for LF, another byte for null.
+        buf[len] = '\n';
+        buf[len + 1] = '\0';
+
+        return STRING_UTILS_TRIGGERED;
     } else {
-        return 0;
+        return STRING_UTILS_NOT_TRIGGERED;
     }
 }
 
 int32_t string_utils::append_lf_to_string_if_no_trailing(char *buf, size_t buf_size)
 {
-    if (buf[strlen(buf) - 1] == '\n') {
-        return 0;
-    } else if (buf_size - strlen(buf) >= 2) {  // One byte for LF, another byte for a null.
-        buf[strlen(buf)] = '\n';
+    if (!buf) {
+        return STRING_UTILS_MEM_ERR;
+    }
 
-        return 1;
+    int32_t len = strlen(buf);
+    if (buf[len - 1] == '\n') {
+        return STRING_UTILS_NOT_TRIGGERED;
+    } else if (buf_size - len >= 2) {  // One byte for LF, another byte for a null.
+        buf[len] = '\n';
+        buf[len + 1] = '\0';
+
+        return STRING_UTILS_TRIGGERED;
     } else {
-        return -1;
+        return STRING_UTILS_MEM_ERR;
     }
 }
 
-uint32_t string_utils::nullify_all_cr_and_lf_in_char_array(char *buf, size_t buf_size)
+int32_t string_utils::nullify_all_cr_and_lf_in_char_array(char *buf, size_t buf_size)
 {
-    uint32_t i = 0;
+    if (!buf) {
+        return STRING_UTILS_MEM_ERR;
+    }
+
+    int32_t i = 0;
     for (uint32_t j = 0; j < buf_size; ++j) {
         if (buf[j] == '\r' || buf[j] == '\n') {
             buf[j] = '\0';
@@ -115,9 +163,13 @@ uint32_t string_utils::nullify_all_cr_and_lf_in_char_array(char *buf, size_t buf
     return i;
 }
 
-uint32_t string_utils::substitute_all_cr_and_lf_in_char_array(char *buf, size_t buf_size, char character)
+int32_t string_utils::substitute_all_cr_and_lf_in_char_array(char *buf, size_t buf_size, char character)
 {
-    uint32_t i = 0;
+    if (!buf) {
+        return STRING_UTILS_MEM_ERR;
+    }
+
+    int32_t i = 0;
     for (uint32_t j = 0; j < buf_size - 1; ++j) {
         if (buf[j] == '\r' || buf[j] == '\n') {
             buf[j] = character;
