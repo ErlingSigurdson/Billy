@@ -37,6 +37,10 @@
     #include "ESP32_BLE.h"
 #endif
 
+#ifdef RGB_LED
+    #include "RGB_LED.h"
+#endif
+
 
 /******************* FUNCTIONS ******************/
 
@@ -572,4 +576,36 @@ void cmd_handler_output_version()
     }
 
     cmd_aux_output(msg);
+}
+
+// Command #25
+void cmd_handler_RGB_output_color(char *cmd)
+{
+    char *cmd_val = strstr(cmd, "=") + 1;
+
+    uint32_t ret_val = RGB_LED_output_color(cmd_val);
+
+    if (ret_val) {
+        char msg[STR_MAX_LEN * 2 + 1] = {0};
+        strcpy(msg, "Outputting RGB color ");
+        strcat(msg, cmd_val);
+        strcat(msg, ".");
+        cmd_aux_output(msg);
+    } else {
+        cmd_handler_err_val();
+    }
+}
+
+// Command #26
+void cmd_handler_RGB_output_on()
+{
+    RGB_LED_output_on();
+    cmd_aux_output("RGB output ON.");
+}
+
+// Command #27
+void cmd_handler_RGB_output_off()
+{
+    RGB_LED_output_off();
+    cmd_aux_output("RGB output OFF.");
 }

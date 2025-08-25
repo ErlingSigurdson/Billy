@@ -48,6 +48,9 @@
 #define CMD_22     "BTCLASSICDEVNAME?"  // Output the name of the ESP32 as a Bluetooth Classic slave device.
 #define CMD_23     "ALLCONNRST"         // Reset all wireless connections and restart a wireless connectivity.
 #define CMD_24     "VERSION?"           // Output the firmware version, contact details and specified pins information.
+#define CMD_25     "RGBCOLOR="          // Simple output of a given RGB color.
+#define CMD_26     "RGBON"              // Turn the RGB output ON.
+#define CMD_27     "RGBOFF"             // Turn the RGB output OFF.
 
 
 /*--- Text commands list length evaluation ---*/

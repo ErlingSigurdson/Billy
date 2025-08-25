@@ -43,6 +43,10 @@
     #include "ESP32_BTClassic.h"
 #endif
 
+#ifdef RGB_LED
+    #include "RGB_LED.h"
+#endif
+
 
 /************** FUNCTION PROTOTYPES *************/
 
@@ -146,6 +150,11 @@ void setup()
 
     Serial.println("");
     Serial.flush();
+
+
+    /*--- RGB output initialization ---*/
+
+    RGB_LED_init(RED_PIN, GREEN_PIN, BLUE_PIN, IS_COMMON_ANODE);
 }
 
 void loop()
@@ -170,7 +179,8 @@ void loop()
         CMD_6, CMD_7, CMD_8, CMD_9, CMD_10,
         CMD_11, CMD_12, CMD_13, CMD_14, CMD_15,
         CMD_16, CMD_17, CMD_18, CMD_19, CMD_20,
-        CMD_21, CMD_22, CMD_23, CMD_24
+        CMD_21, CMD_22, CMD_23, CMD_24, CMD_25,
+        CMD_26, CMD_27
     };
 
 
@@ -311,6 +321,18 @@ void loop()
 
             case 24:
                 cmd_handler_output_version();
+                break;
+
+            case 25:
+                cmd_handler_RGB_output_color(cmd_buffer);
+                break;
+
+            case 26:
+                cmd_handler_RGB_output_on();
+                break;
+
+            case 27:
+                cmd_handler_RGB_output_off();
                 break;
 
             default:
