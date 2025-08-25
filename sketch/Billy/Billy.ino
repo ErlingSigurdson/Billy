@@ -37,7 +37,7 @@
 #include "ESP_WiFi.h"
 #include "ESP_TCP.h"
 #include "ESP_HTTP.h"
-#include "GenUtils.h"
+#include "string_utils.h"
 
 #if defined ESP32 && defined BTCLASSIC_USED
     #include "ESP32_BTClassic.h"
@@ -211,7 +211,7 @@ void loop()
 
     // Check for a non-empty buffer string.
     if (main_cmd_buf[0] != '\0' ) {
-        GenUtils::nullify_first_CR_or_LF_in_string(main_cmd_buf);
+        string_utils::nullify_first_CR_or_LF_in_string(main_cmd_buf);
 
         // Check for valid commands.
         int32_t func_to_call = cmd::check(main_cmd_buf, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
@@ -550,7 +550,7 @@ void receive_cmd_TCP_IoT(char *buf, stored_configs_t *stored_configs)
                                                                       CONN_TIMEOUT);
 
             if (TCP_client_bytes_read > 0 && TCP_client_bytes_read < STR_MAX_LEN) {
-                GenUtils::nullify_first_CR_or_LF_in_string(buf);
+                string_utils::nullify_first_CR_or_LF_in_string(buf);
                 Serial.print("Message received from remote server: ");
                 Serial.println(buf);
             }

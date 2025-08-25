@@ -1,7 +1,7 @@
 /*************** FILE DESCRIPTION ***************/
 
 /**
- * Filename: GenUtils.h
+ * Filename: string_utils.h
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Some general purpose macros and functions.
  * ----------------------------------------------------------------------------|---------------------------------------|
@@ -32,7 +32,7 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-namespace GenUtils {
+namespace string_utils {
 
     /*--- String operations ---*/
 
