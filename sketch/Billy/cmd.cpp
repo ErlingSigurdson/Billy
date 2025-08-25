@@ -29,11 +29,11 @@
 #include "GenUtils.h"
 #include "version.h"
 
-#if defined ESP32 && defined BTCLASSIC_PROVIDED
+#if defined ESP32 && defined BTCLASSIC_USED
     #include "ESP32_BTClassic.h"
 #endif
 
-#if defined ESP32 && defined BTLE_PROVIDED
+#if defined ESP32 && defined BLE_USED
     #include "ESP32_BLE.h"
 #endif
 
@@ -69,7 +69,7 @@ void cmd_aux_output(const char *msg)
     Serial.println(msg);
     ESP_TCP::server_send_msg(msg);
 
-    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_USED
         char config_val[STR_MAX_LEN + 1] = {0};
         inbuilt_storage_read_string(config_val,
                                     sizeof(config_val),
@@ -461,7 +461,7 @@ void cmd_handler_set_BTClassic_flag(char *cmd,
     (void)setup_BTClassic_ptr;
     (void)refresh_flag;
 
-    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_USED
         char *cmd_val = strstr(cmd, "=") + 1;
 
         if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
@@ -496,7 +496,7 @@ void cmd_handler_set_BTClassic_dev_name(char *cmd,
     (void)setup_BTClassic_ptr;
     (void)refresh_flag;
 
-    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_USED
         set_config_params_t params = {cmd,
                                       INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME,
                                       ANY_CHAR,
@@ -518,7 +518,7 @@ void cmd_handler_set_BTClassic_dev_name(char *cmd,
 // Command #22
 void cmd_handler_output_BTClassic_dev_name()
 {
-    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_USED
         cmd_aux_output_config(INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME,
                               "Current Bluetooth Classic device name is: ");
     #else
@@ -536,7 +536,7 @@ void cmd_handler_all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint32_
     ESP_TCP::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     ESP_TCP::server_stop(CONN_SHUTDOWN_DOWNTIME);
 
-    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_USED
         ESP32_BTClassic_stop(CONN_SHUTDOWN_DOWNTIME);
     #endif
 

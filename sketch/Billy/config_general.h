@@ -26,7 +26,7 @@
  *
  * For ESP8266 it's irrelevant, don't worry about it.
  */
-//#define BTCLASSIC_PROVIDED
+//#define BTCLASSIC_USED
 
 
 /*--- Bluetooth Low Energy ---*/
@@ -39,7 +39,7 @@
  *
  * For ESP8266 it's irrelevant, don't worry about it.
  */
-//#define BTLE_PROVIDED
+//#define BLE_USED
 
 
 /*--- GPIO ---*/

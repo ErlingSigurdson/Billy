@@ -39,7 +39,7 @@
 #include "ESP_HTTP.h"
 #include "GenUtils.h"
 
-#if defined ESP32 && defined BTCLASSIC_PROVIDED
+#if defined ESP32 && defined BTCLASSIC_USED
     #include "ESP32_BTClassic.h"
 #endif
 
@@ -367,7 +367,7 @@ void loop()
     ESP_TCP::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
 
     // Bluetooth Classic disconnection.
-    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_USED
         if (BTClassic_was_connected) {
             ESP32_BTClassic_disconnect(CONN_SHUTDOWN_DOWNTIME);
         }
@@ -481,7 +481,7 @@ void setup_BTClassic(stored_configs_t *stored_configs)
     // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)stored_configs;
 
-    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_USED
         Serial.println("");
 
         // Check for Bluetooth Classic functionality flag.
@@ -575,7 +575,7 @@ void receive_cmd_BTClassic(char *buf, stored_configs_t *stored_configs, bool *BT
     (void)stored_configs;
     (void)BTClassic_was_connected;
 
-    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_USED
         *BTClassic_was_connected = 0;  // Just in case.
         if (stored_configs->BTClassic_flag && ESP32_BTClassic_check_connection()) {
             *BTClassic_was_connected = 1;

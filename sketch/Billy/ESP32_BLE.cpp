@@ -21,7 +21,7 @@
 #include "config_general.h"
 
 // Conditional compilation
-#if defined ESP32 && defined BTLE_PROVIDED
+#if defined ESP32 && defined BLE_USED
 
 // Additional libraries for Arduino IDE.
 #include <BLEDevice.h>

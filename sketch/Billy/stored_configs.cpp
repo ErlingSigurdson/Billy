@@ -110,7 +110,7 @@ void stored_configs_read(stored_configs_t *stored_configs)
 
     stored_configs->IoT_req_period = strtol(stored_configs_str[INDEX_IOT_REQ_PERIOD], NULL, 10);
 
-    #if defined ESP32 && defined BTCLASSIC_PROVIDED
+    #if defined ESP32 && defined BTCLASSIC_USED
         if (!strcmp(stored_configs_str[INDEX_BTCLASSIC_FLAG], "ON")) {
             stored_configs->BTClassic_flag = 1;
         } else {

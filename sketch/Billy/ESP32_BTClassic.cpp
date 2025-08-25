@@ -24,7 +24,7 @@
 /* ESP32 is the macro provided by the Arduino framework or the compiler
  * (not exactly sure by which one of those two) for the respective SoC family.
  */
-#if defined ESP32 && defined BTCLASSIC_PROVIDED
+#if defined ESP32 && defined BTCLASSIC_USED
 
 // Additional libraries for Arduino IDE.
 #include <BluetoothSerial.h>
