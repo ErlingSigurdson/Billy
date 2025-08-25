@@ -25,7 +25,7 @@
 
 /*--- String operations ---*/
 
-bool string_utils::nullify_first_CR_or_LF_in_string(char *buf)
+bool string_utils::nullify_first_cr_or_lf_in_string(char *buf)
 {
     for (uint32_t i = 0; i < strlen(buf); ++i) {
         if (buf[i] == '\r' || buf[i] == '\n') {
@@ -38,7 +38,7 @@ bool string_utils::nullify_first_CR_or_LF_in_string(char *buf)
     return 0;
 }
 
-bool string_utils::nullify_all_CR_and_LF_in_char_array(char *buf, size_t buf_size)
+bool string_utils::nullify_all_cr_and_lf_in_char_array(char *buf, size_t buf_size)
 {
     uint32_t i = 0;
     for (uint32_t j = 0; j < buf_size - 1; ++j) {
@@ -51,7 +51,7 @@ bool string_utils::nullify_all_CR_and_LF_in_char_array(char *buf, size_t buf_siz
     return i;
 }
 
-bool string_utils::nullify_all_trailing_CR_and_LF_in_string(char *buf)
+bool string_utils::nullify_all_trailing_cr_and_lf_in_string(char *buf)
 {
     uint32_t i = 0;
     while (buf[strlen(buf) - 1] == '\r' || buf[strlen(buf) - 1] == '\n') {
@@ -62,7 +62,7 @@ bool string_utils::nullify_all_trailing_CR_and_LF_in_string(char *buf)
     return i;
 }
 
-bool string_utils::substitute_all_CR_and_LF_in_char_array(char *buf, size_t buf_size, char character)
+bool string_utils::substitute_all_cr_and_lf_in_char_array(char *buf, size_t buf_size, char character)
 {
     uint32_t i = 0;
     for (uint32_t j = 0; j < buf_size - 1; ++j) {
@@ -75,7 +75,7 @@ bool string_utils::substitute_all_CR_and_LF_in_char_array(char *buf, size_t buf_
     return i;
 }
 
-bool string_utils::append_LF_to_string(char *buf, size_t buf_size)
+bool string_utils::append_lf_to_string(char *buf, size_t buf_size)
 {
     if (buf_size - strlen(buf) >= 2) {  // One byte for LF, another byte for null.
         buf[strlen(buf)] = '\n';
@@ -86,7 +86,7 @@ bool string_utils::append_LF_to_string(char *buf, size_t buf_size)
     return 0;
 }
 
-bool string_utils::append_LF_if_absent_to_string(char *buf, size_t buf_size)
+bool string_utils::append_lf_if_absent_to_string(char *buf, size_t buf_size)
 {
     if (buf[strlen(buf) - 1] == '\n') {
         return 0;
@@ -99,7 +99,7 @@ bool string_utils::append_LF_if_absent_to_string(char *buf, size_t buf_size)
     return 0;
 }
 
-bool string_utils::append_CR_to_string(char *buf, size_t buf_size)
+bool string_utils::append_cr_to_string(char *buf, size_t buf_size)
 {
     if (buf_size - strlen(buf) >= 2) {  // One byte for CR, another byte for null.
         buf[strlen(buf)] = '\r';
