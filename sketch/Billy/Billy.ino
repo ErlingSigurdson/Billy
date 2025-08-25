@@ -214,128 +214,128 @@ void loop()
         GenUtils::nullify_first_CR_or_LF_in_string(main_cmd_buf);
 
         // Check for valid commands.
-        int32_t func_to_call = cmd_check(main_cmd_buf, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
+        int32_t func_to_call = cmd::check(main_cmd_buf, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
         switch (func_to_call) {
             case -1:
-                cmd_handler_err_prefix();
+                cmd::handler::err_prefix();
                 break;
 
             case 0:
-                cmd_handler_err_cmd();
+                cmd::handler::err_cmd();
                 break;
 
             case 1:
-                cmd_handler_set_load_digital(main_cmd_buf);
+                cmd::handler::set_load_digital(main_cmd_buf);
                 break;
 
             case 2:
-                cmd_handler_set_load_PWM(main_cmd_buf);
+                cmd::handler::set_load_PWM(main_cmd_buf);
                 break;
 
             case 3:
-                cmd_handler_output_load_digital();
+                cmd::handler::output_load_digital();
                 break;
 
             case 4:
-                cmd_handler_set_WiFi_SSID(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_WiFi_SSID(main_cmd_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 5:
-                cmd_handler_output_WiFi_SSID();
+                cmd::handler::output_WiFi_SSID();
                 break;
 
             case 6:
-                cmd_handler_set_WiFi_pswd(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_WiFi_pswd(main_cmd_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 7:
-                cmd_handler_set_WiFi_RSSI_output_flag(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_WiFi_RSSI_output_flag(main_cmd_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 8:
-                cmd_handler_set_WiFi_autoreconnect_flag(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_WiFi_autoreconnect_flag(main_cmd_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 9:
-                cmd_handler_output_local_server_IP();
+                cmd::handler::output_local_server_IP();
                 break;
 
             case 10:
-                cmd_handler_set_local_server_port(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_local_server_port(main_cmd_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 11:
-                cmd_handler_output_local_server_port();
+                cmd::handler::output_local_server_port();
                 break;
 
             case 12:
-                cmd_handler_set_IoT_flag(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_IoT_flag(main_cmd_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 13:
-                cmd_handler_set_IoT_server_IP(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_IoT_server_IP(main_cmd_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 14:
-                cmd_handler_output_IoT_server_IP();
+                cmd::handler::output_IoT_server_IP();
                 break;
 
             case 15:
-                cmd_handler_set_IoT_server_port(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_IoT_server_port(main_cmd_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 16:
-                cmd_handler_output_IoT_server_port();
+                cmd::handler::output_IoT_server_port();
                 break;
 
             case 17:
-                cmd_handler_set_IoT_req_msg(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_IoT_req_msg(main_cmd_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 18:
-                cmd_handler_output_IoT_req_msg();
+                cmd::handler::output_IoT_req_msg();
                 break;
 
             case 19:
-                cmd_handler_set_IoT_req_period(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_IoT_req_period(main_cmd_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 20:
-                cmd_handler_set_BTClassic_flag(main_cmd_buf,
+                cmd::handler::set_BTClassic_flag(main_cmd_buf,
                                                InterfaceSetup::BTClassic,
                                                &time_to_refresh_stored_configs);
                 break;
 
             case 21:
-                cmd_handler_set_BTClassic_dev_name(main_cmd_buf,
+                cmd::handler::set_BTClassic_dev_name(main_cmd_buf,
                                                    InterfaceSetup::BTClassic,
                                                    &time_to_refresh_stored_configs);
                 break;
 
             case 22:
-                cmd_handler_output_BTClassic_dev_name();
+                cmd::handler::output_BTClassic_dev_name();
                 break;
 
             case 23:
-                cmd_handler_all_conn_rst(InterfaceSetup::WiFi,
+                cmd::handler::all_conn_rst(InterfaceSetup::WiFi,
                                          InterfaceSetup::BTClassic,
                                          &stored_configs);
                 break;
 
             case 24:
-                cmd_handler_output_version();
+                cmd::handler::output_version();
                 break;
 
             case 25:
-                cmd_handler_RGB_output_color(main_cmd_buf);
+                cmd::handler::RGB_output_color(main_cmd_buf);
                 break;
 
             case 26:
-                cmd_handler_RGB_output_on();
+                cmd::handler::RGB_output_on();
                 break;
 
             case 27:
-                cmd_handler_RGB_output_off();
+                cmd::handler::RGB_output_off();
                 break;
 
             default:
@@ -512,7 +512,7 @@ void receive_cmd_HW_UART(char *buf)
                                                     HW_UART_READ_SLOWDOWN);
     if (HW_UART_bytes_read > STR_MAX_LEN) {
         buf[0] = '\0';
-        cmd_handler_err_len();
+        cmd::handler::err_len();
     }
 }
 
@@ -524,7 +524,7 @@ void receive_cmd_TCP_local(char *buf)
                                                                   CONN_TIMEOUT);
         if (TCP_server_bytes_read > STR_MAX_LEN) {
             buf[0] = '\0';
-            cmd_handler_err_len();
+            cmd::handler::err_len();
         }
     }
 }
@@ -557,7 +557,7 @@ void receive_cmd_TCP_IoT(char *buf, stored_configs_t *stored_configs)
 
             if (TCP_client_bytes_read > STR_MAX_LEN) {
                 buf[0] = '\0';
-                cmd_handler_err_len();
+                cmd::handler::err_len();
             }
         } else {
             Serial.println("Remote server unavailable.");
@@ -586,7 +586,7 @@ void receive_cmd_BTClassic(char *buf, stored_configs_t *stored_configs, bool *BT
 
             if (BTClassic_bytes_read > STR_MAX_LEN) {
                 buf[0] = '\0';
-                cmd_handler_err_len();
+                cmd::handler::err_len();
             }
         }
     #endif
