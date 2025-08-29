@@ -86,7 +86,8 @@ int32_t cstring_utils::nullify_trailing_crs_and_lfs(char *str)
     }
 
     int32_t i = 0;
-    while ((str[len - 1] == '\r' || str[len - 1] == '\n') && len > 0) {
+    while (len > 0 &&  // len can decrement during the loop execution, therefore another check is done.
+           (str[len - 1] == '\r' || str[len - 1] == '\n')) {
         str[len - 1] = '\0';
         --len;
         ++i;
@@ -175,7 +176,8 @@ int32_t cstring_utils::count_trailing_crs_and_lfs(char *str)
     }
 
     int32_t i = 0;
-    while ((str[len - 1] == '\r' || str[len - 1] == '\n') && len > 0) {
+    while (len > 0 &&  // len can decrement during the loop execution, therefore another check is done.
+           (str[len - 1] == '\r' || str[len - 1] == '\n')) {
         --len;
         ++i;
     }
@@ -189,7 +191,7 @@ int32_t cstring_utils::append_lf_if_no_trailing_crs_nor_lfs(char *str, size_t ar
     
     if (count < 0) { 
         return CSTRING_UTILS_MEM_ERR;
-    } else if (count == 0) {
+    } else if (count > 0) {
         return CSTRING_UTILS_NOT_PROCESSED;
     }
 

@@ -13,8 +13,8 @@
 /************ PREPROCESSOR DIRECTIVES ***********/
 
 // Include guards.
-#ifndef CCSTRING_UTILS_H
-#define CCSTRING_UTILS_H
+#ifndef CSTRING_UTILS_H
+#define CSTRING_UTILS_H
 
 
 /*--- Includes ---*/
