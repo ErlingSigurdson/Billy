@@ -20,8 +20,8 @@
 /*--- Includes ---*/
 
 // Relevant standard libraries.
+#include <cstddef>  // For size_t.
 #include <cstdint>
-#include <cstring>  // for size_t.
 
 
 /*--- Misc ---*/
@@ -41,14 +41,11 @@
 namespace cstring_utils {
     int32_t to_lowercase(char *str);
     int32_t to_uppercase(char *str);
-    int32_t nullify_first_cr_or_lf(char *str);
-    int32_t nullify_trailing_crs_and_lfs(char *str);
-    int32_t nullify_all_crs_and_lfs(char *str);
-    int32_t append_cr(char *str, size_t arr_size);
-    int32_t append_lf(char *str, size_t arr_size);
+    int32_t to_single_line(char *str);
     int32_t append_char(char *str, size_t arr_size, char char_to_append);
+    int32_t nullify_first_cr_or_lf(char *str);
     int32_t count_trailing_crs_and_lfs(char *str);
-    int32_t append_lf_if_no_trailing_crs_nor_lfs(char *str, size_t arr_size);
+    int32_t cut_off_trailing_crs_and_lfs(char *str);
 }
 
 

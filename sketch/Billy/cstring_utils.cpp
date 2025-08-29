@@ -57,12 +57,84 @@ int32_t cstring_utils::to_uppercase(char *str)
     return i;
 }
 
+int32_t cstring_utils::to_single_line(char *str)
+{
+    if (str == nullptr) {
+        return CSTRING_UTILS_MEM_ERR;
+    }
+
+    size_t len = strlen(str);
+    if (len == 0) {
+        return CSTRING_UTILS_NOT_PROCESSED;
+    }
+
+    size_t start = 0;
+    while (start < len && (str[start] == '\r' || str[start] == '\n')) {
+        ++start;
+    }
+
+    size_t last = len - 1;
+    while (last > start && (str[last] == '\r' || str[last] == '\n')) {
+        --last;
+    }
+
+    if (last == start && (str[last] == '\r' || str[last] == '\n')) {
+        return CSTRING_UTILS_NOT_PROCESSED;
+    }
+
+    int32_t groups = 0;
+
+    size_t src  = start;
+    size_t dest = start;
+    bool in_group = false;
+    while (src <= last) {
+        char c = str[src];
+        if (c == '\r' || c == '\n') {
+            if (!in_group) {
+                str[dest++] = ' ';
+                ++groups;
+                in_group = true;
+            }
+            ++src;
+        } else {
+            in_group = false;
+            str[dest++] = str[src++];
+        }
+    }
+
+    size_t trailing_begin = last + 1;
+    while (trailing_begin < len) {
+        str[dest++] = str[trailing_begin++];
+    }
+
+    str[dest] = '\0';
+
+    return groups;
+}
+
+int32_t cstring_utils::append_char(char *str, size_t arr_size, char char_to_append)
+{
+    if (str == nullptr) {
+        return CSTRING_UTILS_MEM_ERR;
+    }
+
+    size_t len = strlen(str);
+    if (arr_size < len + 2) {  // One byte for an appended character, another byte for null.
+        return CSTRING_UTILS_MEM_ERR;
+    }
+
+    str[len] = char_to_append;
+    str[len + 1] = '\0';
+
+    return CSTRING_UTILS_PROCESSED;
+}
+
 int32_t cstring_utils::nullify_first_cr_or_lf(char *str)
 {
     if (str == nullptr) {
         return CSTRING_UTILS_MEM_ERR;
     }
-    
+
     for (size_t i = 0, len = strlen(str); i < len; ++i) {
         if (str[i] == '\r' || str[i] == '\n') {
             str[i] = '\0';
@@ -74,98 +146,6 @@ int32_t cstring_utils::nullify_first_cr_or_lf(char *str)
     return CSTRING_UTILS_NOT_PROCESSED;
 }
 
-int32_t cstring_utils::nullify_trailing_crs_and_lfs(char *str)
-{
-    if (str == nullptr) {
-        return CSTRING_UTILS_MEM_ERR;
-    }
-
-    size_t len = strlen(str);
-    if (len == 0) {
-        return CSTRING_UTILS_NOT_PROCESSED;
-    }
-
-    int32_t i = 0;
-    /* len can decrement during the loop execution,
-     * threfore it is checked to prevent an underflow.
-     */ 
-    while (len > 0 && (str[len - 1] == '\r' || str[len - 1] == '\n')) {
-        str[len - 1] = '\0';
-        --len;
-        ++i;
-    }
-
-    return i;
-}
-
-int32_t cstring_utils::nullify_all_crs_and_lfs(char *str)
-{
-    if (str == nullptr) {
-        return CSTRING_UTILS_MEM_ERR;
-    }
-
-    int32_t i = 0;
-    for (size_t j = 0, len = strlen(str); j < len; ++j) {
-        if (str[j] == '\r' || str[j] == '\n') {
-            str[j] = '\0';
-            ++i;
-        }
-    }
-
-    return i;
-}
-
-int32_t cstring_utils::append_cr(char *str, size_t arr_size)
-{
-    if (str == nullptr) {
-        return CSTRING_UTILS_MEM_ERR;
-    }
-
-    size_t len = strlen(str);
-    if (arr_size - len < 2) {  // One byte for an appended character, another byte for null.
-        return CSTRING_UTILS_MEM_ERR;
-    }
-  
-    str[len] = '\r';
-    str[len + 1] = '\0';
- 
-    return CSTRING_UTILS_PROCESSED;
-}
-
-int32_t cstring_utils::append_lf(char *str, size_t arr_size)
-{
-    if (str == nullptr) {
-        return CSTRING_UTILS_MEM_ERR;
-    }
-
-    size_t len = strlen(str);
-    if (arr_size - len < 2) {  // One byte for an appended character, another byte for null.
-        return CSTRING_UTILS_MEM_ERR;
-    }
-  
-    str[len] = '\n';
-    str[len + 1] = '\0';
- 
-    return CSTRING_UTILS_PROCESSED;
-}
-
-int32_t cstring_utils::append_char(char *str, size_t arr_size, char char_to_append)
-{
-    if (str == nullptr) {
-        return CSTRING_UTILS_MEM_ERR;
-    }
-
-    size_t len = strlen(str);
-    if (arr_size - len < 2) {  // One byte for an appended character, another byte for null.
-        return CSTRING_UTILS_MEM_ERR;
-    }
-  
-    str[len] = char_to_append;
-    str[len + 1] = '\0';
- 
-    return CSTRING_UTILS_PROCESSED;
-}
-
 int32_t cstring_utils::count_trailing_crs_and_lfs(char *str)
 {
     if (str == nullptr) {
@@ -173,13 +153,9 @@ int32_t cstring_utils::count_trailing_crs_and_lfs(char *str)
     }
 
     size_t len = strlen(str);
-    if (len == 0) {
-        return 0;
-    }
-
     int32_t i = 0;
     /* len can decrement during the loop execution,
-     * threfore it is checked to prevent an underflow.
+     * therefore it is checked to prevent an underflow.
      */ 
     while (len > 0 && (str[len - 1] == '\r' || str[len - 1] == '\n')) {
         --len;
@@ -189,23 +165,18 @@ int32_t cstring_utils::count_trailing_crs_and_lfs(char *str)
     return i;
 }
 
-int32_t cstring_utils::append_lf_if_no_trailing_crs_nor_lfs(char *str, size_t arr_size)
+int32_t cstring_utils::cut_off_trailing_crs_and_lfs(char *str)
 {
     int32_t count = cstring_utils::count_trailing_crs_and_lfs(str);
-    
-    if (count < 0) { 
+
+    if (count < 0) {
         return CSTRING_UTILS_MEM_ERR;
-    } else if (count > 0) {
+    } else if (count == 0) {
         return CSTRING_UTILS_NOT_PROCESSED;
     }
 
     size_t len = strlen(str);
-    if (arr_size - len < 2) {  // One byte for an appended character, another byte for null.
-        return CSTRING_UTILS_MEM_ERR;
-    }
-  
-    str[len] = '\n';
-    str[len + 1] = '\0';
- 
+    str[len - (size_t)count] = '\0';
+
     return CSTRING_UTILS_PROCESSED;
 }
