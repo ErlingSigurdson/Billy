@@ -14,6 +14,9 @@
 
 /*--- Includes ---*/
 
+// Source file's own header.
+#include "RGB_LED.h"
+
 // Essential Arduino library.
 #include <Arduino.h>  /* I guess I could do with <cstdint> and <cstring>, but I decided to keep it
                        * in case I need to use millis() or something.
@@ -21,9 +24,6 @@
 
 // Additional libraries for Arduino IDE.
 #include <RGBLED.h>  // https://github.com/GyverLibs/RGBLED
-
-// Local modules.
-#include "RGB_LED.h"
 
 
 /*************** GLOBAL VARIABLES ***************/

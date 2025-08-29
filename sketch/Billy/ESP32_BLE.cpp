@@ -14,6 +14,9 @@
 
 /*--- Includes ---*/
 
+// Source file's own header.
+#include "ESP32_BLE.h"
+
 // Essential Arduino library.
 #include <Arduino.h>
 
@@ -28,9 +31,6 @@
 #include <BLEUtils.h>
 #include <BLEServer.h>
 #include <BLE2902.h>
-
-// Local modules.
-#include "ESP32_BLE.h"
 
 
 /*************** GLOBAL VARIABLES ***************/

@@ -14,6 +14,9 @@
 
 /*--- Includes ---*/
 
+// Source file's own header.
+#include "ESP_HTTP.h"
+
 // Essential Arduino library.
 #include <Arduino.h>
 
@@ -28,9 +31,6 @@
 #ifdef ESP8266
     #include <ESP8266WebServer.h>
 #endif
-
-// Local modules.
-#include "ESP_HTTP.h"
 
 
 /*************** GLOBAL VARIABLES ***************/

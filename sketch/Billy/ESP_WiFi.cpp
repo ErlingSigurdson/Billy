@@ -14,6 +14,9 @@
 
 /*--- Includes ---*/
 
+// Source file's own header.
+#include "ESP_WiFi.h"
+
 // Essential Arduino library.
 #include <Arduino.h>
 
@@ -26,7 +29,6 @@
 #endif
 
 // Local modules.
-#include "ESP_WiFi.h"
 #include "config_general.h"
 
 

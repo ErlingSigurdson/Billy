@@ -13,6 +13,9 @@
 
 /*--- Includes ---*/
 
+// Source file's own header.
+#include "cmd.h"
+
 // Essential Arduino library.
 #include <Arduino.h>
 
@@ -21,7 +24,6 @@
 #include "config_inbuilt_storage.h"
 
 // Local modules.
-#include "cmd.h"
 #include "stored_configs.h"
 #include "inbuilt_storage.h"
 #include "ESP_WiFi.h"

@@ -14,6 +14,9 @@
 
 /*--- Includes ---*/
 
+// Source file's own header.
+#include "ESP_TCP.h"
+
 // Essential Arduino library.
 #include <Arduino.h>
 
@@ -24,9 +27,6 @@
 #ifdef ESP8266
     #include <ESP8266WiFi.h>
 #endif
-
-// Local modules.
-#include "ESP_TCP.h"
 
 
 /*************** GLOBAL VARIABLES ***************/

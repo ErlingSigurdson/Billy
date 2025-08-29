@@ -14,6 +14,9 @@
 
 /*--- Includes ---*/
 
+// Source file's own header.
+#include "ESP32_BTClassic.h"
+
 // Essential Arduino library.
 #include <Arduino.h>
 
@@ -28,9 +31,6 @@
 
 // Additional libraries for Arduino IDE.
 #include <BluetoothSerial.h>
-
-// Local modules.
-#include "ESP32_BTClassic.h"
 
 
 /*************** GLOBAL VARIABLES ***************/

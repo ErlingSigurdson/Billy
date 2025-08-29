@@ -17,6 +17,9 @@
 
 /*--- Includes ---*/
 
+// Source file's own header.
+#include "inbuilt_storage.h"
+
 // Essential Arduino library.
 #include <Arduino.h>
 
@@ -25,9 +28,6 @@
 
 // Additional libraries for Arduino IDE.
 #include <EEPROM.h>
-
-// Local modules.
-#include "inbuilt_storage.h"
 
 
 /******************* FUNCTIONS ******************/

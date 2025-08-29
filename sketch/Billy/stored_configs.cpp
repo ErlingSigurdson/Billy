@@ -11,6 +11,9 @@
 
 /*--- Includes ---*/
 
+// Source file's own header.
+#include "stored_configs.h"
+
 // Essential Arduino library.
 #include <Arduino.h>
 
@@ -18,7 +21,6 @@
 #include "config_inbuilt_storage.h"
 
 // Local modules.
-#include "stored_configs.h"
 #include "inbuilt_storage.h"
 
 

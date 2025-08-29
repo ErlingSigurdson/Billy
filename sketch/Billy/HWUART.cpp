@@ -14,11 +14,11 @@
 
 /*--- Includes ---*/
 
+// Source file's own header.
+#include "HWUART.h"
+
 // Essential Arduino library.
 #include <Arduino.h>
-
-// Local modules.
-#include "HWUART.h"
 
 
 /******************* FUNCTIONS ******************/
