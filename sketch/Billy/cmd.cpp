@@ -26,7 +26,7 @@
 #include "inbuilt_storage.h"
 #include "ESP_WiFi.h"
 #include "ESP_TCP.h"
-#include "string_utils.h"
+#include "cstring_utils.h"
 #include "version.h"
 
 #if defined ESP32 && defined BTCLASSIC_USED
