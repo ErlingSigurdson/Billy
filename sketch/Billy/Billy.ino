@@ -212,6 +212,7 @@ void loop()
     // Check for a non-empty buffer string.
     if (main_cmd_buf[0] != '\0' ) {
         cstring_utils::nullify_first_cr_or_lf(main_cmd_buf);
+        cstring_utils::to_uppercase(main_cmd_buf);
 
         // Check for valid commands.
         int32_t func_to_call = cmd::check(main_cmd_buf, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
