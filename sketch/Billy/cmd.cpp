@@ -54,8 +54,11 @@ int32_t cmd::check(char *buf, const char *prefix, const char *cmd_list[], uint32
         return -1;
     }
 
+    size_t prefix_len = strlen(prefix);
+    char *payload = buf + (uint32_t)prefix_len;
+    
     for (uint32_t i = 1; i <= cmd_list_len; ++i) {
-        if (strstr(buf, cmd_list[i]) == buf + strlen(prefix)) {
+        if (strstr(buf, cmd_list[i]) == payload) {
             return i;
         }
     }
