@@ -1,7 +1,7 @@
 /*************** FILE DESCRIPTION ***************/
 
 /**
- * Filename: HWUART.h
+ * Filename: hw_uart.h
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Hardware UART wrapper functions.
  *           Written for use with the Arduino framework.
@@ -25,7 +25,10 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-uint32_t HW_UART_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout, uint32_t read_slowdown);
+namespace hw_uart {
+    void startup(uint32_t baud_rate, uint32_t antinoise_pause, uint32_t startup_pause, const char *startup_msg);
+    uint32_t read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout, uint32_t read_slowdown);
+}
 
 
 #endif  // Include guards.

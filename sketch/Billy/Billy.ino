@@ -33,7 +33,7 @@
 #include "cmd.h"
 #include "stored_configs.h"
 #include "inbuilt_storage.h"
-#include "HWUART.h"
+#include "hw_uart.h"
 #include "ESP_WiFi.h"
 #include "ESP_TCP.h"
 #include "ESP_HTTP.h"
@@ -53,6 +53,7 @@
 /*--- Wireless connectivity setup functions ---*/
 
 namespace interface_setup {
+    // UART startup isn't present here because it doesn't require a complex wrapper.
     bool WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout);
     void BTClassic(stored_configs_t *stored_configs);
 }
@@ -90,10 +91,7 @@ void setup()
 {
     /*--- Hardware UART startup ---*/
 
-    delay(HW_UART_ANTINOISE_PAUSE);   // Wait for an input noise to stop.
-    Serial.begin(HW_UART_BAUD_RATE);
-    delay(HW_UART_STARTUP_PAUSE);     // A tiny pause to allow for an interface startup.
-    Serial.print(STARTUP_MSG);
+    hw_uart::startup(HW_UART_BAUD_RATE, HW_UART_ANTINOISE_PAUSE, HW_UART_STARTUP_PAUSE, HW_UART_STARTUP_MSG);
 
 
     /*--- Pin setup ---*/
@@ -509,10 +507,10 @@ void interface_setup::BTClassic(stored_configs_t *stored_configs)
 
 void receive::HW_UART(char *buf)
 {
-    uint32_t HW_UART_bytes_read = HW_UART_read_line(buf,
-                                                    STR_MAX_LEN,
-                                                    CONN_TIMEOUT,
-                                                    HW_UART_READ_SLOWDOWN);
+    uint32_t HW_UART_bytes_read = hw_uart::read_line(buf,
+                                                     STR_MAX_LEN,
+                                                     CONN_TIMEOUT,
+                                                     HW_UART_READ_SLOWDOWN);
     if (HW_UART_bytes_read > STR_MAX_LEN) {
         buf[0] = '\0';
         cmd::handler::err_len();
