@@ -52,7 +52,7 @@
 
 /*--- Wireless connectivity setup functions ---*/
 
-namespace InterfaceSetup {
+namespace interface_setup {
     bool WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout);
     void BTClassic(stored_configs_t *stored_configs);
 }
@@ -143,8 +143,8 @@ void setup()
 
     /*--- Wireless connectivity startup ---*/
 
-    InterfaceSetup::WiFi(&stored_configs, CONN_TIMEOUT);
-    InterfaceSetup::BTClassic(&stored_configs);
+    interface_setup::WiFi(&stored_configs, CONN_TIMEOUT);
+    interface_setup::BTClassic(&stored_configs);
 
 
     /*--- Finishing setup ---*/
@@ -303,13 +303,13 @@ void loop()
 
             case 20:
                 cmd::handler::set_BTClassic_flag(main_buf,
-                                               InterfaceSetup::BTClassic,
+                                               interface_setup::BTClassic,
                                                &time_to_refresh_stored_configs);
                 break;
 
             case 21:
                 cmd::handler::set_BTClassic_dev_name(main_buf,
-                                                   InterfaceSetup::BTClassic,
+                                                   interface_setup::BTClassic,
                                                    &time_to_refresh_stored_configs);
                 break;
 
@@ -318,8 +318,8 @@ void loop()
                 break;
 
             case 23:
-                cmd::handler::all_conn_rst(InterfaceSetup::WiFi,
-                                         InterfaceSetup::BTClassic,
+                cmd::handler::all_conn_rst(interface_setup::WiFi,
+                                         interface_setup::BTClassic,
                                          &stored_configs);
                 break;
 
@@ -394,7 +394,7 @@ void loop()
             if (!ESP_WiFi_is_connected() || WiFi_connection_attempt_failed) {
                 ESP_TCP::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
                 ESP_TCP::server_stop(CONN_SHUTDOWN_DOWNTIME);
-                WiFi_connection_attempt_failed = !InterfaceSetup::WiFi(&stored_configs, CONN_TIMEOUT);
+                WiFi_connection_attempt_failed = !interface_setup::WiFi(&stored_configs, CONN_TIMEOUT);
             }
             WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis = millis();
         } else {
@@ -408,7 +408,7 @@ void loop()
 
 /*--- Wireless connectivity setup functions ---*/
 
-bool InterfaceSetup::WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
+bool interface_setup::WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
 {
     Serial.println("");
 
@@ -480,7 +480,7 @@ bool InterfaceSetup::WiFi(stored_configs_t *stored_configs, uint32_t conn_attemp
     return WiFi_connected;
 }
 
-void InterfaceSetup::BTClassic(stored_configs_t *stored_configs)
+void interface_setup::BTClassic(stored_configs_t *stored_configs)
 {
     // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)stored_configs;
