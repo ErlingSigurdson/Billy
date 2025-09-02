@@ -50,15 +50,15 @@
 
 int32_t cmd::match_in_buf(char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len)
 {
-    if (strstr(buf, prefix) != buf) {
+    static size_t prefix_len = strlen(prefix);
+
+    if (strncmp(buf, prefix, prefix_len) != 0) {
         return -1;
     }
 
-    size_t prefix_len = strlen(prefix);
-    char *payload = buf + (uint32_t)prefix_len;
-    
+    char *buf_payload = buf + (uint32_t)prefix_len;
     for (uint32_t i = 1; i <= cmd_list_len; ++i) {
-        if (strstr(buf, cmd_list[i]) == payload) {
+        if (strstr(buf_payload, cmd_list[i]) == buf_payload) {
             return i;
         }
     }
