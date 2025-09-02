@@ -27,11 +27,11 @@
 
 /*--- Misc ---*/
 
-// Whether a config value may contain anything aside from decimal digits and dots.
+// Whether a config value may contain anything but decimal digits and dots.
 #define DECIMAL_ONLY 1
 #define ANY_CHAR     0
 
-// To print or not to print a new value of the changed config.
+// To print or not to print a new value of a changed config.
 #define ECHO_VAL_ON  1
 #define ECHO_VAL_OFF 0
 
