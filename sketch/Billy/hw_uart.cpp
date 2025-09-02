@@ -23,12 +23,22 @@
 
 /******************* FUNCTIONS ******************/
 
-void hw_uart::startup(uint32_t baud_rate, uint32_t antinoise_pause, uint32_t startup_pause, const char *startup_msg)
+void hw_uart::setup(uint32_t baud_rate, uint32_t antinoise_pause, uint32_t startup_pause, const char *startup_msg)
 {
     delay(antinoise_pause);     // Wait for an input noise to stop.
     Serial.begin(baud_rate);
     delay(startup_pause);       // A tiny pause to allow for an interface startup.
     Serial.print(startup_msg);
+}
+
+void hw_uart::print(const char *str)
+{
+    Serial.print(str);
+}
+
+void hw_uart::flush()
+{
+    Serial.flush();
 }
 
 uint32_t hw_uart::read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout, uint32_t read_slowdown)

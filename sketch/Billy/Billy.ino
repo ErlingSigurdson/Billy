@@ -52,8 +52,7 @@
 
 /*--- Wireless connectivity setup functions ---*/
 
-namespace interface_setup {
-    // UART startup isn't present here because it doesn't require a complex wrapper.
+namespace wireless_interface_setup {
     bool WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout);
     void BTClassic(stored_configs_t *stored_configs);
 }
@@ -63,23 +62,23 @@ namespace interface_setup {
 
 namespace receive {
     // Put a data received by a hardware UART into the buffer.
-    void HW_UART(char *buf);
+    void hw_uart(char *buf);
 
     // Put a data received by a local TCP server from a client into the buffer.
-    void TCP_local(char *buf);
+    void tcp_local(char *buf);
 
     /* A local TCP client sends a request to a remote server and reads a response,
      * the latter is then put into the buffer.
      */
-    void TCP_IoT(char *buf, stored_configs_t *stored_configs);
+    void tcp_iot(char *buf, stored_configs_t *stored_configs);
 
     /* A local HTTP server handles HTTP requests and reads a data
      * from a request body, which is then put into the buffer.
      */
-    void HTTP(char *buf);
+    void http(char *buf);
 
     // Put a data received by a Bluetooth Classic slave device from a master device into the buffer.
-    void BTClassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected);
+    void btclassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected);
 }
 
 
@@ -91,7 +90,7 @@ void setup()
 {
     /*--- Hardware UART startup ---*/
 
-    hw_uart::startup(HW_UART_BAUD_RATE, HW_UART_ANTINOISE_PAUSE, HW_UART_STARTUP_PAUSE, HW_UART_STARTUP_MSG);
+    hw_uart::setup(HW_UART_BAUD_RATE, HW_UART_ANTINOISE_PAUSE, HW_UART_STARTUP_PAUSE, HW_UART_STARTUP_MSG);
 
 
     /*--- Pin setup ---*/
@@ -141,21 +140,23 @@ void setup()
     stored_configs_read(&stored_configs);
 
 
-    /*--- Wireless connectivity startup ---*/
+    /*--- Wireless connectivity setup ---*/
 
-    interface_setup::WiFi(&stored_configs, CONN_TIMEOUT);
-    interface_setup::BTClassic(&stored_configs);
-
-
-    /*--- Finishing setup ---*/
-
-    Serial.println("");
-    Serial.flush();
+    wireless_interface_setup::WiFi(&stored_configs, CONN_TIMEOUT);
+    wireless_interface_setup::BTClassic(&stored_configs);
 
 
     /*--- RGB output initialization ---*/
 
-    RGB_LED_init(RED_PIN, GREEN_PIN, BLUE_PIN, IS_COMMON_ANODE);
+    #ifdef RGB_LED
+        RGB_LED_init(RED_PIN, GREEN_PIN, BLUE_PIN, IS_COMMON_ANODE);
+    #endif
+
+
+    /*--- Finishing setup ---*/
+
+    hw_uart::print(" ");
+    hw_uart::flush();
 }
 
 void loop()
@@ -193,16 +194,16 @@ void loop()
     char main_buf[STR_MAX_LEN + 1] = {0};
 
     // Command reception subroutines.
-    receive::HW_UART(main_buf);
-    receive::TCP_local(main_buf);
-    receive::TCP_IoT(main_buf, &stored_configs);
-    receive::HTTP(main_buf);
+    receive::hw_uart(main_buf);
+    receive::tcp_local(main_buf);
+    receive::tcp_iot(main_buf, &stored_configs);
+    receive::http(main_buf);
 
     /* Another call for the connected() method of the BluetoothSerial class
      * caused an RTOS crash, hence the additional flag was introduced.
      */
     bool BTClassic_was_connected = 0;
-    receive::BTClassic(main_buf, &stored_configs, &BTClassic_was_connected);
+    receive::btclassic(main_buf, &stored_configs, &BTClassic_was_connected);
 
 
     /*--- Command handling ---*/
@@ -303,14 +304,14 @@ void loop()
 
             case 20:
                 cmd::handler::set_BTClassic_flag(main_buf,
-                                               interface_setup::BTClassic,
-                                               &time_to_refresh_stored_configs);
+                                                 wireless_interface_setup::BTClassic,
+                                                 &time_to_refresh_stored_configs);
                 break;
 
             case 21:
                 cmd::handler::set_BTClassic_dev_name(main_buf,
-                                                   interface_setup::BTClassic,
-                                                   &time_to_refresh_stored_configs);
+                                                     wireless_interface_setup::BTClassic,
+                                                     &time_to_refresh_stored_configs);
                 break;
 
             case 22:
@@ -318,9 +319,9 @@ void loop()
                 break;
 
             case 23:
-                cmd::handler::all_conn_rst(interface_setup::WiFi,
-                                         interface_setup::BTClassic,
-                                         &stored_configs);
+                cmd::handler::all_conn_rst(wireless_interface_setup::WiFi,
+                                           wireless_interface_setup::BTClassic,
+                                           &stored_configs);
                 break;
 
             case 24:
@@ -328,15 +329,27 @@ void loop()
                 break;
 
             case 25:
-                cmd::handler::RGB_output_color(main_buf);
+                #ifdef RGB_LED
+                    cmd::handler::RGB_output_color(main_buf);
+                #else
+                    cmd::handler::err_cmd();
+                #endif
                 break;
 
             case 26:
-                cmd::handler::RGB_output_on();
+                #ifdef RGB_LED
+                    cmd::handler::RGB_output_on();
+                #else
+                    cmd::handler::err_cmd();
+                #endif        
                 break;
 
             case 27:
-                cmd::handler::RGB_output_off();
+                #ifdef RGB_LED
+                    cmd::handler::RGB_output_off();
+                #else
+                    cmd::handler::err_cmd();
+                #endif 
                 break;
 
             default:
@@ -394,7 +407,7 @@ void loop()
             if (!ESP_WiFi_is_connected() || WiFi_connection_attempt_failed) {
                 ESP_TCP::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
                 ESP_TCP::server_stop(CONN_SHUTDOWN_DOWNTIME);
-                WiFi_connection_attempt_failed = !interface_setup::WiFi(&stored_configs, CONN_TIMEOUT);
+                WiFi_connection_attempt_failed = !wireless_interface_setup::WiFi(&stored_configs, CONN_TIMEOUT);
             }
             WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis = millis();
         } else {
@@ -408,7 +421,7 @@ void loop()
 
 /*--- Wireless connectivity setup functions ---*/
 
-bool interface_setup::WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
+bool wireless_interface_setup::WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout)
 {
     Serial.println("");
 
@@ -480,7 +493,7 @@ bool interface_setup::WiFi(stored_configs_t *stored_configs, uint32_t conn_attem
     return WiFi_connected;
 }
 
-void interface_setup::BTClassic(stored_configs_t *stored_configs)
+void wireless_interface_setup::BTClassic(stored_configs_t *stored_configs)
 {
     // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)stored_configs;
@@ -505,7 +518,7 @@ void interface_setup::BTClassic(stored_configs_t *stored_configs)
 
 /*--- Command reception functions ---*/
 
-void receive::HW_UART(char *buf)
+void receive::hw_uart(char *buf)
 {
     uint32_t HW_UART_bytes_read = hw_uart::read_line(buf,
                                                      STR_MAX_LEN,
@@ -517,7 +530,7 @@ void receive::HW_UART(char *buf)
     }
 }
 
-void receive::TCP_local(char *buf)
+void receive::tcp_local(char *buf)
 {
     if (ESP_TCP::server_get_client()) {
         uint32_t TCP_server_bytes_read = ESP_TCP::server_read_line(buf,
@@ -530,7 +543,7 @@ void receive::TCP_local(char *buf)
     }
 }
 
-void receive::TCP_IoT(char *buf, stored_configs_t *stored_configs)
+void receive::tcp_iot(char *buf, stored_configs_t *stored_configs)
 {
     if (stored_configs->IoT_req_period == 0) {
         stored_configs->IoT_req_period = IOT_DEFAULT_REQ_PERIOD;  // Divide by zero prevention.
@@ -566,13 +579,13 @@ void receive::TCP_IoT(char *buf, stored_configs_t *stored_configs)
     }
 }
 
-void receive::HTTP(char *buf)
+void receive::http(char *buf)
 {
     ESP_HTTP_handle_client_in_loop();
     ESP_HTTP_copy_buf(buf, STR_MAX_LEN);
 }
 
-void receive::BTClassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected)
+void receive::btclassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected)
 {
     // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)buf;
