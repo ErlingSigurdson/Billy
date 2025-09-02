@@ -14,10 +14,10 @@
 
 /*--- Includes ---*/
 
-// Source file's own header.
+// This source file's own header file.
 #include "ESP_TCP.h"
 
-// Essential Arduino library.
+// Arduino core header file.
 #include <Arduino.h>
 
 // Additional libraries for Arduino IDE.

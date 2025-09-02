@@ -14,10 +14,10 @@
 
 /*--- Includes ---*/
 
-// Source file's own header.
+// This source file's own header file.
 #include "ESP32_BTClassic.h"
 
-// Essential Arduino library.
+// Arduino core header file.
 #include <Arduino.h>
 
 // Project configs.

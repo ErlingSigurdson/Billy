@@ -22,7 +22,7 @@
 
 /*--- Includes ---*/
 
-// Essential Arduino library.
+// Arduino core header file.
 #include <Arduino.h>
 
 

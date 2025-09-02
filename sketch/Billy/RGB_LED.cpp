@@ -14,10 +14,10 @@
 
 /*--- Includes ---*/
 
-// Source file's own header.
+// This source file's own header file.
 #include "RGB_LED.h"
 
-// Essential Arduino library.
+// Arduino core header file.
 #include <Arduino.h>  /* I guess I could do with <cstdint> and <cstring>, but I decided to keep it
                        * in case I need to use millis() or something.
                        */

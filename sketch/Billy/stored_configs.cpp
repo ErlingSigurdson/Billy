@@ -11,10 +11,10 @@
 
 /*--- Includes ---*/
 
-// Source file's own header.
+// This source file's own header file.
 #include "stored_configs.h"
 
-// Essential Arduino library.
+// Arduino core header file.
 #include <Arduino.h>
 
 // Project configs.

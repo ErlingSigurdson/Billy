@@ -13,10 +13,10 @@
 
 /*--- Includes ---*/
 
-// Source file's own header.
+// This source file's own header file.
 #include "cmd.h"
 
-// Essential Arduino library.
+// Arduino core header file.
 #include <Arduino.h>
 
 // Project configs.
