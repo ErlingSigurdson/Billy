@@ -4,7 +4,7 @@
  * Filename: ESP32_Bluetooth.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Bluetooth Classic wrapper functions for ESP32 SoC.
- *           Written for use with the ESP32 Arduino core.
+ *           Intended for use with the ESP32 Arduino core.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -50,7 +50,7 @@ bool ESP32_BTClassic_check_connection()
     return BTClassic_Serial.connected();
 }
 
-uint32_t ESP32_BTClassic_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
+uint32_t ESP32_BTClassic_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout, uint32_t read_slowdown)
 {
     // Connection timeout counter.
     uint64_t current_millis = millis();
@@ -72,11 +72,12 @@ uint32_t ESP32_BTClassic_read_line(char *buf, uint32_t str_max_len, uint32_t con
                 lf = 1;
             }
 
-            current_millis = millis();
+            if (read_slowdown > 0) {
+                // A pause that prevents reading from a buffer ahead of writing to it.
+                delay(read_slowdown);
+            }
 
-            delay(BTCLASSIC_READ_SLOWDOWN);    /* A pause to ensure that reading from a buffer
-                                                * won't run ahead of writing to it.
-                                                */
+            current_millis = millis();
         }
         current_millis = millis();
     }

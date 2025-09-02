@@ -28,6 +28,10 @@
  */
 //#define BTCLASSIC_USED
 
+#ifdef BTCLASSIC_USED
+    #define BTCLASSIC_READ_SLOWDOWN 2
+#endif
+
 
 /*--- Bluetooth Low Energy ---*/
 

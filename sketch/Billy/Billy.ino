@@ -593,10 +593,13 @@ void receive::btclassic(char *buf, stored_configs_t *stored_configs, bool *BTCla
     (void)BTClassic_was_connected;
 
     #if defined ESP32 && defined BTCLASSIC_USED
-        *BTClassic_was_connected = 0;  // Just in case.
+        *BTClassic_was_connected = false;  // Just in case.
         if (stored_configs->BTClassic_flag && ESP32_BTClassic_check_connection()) {
-            *BTClassic_was_connected = 1;
-            uint32_t BTClassic_bytes_read = ESP32_BTClassic_read_line(buf, STR_MAX_LEN, CONN_TIMEOUT);
+            *BTClassic_was_connected = true;
+            uint32_t BTClassic_bytes_read = ESP32_BTClassic_read_line(buf,
+                                                                      STR_MAX_LEN,
+                                                                      CONN_TIMEOUT,
+                                                                      BTCLASSIC_READ_SLOWDOWN);
 
             if (BTClassic_bytes_read > STR_MAX_LEN) {
                 buf[0] = '\0';

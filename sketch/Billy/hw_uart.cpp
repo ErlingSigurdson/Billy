@@ -4,7 +4,7 @@
  * Filename: hw_uart.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Hardware UART wrapper functions.
- *           Written for use with the Arduino framework.
+ *           Intended for use with the Arduino framework.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -28,7 +28,7 @@ void hw_uart::setup(uint32_t baud_rate, uint32_t antinoise_pause, uint32_t start
     delay(antinoise_pause);     // Wait for an input noise to stop.
     Serial.begin(baud_rate);
     delay(startup_pause);       // A tiny pause to allow for an interface startup.
-    Serial.print(startup_msg);
+    hw_uart::print(startup_msg);
 }
 
 void hw_uart::print(const char *str)
@@ -48,8 +48,8 @@ uint32_t hw_uart::read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeo
     uint64_t previous_millis = current_millis;
 
     uint32_t i = 0, j = 0;
-    bool lf = 0;
-    while (Serial.available() && current_millis - previous_millis < conn_timeout && !lf) {
+    bool newline = false;
+    while (Serial.available() && current_millis - previous_millis < conn_timeout && !newline) {
         char c = Serial.read();
         ++i;
 
@@ -59,16 +59,15 @@ uint32_t hw_uart::read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeo
         }
 
         if (c == '\n') {
-            lf = 1;
+            newline = true;
+        }
+
+        if (read_slowdown > 0) {
+            // A pause that prevents reading from a buffer ahead of writing to it.
+            delay(read_slowdown);
         }
 
         current_millis = millis();
-
-        if (read_slowdown > 0) {
-            delay(read_slowdown);  /* A pause to ensure that reading from a buffer
-                                    * won't run ahead of writing to it.
-                                    */
-        }
     }
 
     return i;

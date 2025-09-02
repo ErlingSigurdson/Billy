@@ -4,7 +4,7 @@
  * Filename: ESP_HTTP.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  A simple HTTP server for ESP32/ESP8266.
- *           Written for use with the ESP32/ESP8266 Arduino core.
+ *           Intended for use with the ESP32/ESP8266 Arduino core.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */

@@ -4,7 +4,7 @@
  * Filename: ESP_WiFi.h
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Wi-Fi wrapper functions.
- *           Written for use with the ESP32/ESP8266 Arduino core.
+ *           Intended for use with the ESP32/ESP8266 Arduino core.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */

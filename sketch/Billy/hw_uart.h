@@ -4,7 +4,7 @@
  * Filename: hw_uart.h
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Hardware UART wrapper functions.
- *           Written for use with the Arduino framework.
+ *           Intended for use with the Arduino framework.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
