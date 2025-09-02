@@ -190,19 +190,19 @@ void loop()
     /* Main command buffer. ALL strings sent to Billy by an end user,
      * regardless of the interface, end up here. All checks are performed afterwards.
      */
-    char main_cmd_buf[STR_MAX_LEN + 1] = {0};
+    char main_buf[STR_MAX_LEN + 1] = {0};
 
     // Command reception subroutines.
-    receive_cmd_HW_UART(main_cmd_buf);
-    receive_cmd_TCP_local(main_cmd_buf);
-    receive_cmd_TCP_IoT(main_cmd_buf, &stored_configs);
-    receive_cmd_HTTP(main_cmd_buf);
+    receive_cmd_HW_UART(main_buf);
+    receive_cmd_TCP_local(main_buf);
+    receive_cmd_TCP_IoT(main_buf, &stored_configs);
+    receive_cmd_HTTP(main_buf);
 
     /* Another call for the connected() method of the BluetoothSerial class
      * caused an RTOS crash, hence the additional flag was introduced.
      */
     bool BTClassic_was_connected = 0;
-    receive_cmd_BTClassic(main_cmd_buf, &stored_configs, &BTClassic_was_connected);
+    receive_cmd_BTClassic(main_buf, &stored_configs, &BTClassic_was_connected);
 
 
     /*--- Command handling ---*/
@@ -210,12 +210,12 @@ void loop()
     // Essentially it's the central hub of the whole sketch.
 
     // Check for a non-empty buffer string.
-    if (main_cmd_buf[0] != '\0' ) {
-        cstring_utils::nullify_first_cr_or_lf(main_cmd_buf);
-        cstring_utils::to_uppercase(main_cmd_buf);
+    if (main_buf[0] != '\0' ) {
+        cstring_utils::nullify_first_cr_or_lf(main_buf);
+        cstring_utils::to_uppercase(main_buf);
 
         // Check for valid commands.
-        int32_t func_to_call = cmd::check(main_cmd_buf, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
+        int32_t func_to_call = cmd::match_in_buf(main_buf, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
         switch (func_to_call) {
             case -1:
                 cmd::handler::err_prefix();
@@ -226,11 +226,11 @@ void loop()
                 break;
 
             case 1:
-                cmd::handler::set_load_digital(main_cmd_buf);
+                cmd::handler::set_load_digital(main_buf);
                 break;
 
             case 2:
-                cmd::handler::set_load_PWM(main_cmd_buf);
+                cmd::handler::set_load_PWM(main_buf);
                 break;
 
             case 3:
@@ -238,7 +238,7 @@ void loop()
                 break;
 
             case 4:
-                cmd::handler::set_WiFi_SSID(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_WiFi_SSID(main_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 5:
@@ -246,15 +246,15 @@ void loop()
                 break;
 
             case 6:
-                cmd::handler::set_WiFi_pswd(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_WiFi_pswd(main_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 7:
-                cmd::handler::set_WiFi_RSSI_output_flag(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_WiFi_RSSI_output_flag(main_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 8:
-                cmd::handler::set_WiFi_autoreconnect_flag(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_WiFi_autoreconnect_flag(main_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 9:
@@ -262,7 +262,7 @@ void loop()
                 break;
 
             case 10:
-                cmd::handler::set_local_server_port(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_local_server_port(main_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 11:
@@ -270,11 +270,11 @@ void loop()
                 break;
 
             case 12:
-                cmd::handler::set_IoT_flag(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_IoT_flag(main_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 13:
-                cmd::handler::set_IoT_server_IP(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_IoT_server_IP(main_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 14:
@@ -282,7 +282,7 @@ void loop()
                 break;
 
             case 15:
-                cmd::handler::set_IoT_server_port(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_IoT_server_port(main_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 16:
@@ -290,7 +290,7 @@ void loop()
                 break;
 
             case 17:
-                cmd::handler::set_IoT_req_msg(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_IoT_req_msg(main_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 18:
@@ -298,17 +298,17 @@ void loop()
                 break;
 
             case 19:
-                cmd::handler::set_IoT_req_period(main_cmd_buf, &time_to_refresh_stored_configs);
+                cmd::handler::set_IoT_req_period(main_buf, &time_to_refresh_stored_configs);
                 break;
 
             case 20:
-                cmd::handler::set_BTClassic_flag(main_cmd_buf,
+                cmd::handler::set_BTClassic_flag(main_buf,
                                                InterfaceSetup::BTClassic,
                                                &time_to_refresh_stored_configs);
                 break;
 
             case 21:
-                cmd::handler::set_BTClassic_dev_name(main_cmd_buf,
+                cmd::handler::set_BTClassic_dev_name(main_buf,
                                                    InterfaceSetup::BTClassic,
                                                    &time_to_refresh_stored_configs);
                 break;
@@ -328,7 +328,7 @@ void loop()
                 break;
 
             case 25:
-                cmd::handler::RGB_output_color(main_cmd_buf);
+                cmd::handler::RGB_output_color(main_buf);
                 break;
 
             case 26:

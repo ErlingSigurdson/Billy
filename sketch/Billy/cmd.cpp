@@ -48,7 +48,7 @@
 
 /*--- Buffer contents check ---*/
 
-int32_t cmd::check(char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len)
+int32_t cmd::match_in_buf(char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len)
 {
     if (strstr(buf, prefix) != buf) {
         return -1;

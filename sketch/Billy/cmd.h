@@ -55,7 +55,7 @@ namespace cmd {
     /*--- Buffer contents check ---*/
 
     // Look up for a valid prefix and for valid commands from a text commands list.
-    int32_t check(char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len);
+    int32_t match_in_buf(char *buf, const char *prefix, const char *cmd_list[], uint32_t cmd_list_len);
 
 
     namespace aux {
