@@ -57,6 +57,7 @@ namespace interface_setup {
     void BTClassic(stored_configs_t *stored_configs);
 }
 
+
 /*--- Command reception functions ---*/
 
 namespace receive {
@@ -89,11 +90,10 @@ void setup()
 {
     /*--- Hardware UART startup ---*/
 
-    delay(ANTINOISE_PAUSE);           // Wait for an input noise to stop.
+    delay(HW_UART_ANTINOISE_PAUSE);   // Wait for an input noise to stop.
     Serial.begin(HW_UART_BAUD_RATE);
     delay(HW_UART_STARTUP_PAUSE);     // A tiny pause to allow for an interface startup.
-    Serial.println("");
-    Serial.println("*** HELLO, HUMAN! ***");
+    Serial.print(STARTUP_MSG);
 
 
     /*--- Pin setup ---*/

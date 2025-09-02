@@ -81,13 +81,18 @@
 // Hardware UART baud rate.
 #define HW_UART_BAUD_RATE 115200
 
-/* A pause to ensure that reading from a buffer
- * won't run ahead of writing to it.
+// Duration of a pause to wait out a potential startup noise.
+#define HW_UART_ANTINOISE_PAUSE 500
+
+// Duration of a pause to allow for an interface startup.
+#define HW_UART_STARTUP_PAUSE 100
+
+/* Duration of a pause that prevents reading
+ * from a buffer ahead of writing to it.
  */
 #define HW_UART_READ_SLOWDOWN 2
 
-// A tiny pause to allow for an interface startup.
-#define HW_UART_STARTUP_PAUSE 100
+
 
 
 /*--- Wi-Fi ---*/
@@ -109,8 +114,8 @@
 
 /*--- Misc ---*/
 
+#define STARTUP_MSG "\n*** GREETINGS FROM BILLY ***\n"
 #define STR_MAX_LEN 100
-#define ANTINOISE_PAUSE 1000
 #define CONN_TIMEOUT 8000
 #define CONN_SHUTDOWN_DOWNTIME 100
 
