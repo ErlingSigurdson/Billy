@@ -29,7 +29,7 @@ bool cstring_utils::is_string(const char *arr, size_t arr_size)
         return false;
     }
 
-    for (int32_t i = 0; i < arr_size; ++i) {
+    for (size_t i = 0; i < arr_size; ++i) {
         if (arr[i] == '\0') {
             return true;
         }

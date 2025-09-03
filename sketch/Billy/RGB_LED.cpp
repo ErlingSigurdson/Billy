@@ -54,107 +54,107 @@ uint32_t RGB_LED_output_color(const char *cmd_val)
         return 0;
     }
 
-    if (cstring_utils::compare(cmd_val, "RED")) {
+    if (cstring_utils::are_equal(cmd_val, "RED")) {
         p_RGB_LED->setColor(RGB::Color::Red);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "GREEN")) {
+    if (cstring_utils::are_equal(cmd_val, "GREEN")) {
         p_RGB_LED->setColor(RGB::Color::Green);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "BLUE")) {
+    if (cstring_utils::are_equal(cmd_val, "BLUE")) {
         p_RGB_LED->setColor(RGB::Color::Blue);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "WHITE")) {
+    if (cstring_utils::are_equal(cmd_val, "WHITE")) {
         p_RGB_LED->setColor(RGB::Color::White);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "LIGHTGRAY")) {
+    if (cstring_utils::are_equal(cmd_val, "LIGHTGRAY")) {
         p_RGB_LED->setColor(RGB::Color::LightGray);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "DARKGRAY")) {
+    if (cstring_utils::are_equal(cmd_val, "DARKGRAY")) {
         p_RGB_LED->setColor(RGB::Color::DarkGray);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "YELLOW")) {
+    if (cstring_utils::are_equal(cmd_val, "YELLOW")) {
         p_RGB_LED->setColor(RGB::Color::Yellow);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "GOLD")) {
+    if (cstring_utils::are_equal(cmd_val, "GOLD")) {
         p_RGB_LED->setColor(RGB::Color::Gold);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "ORANGE")) {
+    if (cstring_utils::are_equal(cmd_val, "ORANGE")) {
         p_RGB_LED->setColor(RGB::Color::Orange);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "MAROON")) {
+    if (cstring_utils::are_equal(cmd_val, "MAROON")) {
         p_RGB_LED->setColor(RGB::Color::Maroon);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "PINK")) {
+    if (cstring_utils::are_equal(cmd_val, "PINK")) {
         p_RGB_LED->setColor(RGB::Color::Pink);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "CORAL")) {
+    if (cstring_utils::are_equal(cmd_val, "CORAL")) {
         p_RGB_LED->setColor(RGB::Color::Coral);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "MAGENTA")) {
+    if (cstring_utils::are_equal(cmd_val, "MAGENTA")) {
         p_RGB_LED->setColor(RGB::Color::Magenta);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "PURPLE")) {
+    if (cstring_utils::are_equal(cmd_val, "PURPLE")) {
         p_RGB_LED->setColor(RGB::Color::Purple);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "VIOLET")) {
+    if (cstring_utils::are_equal(cmd_val, "VIOLET")) {
         p_RGB_LED->setColor(RGB::Color::Violet);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "LIME")) {
+    if (cstring_utils::are_equal(cmd_val, "LIME")) {
         p_RGB_LED->setColor(RGB::Color::Lime);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "SKYBLUE")) {
+    if (cstring_utils::are_equal(cmd_val, "SKYBLUE")) {
         p_RGB_LED->setColor(RGB::Color::SkyBlue);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "STEELBLUE")) {
+    if (cstring_utils::are_equal(cmd_val, "STEELBLUE")) {
         p_RGB_LED->setColor(RGB::Color::SteelBlue);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "CYAN")) {
+    if (cstring_utils::are_equal(cmd_val, "CYAN")) {
         p_RGB_LED->setColor(RGB::Color::Cyan);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "TEAL")) {
+    if (cstring_utils::are_equal(cmd_val, "TEAL")) {
         p_RGB_LED->setColor(RGB::Color::Teal);
         return 1;
     }
 
-    if (cstring_utils::compare(cmd_val, "NAVY")) {
+    if (cstring_utils::are_equal(cmd_val, "NAVY")) {
         p_RGB_LED->setColor(RGB::Color::Navy);
         return 1;
     }
