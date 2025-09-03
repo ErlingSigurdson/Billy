@@ -69,7 +69,7 @@ int32_t cmd::match_in_buf(char *buf, const char *prefix, const char *cmd_list[],
 
 /*--- Auxiliary functions (helper functions, accessories) ---*/
 
-void cmd::aux::output(const char *msg)
+void cmd::aux::output_msg(const char *msg)
 {
     Serial.println(msg);
     ESP_TCP::server_send_msg(msg);
@@ -101,23 +101,23 @@ bool cmd::aux::has_decimal_only(const char *str)
 void cmd::aux::set_output_digital(uint8_t pin, uint8_t state, const char *topic)
 {
     if (pin == 0) {
-        cmd::aux::output("Digital output pin not specified.");
+        cmd::aux::output_msg("Digital output pin not specified.");
         return;
     }
 
     digitalWrite(pin, state);
-    cmd::aux::output(topic);
+    cmd::aux::output_msg(topic);
 }
 
 void cmd::aux::set_output_PWM(uint8_t pin, uint32_t val, const char *topic)
 {
     if (pin == 0) {
-        cmd::aux::output("PWM output pin not specified.");
+        cmd::aux::output_msg("PWM output pin not specified.");
         return;
     }
 
     analogWrite(pin, val);
-    cmd::aux::output(topic);
+    cmd::aux::output_msg(topic);
 }
 
 void cmd::aux::set_config(set_config_params_t *params)
@@ -144,7 +144,7 @@ void cmd::aux::set_config(set_config_params_t *params)
         strcat(msg, cmd_val);
     }
 
-    cmd::aux::output(msg);
+    cmd::aux::output_msg(msg);
 }
 
 void cmd::aux::output_config(uint32_t addr, const char *topic)
@@ -159,7 +159,7 @@ void cmd::aux::output_config(uint32_t addr, const char *topic)
                                 addr);
     strcat(msg, config_val);
 
-    cmd::aux::output(msg);
+    cmd::aux::output_msg(msg);
 }
 
 
@@ -167,22 +167,22 @@ void cmd::aux::output_config(uint32_t addr, const char *topic)
 
 void cmd::handler::err_len()
 {
-    cmd::aux::output("Command buffer overflow.");
+    cmd::aux::output_msg("Command buffer overflow.");
 }
 
 void cmd::handler::err_prefix()
 {
-    cmd::aux::output("Invalid or absent command prefix.");
+    cmd::aux::output_msg("Invalid or absent command prefix.");
 }
 
 void cmd::handler::err_cmd()
 {
-    cmd::aux::output("No valid command entered.");
+    cmd::aux::output_msg("No valid command entered.");
 }
 
 void cmd::handler::err_val()
 {
-    cmd::aux::output("No valid value submitted.");
+    cmd::aux::output_msg("No valid value submitted.");
 }
 
 // Command #1
@@ -205,7 +205,7 @@ void cmd::handler::set_load_digital(char *cmd)
             cmd::aux::set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_ON, "Two-state load is now ON");
             return;
         } else {
-            cmd::aux::output("Two-state load is already ON");
+            cmd::aux::output_msg("Two-state load is already ON");
             return;
         }
     }
@@ -215,7 +215,7 @@ void cmd::handler::set_load_digital(char *cmd)
             cmd::aux::set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF, "Two-state load is now OFF");
             return;
         } else {
-            cmd::aux::output("Two-state load is already OFF");
+            cmd::aux::output_msg("Two-state load is already OFF");
             return;
         }
     }
@@ -255,14 +255,14 @@ void cmd::handler::set_load_PWM(char *cmd)
 void cmd::handler::output_load_digital()
 {
     if (DIGITAL_OUTPUT_PIN == 0) {
-        cmd::aux::output("Digital output pin not specified.");
+        cmd::aux::output_msg("Digital output pin not specified.");
         return;
     }
 
     if (digitalRead(DIGITAL_OUTPUT_PIN) == DIGITAL_OUTPUT_LOAD_ON) {
-        cmd::aux::output("Current load state is ON");
+        cmd::aux::output_msg("Current load state is ON");
     } else {
-        cmd::aux::output("Current load state is OFF");
+        cmd::aux::output_msg("Current load state is OFF");
     }
 }
 
@@ -340,7 +340,7 @@ void cmd::handler::output_local_server_IP()
     String current_IP = ESP_WiFi_get_devices_current_IP();
     strcpy(msg, "Current local IP address is: ");
     strcat(msg, current_IP.c_str());
-    cmd::aux::output(msg);
+    cmd::aux::output_msg(msg);
 }
 
 // Command #10
@@ -536,7 +536,7 @@ void cmd::handler::all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint3
                               void (*setup_BTClassic_ptr)(stored_configs_t *),
                               stored_configs_t *stored_configs)
 {
-    cmd::aux::output("Resetting local connections...");
+    cmd::aux::output_msg("Resetting local connections...");
 
     ESP_TCP::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     ESP_TCP::server_stop(CONN_SHUTDOWN_DOWNTIME);
@@ -580,7 +580,7 @@ void cmd::handler::output_version()
         strcat(msg, "Wi-Fi indicator LED pin number not specified" "\n");
     }
 
-    cmd::aux::output(msg);
+    cmd::aux::output_msg(msg);
 }
 
 // Command #25
@@ -595,7 +595,7 @@ void cmd::handler::RGB_output_color(char *cmd)
         strcpy(msg, "Outputting RGB color ");
         strcat(msg, cmd_val);
         strcat(msg, ".");
-        cmd::aux::output(msg);
+        cmd::aux::output_msg(msg);
     } else {
         cmd::handler::err_val();
     }
@@ -605,12 +605,12 @@ void cmd::handler::RGB_output_color(char *cmd)
 void cmd::handler::RGB_output_on()
 {
     RGB_LED_output_on();
-    cmd::aux::output("RGB output ON.");
+    cmd::aux::output_msg("RGB output ON.");
 }
 
 // Command #27
 void cmd::handler::RGB_output_off()
 {
     RGB_LED_output_off();
-    cmd::aux::output("RGB output OFF.");
+    cmd::aux::output_msg("RGB output OFF.");
 }

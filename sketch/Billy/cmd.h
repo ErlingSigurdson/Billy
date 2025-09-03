@@ -65,7 +65,7 @@ namespace cmd {
         /* A generic accessory called by the other ones.
          * Prints a message over a UART and sends it over wireless connections.
          */
-        void output(const char *msg);
+        void output_msg(const char *msg);
 
         /* A generic accessory called by the other ones.
          * Checks if the string contains anything aside from decimal digits and dots.
