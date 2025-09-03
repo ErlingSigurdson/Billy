@@ -22,6 +22,7 @@
 
 // Local modules.
 #include "inbuilt_storage.h"
+#include "cstring_utils.h"
 
 
 /******************* FUNCTIONS ******************/
@@ -84,13 +85,13 @@ void stored_configs_read(stored_configs_t *stored_configs)
 
     strcpy(stored_configs->WiFi_pswd, stored_configs_str[INDEX_WIFI_PSWD]);
 
-    if (!strcmp(stored_configs_str[INDEX_WIFI_RSSI_OUTPUT_FLAG], "ON")) {
+    if (cstring_utils::compare(stored_configs_str[INDEX_WIFI_RSSI_OUTPUT_FLAG], "ON")) {
         stored_configs->WiFi_RSSI_output_flag = 1;
     } else {
         stored_configs->WiFi_RSSI_output_flag = 0;
     }
 
-    if (!strcmp(stored_configs_str[INDEX_WIFI_AUTORECONNECT_FLAG], "ON")) {
+    if (cstring_utils::compare(stored_configs_str[INDEX_WIFI_AUTORECONNECT_FLAG], "ON")) {
         stored_configs->WiFi_autoreconnect_flag = 1;
     } else {
         stored_configs->WiFi_autoreconnect_flag = 0;
@@ -98,7 +99,7 @@ void stored_configs_read(stored_configs_t *stored_configs)
 
     stored_configs->local_server_port = strtol(stored_configs_str[INDEX_LOCAL_SERVER_PORT], NULL, 10);
 
-    if (!strcmp(stored_configs_str[INDEX_IOT_FLAG], "ON")) {
+    if (cstring_utils::compare(stored_configs_str[INDEX_IOT_FLAG], "ON")) {
         stored_configs->IoT_flag = 1;
     } else {
         stored_configs->IoT_flag = 0;
@@ -113,7 +114,7 @@ void stored_configs_read(stored_configs_t *stored_configs)
     stored_configs->IoT_req_period = strtol(stored_configs_str[INDEX_IOT_REQ_PERIOD], NULL, 10);
 
     #if defined ESP32 && defined BTCLASSIC_USED
-        if (!strcmp(stored_configs_str[INDEX_BTCLASSIC_FLAG], "ON")) {
+        if (cstring_utils::compare(stored_configs_str[INDEX_BTCLASSIC_FLAG], "ON")) {
             stored_configs->BTClassic_flag = 1;
         } else {
             stored_configs->BTClassic_flag = 0;

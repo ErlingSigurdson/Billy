@@ -191,7 +191,7 @@ void cmd::handler::set_load_digital(char *cmd)
     // Needs to be calculated just once because subsequent commands won't be different.
     static char *cmd_val = strstr(cmd, "=") + 1;
 
-    if (!strcmp(cmd_val, "TOGGLE")) {
+    if (cstring_utils::compare(cmd_val, "TOGGLE")) {
         if (digitalRead(DIGITAL_OUTPUT_PIN) == DIGITAL_OUTPUT_LOAD_ON) {
             cmd::aux::set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF, "Two-state load is now OFF");
             return;
@@ -201,7 +201,7 @@ void cmd::handler::set_load_digital(char *cmd)
         }
     }
 
-    if (!strcmp(cmd_val, "ON")) {
+    if (cstring_utils::compare(cmd_val, "ON")) {
         if (digitalRead(DIGITAL_OUTPUT_PIN) != DIGITAL_OUTPUT_LOAD_ON) {
             cmd::aux::set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_ON, "Two-state load is now ON");
             return;
@@ -211,7 +211,7 @@ void cmd::handler::set_load_digital(char *cmd)
         }
     }
 
-    if (!strcmp(cmd_val, "OFF")) {
+    if (cstring_utils::compare(cmd_val, "OFF")) {
         if (digitalRead(DIGITAL_OUTPUT_PIN) != DIGITAL_OUTPUT_LOAD_OFF) {
             cmd::aux::set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF, "Two-state load is now OFF");
             return;
@@ -303,7 +303,7 @@ void cmd::handler::set_WiFi_RSSI_output_flag(char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
-    if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
+    if (cstring_utils::compare(cmd_val, "ON") || cstring_utils::compare(cmd_val, "OFF")) {
         set_config_params_t params = {cmd,
                                       INBUILT_STORAGE_ADDR_WIFI_RSSI_OUTPUT_FLAG,
                                       ANY_CHAR,
@@ -321,7 +321,7 @@ void cmd::handler::set_WiFi_autoreconnect_flag(char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
-    if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
+    if (cstring_utils::compare(cmd_val, "ON") || cstring_utils::compare(cmd_val, "OFF")) {
         set_config_params_t params = {cmd,
                                       INBUILT_STORAGE_ADDR_WIFI_AUTORECONNECT_FLAG,
                                       ANY_CHAR,
@@ -375,7 +375,7 @@ void cmd::handler::set_IoT_flag(char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
-    if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
+    if (cstring_utils::compare(cmd_val, "ON") || cstring_utils::compare(cmd_val, "OFF")) {
         set_config_params_t params = {cmd,
                                       INBUILT_STORAGE_ADDR_IOT_FLAG,
                                       ANY_CHAR,
@@ -470,7 +470,7 @@ void cmd::handler::set_BTClassic_flag(char *cmd,
     #if defined ESP32 && defined BTCLASSIC_USED
         char *cmd_val = strstr(cmd, "=") + 1;
 
-        if (!strcmp(cmd_val, "ON") || !strcmp(cmd_val, "OFF")) {
+        if (cstring_utils::compare(cmd_val, "ON") || cstring_utils::compare(cmd_val, "OFF")) {
             set_config_params_t params = {cmd,
                                           INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG,
                                           ANY_CHAR,

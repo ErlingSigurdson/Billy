@@ -32,6 +32,9 @@
     #include <ESP8266WebServer.h>
 #endif
 
+// Local modules.
+#include "cstring_utils.h"
+
 
 /*************** GLOBAL VARIABLES ***************/
 
@@ -98,8 +101,8 @@ void ESP_HTTP_handle_ctrl()
         char val[STR_MAX_LEN + 1] = {0};
         strcpy(val, HTTP_server.arg(cmd_1).c_str());
 
-        bool val_is_loaddigital_on  = (!strcmp(val, "ON"));
-        bool val_is_loaddigital_off = (!strcmp(val, "OFF"));
+        bool val_is_loaddigital_on  = (cstring_utils::compare(val, "ON"));
+        bool val_is_loaddigital_off = (cstring_utils::compare(val, "OFF"));
 
         if (!val_is_loaddigital_on && !val_is_loaddigital_off) {
             HTTP_server.send(200, "text/plain", "No valid value submitted.");
