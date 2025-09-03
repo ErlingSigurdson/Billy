@@ -41,7 +41,9 @@
 namespace cstring_utils {
     int32_t append_char(char *str, size_t arr_size, char char_to_append);
     int32_t to_lowercase(char *str);
+    int32_t to_lowercase_until_char(char *str, char stopper);
     int32_t to_uppercase(char *str);
+    int32_t to_uppercase_until_char(char *str, char stopper);
     int32_t nullify_first_cr_or_lf(char *str);
     int32_t trim_leading_crs_and_lfs(char *str);
     int32_t inner_cr_and_lf_groups_to_single_spaces(char *str);

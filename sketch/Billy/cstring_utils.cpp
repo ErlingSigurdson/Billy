@@ -46,10 +46,29 @@ int32_t cstring_utils::to_lowercase(char *str)
         return CSTRING_UTILS_MEM_ERR;
     }
 
+    constexpr int32_t ascii_code_diff = 'a' - 'A';
     int32_t i = 0;
-    for (size_t j = 0, len = strlen(str); j < len; ++j) {
+    for (size_t j = 0; str[j] != '\0'; ++j) {
         if (str[j] >= 'A' && str[j] <= 'Z') {
-            str[j] += 'a' - 'A';  // Difference between an ASCII code of an uppercase and a lowercase letter.
+            str[j] += ascii_code_diff;
+            ++i;
+        }
+    }
+
+    return i;
+}
+
+int32_t cstring_utils::to_lowercase_until_char(char *str, char stopper)
+{
+    if (str == nullptr) {
+        return CSTRING_UTILS_MEM_ERR;
+    }
+
+    constexpr int32_t ascii_code_diff = 'a' - 'A';
+    int32_t i = 0;
+    for (size_t j = 0; str[j] != '\0' && str[j] != stopper; ++j) {
+        if (str[j] >= 'A' && str[j] <= 'Z') {
+            str[j] += ascii_code_diff;
             ++i;
         }
     }
@@ -63,10 +82,29 @@ int32_t cstring_utils::to_uppercase(char *str)
         return CSTRING_UTILS_MEM_ERR;
     }
 
+    constexpr int32_t ascii_code_diff = 'a' - 'A';
     int32_t i = 0;
-    for (size_t j = 0, len = strlen(str); j < len; ++j) {
+    for (size_t j = 0; str[j] != '\0'; ++j) {
         if (str[j] >= 'a' && str[j] <= 'z') {
-            str[j] -= 'a' - 'A';  // Difference between an ASCII code of an uppercase and a lowercase letter.
+            str[j] -= ascii_code_diff;
+            ++i;
+        }
+    }
+
+    return i;
+}
+
+int32_t cstring_utils::to_uppercase_until_char(char *str, char stopper)
+{
+    if (str == nullptr) {
+        return CSTRING_UTILS_MEM_ERR;
+    }
+
+    constexpr int32_t ascii_code_diff = 'a' - 'A';
+    int32_t i = 0;
+    for (size_t j = 0; str[j] != '\0' && str[j] != stopper; ++j) {
+        if (str[j] >= 'a' && str[j] <= 'z') {
+            str[j] -= ascii_code_diff;
             ++i;
         }
     }
