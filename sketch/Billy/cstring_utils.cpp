@@ -40,6 +40,11 @@ int32_t cstring_utils::append_char(char *str, size_t arr_size, char char_to_appe
     return CSTRING_UTILS_PROCESSED;
 }
 
+bool cstring_utils::compare(const char *str1, const char *str2)
+{
+    return strcmp(str1, str2) ? false : true;
+}
+
 int32_t cstring_utils::to_lowercase(char *str)
 {
     if (str == nullptr) {

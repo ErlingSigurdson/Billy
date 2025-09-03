@@ -80,7 +80,7 @@ void cmd::aux::output_msg(const char *msg)
                                     sizeof(config_val),
                                     INBUILT_STORAGE_STR_MAX_LEN,
                                     INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
-        if (!strcmp(config_val, "ON")) {
+        if (cstring_utils::compare(config_val, "ON")) {
             ESP32_BTClassic_send_msg(msg);
         }
     #endif
@@ -188,7 +188,8 @@ void cmd::handler::err_val()
 // Command #1
 void cmd::handler::set_load_digital(char *cmd)
 {
-    char *cmd_val = strstr(cmd, "=") + 1;
+    // Needs to be calculated just once because subsequent commands won't be different.
+    static char *cmd_val = strstr(cmd, "=") + 1;
 
     if (!strcmp(cmd_val, "TOGGLE")) {
         if (digitalRead(DIGITAL_OUTPUT_PIN) == DIGITAL_OUTPUT_LOAD_ON) {
