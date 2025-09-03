@@ -215,6 +215,7 @@ void loop()
         cstring_utils::nullify_first_cr_or_lf(main_buf);
         cstring_utils::to_uppercase_until_char(main_buf, '=');  /* Commands themselves are all-uppercase, but values
                                                                  * may contain meaningful lowercase letters.
+                                                                 */
 
         // Check for valid commands.
         int32_t func_to_call = cmd::match_in_buf(main_buf, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
