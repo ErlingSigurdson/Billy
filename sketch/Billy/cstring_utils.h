@@ -39,8 +39,9 @@
 /************** FUNCTION PROTOTYPES *************/
 
 namespace cstring_utils {
+    bool is_string(const char *arr, size_t arr_size);
     int32_t append_char(char *str, size_t arr_size, char char_to_append);
-    bool compare(const char *str1, const char *str2);
+    bool are_equal(const char *str1, const char *str2);
     int32_t to_lowercase(char *str);
     int32_t to_lowercase_until_char(char *str, char stopper);
     int32_t to_uppercase(char *str);
@@ -48,7 +49,7 @@ namespace cstring_utils {
     int32_t nullify_first_cr_or_lf(char *str);
     int32_t trim_leading_crs_and_lfs(char *str);
     int32_t inner_cr_and_lf_groups_to_single_spaces(char *str);
-    int32_t count_trailing_crs_and_lfs(char *str);
+    int32_t count_trailing_crs_and_lfs(const char *str);
     int32_t cut_off_trailing_crs_and_lfs(char *str);
     int32_t to_single_line(char *str);
 }

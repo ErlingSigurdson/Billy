@@ -23,9 +23,24 @@
 
 /******************* FUNCTIONS ******************/
 
+bool cstring_utils::is_string(const char *arr, size_t arr_size)
+{
+    if (arr == nullptr || arr_size == 0) {
+        return false;
+    }
+
+    for (int32_t i = 0; i < arr_size; ++i) {
+        if (arr[i] == '\0') {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 int32_t cstring_utils::append_char(char *str, size_t arr_size, char char_to_append)
 {
-    if (str == nullptr) {
+    if (str == nullptr || !is_string(str, arr_size)) {
         return CSTRING_UTILS_MEM_ERR;
     }
 
@@ -40,9 +55,17 @@ int32_t cstring_utils::append_char(char *str, size_t arr_size, char char_to_appe
     return CSTRING_UTILS_PROCESSED;
 }
 
-bool cstring_utils::compare(const char *str1, const char *str2)
+bool cstring_utils::are_equal(const char *str1, const char *str2)
 {
-    return strcmp(str1, str2) ? false : true;
+    if (str1 == nullptr || str2 == nullptr) {
+        return false;
+    }
+
+    if (!strcmp(str1, str2)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 int32_t cstring_utils::to_lowercase(char *str)
@@ -123,10 +146,9 @@ int32_t cstring_utils::nullify_first_cr_or_lf(char *str)
         return CSTRING_UTILS_MEM_ERR;
     }
 
-    for (size_t i = 0, len = strlen(str); i < len; ++i) {
+    for (size_t i = 0; str[i] != '\0'; ++i) {
         if (str[i] == '\r' || str[i] == '\n') {
             str[i] = '\0';
-
             return CSTRING_UTILS_PROCESSED;
         }
     }
@@ -156,7 +178,6 @@ int32_t cstring_utils::trim_leading_crs_and_lfs(char *str)
 
     if (first == len) {
         str[0] = '\0';
-
         return CSTRING_UTILS_PROCESSED;
     }
 
@@ -226,7 +247,7 @@ int32_t cstring_utils::inner_cr_and_lf_groups_to_single_spaces(char *str)
     return groups;
 }
 
-int32_t cstring_utils::count_trailing_crs_and_lfs(char *str)
+int32_t cstring_utils::count_trailing_crs_and_lfs(const char *str)
 {
     if (str == nullptr) {
         return CSTRING_UTILS_MEM_ERR;
@@ -260,29 +281,28 @@ int32_t cstring_utils::cut_off_trailing_crs_and_lfs(char *str)
 
 int32_t cstring_utils::to_single_line(char *str)
 {
-    bool modified = false;
+    int32_t modified = 0;
 
     int32_t retval = cstring_utils::trim_leading_crs_and_lfs(str);
     if (retval < 0) {
         return CSTRING_UTILS_MEM_ERR;
+    } else if (retval > 0) {
+        ++modified;
     }
-    modified |= (retval > 0);
 
     retval = cstring_utils::inner_cr_and_lf_groups_to_single_spaces(str);
     if (retval < 0) {
         return CSTRING_UTILS_MEM_ERR;
+    } else if (retval > 0) {
+        ++modified;
     }
-    modified |= (retval > 0);
 
     retval = cstring_utils::cut_off_trailing_crs_and_lfs(str);
     if (retval < 0) {
         return CSTRING_UTILS_MEM_ERR;
+    } else if (retval > 0) {
+        ++modified;
     }
-    modified |= (retval > 0);
 
-    if (modified) {
-        return CSTRING_UTILS_PROCESSED;
-    } else {
-        return CSTRING_UTILS_NOT_PROCESSED;
-    }
+    return modified;
 }
