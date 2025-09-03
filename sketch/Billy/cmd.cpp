@@ -186,24 +186,24 @@ void cmd::handler::err_val()
 }
 
 // Command #1
-void cmd::handler::set_load_digital(char *cmd)
+void cmd::handler::set_load_digital(char *cmd, uint32_t pin, bool active_state)
 {
     // Needs to be calculated just once because subsequent commands won't be different.
     static char *cmd_val = strstr(cmd, "=") + 1;
 
     if (cstring_utils::compare(cmd_val, "TOGGLE")) {
-        if (digitalRead(DIGITAL_OUTPUT_PIN) == DIGITAL_OUTPUT_LOAD_ON) {
-            cmd::aux::set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF, "Two-state load is now OFF");
+        if (digitalRead(pin) == active_state) {
+            cmd::aux::set_output_digital(pin, !active_state, "Two-state load is now OFF");
             return;
         } else {
-            cmd::aux::set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_ON, "Two-state load is now ON");
+            cmd::aux::set_output_digital(pin, active_state, "Two-state load is now ON");
             return;
         }
     }
 
     if (cstring_utils::compare(cmd_val, "ON")) {
-        if (digitalRead(DIGITAL_OUTPUT_PIN) != DIGITAL_OUTPUT_LOAD_ON) {
-            cmd::aux::set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_ON, "Two-state load is now ON");
+        if (digitalRead(pin) != active_state) {
+            cmd::aux::set_output_digital(pin, active_state, "Two-state load is now ON");
             return;
         } else {
             cmd::aux::output_msg("Two-state load is already ON");
@@ -212,8 +212,8 @@ void cmd::handler::set_load_digital(char *cmd)
     }
 
     if (cstring_utils::compare(cmd_val, "OFF")) {
-        if (digitalRead(DIGITAL_OUTPUT_PIN) != DIGITAL_OUTPUT_LOAD_OFF) {
-            cmd::aux::set_output_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF, "Two-state load is now OFF");
+        if (digitalRead(pin) == active_state) {
+            cmd::aux::set_output_digital(pin, !active_state, "Two-state load is now OFF");
             return;
         } else {
             cmd::aux::output_msg("Two-state load is already OFF");
@@ -225,7 +225,7 @@ void cmd::handler::set_load_digital(char *cmd)
 }
 
 // Command #2
-void cmd::handler::set_load_PWM(char *cmd)
+void cmd::handler::set_load_PWM(char *cmd, uint32_t pin)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
@@ -249,18 +249,18 @@ void cmd::handler::set_load_PWM(char *cmd)
     char msg[STR_MAX_LEN * 2 + 1] = "PWM duty cycle is set to ";
     strcat(msg, cmd_val);
 
-    cmd::aux::set_output_PWM(PWM_OUTPUT_PIN, duty_cycle, msg);
+    cmd::aux::set_output_PWM(pin, duty_cycle, msg);
 }
 
 // Command #3
-void cmd::handler::output_load_digital()
+void cmd::handler::output_load_digital(uint32_t pin, bool active_state)
 {
-    if (DIGITAL_OUTPUT_PIN == 0) {
+    if (pin == 0) {
         cmd::aux::output_msg("Digital output pin not specified.");
         return;
     }
 
-    if (digitalRead(DIGITAL_OUTPUT_PIN) == DIGITAL_OUTPUT_LOAD_ON) {
+    if (digitalRead(pin) == active_state) {
         cmd::aux::output_msg("Current load state is ON");
     } else {
         cmd::aux::output_msg("Current load state is OFF");

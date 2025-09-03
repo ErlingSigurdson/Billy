@@ -115,7 +115,7 @@ void setup()
     // Pin configuration and setting the digital outputs to respective initial digital levels.
     if (DIGITAL_OUTPUT_PIN > 0) {
         pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
-        digitalWrite(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_LOAD_OFF);
+        digitalWrite(DIGITAL_OUTPUT_PIN, !DIGITAL_OUTPUT_ACTIVE_STATE);
     }
 
     if (PWM_OUTPUT_PIN > 0) {
@@ -124,7 +124,7 @@ void setup()
 
     if (WIFI_INDICATOR_LED_PIN > 0) {
         pinMode(WIFI_INDICATOR_LED_PIN, OUTPUT);
-        digitalWrite(WIFI_INDICATOR_LED_PIN, DIGITAL_OUTPUT_LOAD_OFF);
+        digitalWrite(WIFI_INDICATOR_LED_PIN, !DIGITAL_OUTPUT_ACTIVE_STATE);
     }
 
 
@@ -229,15 +229,15 @@ void loop()
                 break;
 
             case 1:
-                cmd::handler::set_load_digital(main_buf);
+                cmd::handler::set_load_digital(main_buf, DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_ACTIVE_STATE);
                 break;
 
             case 2:
-                cmd::handler::set_load_PWM(main_buf);
+                cmd::handler::set_load_PWM(main_buf, PWM_OUTPUT_PIN);
                 break;
 
             case 3:
-                cmd::handler::output_load_digital();
+                cmd::handler::output_load_digital(DIGITAL_OUTPUT_PIN, DIGITAL_OUTPUT_ACTIVE_STATE);
                 break;
 
             case 4:
