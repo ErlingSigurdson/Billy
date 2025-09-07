@@ -65,6 +65,7 @@ namespace cstring_utils {
 
     bool    is_string(const char *arr, size_t arr_size);    // Special case: will also return false if arr_size is zero.
     bool    are_equal(const char *str1, const char *str2);
+    bool    are_equal_within_bytes(const char *str1, const char *str2, size_t bytes_to_compare);
 
     int32_t count_leading_crs_and_lfs(const char *str);
     int32_t count_trailing_crs_and_lfs(const char *str);

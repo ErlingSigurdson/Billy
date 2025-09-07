@@ -53,6 +53,19 @@ bool cstring_utils::are_equal(const char *str1, const char *str2)
     }
 }
 
+bool cstring_utils::are_equal_within_bytes(const char *str1, const char *str2, size_t bytes_to_compare)
+{
+    if (str1 == nullptr || str2 == nullptr) {
+        return false;
+    }
+
+    if (strncmp(str1, str2, bytes_to_compare) == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 int32_t cstring_utils::count_leading_crs_and_lfs(const char *str)
 {
     if (str == nullptr) {

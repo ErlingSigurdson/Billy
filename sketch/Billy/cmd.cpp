@@ -52,18 +52,23 @@ int32_t cmd::match_in_buf(char *buf, const char *prefix, const char *cmd_list[],
 {
     static size_t prefix_len = strlen(prefix);
 
-    if (strncmp(buf, prefix, prefix_len) != 0) {
-        return -1;
+    if (cstring_utils::are_equal_within_bytes(buf, prefix, prefix_len)) {
+        return CMD_MATCH_IN_BUF_ERR_PREFIX;
     }
 
-    char *buf_payload = buf + (uint32_t)prefix_len;
+    cstring_utils::nullify_first_cr_or_lf(buf);
+    cstring_utils::to_uppercase_before_char(buf, '=');  /* Commands themselves are all-uppercase, but values
+                                                         * may contain meaningful lowercase letters.
+                                                         */
+
+    char *buf_payload = buf + static_cast<uint32_t>(prefix_len);
     for (uint32_t i = 1; i <= cmd_list_len; ++i) {
         if (strstr(buf_payload, cmd_list[i]) == buf_payload) {
             return i;
         }
     }
 
-    return 0;
+    return CMD_MATCH_IN_BUF_ERR_CMD;
 }
 
 

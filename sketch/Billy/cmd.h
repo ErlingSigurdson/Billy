@@ -27,6 +27,10 @@
 
 /*--- Misc ---*/
 
+// Function return codes.
+#define CMD_MATCH_IN_BUF_ERR_PREFIX -1
+#define CMD_MATCH_IN_BUF_ERR_CMD     0
+
 // Whether a config value may contain anything but decimal digits and dots.
 #define DECIMAL_ONLY 1
 #define ANY_CHAR     0

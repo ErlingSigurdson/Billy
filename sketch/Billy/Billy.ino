@@ -176,7 +176,7 @@ void loop()
     /*--- Array of valid commands ---*/
 
     static const char *cmd_list[] = {
-        0,  // A placeholder to bump first command's index up to 1.
+        0,  // A placeholder to bump the first command's index up to 1.
         CMD_1,  CMD_2,  CMD_3,  CMD_4,  CMD_5,
         CMD_6,  CMD_7,  CMD_8,  CMD_9,  CMD_10,
         CMD_11, CMD_12, CMD_13, CMD_14, CMD_15,
@@ -188,7 +188,7 @@ void loop()
 
     /*--- Command reception ---*/
 
-    /* Main command buffer. ALL strings sent to Billy by an end user,
+    /* Main command buffer. All strings sent to Billy by an end user,
      * regardless of the interface, end up here. All checks are performed afterwards.
      */
     char main_buf[STR_MAX_LEN + 1] = {0};
@@ -212,19 +212,14 @@ void loop()
 
     // Check for a non-empty buffer string.
     if (main_buf[0] != '\0' ) {
-        cstring_utils::nullify_first_cr_or_lf(main_buf);
-        cstring_utils::to_uppercase_before_char(main_buf, '=');  /* Commands themselves are all-uppercase, but values
-                                                                  * may contain meaningful lowercase letters.
-                                                                  */
-
         // Check for valid commands.
         int32_t func_to_call = cmd::match_in_buf(main_buf, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
         switch (func_to_call) {
-            case -1:
+            case CMD_MATCH_IN_BUF_ERR_PREFIX:
                 cmd::handler::err_prefix();
                 break;
 
-            case 0:
+            case CMD_MATCH_IN_BUF_ERR_CMD:
                 cmd::handler::err_cmd();
                 break;
 
