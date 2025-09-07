@@ -88,7 +88,7 @@ namespace cstring_utils {
     /* If a string is processed, returns:
      * number of characters converted.
      */
-    int32_t to_lowercase_until_char(char *str, char stopper);
+    int32_t to_lowercase_before_char(char *str, char stopper);
 
     /* If a string is processed, returns:
      * number of characters converted.
@@ -98,7 +98,7 @@ namespace cstring_utils {
     /* If a string is processed, returns:
      * number of characters converted.
      */
-    int32_t to_uppercase_until_char(char *str, char stopper);
+    int32_t to_uppercase_before_char(char *str, char stopper);
 
     /* If a string is processed, returns:
      * 1

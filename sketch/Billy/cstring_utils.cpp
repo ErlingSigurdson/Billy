@@ -121,7 +121,7 @@ int32_t cstring_utils::to_lowercase(char *str)
     return i;
 }
 
-int32_t cstring_utils::to_lowercase_until_char(char *str, char stopper)
+int32_t cstring_utils::to_lowercase_before_char(char *str, char stopper)
 {
     if (str == nullptr) {
         return CSTRING_UTILS_ERR_MEM;
@@ -157,7 +157,7 @@ int32_t cstring_utils::to_uppercase(char *str)
     return i;
 }
 
-int32_t cstring_utils::to_uppercase_until_char(char *str, char stopper)
+int32_t cstring_utils::to_uppercase_before_char(char *str, char stopper)
 {
     if (str == nullptr) {
         return CSTRING_UTILS_ERR_MEM;
@@ -204,15 +204,17 @@ int32_t cstring_utils::trim_leading_crs_and_lfs(char *str)
 
     // A string consisting of CRs and/or LFs only should not be processed.
     size_t len = strlen(str);
-    if ((size_t)leading == len) {
+    if (static_cast<size_t>(leading) == len) {
         return CSTRING_UTILS_NOT_PROCESSED;
     }
 
     char *after_leading = str + leading;
-    size_t bytes_to_move = len - (size_t)leading + 1;  // A single byte is added to include a null terminator.
+    size_t bytes_to_move = len - static_cast<size_t>(leading) + 1;  /* A single byte is added
+                                                                     * to include a null terminator.
+                                                                     */
     memmove(str, after_leading, bytes_to_move);
 
-    return (int32_t)leading;
+    return static_cast<int32_t>(leading);
 }
 
 int32_t cstring_utils::inner_cr_and_lf_groups_to_single_spaces(char *str)
@@ -284,13 +286,13 @@ int32_t cstring_utils::cut_off_trailing_crs_and_lfs(char *str)
 
     // A string consisting of CRs and/or LFs only should not be processed.
     size_t len = strlen(str);
-    if ((size_t)trailing == len) {
+    if (static_cast<size_t>(trailing) == len) {
         return CSTRING_UTILS_NOT_PROCESSED;
     }
 
-    str[len - (size_t)trailing] = '\0';
+    str[len - static_cast<size_t>(trailing)] = '\0';
 
-    return (int32_t)trailing;
+    return static_cast<int32_t>(trailing);
 }
 
 int32_t cstring_utils::to_single_line(char *str)
