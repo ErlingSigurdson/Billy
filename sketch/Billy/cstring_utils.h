@@ -6,21 +6,21 @@
  * Purpose:  A collection of macros and functions for inspecting and processing
  *           C-style (null-terminated) strings.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:    All functions with a 'bool' return type will return 'false'
+ * Notes:    All functions with a bool return type will return false
  *           not only if a tested criterion (implied by a function's name)
- *           is not met, but also if a passed pointer to 'char' or 'const char'
- *           equals 'nullptr'.
+ *           is not met, but also if a passed pointer to char or const char
+ *           is nullptr.
  *
  *           All functions with a signed integer return type will return:
- *           * -1 - if a passed pointer to 'char' or 'const char' equals 'nullptr'
+ *           * -1 - if a passed pointer to char or const char equals nullptr
  *                  or another memory-related issue was encountered.
  *           *  0 - if there's nothing to process in a string.
  *           *  A positive integer otherwise (see comments for a particular
  *              function).
  *
  *           Functions whose names imply processing CRs and LFs won't process
- *           strings which consist of CRs and LFs only (that counts as "nothing
- *           to process in a string").
+ *           strings which consist of CRs and/or LFs only (that counts as
+ *           "nothing to process in a string").
  */
 
 
@@ -80,7 +80,7 @@ namespace cstring_utils {
     
     int32_t nullify_first_cr_or_lf(char *str);                             // 1
     
-    int32_t trim_leading_crs_and_lfs(char *str);                           // Number or bytes trimmed.
+    int32_t trim_leading_crs_and_lfs(char *str);                           // Number of bytes trimmed.
     
     int32_t inner_cr_and_lf_groups_to_single_spaces(char *str);            // Number of groups converted.
     

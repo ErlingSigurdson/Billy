@@ -23,6 +23,8 @@
 
 /******************* FUNCTIONS ******************/
 
+/*--- Inspection functions ---*/
+
 bool cstring_utils::is_string(const char *arr, size_t arr_size)
 {
     if (arr == nullptr || arr_size == 0) {
@@ -50,6 +52,39 @@ bool cstring_utils::are_equal(const char *str1, const char *str2)
         return false;
     }
 }
+
+int32_t cstring_utils::count_leading_crs_and_lfs(const char *str)
+{
+    if (str == nullptr) {
+        return CSTRING_UTILS_ERR_MEM;
+    }
+
+    int32_t i = 0;
+    while (str[i] == '\r' || str[i] == '\n') {
+        ++i;
+    }
+
+    return i;
+}
+
+int32_t cstring_utils::count_trailing_crs_and_lfs(const char *str)
+{
+    if (str == nullptr) {
+        return CSTRING_UTILS_ERR_MEM;
+    }
+
+    int32_t i = 0;
+    size_t len = strlen(str);
+    while (len > 0 && (str[len - 1] == '\r' || str[len - 1] == '\n')) {
+        --len;
+        ++i;
+    }
+
+    return i;
+}
+
+
+/*--- Processing functions ---*/
 
 int32_t cstring_utils::append_char(char *str, size_t arr_size, char char_to_append)
 {
@@ -158,29 +193,23 @@ int32_t cstring_utils::nullify_first_cr_or_lf(char *str)
 
 int32_t cstring_utils::trim_leading_crs_and_lfs(char *str)
 {
-    if (str == nullptr) {
-        return CSTRING_UTILS_ERR_MEM;
-    }
+    int32_t leading = count_leading_crs_and_lfs(str);
 
-    size_t len = strlen(str);
-    if (len == 0) {
+    if (leading < 0) {
+        return CSTRING_UTILS_ERR_MEM;
+    } else if (leading == 0) {
+        // A string lacking leading CRs and/or LFs should not be processed.
         return CSTRING_UTILS_NOT_PROCESSED;
     }
 
-    size_t leading = 0;
-    while (str[leading] == '\r' || str[leading] == '\n') {
-        ++leading;
-    }
-
-    if (leading == 0 || leading == len) {
-        return CSTRING_UTILS_NOT_PROCESSED;    /* A string lacking leading CRs and/or LFs,
-                                                * as well as a string consisting of CRs and/or LFs only,
-                                                * should not be processed.
-                                                */
+    // A string consisting of CRs and/or LFs only should not be processed.
+    size_t len = strlen(str);
+    if ((size_t)leading == len) {
+        return CSTRING_UTILS_NOT_PROCESSED;
     }
 
     char *after_leading = str + leading;
-    size_t bytes_to_move = len - leading + 1;  // A single byte is added to include a null terminator.
+    size_t bytes_to_move = len - (size_t)leading + 1;  // A single byte is added to include a null terminator.
     memmove(str, after_leading, bytes_to_move);
 
     return (int32_t)leading;
@@ -207,6 +236,7 @@ int32_t cstring_utils::inner_cr_and_lf_groups_to_single_spaces(char *str)
         --last;
     }
 
+    // A string consisting of CRs and/or LFs only should not be processed.
     if (last == first && (str[last] == '\r' || str[last] == '\n')) {
         return CSTRING_UTILS_NOT_PROCESSED;
     }
@@ -241,34 +271,24 @@ int32_t cstring_utils::inner_cr_and_lf_groups_to_single_spaces(char *str)
     return groups;
 }
 
-int32_t cstring_utils::count_trailing_crs_and_lfs(const char *str)
-{
-    if (str == nullptr) {
-        return CSTRING_UTILS_ERR_MEM;
-    }
-
-    size_t len = strlen(str);
-    int32_t i = 0;
-    while (len > 0 && (str[len - 1] == '\r' || str[len - 1] == '\n')) {
-        --len;
-        ++i;
-    }
-
-    return i;
-}
-
 int32_t cstring_utils::cut_off_trailing_crs_and_lfs(char *str)
 {
-    int32_t count = cstring_utils::count_trailing_crs_and_lfs(str);
+    int32_t trailing = cstring_utils::count_trailing_crs_and_lfs(str);
 
-    if (count < 0) {
+    if (trailing < 0) {
         return CSTRING_UTILS_ERR_MEM;
-    } else if (count == 0) {
+    } else if (trailing == 0) {
+        // A string lacking trailing CRs and/or LFs should not be processed.
         return CSTRING_UTILS_NOT_PROCESSED;
     }
 
+    // A string consisting of CRs and/or LFs only should not be processed.
     size_t len = strlen(str);
-    str[len - (size_t)count] = '\0';
+    if ((size_t)trailing == len) {
+        return CSTRING_UTILS_NOT_PROCESSED;
+    }
+
+    str[len - (size_t)trailing] = '\0';
 
     return CSTRING_UTILS_PROCESSED;
 }
