@@ -20,6 +20,10 @@
 
 #define CMD_PREFIX "AT+"
 
+/* Command are sorted in a vague historical order, i. e. the commands
+ * that were introduced into the project later tend to have higher numbers.
+ */
+
 #define CMD_1      "LOADDIGITAL="       // Turn a two-state load ON or OFF. Valid values are ON, OFF and TOGGLE.
 #define CMD_2      "LOADPWM="           // Drive a load using PWM. Valid values of a duty cycle are 0 to 255.
 #define CMD_3      "LOADDIGITAL?"       // Output current state of a two-state load.
@@ -295,14 +299,76 @@
     #define CMD_40_DEFINED 0
 #endif
 
-#define CMD_LIST_LEN (CMD_1_DEFINED + CMD_2_DEFINED + CMD_3_DEFINED + CMD_4_DEFINED + CMD_5_DEFINED + \
-                      CMD_6_DEFINED + CMD_7_DEFINED + CMD_8_DEFINED + CMD_9_DEFINED + CMD_10_DEFINED + \
+#ifdef CMD_41
+    #define CMD_41_DEFINED 1
+#else
+    #define CMD_41_DEFINED 0
+#endif
+
+#ifdef CMD_42
+    #define CMD_42_DEFINED 1
+#else
+    #define CMD_42_DEFINED 0
+#endif
+
+#ifdef CMD_43
+    #define CMD_43_DEFINED 1
+#else
+    #define CMD_43_DEFINED 0
+#endif
+
+#ifdef CMD_44
+    #define CMD_44_DEFINED 1
+#else
+    #define CMD_44_DEFINED 0
+#endif
+
+#ifdef CMD_45
+    #define CMD_45_DEFINED 1
+#else
+    #define CMD_45_DEFINED 0
+#endif
+
+#ifdef CMD_46
+    #define CMD_46_DEFINED 1
+#else
+    #define CMD_46_DEFINED 0
+#endif
+
+#ifdef CMD_47
+    #define CMD_47_DEFINED 1
+#else
+    #define CMD_47_DEFINED 0
+#endif
+
+#ifdef CMD_48
+    #define CMD_48_DEFINED 1
+#else
+    #define CMD_48_DEFINED 0
+#endif
+
+#ifdef CMD_49
+    #define CMD_49_DEFINED 1
+#else
+    #define CMD_49_DEFINED 0
+#endif
+
+#ifdef CMD_50
+    #define CMD_50_DEFINED 1
+#else
+    #define CMD_50_DEFINED 0
+#endif
+
+#define CMD_LIST_LEN (CMD_1_DEFINED  + CMD_2_DEFINED  + CMD_3_DEFINED  + CMD_4_DEFINED  + CMD_5_DEFINED  + \
+                      CMD_6_DEFINED  + CMD_7_DEFINED  + CMD_8_DEFINED  + CMD_9_DEFINED  + CMD_10_DEFINED + \
                       CMD_11_DEFINED + CMD_12_DEFINED + CMD_13_DEFINED + CMD_14_DEFINED + CMD_15_DEFINED + \
                       CMD_16_DEFINED + CMD_17_DEFINED + CMD_18_DEFINED + CMD_19_DEFINED + CMD_20_DEFINED + \
                       CMD_21_DEFINED + CMD_22_DEFINED + CMD_23_DEFINED + CMD_24_DEFINED + CMD_25_DEFINED + \
                       CMD_26_DEFINED + CMD_27_DEFINED + CMD_28_DEFINED + CMD_29_DEFINED + CMD_30_DEFINED + \
                       CMD_31_DEFINED + CMD_32_DEFINED + CMD_33_DEFINED + CMD_34_DEFINED + CMD_35_DEFINED + \
-                      CMD_36_DEFINED + CMD_37_DEFINED + CMD_38_DEFINED + CMD_39_DEFINED + CMD_40_DEFINED)
+                      CMD_36_DEFINED + CMD_37_DEFINED + CMD_38_DEFINED + CMD_39_DEFINED + CMD_40_DEFINED + \
+                      CMD_41_DEFINED + CMD_42_DEFINED + CMD_43_DEFINED + CMD_44_DEFINED + CMD_45_DEFINED + \
+                      CMD_46_DEFINED + CMD_47_DEFINED + CMD_48_DEFINED + CMD_49_DEFINED + CMD_50_DEFINED)
 
 
 #endif  // Include guards.

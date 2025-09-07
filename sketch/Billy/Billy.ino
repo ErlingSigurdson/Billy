@@ -177,8 +177,8 @@ void loop()
 
     static const char *cmd_list[] = {
         0,  // A placeholder to bump first command's index up to 1.
-        CMD_1, CMD_2, CMD_3, CMD_4, CMD_5,
-        CMD_6, CMD_7, CMD_8, CMD_9, CMD_10,
+        CMD_1,  CMD_2,  CMD_3,  CMD_4,  CMD_5,
+        CMD_6,  CMD_7,  CMD_8,  CMD_9,  CMD_10,
         CMD_11, CMD_12, CMD_13, CMD_14, CMD_15,
         CMD_16, CMD_17, CMD_18, CMD_19, CMD_20,
         CMD_21, CMD_22, CMD_23, CMD_24, CMD_25,

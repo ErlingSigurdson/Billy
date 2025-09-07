@@ -5,8 +5,7 @@
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  RGB LED control.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes: I actually doubted whether I want a separate pair of files for this functionality, but eventually I decided
- *        to have them in case I change the library in use or decide to create some complex wrappers.
+ * Notes:
  */
 
 
@@ -31,143 +30,151 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-RGBLED *p_RGB_LED;
+RGBLED *rgb_led_ptr;
 
 
 /******************* FUNCTIONS ******************/
 
 bool RGB_LED_init(uint32_t red_pin, uint32_t green_pin, uint32_t blue_pin, bool is_common_anode)
 {
-    static RGBLED RGB_LED(red_pin, green_pin, blue_pin, is_common_anode);
-    p_RGB_LED = &RGB_LED;
+    static RGBLED _rgb_led(red_pin, green_pin, blue_pin, is_common_anode);
+    rgb_led_ptr = &_rgb_led;
 
-    if (p_RGB_LED) {
-        return 1;
+    if (rgb_led_ptr) {
+        return RGB_LED_SUCCESS;
     } else {
-        return 0;
+        return RGB_LED_FAILURE;
     }
 }
 
-uint32_t RGB_LED_output_color(const char *cmd_val)
+uint32_t RGB_LED_output_color(char *cmd_val)
 {
-    if (!p_RGB_LED) {
-        return 0;
+    if (rgb_led_ptr == nullptr) {
+        return RGB_LED_FAILURE;
     }
 
+    if (strlen(cmd_val) < 3) {  /* There's no color name shorter than 3 characters,
+                                 * so there's a chance for an early return.
+                                 */
+        return RGB_LED_FAILURE;
+    }
+
+    cstring_utils::to_uppercase(cmd_val);
+
     if (cstring_utils::are_equal(cmd_val, "RED")) {
-        p_RGB_LED->setColor(RGB::Color::Red);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Red);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "GREEN")) {
-        p_RGB_LED->setColor(RGB::Color::Green);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Green);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "BLUE")) {
-        p_RGB_LED->setColor(RGB::Color::Blue);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Blue);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "WHITE")) {
-        p_RGB_LED->setColor(RGB::Color::White);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::White);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "LIGHTGRAY")) {
-        p_RGB_LED->setColor(RGB::Color::LightGray);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::LightGray);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "DARKGRAY")) {
-        p_RGB_LED->setColor(RGB::Color::DarkGray);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::DarkGray);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "YELLOW")) {
-        p_RGB_LED->setColor(RGB::Color::Yellow);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Yellow);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "GOLD")) {
-        p_RGB_LED->setColor(RGB::Color::Gold);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Gold);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "ORANGE")) {
-        p_RGB_LED->setColor(RGB::Color::Orange);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Orange);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "MAROON")) {
-        p_RGB_LED->setColor(RGB::Color::Maroon);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Maroon);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "PINK")) {
-        p_RGB_LED->setColor(RGB::Color::Pink);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Pink);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "CORAL")) {
-        p_RGB_LED->setColor(RGB::Color::Coral);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Coral);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "MAGENTA")) {
-        p_RGB_LED->setColor(RGB::Color::Magenta);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Magenta);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "PURPLE")) {
-        p_RGB_LED->setColor(RGB::Color::Purple);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Purple);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "VIOLET")) {
-        p_RGB_LED->setColor(RGB::Color::Violet);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Violet);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "LIME")) {
-        p_RGB_LED->setColor(RGB::Color::Lime);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Lime);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "SKYBLUE")) {
-        p_RGB_LED->setColor(RGB::Color::SkyBlue);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::SkyBlue);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "STEELBLUE")) {
-        p_RGB_LED->setColor(RGB::Color::SteelBlue);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::SteelBlue);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "CYAN")) {
-        p_RGB_LED->setColor(RGB::Color::Cyan);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Cyan);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "TEAL")) {
-        p_RGB_LED->setColor(RGB::Color::Teal);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Teal);
+        return RGB_LED_SUCCESS;
     }
 
     if (cstring_utils::are_equal(cmd_val, "NAVY")) {
-        p_RGB_LED->setColor(RGB::Color::Navy);
-        return 1;
+        rgb_led_ptr->setColor(RGB::Color::Navy);
+        return RGB_LED_SUCCESS;
     }
 
-    return 0;
+    return RGB_LED_FAILURE;
 }
 
 void RGB_LED_output_on()
 {
-    p_RGB_LED->enable();
+    rgb_led_ptr->enable();
 }
 
 void RGB_LED_output_off()
 {
-    p_RGB_LED->disable();
+    rgb_led_ptr->disable();
 }
