@@ -167,29 +167,23 @@ int32_t cstring_utils::trim_leading_crs_and_lfs(char *str)
         return CSTRING_UTILS_NOT_PROCESSED;
     }
 
-    size_t first = 0;
-    while (first < len && (str[first] == '\r' || str[first] == '\n')) {
-        ++first;
+    size_t leading = 0;
+    while (str[leading] == '\r' || str[leading] == '\n') {
+        ++leading;
     }
 
-    if (first == 0) {
-        return CSTRING_UTILS_NOT_PROCESSED;
+    if (leading == 0 || leading == len) {
+        return CSTRING_UTILS_NOT_PROCESSED;    /* A string lacking leading CRs and/or LFs,
+                                                * as well as a string consisting of CRs and/or LFs only,
+                                                * should not be processed.
+                                                */
     }
 
-    if (first == len) {
-        str[0] = '\0';
-        return CSTRING_UTILS_PROCESSED;
-    }
+    char *after_leading = str + leading;
+    size_t bytes_to_move = len - leading + 1;  // A single byte is added to include a null terminator.
+    memmove(str, after_leading, bytes_to_move);
 
-    size_t src = first;
-    size_t dest = 0;
-    while (src < len) {
-        str[dest++] = str[src++];
-    }
-
-    str[dest] = '\0';
-
-    return CSTRING_UTILS_PROCESSED;
+    return (int32_t)leading;
 }
 
 int32_t cstring_utils::inner_cr_and_lf_groups_to_single_spaces(char *str)
