@@ -290,7 +290,7 @@ int32_t cstring_utils::cut_off_trailing_crs_and_lfs(char *str)
 
     str[len - (size_t)trailing] = '\0';
 
-    return CSTRING_UTILS_PROCESSED;
+    return (int32_t)trailing;
 }
 
 int32_t cstring_utils::to_single_line(char *str)
