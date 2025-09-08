@@ -103,7 +103,7 @@ bool cmd::aux::has_decimal_only(const char *str)
     return 1;
 }
 
-void cmd::aux::set_output_digital(uint8_t pin, uint8_t state, const char *topic)
+void cmd::aux::set_output_digital(uint32_t pin, uint32_t state, const char *topic)
 {
     if (pin == 0) {
         cmd::aux::output_msg("Digital output pin not specified.");
@@ -114,7 +114,7 @@ void cmd::aux::set_output_digital(uint8_t pin, uint8_t state, const char *topic)
     cmd::aux::output_msg(topic);
 }
 
-void cmd::aux::set_output_PWM(uint8_t pin, uint32_t val, const char *topic)
+void cmd::aux::set_output_PWM(uint32_t pin, uint32_t val, const char *topic)
 {
     if (pin == 0) {
         cmd::aux::output_msg("PWM output pin not specified.");

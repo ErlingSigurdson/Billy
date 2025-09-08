@@ -77,8 +77,8 @@ namespace cmd {
         bool has_decimal_only(const char *str);
 
         // Accessories for handler functions.
-        void set_output_digital(uint8_t pin, uint8_t state, const char *topic);
-        void set_output_PWM(uint8_t pin, uint32_t val, const char *topic);
+        void set_output_digital(uint32_t pin, uint32_t state, const char *topic);
+        void set_output_PWM(uint32_t pin, uint32_t val, const char *topic);
         void set_config(set_config_params_t* params);
         void output_config(uint32_t addr, const char *topic);
     }
