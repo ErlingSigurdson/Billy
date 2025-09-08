@@ -108,14 +108,14 @@ namespace cmd {
          * turn a two-state load ON or OFF. A main workhorse.
          * A prescribed state of the load is NOT stored in an inbuilt storage.
          */
-        void set_load_digital(char *cmd, uint32_t pin, bool active_state);
+        void set_load_digital(const char *cmd, uint32_t pin, bool active_state);
 
         /* Command #2:
          * drive a load using PWM. Another main workhorse.
          * Valid values of a duty cycle are 0 to 255.
          * A prescribed duty cycle value is NOT stored in an inbuilt storage.
          */
-        void set_load_PWM(char *cmd, uint32_t pin);
+        void set_load_PWM(const char *cmd, uint32_t pin);
 
         /* Command #3:
          * print and send to a client/master the current state of a digital (two-state) load.

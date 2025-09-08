@@ -52,7 +52,7 @@ int32_t cmd::match_in_buf(char *buf, const char *prefix, const char *cmd_list[],
 {
     static size_t prefix_len = strlen(prefix);
 
-    if (cstring_utils::are_equal_within_bytes(buf, prefix, prefix_len)) {
+    if (!cstring_utils::are_equal_within_bytes(buf, prefix, prefix_len)) {
         return CMD_MATCH_IN_BUF_ERR_PREFIX;
     }
 
@@ -191,7 +191,7 @@ void cmd::handler::err_val()
 }
 
 // Command #1
-void cmd::handler::set_load_digital(char *cmd, uint32_t pin, bool active_state)
+void cmd::handler::set_load_digital(const char *cmd, uint32_t pin, bool active_state)
 {
     // Needs to be calculated just once because subsequent commands won't be different.
     static char *cmd_val = strstr(cmd, "=") + 1;
@@ -230,7 +230,7 @@ void cmd::handler::set_load_digital(char *cmd, uint32_t pin, bool active_state)
 }
 
 // Command #2
-void cmd::handler::set_load_PWM(char *cmd, uint32_t pin)
+void cmd::handler::set_load_PWM(const char *cmd, uint32_t pin)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 

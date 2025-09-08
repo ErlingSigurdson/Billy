@@ -85,7 +85,7 @@
  */
 
 // Bit-banging version.
-#define DRV7SEG4D2X595_BIT_BANGING
+//#define DRV7SEG4D2X595_BIT_BANGING
 
 // SPI version, custom MOSI and SCK pins.
 //#define DRV7SEG4D2X595_SPI_CUSTOM_PINS

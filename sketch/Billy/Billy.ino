@@ -178,8 +178,8 @@ void setup()
             DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_CLOCK_PIN
 
             Serial.println("");
-            Serial.println("Warning! Some of the pins assigned to control the daisy-chained 74HC595 ICs
-                            coincide with each other. It can, and most probably will, interfere with the output.");
+            Serial.println("Warning! Some of the pins assigned to control the daisy-chained 74HC595 ICs"
+                           "coincide with each other. It can, and most probably will, interfere with the output.");
         #endif
     #endif
 
@@ -189,8 +189,8 @@ void setup()
             DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_SCK_PIN
 
             Serial.println("");
-            Serial.println("Warning! Some of the pins assigned to control the daisy-chained 74HC595 ICs
-                            coincide with each other. It can, and most probably will, interfere with the output.");
+            Serial.println("Warning! Some of the pins assigned to control the daisy-chained 74HC595 ICs"
+                           "coincide with each other. It can, and most probably will, interfere with the output.");
         #endif
     #endif
 
