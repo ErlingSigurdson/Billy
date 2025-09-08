@@ -43,7 +43,7 @@
 /****************** DATA TYPES ******************/
 
 typedef struct set_config_params_t {
-    char *cmd;
+    const char *cmd;
     uint32_t addr;
     bool decimal_only;
     const char *topic;
@@ -127,7 +127,7 @@ namespace cmd {
          * change an SSID of a Wi-Fi access point
          * stored in an inbuilt storage.
          */
-        void set_WiFi_SSID(char *cmd, bool *refresh_flag);
+        void set_WiFi_SSID(const char *cmd, bool *refresh_flag);
 
         /* Command #5:
          * print and send to a client/master an SSID of a Wi-Fi access point
@@ -139,17 +139,17 @@ namespace cmd {
          * change a password used for connecting to a Wi-Fi access point
          * stored in an inbuilt storage.
          */
-        void set_WiFi_pswd(char *cmd, bool *refresh_flag);
+        void set_WiFi_pswd(const char *cmd, bool *refresh_flag);
 
         /* Command #7:
          * turn periodical printing of a current RSSI value ON or OFF.
          */
-        void set_WiFi_RSSI_output_flag(char *cmd, bool *refresh_flag);
+        void set_WiFi_RSSI_output_flag(const char *cmd, bool *refresh_flag);
 
         /* Command #8:
          * turn periodical attempts to reconnect to a Wi-Fi network ON or OFF.
          */
-        void set_WiFi_autoreconnect_flag(char *cmd, bool *refresh_flag);
+        void set_WiFi_autoreconnect_flag(const char *cmd, bool *refresh_flag);
 
         /* Command #9:
          * print and send to a client/master the device's IP in a Wi-Fi network.
@@ -160,7 +160,7 @@ namespace cmd {
          * change a local TCP server port number
          * stored in an inbuilt storage.
          */
-        void set_local_server_port(char *cmd, bool *refresh_flag);
+        void set_local_server_port(const char *cmd, bool *refresh_flag);
 
         /* Command #11:
          * print and send to a client/master a local TCP server port number
@@ -171,13 +171,13 @@ namespace cmd {
         /* Command #12:
          * set the IoT mode (attempts to connect to a remote server) ON or OFF.
          */
-        void set_IoT_flag(char *cmd, bool *refresh_flag);
+        void set_IoT_flag(const char *cmd, bool *refresh_flag);
 
         /* Command #13:
          * change an IP address of a remote server
          * stored in an inbuilt storage.
          */
-        void set_IoT_server_IP(char *cmd, bool *refresh_flag);
+        void set_IoT_server_IP(const char *cmd, bool *refresh_flag);
 
         /* Command #14:
          * print and send to a client/master an IP address of a remote server
@@ -189,7 +189,7 @@ namespace cmd {
          * change a port number presumably used by a remote server
          * stored in an inbuilt storage.
          */
-        void set_IoT_server_port(char *cmd, bool *refresh_flag);
+        void set_IoT_server_port(const char *cmd, bool *refresh_flag);
 
         /* Command #16:
          * print and send to a client/master a port number presumably used by a remote server
@@ -201,7 +201,7 @@ namespace cmd {
          * change a request message to be sent to a remote server
          * stored in an inbuilt storage.
          */
-        void set_IoT_req_msg(char *cmd, bool *refresh_flag);
+        void set_IoT_req_msg(const char *cmd, bool *refresh_flag);
 
         /* Command #18:
          * print and send to a client/master a request message to be sent to a remote server
@@ -213,22 +213,22 @@ namespace cmd {
          * change an interval (in ms) of sending requests to a remote server
          * stored in an inbuilt storage.
          */
-        void set_IoT_req_period(char *cmd, bool *refresh_flag);
+        void set_IoT_req_period(const char *cmd, bool *refresh_flag);
 
         /* Command #20:
          * set Bluetooth Classic functionality ON or OFF.
          */
-        void set_BTClassic_flag(char *cmd,
-                                            void (*setup_BTClassic_ptr)(stored_configs_t *),
-                                            bool *refresh_flag);
+        void set_BTClassic_flag(const char *cmd,
+                                void (*setup_BTClassic_ptr)(stored_configs_t *),
+                                bool *refresh_flag);
 
         /* Command #21:
          * change a name of the ESP32 as a Bluetooth Classic slave device
          * stored in an inbuilt storage.
          */
-        void set_BTClassic_dev_name(char *cmd,
-                                                void (*setup_BTClassic_ptr)(stored_configs_t *),
-                                                bool *refresh_flag);
+        void set_BTClassic_dev_name(const char *cmd,
+                                    void (*setup_BTClassic_ptr)(stored_configs_t *),
+                                    bool *refresh_flag);
 
         /* Command #22:
          * print and send to a client/master a name of the ESP32 as a Bluetooth Classic slave device
@@ -240,8 +240,8 @@ namespace cmd {
          * reset all wireless connections and restart a wireless connectivity.
          */
         void all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint32_t),
-                                      void (*setup_BTClassic_ptr)(stored_configs_t *),
-                                      stored_configs_t *stored_configs);
+                          void (*setup_BTClassic_ptr)(stored_configs_t *),
+                          stored_configs_t *stored_configs);
 
         /* Command #24:
          * output a firmware version and specified pins information.
@@ -251,7 +251,7 @@ namespace cmd {
         /* Command #25:
          * output a given RGB color.
          */
-        void RGB_output_color(char *cmd);
+        void RGB_output_color(const char *cmd);
 
         /* Command #26:
          * turn RGB output ON.

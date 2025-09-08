@@ -273,7 +273,7 @@ void cmd::handler::output_load_digital(uint32_t pin, bool active_state)
 }
 
 // Command #4
-void cmd::handler::set_WiFi_SSID(char *cmd, bool *refresh_flag)
+void cmd::handler::set_WiFi_SSID(const char *cmd, bool *refresh_flag)
 {
     set_config_params_t params = {cmd,
                                   INBUILT_STORAGE_ADDR_WIFI_SSID,
@@ -288,11 +288,11 @@ void cmd::handler::set_WiFi_SSID(char *cmd, bool *refresh_flag)
 void cmd::handler::output_WiFi_SSID()
 {
     cmd::aux::output_config(INBUILT_STORAGE_ADDR_WIFI_SSID ,
-                          "Current SSID is: ");
+                            "Current SSID is: ");
 }
 
 // Command #6
-void cmd::handler::set_WiFi_pswd(char *cmd, bool *refresh_flag)
+void cmd::handler::set_WiFi_pswd(const char *cmd, bool *refresh_flag)
 {
     set_config_params_t params = {cmd,
                                   INBUILT_STORAGE_ADDR_WIFI_PSWD,
@@ -304,7 +304,7 @@ void cmd::handler::set_WiFi_pswd(char *cmd, bool *refresh_flag)
 }
 
 // Command #7
-void cmd::handler::set_WiFi_RSSI_output_flag(char *cmd, bool *refresh_flag)
+void cmd::handler::set_WiFi_RSSI_output_flag(const char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
@@ -322,7 +322,7 @@ void cmd::handler::set_WiFi_RSSI_output_flag(char *cmd, bool *refresh_flag)
 }
 
 // Command #8
-void cmd::handler::set_WiFi_autoreconnect_flag(char *cmd, bool *refresh_flag)
+void cmd::handler::set_WiFi_autoreconnect_flag(const char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
@@ -350,7 +350,7 @@ void cmd::handler::output_local_server_IP()
 }
 
 // Command #10
-void cmd::handler::set_local_server_port(char *cmd, bool *refresh_flag)
+void cmd::handler::set_local_server_port(const char *cmd, bool *refresh_flag)
 {
     set_config_params_t params = {cmd,
                                   INBUILT_STORAGE_ADDR_LOCAL_SERVER_PORT,
@@ -376,7 +376,7 @@ void cmd::handler::output_local_server_port()
 }
 
 // Command #12
-void cmd::handler::set_IoT_flag(char *cmd, bool *refresh_flag)
+void cmd::handler::set_IoT_flag(const char *cmd, bool *refresh_flag)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
@@ -394,7 +394,7 @@ void cmd::handler::set_IoT_flag(char *cmd, bool *refresh_flag)
 }
 
 // Command #13
-void cmd::handler::set_IoT_server_IP(char *cmd, bool *refresh_flag)
+void cmd::handler::set_IoT_server_IP(const char *cmd, bool *refresh_flag)
 {
     set_config_params_t params = {cmd,
                                   INBUILT_STORAGE_ADDR_IOT_SERVER_IP,
@@ -413,7 +413,7 @@ void cmd::handler::output_IoT_server_IP()
 }
 
 // Command #15
-void cmd::handler::set_IoT_server_port(char *cmd, bool *refresh_flag)
+void cmd::handler::set_IoT_server_port(const char *cmd, bool *refresh_flag)
 {
     set_config_params_t params = {cmd,
                                   INBUILT_STORAGE_ADDR_IOT_SERVER_PORT,
@@ -432,7 +432,7 @@ void cmd::handler::output_IoT_server_port()
 }
 
 // Command #17
-void cmd::handler::set_IoT_req_msg(char *cmd, bool *refresh_flag)
+void cmd::handler::set_IoT_req_msg(const char *cmd, bool *refresh_flag)
 {
     set_config_params_t params = {cmd,
                                   INBUILT_STORAGE_ADDR_IOT_REQ_MSG,
@@ -451,7 +451,7 @@ void cmd::handler::output_IoT_req_msg()
 }
 
 // Command #19
-void cmd::handler::set_IoT_req_period(char *cmd, bool *refresh_flag)
+void cmd::handler::set_IoT_req_period(const char *cmd, bool *refresh_flag)
 {
     set_config_params_t params = {cmd,
                                   INBUILT_STORAGE_ADDR_IOT_REQ_PERIOD,
@@ -463,9 +463,9 @@ void cmd::handler::set_IoT_req_period(char *cmd, bool *refresh_flag)
 }
 
 // Command #20
-void cmd::handler::set_BTClassic_flag(char *cmd,
-                                    void (*setup_BTClassic_ptr)(stored_configs_t *),
-                                    bool *refresh_flag)
+void cmd::handler::set_BTClassic_flag(const char *cmd,
+                                      void (*setup_BTClassic_ptr)(stored_configs_t *),
+                                      bool *refresh_flag)
 {
     // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)cmd;
@@ -498,9 +498,9 @@ void cmd::handler::set_BTClassic_flag(char *cmd,
 }
 
 // Command #21
-void cmd::handler::set_BTClassic_dev_name(char *cmd,
-                                        void (*setup_BTClassic_ptr)(stored_configs_t *),
-                                        bool *refresh_flag)
+void cmd::handler::set_BTClassic_dev_name(const char *cmd,
+                                          void (*setup_BTClassic_ptr)(stored_configs_t *),
+                                          bool *refresh_flag)
 {
     // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)cmd;
@@ -539,8 +539,8 @@ void cmd::handler::output_BTClassic_dev_name()
 
 // Command #23
 void cmd::handler::all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint32_t),
-                              void (*setup_BTClassic_ptr)(stored_configs_t *),
-                              stored_configs_t *stored_configs)
+                                void (*setup_BTClassic_ptr)(stored_configs_t *),
+                                stored_configs_t *stored_configs)
 {
     cmd::aux::output_msg("Resetting local connections...");
 
@@ -590,7 +590,7 @@ void cmd::handler::output_version()
 }
 
 // Command #25
-void cmd::handler::RGB_output_color(char *cmd)
+void cmd::handler::RGB_output_color(const char *cmd)
 {
     char *cmd_val = strstr(cmd, "=") + 1;
 
