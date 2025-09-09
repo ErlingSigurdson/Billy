@@ -47,7 +47,7 @@
 #endif
 
 #ifdef RGB_LED
-    #include "RGB_LED.h"
+    #include "rgb_led.h"
 #endif
 
 #if defined DRV7SEG4D2X595_BIT_BANGING      || \

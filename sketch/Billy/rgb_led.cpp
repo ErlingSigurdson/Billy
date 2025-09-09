@@ -1,7 +1,7 @@
 /*************** FILE DESCRIPTION ***************/
 
 /**
- * Filename: RGB_LED.cpp
+ * Filename: rgb_led.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  RGB LED control.
  * ----------------------------------------------------------------------------|---------------------------------------|
@@ -14,7 +14,7 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "RGB_LED.h"
+#include "rgb_led.h"
 
 // Arduino core header file.
 #include <Arduino.h>  /* I guess I could do with <cstdint> and <cstring>, but I decided to keep it
