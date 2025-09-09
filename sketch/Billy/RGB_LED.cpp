@@ -47,7 +47,7 @@ bool RGB_LED_init(uint32_t red_pin, uint32_t green_pin, uint32_t blue_pin, bool 
     }
 }
 
-uint32_t RGB_LED_output_color(const char *cmd_val)
+uint32_t RGB_LED_output_color(char *cmd_val)
 {
     if (rgb_led_ptr == nullptr) {
         return RGB_LED_FAILURE;
