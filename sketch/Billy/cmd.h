@@ -5,7 +5,16 @@
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Text commands processing.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:
+ * Notes:    All command handlers that act on a set of fixed command values
+ *           ("ON", "OFF", "TOGGLE", etc.) utilize a helper function that
+ *           converts incoming command values to uppercase. This ensures that
+ *           Billy is case-insensitive for the purpose of command value
+ *           recognition. For this reason these handlers take a parameter of
+ *           type char*, not const char*. If there's ever a need to pass a
+ *           hardcoded value to such a handler, either the handler must be
+ *           overloaded so that its variant would take const char* as a
+ *           parameter, or the hardcoded value must be copied to a modifiable
+ *           buffer first.
  */
 
 
@@ -108,7 +117,7 @@ namespace cmd {
          * turn a two-state load ON or OFF. A main workhorse.
          * A prescribed state of the load is NOT stored in an inbuilt storage.
          */
-        void set_load_digital(const char *cmd, uint32_t pin, bool active_state);
+        void set_load_digital(char *cmd, uint32_t pin, bool active_state);
 
         /* Command #2:
          * drive a load using PWM. Another main workhorse.
@@ -144,12 +153,12 @@ namespace cmd {
         /* Command #7:
          * turn periodical printing of a current RSSI value ON or OFF.
          */
-        void set_WiFi_RSSI_output_flag(const char *cmd, bool *refresh_flag);
+        void set_WiFi_RSSI_output_flag(char *cmd, bool *refresh_flag);
 
         /* Command #8:
          * turn periodical attempts to reconnect to a Wi-Fi network ON or OFF.
          */
-        void set_WiFi_autoreconnect_flag(const char *cmd, bool *refresh_flag);
+        void set_WiFi_autoreconnect_flag(char *cmd, bool *refresh_flag);
 
         /* Command #9:
          * print and send to a client/master the device's IP in a Wi-Fi network.
@@ -171,7 +180,7 @@ namespace cmd {
         /* Command #12:
          * set the IoT mode (attempts to connect to a remote server) ON or OFF.
          */
-        void set_IoT_flag(const char *cmd, bool *refresh_flag);
+        void set_IoT_flag(char *cmd, bool *refresh_flag);
 
         /* Command #13:
          * change an IP address of a remote server
@@ -218,7 +227,7 @@ namespace cmd {
         /* Command #20:
          * set Bluetooth Classic functionality ON or OFF.
          */
-        void set_BTClassic_flag(const char *cmd,
+        void set_BTClassic_flag(char *cmd,
                                 void (*setup_BTClassic_ptr)(stored_configs_t *),
                                 bool *refresh_flag);
 
@@ -251,7 +260,7 @@ namespace cmd {
         /* Command #25:
          * output a given RGB color.
          */
-        void RGB_output_color(const char *cmd);
+        void RGB_output_color(char *cmd);
 
         /* Command #26:
          * turn RGB output ON.

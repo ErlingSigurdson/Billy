@@ -191,10 +191,13 @@ void cmd::handler::err_val()
 }
 
 // Command #1
-void cmd::handler::set_load_digital(const char *cmd, uint32_t pin, bool active_state)
+void cmd::handler::set_load_digital(char *cmd, uint32_t pin, bool active_state)
 {
-    // Needs to be calculated just once because subsequent commands won't be different.
-    static char *cmd_val = strstr(cmd, "=") + 1;
+    static char *cmd_val = strstr(cmd, "=") + 1;  /* Needs to be calculated just once
+                                                   * because subsequent commands won't be different.
+                                                   */
+                                                   
+    cstring_utils::to_uppercase(cmd_val);         // Valid commmand values for this function are all-uppercase.
 
     if (cstring_utils::are_equal(cmd_val, "TOGGLE")) {
         if (digitalRead(pin) == active_state) {
@@ -304,10 +307,14 @@ void cmd::handler::set_WiFi_pswd(const char *cmd, bool *refresh_flag)
 }
 
 // Command #7
-void cmd::handler::set_WiFi_RSSI_output_flag(const char *cmd, bool *refresh_flag)
+void cmd::handler::set_WiFi_RSSI_output_flag(char *cmd, bool *refresh_flag)
 {
-    char *cmd_val = strstr(cmd, "=") + 1;
+    static char *cmd_val = strstr(cmd, "=") + 1;  /* Needs to be calculated just once
+                                                   * because subsequent commands won't be different.
+                                                   */
 
+    cstring_utils::to_uppercase(cmd_val);         // Valid commmand values for this function are all-uppercase.
+                                                   
     if (cstring_utils::are_equal(cmd_val, "ON") || cstring_utils::are_equal(cmd_val, "OFF")) {
         set_config_params_t params = {cmd,
                                       INBUILT_STORAGE_ADDR_WIFI_RSSI_OUTPUT_FLAG,
@@ -322,9 +329,13 @@ void cmd::handler::set_WiFi_RSSI_output_flag(const char *cmd, bool *refresh_flag
 }
 
 // Command #8
-void cmd::handler::set_WiFi_autoreconnect_flag(const char *cmd, bool *refresh_flag)
+void cmd::handler::set_WiFi_autoreconnect_flag(char *cmd, bool *refresh_flag)
 {
-    char *cmd_val = strstr(cmd, "=") + 1;
+    static char *cmd_val = strstr(cmd, "=") + 1;  /* Needs to be calculated just once
+                                                   * because subsequent commands won't be different.
+                                                   */
+
+    cstring_utils::to_uppercase(cmd_val);         // Valid commmand values for this function are all-uppercase.
 
     if (cstring_utils::are_equal(cmd_val, "ON") || cstring_utils::are_equal(cmd_val, "OFF")) {
         set_config_params_t params = {cmd,
@@ -376,9 +387,13 @@ void cmd::handler::output_local_server_port()
 }
 
 // Command #12
-void cmd::handler::set_IoT_flag(const char *cmd, bool *refresh_flag)
+void cmd::handler::set_IoT_flag(char *cmd, bool *refresh_flag)
 {
-    char *cmd_val = strstr(cmd, "=") + 1;
+    static char *cmd_val = strstr(cmd, "=") + 1;  /* Needs to be calculated just once
+                                                   * because subsequent commands won't be different.
+                                                   */
+
+    cstring_utils::to_uppercase(cmd_val);         // Valid commmand values for this function are all-uppercase.
 
     if (cstring_utils::are_equal(cmd_val, "ON") || cstring_utils::are_equal(cmd_val, "OFF")) {
         set_config_params_t params = {cmd,
@@ -463,7 +478,7 @@ void cmd::handler::set_IoT_req_period(const char *cmd, bool *refresh_flag)
 }
 
 // Command #20
-void cmd::handler::set_BTClassic_flag(const char *cmd,
+void cmd::handler::set_BTClassic_flag(char *cmd,
                                       void (*setup_BTClassic_ptr)(stored_configs_t *),
                                       bool *refresh_flag)
 {
@@ -473,7 +488,11 @@ void cmd::handler::set_BTClassic_flag(const char *cmd,
     (void)refresh_flag;
 
     #if defined ESP32 && defined BTCLASSIC_USED
-        char *cmd_val = strstr(cmd, "=") + 1;
+        static char *cmd_val = strstr(cmd, "=") + 1;  /* Needs to be calculated just once
+                                                       * because subsequent commands won't be different.
+                                                       */
+
+        cstring_utils::to_uppercase(cmd_val);         // Valid commmand values for this function are all-uppercase.
 
         if (cstring_utils::are_equal(cmd_val, "ON") || cstring_utils::are_equal(cmd_val, "OFF")) {
             set_config_params_t params = {cmd,
@@ -590,9 +609,13 @@ void cmd::handler::output_version()
 }
 
 // Command #25
-void cmd::handler::RGB_output_color(const char *cmd)
+void cmd::handler::RGB_output_color(char *cmd)
 {
-    char *cmd_val = strstr(cmd, "=") + 1;
+    static char *cmd_val = strstr(cmd, "=") + 1;  /* Needs to be calculated just once
+                                                   * because subsequent commands won't be different.
+                                                   */
+
+    cstring_utils::to_uppercase(cmd_val);         // Valid commmand values for this function are all-uppercase.
 
     uint32_t ret_val = RGB_LED_output_color(cmd_val);
 

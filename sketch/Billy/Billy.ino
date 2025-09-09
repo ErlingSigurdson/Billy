@@ -552,9 +552,10 @@ void loop()
 
         // Optional digital load toggling aligned with the timer.
         static bool digital_load_toggle_flag = 0;
+        char modifiable_buf[STR_MAX_LEN + 1] = CMD_PREFIX CMD_1 "TOGGLE";
         if (SimpleCounter.minutes % 5 == 0 && SimpleCounter.seconds == 0) {  // Toggles every five minutes.
             if (digital_load_toggle_flag) {
-                cmd::handler::set_load_digital(CMD_PREFIX CMD_1 "TOGGLE",
+                cmd::handler::set_load_digital(modifiable_buf,
                                                DIGITAL_OUTPUT_PIN,
                                                DIGITAL_OUTPUT_ACTIVE_STATE);
                 digital_load_toggle_flag = 0;
