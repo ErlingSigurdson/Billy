@@ -6,7 +6,7 @@
  * Purpose:  A collection of macros and functions for inspecting and processing
  *           C-style (null-terminated) strings.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:    Single-byte ASCII only. Not intended for other encodings.    
+ * Notes:    Single-byte ASCII only. Not intended for other encodings.
  *
  *           Inspecting functions with a bool return type will return:
  *           * true  - if a tested criterion implied by a function name is met.
@@ -14,7 +14,7 @@
  *                     pointer to char or const char is nullptr.
  *
  *           Inspecting functions with a signed integer return type will return:
- *           * -1 - if a passed pointer to char or const char is nullptr. 
+ *           * -1 - if a passed pointer to char or const char is nullptr.
  *           *  A count otherwise.
  *
  *           Processing functions with a signed integer return type will return:
@@ -70,7 +70,7 @@ namespace cstring_utils {
     int32_t count_leading_crs_and_lfs(const char *str);
     int32_t count_trailing_crs_and_lfs(const char *str);
 
-    
+
     /*--- Processing functions ---*/
 
     /* If a string is processed, returns:
@@ -78,7 +78,7 @@ namespace cstring_utils {
      *
      * Special case: will also return -1 if a buffer size is too small
      * to fit both a character to be appended and a null terminator.
-     */                        
+     */
     int32_t append_char(char *str, size_t arr_size, char char_to_append);
 
     /* If a string is processed, returns:

@@ -111,8 +111,7 @@ bool ESP_TCP::server_get_client()
 {
     if (gp_TCP_local_server) {
         // Previously the available() method was used, but nowadays it's deprecated.
-        TCP_remote_client = 
-        gp_TCP_local_server->accept();
+        TCP_remote_client = gp_TCP_local_server->accept();
     } else {
         return 0;
     }

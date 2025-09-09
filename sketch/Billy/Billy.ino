@@ -444,7 +444,7 @@ void loop()
                     cmd::handler::RGB_output_on();
                 #else
                     cmd::handler::err_cmd();
-                #endif        
+                #endif
                 break;
 
             case 27:
@@ -452,7 +452,7 @@ void loop()
                     cmd::handler::RGB_output_off();
                 #else
                     cmd::handler::err_cmd();
-                #endif 
+                #endif
                 break;
 
             default:
