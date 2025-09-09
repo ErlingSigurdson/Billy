@@ -56,7 +56,7 @@ int32_t cmd::match_in_buf(char *buf, const char *prefix, const char *cmd_list[],
         return CMD_MATCH_IN_BUF_ERR_PREFIX;
     }
 
-    cstring_utils::nullify_first_cr_or_lf(buf);
+    cstring_utils::nullify_first_cr_or_lf(buf);         // In case there's a CR or LF in the buffer.
     cstring_utils::to_uppercase_before_char(buf, '=');  /* Commands themselves are all-uppercase, but values
                                                          * may contain meaningful lowercase letters.
                                                          */
