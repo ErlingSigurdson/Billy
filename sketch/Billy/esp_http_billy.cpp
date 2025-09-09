@@ -1,7 +1,7 @@
 /*************** FILE DESCRIPTION ***************/
 
 /**
- * Filename: ESP_HTTP.cpp
+ * Filename: esp_http_billy.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  A simple HTTP server for ESP32/ESP8266.
  *           Intended for use with the ESP32/ESP8266 Arduino core.
@@ -15,7 +15,7 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "ESP_HTTP.h"
+#include "esp_http_billy.h"
 
 // Arduino core header file.
 #include <Arduino.h>

@@ -1,7 +1,7 @@
 /*************** FILE DESCRIPTION ***************/
 
 /**
- * Filename: ESP_TCP.h
+ * Filename: esp_tcp_billy.h
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  TCP/IP wrapper functions.
  *           Intended for use with the ESP32/ESP8266 Arduino core.

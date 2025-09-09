@@ -26,17 +26,17 @@
 // Local modules.
 #include "stored_configs.h"
 #include "inbuilt_storage.h"
-#include "ESP_WiFi.h"
-#include "ESP_TCP.h"
+#include "esp_wifi_billy.h"
+#include "esp_tcp_billy.h"
 #include "cstring_utils.h"
 #include "version.h"
 
 #if defined ESP32 && defined BTCLASSIC_USED
-    #include "ESP32_BTClassic.h"
+    #include "esp32_btclassic.h"
 #endif
 
 #if defined ESP32 && defined BLE_USED
-    #include "ESP32_BLE.h"
+    #include "esp32_ble.h"
 #endif
 
 #ifdef RGB_LED

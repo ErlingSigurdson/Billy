@@ -13,6 +13,9 @@
  * Notes:    See the README files for more information.
  *           Project homepages: https://github.com/ErlingSigurdson/Billy
  *                              https://gitflic.ru/efimov-d-v/billy
+ *
+ *           Some header and source files use a *_billy.h / *_billy.cpp suffix
+ *           to avoid naming conflicts with ESP-IDF library files.
  */
 
 
@@ -34,13 +37,13 @@
 #include "stored_configs.h"
 #include "inbuilt_storage.h"
 #include "hw_uart.h"
-#include "ESP_WiFi.h"
-#include "ESP_TCP.h"
-#include "ESP_HTTP.h"
+#include "esp_wifi_billy.h"
+#include "esp_tcp_billy.h"
+#include "esp_http_billy.h"
 #include "cstring_utils.h"
 
 #if defined ESP32 && defined BTCLASSIC_USED
-    #include "ESP32_BTClassic.h"
+    #include "esp32_btclassic.h"
 #endif
 
 #ifdef RGB_LED

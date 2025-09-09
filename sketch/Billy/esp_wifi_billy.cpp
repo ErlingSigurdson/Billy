@@ -1,7 +1,7 @@
 /*************** FILE DESCRIPTION ***************/
 
 /**
- * Filename: ESP_WiFi.cpp
+ * Filename: esp_wifi_billy.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Wi-Fi wrapper functions.
  *           Intended for use with the ESP32/ESP8266 Arduino core.
@@ -15,7 +15,7 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "ESP_WiFi.h"
+#include "esp_wifi_billy.h"
 
 // Arduino core header file.
 #include <Arduino.h>
