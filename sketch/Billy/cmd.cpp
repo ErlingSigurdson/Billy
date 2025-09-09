@@ -196,7 +196,7 @@ void cmd::handler::set_load_digital(char *cmd, uint32_t pin, bool active_state)
     static char *cmd_val = strstr(cmd, "=") + 1;  /* Needs to be calculated just once
                                                    * because subsequent commands won't be different.
                                                    */
-                                                   
+
     cstring_utils::to_uppercase(cmd_val);         // Valid commmand values for this function are all-uppercase.
 
     if (cstring_utils::are_equal(cmd_val, "TOGGLE")) {
@@ -314,7 +314,7 @@ void cmd::handler::set_WiFi_RSSI_output_flag(char *cmd, bool *refresh_flag)
                                                    */
 
     cstring_utils::to_uppercase(cmd_val);         // Valid commmand values for this function are all-uppercase.
-                                                   
+
     if (cstring_utils::are_equal(cmd_val, "ON") || cstring_utils::are_equal(cmd_val, "OFF")) {
         set_config_params_t params = {cmd,
                                       INBUILT_STORAGE_ADDR_WIFI_RSSI_OUTPUT_FLAG,
