@@ -15,7 +15,7 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "esp32_btclassic.h"
+#include "esp32_btclassic_billy.h"
 
 // Arduino core header file.
 #include <Arduino.h>

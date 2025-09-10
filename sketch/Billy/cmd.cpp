@@ -32,7 +32,7 @@
 #include "version.h"
 
 #if defined ESP32 && defined BTCLASSIC_USED
-    #include "esp32_btclassic.h"
+    #include "esp32_btclassic_billy.h"
 #endif
 
 #if defined ESP32 && defined BLE_USED

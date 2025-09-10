@@ -1,7 +1,7 @@
 /*************** FILE DESCRIPTION ***************/
 
 /**
- * Filename: esp32_btclassic.h
+ * Filename: esp32_btclassic_billy.h
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Bluetooth Classic wrapper functions for ESP32 SoC.
  *           Intended for use with the ESP32 Arduino core.

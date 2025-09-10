@@ -15,7 +15,7 @@
  *                              https://gitflic.ru/efimov-d-v/billy
  *
  *           Some header and source files use a *_billy.h / *_billy.cpp suffix
- *           to avoid naming conflicts with ESP-IDF library files.
+ *           to avoid possible naming conflicts with ESP-IDF library files.
  */
 
 
@@ -43,7 +43,7 @@
 #include "cstring_utils.h"
 
 #if defined ESP32 && defined BTCLASSIC_USED
-    #include "esp32_btclassic.h"
+    #include "esp32_btclassic_billy.h"
 #endif
 
 #ifdef RGB_LED
