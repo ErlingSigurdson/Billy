@@ -603,8 +603,8 @@ bool wireless_interface_setup::WiFi(stored_configs_t *stored_configs, uint32_t c
         Serial.print("Local TCP server started at port ");
         Serial.println(stored_configs->local_server_port);
 
-        ESP_HTTP_server_start();
-        ESP_HTTP_set_handlers();
+        esp_http_billy::server_start();
+        esp_http_billy::set_handlers();
         Serial.print("Local HTTP server started at port ");
         Serial.println(HTTP_PORT);
     }
@@ -732,8 +732,8 @@ void receive::tcp_iot(char *buf, stored_configs_t *stored_configs)
 
 void receive::http(char *buf)
 {
-    ESP_HTTP_handle_client_in_loop();
-    ESP_HTTP_copy_buf(buf, STR_MAX_LEN);
+    esp_http_billy::handle_client_in_loop();
+    esp_http_billy::copy_buf(buf, STR_MAX_LEN);
 }
 
 void receive::btclassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected)

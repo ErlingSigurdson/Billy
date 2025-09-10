@@ -50,36 +50,36 @@ char ESP_HTTP_buf[STR_MAX_LEN + 1] = {0};
 
 /******************* FUNCTIONS ******************/
 
-void ESP_HTTP_server_start()
+void esp_http_billy::server_start()
 {
     HTTP_server.begin();
 }
 
-void ESP_HTTP_set_handlers()
+void esp_http_billy::set_handlers()
 {
     // Assigning HTTP request handler functions to particular URIs.
-    HTTP_server.on("/", ESP_HTTP_handle_root);
-    HTTP_server.onNotFound(ESP_HTTP_handle_not_found);
-    HTTP_server.on("/ctrl", ESP_HTTP_handle_ctrl);
+    HTTP_server.on("/", esp_http_billy::handle_root);
+    HTTP_server.onNotFound(esp_http_billy::handle_not_found);
+    HTTP_server.on("/ctrl", esp_http_billy::handle_ctrl);
 }
 
-void ESP_HTTP_handle_client_in_loop()
+void esp_http_billy::handle_client_in_loop()
 {
     // Receive and handle HTTP requests.
     HTTP_server.handleClient();
 }
 
-void ESP_HTTP_handle_root()
+void esp_http_billy::handle_root()
 {
-    HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(""));
+    HTTP_server.send(200, "text/html", esp_http_billy::send_html(""));
 }
 
-void ESP_HTTP_handle_not_found()
+void esp_http_billy::handle_not_found()
 {
     HTTP_server.send(404, "text/plain", "Not found, chummer. Try another page.");
 }
 
-void ESP_HTTP_handle_ctrl()
+void esp_http_billy::handle_ctrl()
 {
     char cmd_1[STR_MAX_LEN + 1] = CMD_1;  // Digital output command.
     cmd_1[strlen(cmd_1) - 1] = '\0';      // Remove an equality sign.
@@ -114,7 +114,7 @@ void ESP_HTTP_handle_ctrl()
         strcat(ESP_HTTP_buf, CMD_1);
         strcat(ESP_HTTP_buf, val);
 
-        HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(val));
+        HTTP_server.send(200, "text/html", esp_http_billy::send_html(val));
 
         return;
     } else if (HTTP_server.hasArg(cmd_2)) {  // PWM output command was received.
@@ -151,7 +151,7 @@ void ESP_HTTP_handle_ctrl()
         strcat(ESP_HTTP_buf, CMD_2);
         strcat(ESP_HTTP_buf, val);
 
-        HTTP_server.send(200, "text/html", ESP_HTTP_send_HTML(val));
+        HTTP_server.send(200, "text/html", esp_http_billy::send_html(val));
 
         return;
     } else {
@@ -159,7 +159,7 @@ void ESP_HTTP_handle_ctrl()
     }
 }
 
-String ESP_HTTP_send_HTML(const char *prev_cmd_val)
+String esp_http_billy::send_html(const char *prev_cmd_val)
 {
     String _prev_cmd_val = String(prev_cmd_val);
 
@@ -271,7 +271,7 @@ String ESP_HTTP_send_HTML(const char *prev_cmd_val)
     return site;
 }
 
-void ESP_HTTP_copy_buf(char *buf, uint32_t str_max_len)
+void esp_http_billy::copy_buf(char *buf, uint32_t str_max_len)
 {
     if (ESP_HTTP_buf[0] != '\0' && strlen(ESP_HTTP_buf) <= str_max_len) {
         strcpy(buf, ESP_HTTP_buf);

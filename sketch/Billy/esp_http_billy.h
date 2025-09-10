@@ -142,14 +142,15 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-void ESP_HTTP_server_start();
-void ESP_HTTP_set_handlers();
-void ESP_HTTP_handle_client_in_loop();
-void ESP_HTTP_handle_root();
-void ESP_HTTP_handle_not_found();
-void ESP_HTTP_handle_ctrl();
-String ESP_HTTP_send_HTML(const char *prev_cmd_val);
-void ESP_HTTP_copy_buf(char *buf, uint32_t str_max_len);
-
+namespace esp_http_billy {
+    void server_start();
+    void set_handlers();
+    void handle_client_in_loop();
+    void handle_root();
+    void handle_not_found();
+    void handle_ctrl();
+    String send_html(const char *prev_cmd_val);
+    void copy_buf(char *buf, uint32_t str_max_len);
+}
 
 #endif  // Include guards.
