@@ -30,12 +30,14 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-void ESP32_BTLE_start(const char *dev_name);
-bool ESP32_BTLE_check_connection();
-uint32_t ESP32_BTLE_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout);
-void ESP32_BTLE_send_msg(const char *msg);
-void ESP32_BTLE_disconnect(uint32_t shutdown_downtime);
-void ESP32_BTLE_stop(uint32_t shutdown_downtime);
+namespace esp32_ble_billy {
+    void start(const char *dev_name);
+    bool check_connection();
+    uint32_t read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout);
+    void send_msg(const char *msg);
+    void disconnect(uint32_t shutdown_downtime);
+    void stop(uint32_t shutdown_downtime);
+}
 
 
 #endif  // Include guards.

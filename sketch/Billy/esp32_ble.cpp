@@ -63,7 +63,7 @@ class BTLE_RxCallback : public BLECharacteristicCallbacks {
 
 /******************* FUNCTIONS ******************/
 
-void ESP32_BTLE_start(const char *dev_name)
+void esp32_ble_billy::start(const char *dev_name)
 {
     BLEDevice::init(dev_name);
 
@@ -88,12 +88,12 @@ void ESP32_BTLE_start(const char *dev_name)
     BTLE_Server->getAdvertising()->start();
 }
 
-bool ESP32_BTLE_check_connection()
+bool esp32_ble_billy::check_connection()
 {
     return BTLE_device_connected;
 }
 
-uint32_t ESP32_BTLE_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
+uint32_t esp32_ble_billy::read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout)
 {
     uint64_t current_millis = millis();
     uint64_t previous_millis = current_millis;
@@ -125,7 +125,7 @@ uint32_t ESP32_BTLE_read_line(char *buf, uint32_t str_max_len, uint32_t conn_tim
     return i;
 }
 
-void ESP32_BTLE_send_msg(const char *msg)
+void esp32_ble_billy::send_msg(const char *msg)
 {
     if (BTLE_device_connected && BTLE_TxCharacteristic) {
         BTLE_TxCharacteristic->setValue((uint8_t*)msg, strlen(msg));
@@ -133,7 +133,7 @@ void ESP32_BTLE_send_msg(const char *msg)
     }
 }
 
-void ESP32_BTLE_disconnect(uint32_t shutdown_downtime)
+void esp32_ble_billy::disconnect(uint32_t shutdown_downtime)
 {
     delay(shutdown_downtime);
     if (BTLE_Server) {
@@ -141,7 +141,7 @@ void ESP32_BTLE_disconnect(uint32_t shutdown_downtime)
     }
 }
 
-void ESP32_BTLE_stop(uint32_t shutdown_downtime)
+void esp32_ble_billy::stop(uint32_t shutdown_downtime)
 {
     delay(shutdown_downtime);
     BLEDevice::deinit(true);
