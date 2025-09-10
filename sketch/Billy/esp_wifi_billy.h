@@ -13,8 +13,8 @@
 /************ PREPROCESSOR DIRECTIVES ***********/
 
 // Include guards.
-#ifndef ESP_WIFI_H
-#define ESP_WIFI_H
+#ifndef ESP_WIFI_BILLY_H
+#define ESP_WIFI_BILLY_H
 
 
 /*--- Includes ---*/

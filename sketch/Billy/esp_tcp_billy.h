@@ -13,8 +13,8 @@
 /************ PREPROCESSOR DIRECTIVES ***********/
 
 // Include guards.
-#ifndef ESP_TCP_H
-#define ESP_TCP_H
+#ifndef ESP_TCP_BILLY_H
+#define ESP_TCP_BILLY_H
 
 
 /*--- Includes ---*/

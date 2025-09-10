@@ -13,8 +13,8 @@
 /************ PREPROCESSOR DIRECTIVES ***********/
 
 // Include guards.
-#ifndef ESP_HTTP_H
-#define ESP_HTTP_H
+#ifndef ESP_HTTP_BILLY_H
+#define ESP_HTTP_BILLY_H
 
 
 /*--- Includes ---*/
