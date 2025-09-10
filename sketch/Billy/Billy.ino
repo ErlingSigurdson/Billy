@@ -474,7 +474,7 @@ void loop()
 
     if (stored_configs.WiFi_RSSI_output_flag) {
         if (RSSI_output_due_time) {
-            ESP_WiFi_RSSI_output();
+            esp_wifi_billy::rssi_output();
             RSSI_output_previous_millis = RSSI_output_current_millis = millis();
         } else {
             RSSI_output_current_millis = millis();
@@ -506,11 +506,11 @@ void loop()
                                        WIFI_RECONNECT_CHECK_PERIOD;
 
     // A small trick to ensure a reconnection attempt regardless of ESP-IDF event-based connection check.
-    static bool WiFi_connection_attempt_failed = !ESP_WiFi_is_connected();
+    static bool WiFi_connection_attempt_failed = !esp_wifi_billy::is_connected();
 
     if (stored_configs.WiFi_autoreconnect_flag) {
         if (WiFi_autoreconnect_due_time) {
-            if (!ESP_WiFi_is_connected() || WiFi_connection_attempt_failed) {
+            if (!esp_wifi_billy::is_connected() || WiFi_connection_attempt_failed) {
                 ESP_TCP::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
                 ESP_TCP::server_stop(CONN_SHUTDOWN_DOWNTIME);
                 WiFi_connection_attempt_failed = !wireless_interface_setup::WiFi(&stored_configs, CONN_TIMEOUT);
@@ -587,17 +587,17 @@ bool wireless_interface_setup::WiFi(stored_configs_t *stored_configs, uint32_t c
     ESP_TCP::server_port_update(stored_configs->local_server_port);
 
     // Connect to Wi-Fi network.
-    bool WiFi_connected = ESP_WiFi_set_connection(stored_configs->WiFi_SSID,
+    bool WiFi_connected = esp_wifi_billy::set_connection(stored_configs->WiFi_SSID,
                                                   stored_configs->WiFi_pswd,
                                                   conn_attempt_timeout);
 
     if (WiFi_connected) {
-        ESP_WiFi_indicate_connection(WIFI_INDICATOR_LED_PIN,
+        esp_wifi_billy::indicate_connection(WIFI_INDICATOR_LED_PIN,
                                      WIFI_INDICATE_CONNECTION_CYCLES,
                                      WIFI_INDICATE_CONNECTION_PERIOD);
 
         Serial.print("Current local IP address is: ");
-        Serial.println(ESP_WiFi_get_devices_current_IP());
+        Serial.println(esp_wifi_billy::get_devices_current_ip());
 
         ESP_TCP::server_start();
         Serial.print("Local TCP server started at port ");

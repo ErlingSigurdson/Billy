@@ -25,11 +25,12 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeout);
-void ESP_WiFi_indicate_connection(uint32_t LED_pin, uint32_t cycles, uint32_t period);
-String ESP_WiFi_get_devices_current_IP();
-void ESP_WiFi_RSSI_output();
-bool ESP_WiFi_is_connected();
-
+namespace esp_wifi_billy {
+    bool set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeout);
+    void indicate_connection(uint32_t LED_pin, uint32_t cycles, uint32_t period);
+    String get_devices_current_ip();
+    void rssi_output();
+    bool is_connected();
+}
 
 #endif  // Include guards.

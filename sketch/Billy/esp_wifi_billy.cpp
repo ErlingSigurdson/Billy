@@ -34,7 +34,7 @@
 
 /******************* FUNCTIONS ******************/
 
-bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeout)
+bool esp_wifi_billy::set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeout)
 {
     if (WiFi.isConnected()) {
         WiFi.disconnect();
@@ -80,7 +80,7 @@ bool ESP_WiFi_set_connection(char *SSID, char *pswd, uint32_t conn_attempt_timeo
     return 1;
 }
 
-void ESP_WiFi_indicate_connection(uint32_t led_pin, uint32_t cycles, uint32_t period)
+void esp_wifi_billy::indicate_connection(uint32_t led_pin, uint32_t cycles, uint32_t period)
 {
     if (led_pin == 0) {
         return;
@@ -103,19 +103,19 @@ void ESP_WiFi_indicate_connection(uint32_t led_pin, uint32_t cycles, uint32_t pe
     }
 }
 
-String ESP_WiFi_get_devices_current_IP()
+String esp_wifi_billy::get_devices_current_ip()
 {
     return WiFi.localIP().toString();
 }
 
-void ESP_WiFi_RSSI_output()
+void esp_wifi_billy::rssi_output()
 {
     int64_t RSSI = WiFi.RSSI();
     Serial.print("Current RSSI is: ");
     Serial.println(RSSI);
 }
 
-bool ESP_WiFi_is_connected()
+bool esp_wifi_billy::is_connected()
 {
     if (WiFi.status() == WL_CONNECTED) {
         return 1;

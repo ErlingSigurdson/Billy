@@ -354,7 +354,7 @@ void cmd::handler::set_WiFi_autoreconnect_flag(char *cmd, bool *refresh_flag)
 void cmd::handler::output_local_server_IP()
 {
     char msg[STR_MAX_LEN * 2 + 1] = {0};
-    String current_IP = ESP_WiFi_get_devices_current_IP();
+    String current_IP = esp_wifi_billy::get_devices_current_ip();
     strcpy(msg, "Current local IP address is: ");
     strcat(msg, current_IP.c_str());
     cmd::aux::output_msg(msg);
