@@ -487,7 +487,7 @@ void loop()
     /*--- Finishing communications ---*/
 
     // TCP clients disconnection.
-    ESP_TCP::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
+    esp_tcp_billy::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
 
     // Bluetooth Classic disconnection.
     #if defined ESP32 && defined BTCLASSIC_USED
@@ -511,8 +511,8 @@ void loop()
     if (stored_configs.WiFi_autoreconnect_flag) {
         if (WiFi_autoreconnect_due_time) {
             if (!esp_wifi_billy::is_connected() || WiFi_connection_attempt_failed) {
-                ESP_TCP::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
-                ESP_TCP::server_stop(CONN_SHUTDOWN_DOWNTIME);
+                esp_tcp_billy::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
+                esp_tcp_billy::server_stop(CONN_SHUTDOWN_DOWNTIME);
                 WiFi_connection_attempt_failed = !wireless_interface_setup::WiFi(&stored_configs, CONN_TIMEOUT);
             }
             WiFi_autoreconnect_previous_millis = WiFi_autoreconnect_current_millis = millis();
@@ -584,7 +584,7 @@ bool wireless_interface_setup::WiFi(stored_configs_t *stored_configs, uint32_t c
      * Therefore the object gets initialized with a dummy value and then
      * becomes updated.
      */
-    ESP_TCP::server_port_update(stored_configs->local_server_port);
+    esp_tcp_billy::server_port_update(stored_configs->local_server_port);
 
     // Connect to Wi-Fi network.
     bool WiFi_connected = esp_wifi_billy::set_connection(stored_configs->WiFi_SSID,
@@ -599,7 +599,7 @@ bool wireless_interface_setup::WiFi(stored_configs_t *stored_configs, uint32_t c
         Serial.print("Current local IP address is: ");
         Serial.println(esp_wifi_billy::get_devices_current_ip());
 
-        ESP_TCP::server_start();
+        esp_tcp_billy::server_start();
         Serial.print("Local TCP server started at port ");
         Serial.println(stored_configs->local_server_port);
 
@@ -683,8 +683,8 @@ void receive::hw_uart(char *buf)
 
 void receive::tcp_local(char *buf)
 {
-    if (ESP_TCP::server_get_client()) {
-        uint32_t TCP_server_bytes_read = ESP_TCP::server_read_line(buf,
+    if (esp_tcp_billy::server_get_client()) {
+        uint32_t TCP_server_bytes_read = esp_tcp_billy::server_read_line(buf,
                                                                   STR_MAX_LEN,
                                                                   CONN_TIMEOUT);
         if (TCP_server_bytes_read > STR_MAX_LEN) {
@@ -706,11 +706,11 @@ void receive::tcp_iot(char *buf, stored_configs_t *stored_configs)
         Serial.print(", target port: ");
         Serial.println(stored_configs->IoT_server_port);
 
-        if (ESP_TCP::client_get_server(stored_configs->IoT_server_IP, stored_configs->IoT_server_port)) {
+        if (esp_tcp_billy::client_get_server(stored_configs->IoT_server_IP, stored_configs->IoT_server_port)) {
             Serial.println("Remote server reached.");
-            ESP_TCP::client_send_msg(stored_configs->IoT_req_msg);
+            esp_tcp_billy::client_send_msg(stored_configs->IoT_req_msg);
 
-            uint32_t TCP_client_bytes_read = ESP_TCP::client_read_line(buf,
+            uint32_t TCP_client_bytes_read = esp_tcp_billy::client_read_line(buf,
                                                                       STR_MAX_LEN,
                                                                       CONN_TIMEOUT);
 

@@ -34,7 +34,7 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-namespace ESP_TCP {
+namespace esp_tcp_billy {
 
     /*--- Local server ---*/
 

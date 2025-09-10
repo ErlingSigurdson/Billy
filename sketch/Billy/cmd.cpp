@@ -77,7 +77,7 @@ int32_t cmd::match_in_buf(char *buf, const char *prefix, const char *cmd_list[],
 void cmd::aux::output_msg(const char *msg)
 {
     Serial.println(msg);
-    ESP_TCP::server_send_msg(msg);
+    esp_tcp_billy::server_send_msg(msg);
 
     #if defined ESP32 && defined BTCLASSIC_USED
         char config_val[STR_MAX_LEN + 1] = {0};
@@ -374,9 +374,9 @@ void cmd::handler::set_local_server_port(const char *cmd, bool *refresh_flag)
     stored_configs_t stored_configs;
     stored_configs_read(&stored_configs);
 
-    ESP_TCP::server_stop(CONN_SHUTDOWN_DOWNTIME);
-    ESP_TCP::server_port_update(stored_configs.local_server_port);
-    ESP_TCP::server_start();
+    esp_tcp_billy::server_stop(CONN_SHUTDOWN_DOWNTIME);
+    esp_tcp_billy::server_port_update(stored_configs.local_server_port);
+    esp_tcp_billy::server_start();
 }
 
 // Command #11
@@ -563,8 +563,8 @@ void cmd::handler::all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint3
 {
     cmd::aux::output_msg("Resetting local connections...");
 
-    ESP_TCP::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
-    ESP_TCP::server_stop(CONN_SHUTDOWN_DOWNTIME);
+    esp_tcp_billy::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
+    esp_tcp_billy::server_stop(CONN_SHUTDOWN_DOWNTIME);
 
     #if defined ESP32 && defined BTCLASSIC_USED
         ESP32_BTClassic_stop(CONN_SHUTDOWN_DOWNTIME);
