@@ -492,7 +492,7 @@ void loop()
     // Bluetooth Classic disconnection.
     #if defined ESP32 && defined BTCLASSIC_USED
         if (BTClassic_was_connected) {
-            ESP32_BTClassic_disconnect(CONN_SHUTDOWN_DOWNTIME);
+            esp32_btclassic_billy::disconnect(CONN_SHUTDOWN_DOWNTIME);
         }
     #endif
 
@@ -655,12 +655,12 @@ void wireless_interface_setup::BTClassic(stored_configs_t *stored_configs)
         // Check for Bluetooth Classic functionality flag.
         Serial.print("Bluetooth Classic: ");
         if (stored_configs->BTClassic_flag != 0) {
-            ESP32_BTClassic_start(stored_configs->BTClassic_dev_name);
+            esp32_btclassic_billy::start(stored_configs->BTClassic_dev_name);
             Serial.println("ON");
             Serial.print("Bluetooth Classic device name: ");
             Serial.println(stored_configs->BTClassic_dev_name);
         } else {
-            ESP32_BTClassic_stop(CONN_SHUTDOWN_DOWNTIME);
+            esp32_btclassic_billy::stop(CONN_SHUTDOWN_DOWNTIME);
             Serial.println("OFF");
         }
     #endif
@@ -745,9 +745,9 @@ void receive::btclassic(char *buf, stored_configs_t *stored_configs, bool *BTCla
 
     #if defined ESP32 && defined BTCLASSIC_USED
         *BTClassic_was_connected = false;  // Just in case.
-        if (stored_configs->BTClassic_flag && ESP32_BTClassic_check_connection()) {
+        if (stored_configs->BTClassic_flag && esp32_btclassic_billy::check_connection()) {
             *BTClassic_was_connected = true;
-            uint32_t BTClassic_bytes_read = ESP32_BTClassic_read_line(buf,
+            uint32_t BTClassic_bytes_read = esp32_btclassic_billy::read_line(buf,
                                                                       STR_MAX_LEN,
                                                                       CONN_TIMEOUT,
                                                                       BTCLASSIC_READ_SLOWDOWN);

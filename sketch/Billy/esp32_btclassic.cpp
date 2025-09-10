@@ -40,17 +40,17 @@ BluetoothSerial BTClassic_Serial;
 
 /******************* FUNCTIONS ******************/
 
-void ESP32_BTClassic_start(const char *dev_name)
+void esp32_btclassic_billy::start(const char *dev_name)
 {
     BTClassic_Serial.begin(dev_name);
 }
 
-bool ESP32_BTClassic_check_connection()
+bool esp32_btclassic_billy::check_connection()
 {
     return BTClassic_Serial.connected();
 }
 
-uint32_t ESP32_BTClassic_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout, uint32_t read_slowdown)
+uint32_t esp32_btclassic_billy::read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout, uint32_t read_slowdown)
 {
     // Connection timeout counter.
     uint64_t current_millis = millis();
@@ -85,18 +85,18 @@ uint32_t ESP32_BTClassic_read_line(char *buf, uint32_t str_max_len, uint32_t con
     return i;
 }
 
-void ESP32_BTClassic_send_msg(const char *msg)
+void esp32_btclassic_billy::send_msg(const char *msg)
 {
     BTClassic_Serial.println(msg);
 }
 
-void ESP32_BTClassic_disconnect(uint32_t shutdown_downtime)
+void esp32_btclassic_billy::disconnect(uint32_t shutdown_downtime)
 {
     delay(shutdown_downtime);
     BTClassic_Serial.disconnect();
 }
 
-void ESP32_BTClassic_stop(uint32_t shutdown_downtime)
+void esp32_btclassic_billy::stop(uint32_t shutdown_downtime)
 {
     delay(shutdown_downtime);
     BTClassic_Serial.end();

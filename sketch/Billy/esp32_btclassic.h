@@ -25,12 +25,14 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-void ESP32_BTClassic_start(const char *dev_name);
-bool ESP32_BTClassic_check_connection();
-uint32_t ESP32_BTClassic_read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout, uint32_t read_slowdown);
-void ESP32_BTClassic_send_msg(const char *msg);
-void ESP32_BTClassic_disconnect(uint32_t shutdown_downtime);
-void ESP32_BTClassic_stop(uint32_t shutdown_downtime);
+namespace esp32_btclassic_billy {
+    void start(const char *dev_name);
+    bool check_connection();
+    uint32_t read_line(char *buf, uint32_t str_max_len, uint32_t conn_timeout, uint32_t read_slowdown);
+    void send_msg(const char *msg);
+    void disconnect(uint32_t shutdown_downtime);
+    void stop(uint32_t shutdown_downtime);
+}
 
 
 #endif  // Include guards.

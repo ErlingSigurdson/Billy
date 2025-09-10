@@ -86,7 +86,7 @@ void cmd::aux::output_msg(const char *msg)
                                     INBUILT_STORAGE_STR_MAX_LEN,
                                     INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
         if (cstring_utils::are_equal(config_val, "ON")) {
-            ESP32_BTClassic_send_msg(msg);
+            esp32_btclassic_billy::send_msg(msg);
         }
     #endif
 }
@@ -567,7 +567,7 @@ void cmd::handler::all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint3
     esp_tcp_billy::server_stop(CONN_SHUTDOWN_DOWNTIME);
 
     #if defined ESP32 && defined BTCLASSIC_USED
-        ESP32_BTClassic_stop(CONN_SHUTDOWN_DOWNTIME);
+        esp32_btclassic_billy::stop(CONN_SHUTDOWN_DOWNTIME);
     #endif
 
     setup_WiFi_ptr(stored_configs, CONN_TIMEOUT);
