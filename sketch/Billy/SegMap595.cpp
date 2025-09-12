@@ -27,11 +27,11 @@
 
 /*--- Includes ---*/
 
+// This source file's own header file.
+#include "SegMap595.h"
+
 // Relevant standard libraries.
 #include <cstring>
-
-// Local modules.
-#include "SegMap595.h"
 
 
 /*************** GLOBAL VARIABLES ***************/

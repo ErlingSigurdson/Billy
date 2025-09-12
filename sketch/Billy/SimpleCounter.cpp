@@ -13,11 +13,11 @@
 
 /*--- Includes ---*/
 
-// Essential Arduino library.
-#include <Arduino.h>
-
-// Local modules.
+// This source file's own header file.
 #include "SimpleCounter.h"
+
+// Arduino core header file.
+#include <Arduino.h>
 
 
 /*************** GLOBAL VARIABLES ***************/

@@ -19,10 +19,6 @@
 // Arduino core header file.
 #include <Arduino.h>
 
-// Project configs.
-#include "config_general.h"
-#include "config_inbuilt_storage.h"
-
 // Local modules.
 #include "stored_configs.h"
 #include "inbuilt_storage.h"
@@ -42,6 +38,10 @@
 #ifdef RGB_LED
     #include "rgb_led.h"
 #endif
+
+// Project configs.
+#include "config_general.h"
+#include "config_inbuilt_storage.h"
 
 
 /******************* FUNCTIONS ******************/

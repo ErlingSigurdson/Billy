@@ -23,18 +23,14 @@
 
 /*--- Includes ---*/
 
-// Arduino.h, the essential Arduino library, is already included by default.
-
-// Additional Arduino libraries are included in the local modules.
-
 // Local modules.
 #include "cmd.h"
-#include "stored_configs.h"
-#include "inbuilt_storage.h"
 #include "hw_uart.h"
 #include "esp_wifi_billy.h"
 #include "esp_tcp_billy.h"
 #include "esp_http_billy.h"
+#include "inbuilt_storage.h"
+#include "stored_configs.h"
 #include "cstring_utils.h"
 
 #if defined ESP32 && defined BTCLASSIC_USED
@@ -62,6 +58,19 @@
 #include "config_cmd.h"
 #include "config_inbuilt_storage.h"
 
+// Arduino.h, the Arduino core header file, is already included by default.
+
+// Additional Arduino libraries are included in the local modules.
+
+/* In other project files the include order is as follows (irrelevant categories are omitted):
+ * - This source file's own header file (for *.cpp files only).
+ * - Local modules.
+ * - Project configs.
+ * - Arduino core header file.
+ * - Additional Arduino libraries.
+ * - Relevant standard libraries.
+ */
+
 
 /************** FUNCTION PROTOTYPES *************/
 
@@ -76,14 +85,14 @@ namespace wireless_interface_setup {
 /*--- Command reception functions ---*/
 
 namespace receive {
-    // Put a data received by a hardware UART into the buffer.
+    // Put a data received by hardware UART into the buffer.
     void hw_uart(char *buf);
 
     // Put a data received by a local TCP server from a client into the buffer.
     void tcp_local(char *buf);
 
     /* A local TCP client sends a request to a remote server and reads a response,
-     * the latter is then put into the buffer.
+     * which is then put into the buffer.
      */
     void tcp_iot(char *buf, stored_configs_t *stored_configs);
 
