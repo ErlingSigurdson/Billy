@@ -17,16 +17,13 @@
 // This source file's own header file.
 #include "esp32_btclassic_billy.h"
 
-// Arduino core header file.
-#include <Arduino.h>
-
 // Project configs.
 #include "config_general.h"
 
-// Conditional compilation
-/* ESP32 is the macro provided by the Arduino framework or the compiler
- * (not exactly sure by which one of those two) for the respective SoC family.
- */
+// Arduino core header file.
+#include <Arduino.h>
+
+// Conditional compilation.
 #if defined ESP32 && defined BTCLASSIC_USED
 
 // Additional Arduino libraries.

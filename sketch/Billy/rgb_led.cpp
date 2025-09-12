@@ -16,16 +16,16 @@
 // This source file's own header file.
 #include "rgb_led.h"
 
+// Local modules.
+#include "cstring_utils.h"
+
 // Arduino core header file.
 #include <Arduino.h>  /* I guess I could do with <cstdint> and <cstring>, but I decided to keep it
                        * in case I need to use millis() or something.
                        */
 
 // Additional Arduino libraries.
-#include <RGBLED.h>  // https://github.com/GyverLibs/RGBLED
-
-// Local modules.
-#include "cstring_utils.h"
+#include <RGBLED.h>  // Dependency: https://github.com/GyverLibs/RGBLED
 
 
 /*************** GLOBAL VARIABLES ***************/

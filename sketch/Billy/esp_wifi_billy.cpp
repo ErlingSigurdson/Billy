@@ -17,6 +17,9 @@
 // This source file's own header file.
 #include "esp_wifi_billy.h"
 
+// Project configs.
+#include "config_general.h"
+
 // Arduino core header file.
 #include <Arduino.h>
 
@@ -27,9 +30,6 @@
 #ifdef ESP8266
     #include <ESP8266WiFi.h>
 #endif
-
-// Local modules.
-#include "config_general.h"
 
 
 /******************* FUNCTIONS ******************/

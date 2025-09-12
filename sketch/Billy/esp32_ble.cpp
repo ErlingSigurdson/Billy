@@ -17,13 +17,13 @@
 // This source file's own header file.
 #include "esp32_ble.h"
 
-// Arduino core header file.
-#include <Arduino.h>
-
 // Project configs.
 #include "config_general.h"
 
-// Conditional compilation
+// Arduino core header file.
+#include <Arduino.h>
+
+// Conditional compilation.
 #if defined ESP32 && defined BLE_USED
 
 // Additional Arduino libraries.
@@ -146,5 +146,6 @@ void esp32_ble_billy::stop(uint32_t shutdown_downtime)
     delay(shutdown_downtime);
     BLEDevice::deinit(true);
 }
+
 
 #endif  // Conditional compilation.

@@ -20,11 +20,11 @@
 // This source file's own header file.
 #include "inbuilt_storage.h"
 
-// Arduino core header file.
-#include <Arduino.h>
-
 // Project configs.
 #include "config_inbuilt_storage.h"
+
+// Arduino core header file.
+#include <Arduino.h>
 
 // Additional Arduino libraries.
 #include <EEPROM.h>

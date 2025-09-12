@@ -18,11 +18,11 @@
 
 /*--- Includes ---*/
 
-// Arduino core header file.
-#include <Arduino.h>
-
 // Project configs.
 #include "config_general.h"
+
+// Arduino core header file.
+#include <cstdint>
 
 
 /****************** DATA TYPES ******************/

@@ -22,8 +22,9 @@
 
 /*--- Includes ---*/
 
-// Arduino core header file.
-#include <Arduino.h>
+// Relevant standard libraries.
+#include <cstddef>  // For size_t.
+#include <cstdint>
 
 
 /************** FUNCTION PROTOTYPES *************/

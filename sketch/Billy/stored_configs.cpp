@@ -9,20 +9,22 @@
  */
 
 
+/************ PREPROCESSOR DIRECTIVES ***********/
+
 /*--- Includes ---*/
 
 // This source file's own header file.
 #include "stored_configs.h"
 
-// Arduino core header file.
-#include <Arduino.h>
+// Local modules.
+#include "inbuilt_storage.h"
+#include "cstring_utils.h"
 
 // Project configs.
 #include "config_inbuilt_storage.h"
 
-// Local modules.
-#include "inbuilt_storage.h"
-#include "cstring_utils.h"
+// Arduino core header file.
+#include <Arduino.h>
 
 
 /******************* FUNCTIONS ******************/

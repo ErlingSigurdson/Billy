@@ -5,7 +5,8 @@
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  A simple counter. Counts seconds, minutes and hours.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:    Just call the update() method in every cycle of your loop() function.
+ * Notes:    Just call the update() method in every cycle
+ *           of your loop() function.
  */
 
 
@@ -18,8 +19,8 @@
 
 /*--- Includes ---*/
 
-// Essential Arduino library.
-#include <Arduino.h>
+// Relevant standard libraries.
+#include <cstdint>
 
 
 /****************** DATA TYPES ******************/

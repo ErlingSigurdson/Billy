@@ -19,8 +19,8 @@
 
 /*--- Includes ---*/
 
-// Arduino core header file.
-#include <Arduino.h>
+// Relevant standard libraries.
+#include <cstdint>
 
 
 /*--- Misc ---*/

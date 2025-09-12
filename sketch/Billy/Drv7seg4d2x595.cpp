@@ -17,14 +17,14 @@
 // This source file's own header file.
 #include "Drv7seg4d2x595.h"
 
+// Project configs.
+#include "config_general.h"
+
 // Arduino core header file.
 #include <Arduino.h>
 
 // Additional Arduino libraries.
 #include <SPI.h>
-
-// Project configs.
-#include "config_general.h"
 
 
 /*************** GLOBAL VARIABLES ***************/

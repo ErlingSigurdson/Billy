@@ -20,7 +20,7 @@
 /*--- Includes ---*/
 
 // Arduino core header file.
-#include <Arduino.h>
+#include <Arduino.h>  // For String.
 
 
 /*--- Misc ---*/

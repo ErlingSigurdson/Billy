@@ -27,11 +27,11 @@
 
 /*--- Includes ---*/
 
-// Arduino core header file.
-#include <Arduino.h>
-
 // Local modules.
 #include "stored_configs.h"
+
+// Arduino core header file.
+#include <Arduino.h>
 
 
 /*--- Misc ---*/

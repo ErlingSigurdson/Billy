@@ -17,12 +17,15 @@
 // This source file's own header file.
 #include "esp_http_billy.h"
 
-// Arduino core header file.
-#include <Arduino.h>
+// Local modules.
+#include "cstring_utils.h"
 
 // Project configs.
 #include "config_general.h"
 #include "config_cmd.h"
+
+// Arduino core header file.
+#include <Arduino.h>
 
 // Additional Arduino libraries.
 #ifdef ESP32
@@ -31,9 +34,6 @@
 #ifdef ESP8266
     #include <ESP8266WebServer.h>
 #endif
-
-// Local modules.
-#include "cstring_utils.h"
 
 
 /*************** GLOBAL VARIABLES ***************/
