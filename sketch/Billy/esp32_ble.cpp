@@ -26,7 +26,7 @@
 // Conditional compilation
 #if defined ESP32 && defined BLE_USED
 
-// Additional libraries for Arduino IDE.
+// Additional Arduino libraries.
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>

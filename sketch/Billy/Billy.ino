@@ -25,11 +25,6 @@
 
 // Arduino.h, the essential Arduino library, is already included by default.
 
-// Project configs.
-#include "config_general.h"
-#include "config_cmd.h"
-#include "config_inbuilt_storage.h"
-
 // Additional Arduino libraries are included in the local modules.
 
 // Local modules.
@@ -46,6 +41,10 @@
     #include "esp32_btclassic_billy.h"
 #endif
 
+#if defined ESP32 && defined BLE_USED
+    #include "esp32_ble_billy.h"
+#endif
+
 #ifdef RGB_LED
     #include "rgb_led.h"
 #endif
@@ -53,11 +52,15 @@
 #if defined DRV7SEG4D2X595_BIT_BANGING      || \
     defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
     defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
-
     #include "SegMap595.h"
     #include "Drv7seg4d2x595.h"
     #include "SimpleCounter.h"
 #endif
+
+// Project configs.
+#include "config_general.h"
+#include "config_cmd.h"
+#include "config_inbuilt_storage.h"
 
 
 /************** FUNCTION PROTOTYPES *************/

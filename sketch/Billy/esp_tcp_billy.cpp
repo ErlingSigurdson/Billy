@@ -20,7 +20,7 @@
 // Arduino core header file.
 #include <Arduino.h>
 
-// Additional libraries for Arduino IDE.
+// Additional Arduino libraries.
 #ifdef ESP32
     #include <WiFi.h>
 #endif

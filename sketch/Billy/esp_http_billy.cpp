@@ -24,7 +24,7 @@
 #include "config_general.h"
 #include "config_cmd.h"
 
-// Additional libraries for Arduino IDE.
+// Additional Arduino libraries.
 #ifdef ESP32
     #include <WebServer.h>
 #endif

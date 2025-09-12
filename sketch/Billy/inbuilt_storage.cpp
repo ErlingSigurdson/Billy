@@ -26,7 +26,7 @@
 // Project configs.
 #include "config_inbuilt_storage.h"
 
-// Additional libraries for Arduino IDE.
+// Additional Arduino libraries.
 #include <EEPROM.h>
 
 

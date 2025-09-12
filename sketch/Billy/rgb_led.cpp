@@ -21,7 +21,7 @@
                        * in case I need to use millis() or something.
                        */
 
-// Additional libraries for Arduino IDE.
+// Additional Arduino libraries.
 #include <RGBLED.h>  // https://github.com/GyverLibs/RGBLED
 
 // Local modules.

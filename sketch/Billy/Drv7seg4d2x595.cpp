@@ -1,4 +1,4 @@
-/****************** DESCRIPTION *****************/
+/*************** FILE DESCRIPTION ***************/
 
 /**
  * Filename: Drv7seg4d2x595.cpp
@@ -14,14 +14,16 @@
 
 /*--- Includes ---*/
 
-// Essential Arduino library.
+// This source file's own header file.
+#include "Drv7seg4d2x595.h"
+
+// Arduino core header file.
 #include <Arduino.h>
 
-// Additional libraries for Arduino IDE.
+// Additional Arduino libraries.
 #include <SPI.h>
 
-// Local modules.
-#include "Drv7seg4d2x595.h"
+// Project configs.
 #include "config_general.h"
 
 

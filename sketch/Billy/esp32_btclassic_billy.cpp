@@ -29,7 +29,7 @@
  */
 #if defined ESP32 && defined BTCLASSIC_USED
 
-// Additional libraries for Arduino IDE.
+// Additional Arduino libraries.
 #include <BluetoothSerial.h>
 
 
