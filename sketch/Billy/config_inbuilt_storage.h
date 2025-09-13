@@ -3,8 +3,8 @@
 /**
  * Filename: config_inbuilt_storage.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  Project configs related to ESP32/ESP8266
- *           flash memory used as an inbuilt storage.
+ * Purpose:  Project configs related to use of ESP32/ESP8266
+ *           flash memory as an inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -26,7 +26,7 @@
 /*--- Basic values ---*/
 
 #define INBUILT_STORAGE_ITEM_LIST_LEN 12  /* Number of strings to store. Must be kept in sync
-                                           * with the number of addressed defined below.
+                                           * with the number of addresses defined below.
                                            */
 #define INBUILT_STORAGE_SIZE 2048
 #define INBUILT_STORAGE_DEFAULT_BLOCK_SIZE ((STR_MAX_LEN) + 1)
@@ -59,15 +59,15 @@
 
 /*--- Safety checks ---*/
 
-#if (INBUILT_STORAGE_ITEM_LIST_LEN) < 1       // Works better than '<=0' in case an unsigned value is present.
+#if (INBUILT_STORAGE_ITEM_LIST_LEN) <= 0
     #error "Inbuilt storage error: item list length must be > 0."
 #endif
 
-#if (INBUILT_STORAGE_DEFAULT_BLOCK_SIZE) < 1  // Works better than '<=0' in case an unsigned value is present.
+#if (INBUILT_STORAGE_DEFAULT_BLOCK_SIZE) <= 0
     #error "Inbuilt storage error: block size must be > 0."
 #endif
 
-#if (INBUILT_STORAGE_ADDR(INBUILT_STORAGE_ITEM_LIST_LEN)) > (INBUILT_STORAGE_SIZE)
+#if INBUILT_STORAGE_ADDR(INBUILT_STORAGE_ITEM_LIST_LEN) > (INBUILT_STORAGE_SIZE)
     #error "Inbuilt storage error: items exceed the defined storage size."
 #endif
 
