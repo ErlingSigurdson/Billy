@@ -27,10 +27,10 @@
 #define CMD_1      "LOADDIGITAL="       // Turn a two-state load ON or OFF. Valid values are ON, OFF and TOGGLE.
 #define CMD_2      "LOADPWM="           // Drive a load using PWM. Valid values of a duty cycle are 0 to 255.
 #define CMD_3      "LOADDIGITAL?"       // Output current state of a two-state load.
-#define CMD_4      "WIFISSID="          /* Change the presumed SSID of a Wi-Fi access point
+#define CMD_4      "WIFISSID="          /* Change an SSID of a Wi-Fi access point
                                          * your device will try to connect to.
                                          */
-#define CMD_5      "WIFISSID?"          /* Output the presumed SSID of a Wi-Fi access point
+#define CMD_5      "WIFISSID?"          /* Output an SSID of a Wi-Fi access point
                                          * your device will try to connect to.
                                          */
 #define CMD_6      "WIFIPSWD="          // Change the password used for connecting to a Wi-Fi access point.
