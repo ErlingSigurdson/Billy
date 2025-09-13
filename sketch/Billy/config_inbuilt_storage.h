@@ -57,6 +57,13 @@
 #define INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME       (INBUILT_STORAGE_ADDR(11))
 
 
+/*--- Misc ---*/
+
+#define THIS_IS_ESP32_OR_ESP8266_OR_STM32  /* Enables EEPROM.begin() and EEPROM.commit() calls
+                                            * (necessary for ESP32 and ESP8266).
+                                            */
+
+
 /*--- Safety checks ---*/
 
 #if (INBUILT_STORAGE_ITEM_LIST_LEN) <= 0

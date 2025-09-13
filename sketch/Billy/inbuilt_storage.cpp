@@ -37,7 +37,7 @@ void inbuilt_storage_init(uint32_t emulated_EEPROM_size)
     /* Conditional compilation is used because the EEPROM.h variant
      * for AVR devices just lacks the respective method.
      */
-    #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
+    #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32
         EEPROM.begin(emulated_EEPROM_size);
     #endif
 }
@@ -83,7 +83,7 @@ void inbuilt_storage_write_string(char *str, uint32_t str_len, uint32_t str_max_
     /* Conditional compilation is used because the EEPROM.h variant
      * for AVR devices just lacks the respective method.
      */
-    #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
+    #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32
         EEPROM.commit();
     #endif
 }
