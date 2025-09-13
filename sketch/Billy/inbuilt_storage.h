@@ -27,6 +27,16 @@
 #include <cstdint>
 
 
+/*--- Misc ---*/
+
+/* Indicate that the project uses a device that requires
+ * some additional calls for the EEPROM.h library methods.
+ */
+#ifndef __AVR__
+    #define THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
+#endif
+
+
 /************** FUNCTION PROTOTYPES *************/
 
 // Storage initialization. Necessary for ESP32, ESP8266 and STM32. Not to be used with AVR devices.

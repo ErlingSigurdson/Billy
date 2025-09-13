@@ -20,9 +20,6 @@
 // This source file's own header file.
 #include "inbuilt_storage.h"
 
-// Project configs.
-#include "config_inbuilt_storage.h"
-
 // Arduino core header file.
 #include <Arduino.h>
 
@@ -37,13 +34,17 @@ void inbuilt_storage_init(uint32_t emulated_EEPROM_size)
     /* Conditional compilation is used because the EEPROM.h variant
      * for AVR devices just lacks the respective method.
      */
-    #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32
+    #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
         EEPROM.begin(emulated_EEPROM_size);
     #endif
 }
 
 void inbuilt_storage_read_string(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr)
 {
+    if (buf == nullptr) {
+        return;
+    }
+    
     if (buf_size < str_max_len + 1) {
         Serial.println("Error reading from inbuilt storage.");
         return;
@@ -60,30 +61,30 @@ void inbuilt_storage_read_string(char *buf, size_t buf_size, uint32_t str_max_le
 
 void inbuilt_storage_write_string(char *str, uint32_t str_len, uint32_t str_max_len, uint32_t addr)
 {
-    if (str_len > str_max_len) {
-        Serial.println("Error reading from inbuilt storage.");
-
+    if (str == nullptr) {
         return;
     }
 
-    char buf[STR_MAX_LEN + 1] = {0};
-    strcpy(buf, str);
+    if (str_len > str_max_len) {
+        Serial.println("Error reading from inbuilt storage.");
+        return;
+    }
 
-    for (uint32_t i = 0; i < strlen(buf); ++i) {
-        if (buf[i] == '\r' || buf[i] == '\n') {
-            buf[i] = '\0';
+    for (uint32_t i = 0; i < strlen(str); ++i) {
+        if (str[i] == '\r' || str[i] == '\n') {
+            str[i] = '\0';
         }
     }
 
-    for (uint32_t i = 0; buf[i] != '\0'; ++i, ++addr) {
-        EEPROM.write(addr, buf[i]);
+    for (uint32_t i = 0; str[i] != '\0'; ++i, ++addr) {
+        EEPROM.write(addr, str[i]);
     }
     EEPROM.write(addr, '\0');
 
     /* Conditional compilation is used because the EEPROM.h variant
      * for AVR devices just lacks the respective method.
      */
-    #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32
+    #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
         EEPROM.commit();
     #endif
 }
