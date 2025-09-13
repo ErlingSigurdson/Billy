@@ -49,7 +49,7 @@ void stored_configs_read(stored_configs_t *stored_configs)
 
     /*--- Reading strings from an inbuilt storage ---*/
 
-    char stored_configs_str[INBUILT_STORAGE_ITEM_LIST_LEN][INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
+    char stored_configs_str[INBUILT_STORAGE_ITEM_LIST_LEN][STR_MAX_LEN + 1] = {0};
     uint32_t stored_configs_addr[] = {
         INBUILT_STORAGE_ADDR_WIFI_SSID,
         INBUILT_STORAGE_ADDR_WIFI_PSWD,
@@ -76,7 +76,7 @@ void stored_configs_read(stored_configs_t *stored_configs)
     for (uint32_t i = 0; i < INBUILT_STORAGE_ITEM_LIST_LEN; ++i) {
         inbuilt_storage_read_string(stored_configs_str[i],
                                     sizeof(stored_configs_str[i]),
-                                    INBUILT_STORAGE_STR_MAX_LEN,
+                                    STR_MAX_LEN,
                                     stored_configs_addr[i]);
     }
 

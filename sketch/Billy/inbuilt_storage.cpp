@@ -66,7 +66,7 @@ void inbuilt_storage_write_string(char *str, uint32_t str_len, uint32_t str_max_
         return;
     }
 
-    char buf[INBUILT_STORAGE_STR_MAX_LEN + 1] = {0};
+    char buf[STR_MAX_LEN + 1] = {0};
     strcpy(buf, str);
 
     for (uint32_t i = 0; i < strlen(buf); ++i) {

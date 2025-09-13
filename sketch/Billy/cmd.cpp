@@ -87,7 +87,7 @@ void cmd::aux::output_msg(const char *msg)
         char config_val[STR_MAX_LEN + 1] = {0};
         inbuilt_storage_read_string(config_val,
                                     sizeof(config_val),
-                                    INBUILT_STORAGE_STR_MAX_LEN,
+                                    STR_MAX_LEN,
                                     INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
         if (cstring_utils::are_equal(config_val, "ON")) {
             esp32_btclassic_billy::send_msg(msg);
@@ -142,7 +142,7 @@ void cmd::aux::set_config(set_config_params_t *params)
 
     inbuilt_storage_write_string(cmd_val,
                                  strlen(cmd_val),
-                                 INBUILT_STORAGE_STR_MAX_LEN,
+                                 STR_MAX_LEN,
                                  params->addr);
     *(params->refresh_flag) = 1;
 
@@ -164,7 +164,7 @@ void cmd::aux::output_config(uint32_t addr, const char *topic)
     char config_val[STR_MAX_LEN + 1] = {0};
     inbuilt_storage_read_string(config_val,
                                 sizeof(config_val),
-                                INBUILT_STORAGE_STR_MAX_LEN,
+                                STR_MAX_LEN,
                                 addr);
     strcat(msg, config_val);
 
