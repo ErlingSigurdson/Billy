@@ -44,7 +44,7 @@ void inbuilt_storage_read_string(char *buf, size_t buf_size, uint32_t str_max_le
     if (buf == nullptr) {
         return;
     }
-    
+
     if (buf_size < str_max_len + 1) {
         Serial.println("Error reading from inbuilt storage.");
         return;
