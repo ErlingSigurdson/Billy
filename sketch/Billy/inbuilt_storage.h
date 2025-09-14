@@ -53,7 +53,7 @@
 /************** FUNCTION PROTOTYPES *************/
 
 // Storage initialization. Necessary for ESP32, ESP8266 and STM32. Not to be used with AVR devices.
-void inbuilt_storage_init(uint32_t emulated_EEPROM_size);
+void inbuilt_storage_init(uint32_t emulated_eeprom_size);
 
 // Read a string.
 void inbuilt_storage_read_string(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr);

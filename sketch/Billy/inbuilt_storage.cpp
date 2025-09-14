@@ -29,13 +29,13 @@
 
 /******************* FUNCTIONS ******************/
 
-void inbuilt_storage_init(uint32_t emulated_EEPROM_size)
+void inbuilt_storage_init(uint32_t emulated_eeprom_size)
 {
     /* Conditional compilation is used because the EEPROM.h variant
      * for AVR devices just lacks the respective method.
      */
     #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
-        EEPROM.begin(emulated_EEPROM_size);
+        EEPROM.begin(emulated_eeprom_size);
     #endif
 }
 
