@@ -30,7 +30,6 @@
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
-#include <BLE2902.h>
 
 
 /*************** GLOBAL VARIABLES ***************/
@@ -76,7 +75,6 @@ void esp32_ble_billy::start(const char *dev_name)
         BLEUUID((uint16_t)0xFFE1),
         BLECharacteristic::PROPERTY_NOTIFY
     );
-    BTLE_TxCharacteristic->addDescriptor(new BLE2902());
 
     BTLE_RxCharacteristic = pService->createCharacteristic(
         BLEUUID((uint16_t)0xFFE2),
