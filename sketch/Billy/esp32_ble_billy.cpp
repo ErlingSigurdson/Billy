@@ -1,7 +1,7 @@
 /*************** FILE DESCRIPTION ***************/
 
 /**
- * Filename: esp32_ble.cpp
+ * Filename: esp32_ble_billy.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Bluetooth Low Energy (BLE) UART wrapper functions for ESP32 SoC.
  *           Intended for use with the ESP32 Arduino core.
@@ -15,7 +15,7 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "esp32_ble.h"
+#include "esp32_ble_billy.h"
 
 // Project configs.
 #include "config_general.h"

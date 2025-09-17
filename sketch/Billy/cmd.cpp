@@ -32,10 +32,6 @@
     #include "esp32_ble_billy.h"
 #endif
 
-#if defined ESP32 && defined BLE_USED
-    #include "esp32_ble.h"
-#endif
-
 #ifdef RGB_LED
     #include "rgb_led.h"
 #endif
