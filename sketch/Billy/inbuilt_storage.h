@@ -31,12 +31,10 @@
 
 /* Indicate that the project uses a device that requires
  * some additional calls for the EEPROM.h library methods.
- */
-
-/* From https://onlinedocs.microchip.com:
+ *
+ * From https://onlinedocs.microchip.com:
  *
  * Options for the C compiler avr-gcc
- *
  * Machine-specific options for the AVR
  *
  * The following machine-specific options are recognized by the C compiler frontend.
@@ -44,7 +42,6 @@
  * __AVR and __AVR__ (to the value 1) when compiling for an AVR target. The macro AVR will be defined as well
  * when using the standard levels gnu89 (default) and gnu99 but not with c89 and c99.
  */
-
 #ifndef __AVR__
     #define THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
 #endif
@@ -52,8 +49,12 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-// Storage initialization. Necessary for ESP32, ESP8266 and STM32. Not to be used with AVR devices.
-void inbuilt_storage_init(uint32_t emulated_eeprom_size);
+/* Storage initialization. Necessary for ESP32, ESP8266 and STM32. Not to be used with AVR devices.
+ * Conditional compilation is used because the EEPROM.h variant for AVR devices just lacks the respective method.
+ */
+#ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
+    void inbuilt_storage_init(uint32_t emulated_eeprom_size);
+#endif
 
 // Read a string.
 void inbuilt_storage_read_string(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr);
