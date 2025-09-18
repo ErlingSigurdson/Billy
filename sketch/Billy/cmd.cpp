@@ -56,11 +56,6 @@ int32_t cmd::match_in_buf(char *buf, const char *prefix, const char *cmd_list[],
         return CMD_MATCH_IN_BUF_ERR_PREFIX;
     }
 
-    cstring_utils::nullify_first_cr_or_lf(buf);         // In case there's a CR or LF in the buffer.
-    cstring_utils::to_uppercase_before_char(buf, '=');  /* Commands themselves are all-uppercase, but values
-                                                         * may contain meaningful lowercase letters.
-                                                         */
-
     char *buf_payload = buf + static_cast<uint32_t>(prefix_len);
     for (uint32_t i = 1; i <= cmd_list_len; ++i) {
         if (strstr(buf_payload, cmd_list[i]) == buf_payload) {
@@ -243,7 +238,7 @@ void cmd::handler::set_load_PWM(const char *cmd, uint32_t pin)
     }
 
     uint32_t val_len = (uint32_t)strlen(cmd_val);
-    if (val_len < 1 || val_len > 3) {  // Valid duty cycle values are 0 to 255.
+    if (val_len < 1 || val_len > 3) {              // Valid duty cycle values are 0 to 255.
         cmd::handler::err_val();
         return;
     }

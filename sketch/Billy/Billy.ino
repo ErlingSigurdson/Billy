@@ -333,6 +333,11 @@ void loop()
 
     // Check for a non-empty buffer string.
     if (main_buf[0] != '\0' ) {
+        cstring_utils::nullify_first_cr_or_lf(buf);         // In case there's a CR or LF in the buffer.
+        cstring_utils::to_uppercase_before_char(buf, '=');  /* Commands themselves should be all-uppercase, 
+                                                             * but values may contain meaningful lowercase letters.
+                                                             */
+
         // Check for valid commands.
         int32_t func_to_call = cmd::match_in_buf(main_buf, CMD_PREFIX, cmd_list, CMD_LIST_LEN);
         switch (func_to_call) {

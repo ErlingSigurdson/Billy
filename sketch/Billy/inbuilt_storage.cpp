@@ -70,12 +70,6 @@ void inbuilt_storage_write_string(char *str, uint32_t str_len, uint32_t str_max_
         return;
     }
 
-    for (uint32_t i = 0; i < strlen(str); ++i) {
-        if (str[i] == '\r' || str[i] == '\n') {
-            str[i] = '\0';
-        }
-    }
-
     for (uint32_t i = 0; str[i] != '\0'; ++i, ++addr) {
         EEPROM.write(addr, str[i]);
     }
