@@ -57,10 +57,10 @@
 #endif
 
 // Read a string.
-void inbuilt_storage_read_string(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr);
+void inbuilt_storage_read_string_from_storage(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr);
 
 // Write a string.
-void inbuilt_storage_write_string(char *str, uint32_t str_len, uint32_t str_max_len, uint32_t addr);
+void inbuilt_storage_write_string_to_storage(const char *str, uint32_t str_max_len, uint32_t addr);
 
 
 #endif  // Include guards.

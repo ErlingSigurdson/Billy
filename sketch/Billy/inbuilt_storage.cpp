@@ -39,7 +39,7 @@ void inbuilt_storage_init(uint32_t emulated_eeprom_size)
 }
 #endif
 
-void inbuilt_storage_read_string(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr)
+void inbuilt_storage_read_string_from_storage(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr)
 {
     if (buf == nullptr) {
         return;
@@ -50,21 +50,18 @@ void inbuilt_storage_read_string(char *buf, size_t buf_size, uint32_t str_max_le
         return;
     }
 
-    for (uint32_t i = 0; i < str_max_len; ++i, ++addr) {
+    for (uint32_t i = 0; buf[i] != '\0' && i < str_max_len; ++i, ++addr) {
         buf[i] = EEPROM.read(addr);
-
-        if (buf[i] == '\0') {
-            break;
-        }
     }
 }
 
-void inbuilt_storage_write_string(char *str, uint32_t str_len, uint32_t str_max_len, uint32_t addr)
+void inbuilt_storage_write_string_to_storage(const char *str, uint32_t str_max_len, uint32_t addr)
 {
     if (str == nullptr) {
         return;
     }
 
+    size_t str_len = strlen(str);
     if (str_len > str_max_len) {
         Serial.println("Error reading from inbuilt storage.");
         return;
