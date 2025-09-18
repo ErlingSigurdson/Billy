@@ -76,10 +76,10 @@ void cmd::aux::output_msg(const char *msg)
 
     #if defined ESP32 && defined BTCLASSIC_USED
         char config_val[STR_MAX_LEN + 1] = {0};
-        inbuilt_storage_read_string(config_val,
-                                    sizeof(config_val),
-                                    STR_MAX_LEN,
-                                    INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
+        inbuilt_storage_read_string_from_storage(config_val,
+                                                 sizeof(config_val),
+                                                 STR_MAX_LEN,
+                                                 INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
         if (cstring_utils::are_equal(config_val, "ON")) {
             esp32_btclassic_billy::send_msg(msg);
         }
@@ -131,10 +131,9 @@ void cmd::aux::set_config(set_config_params_t *params)
         }
     }
 
-    inbuilt_storage_write_string(cmd_val,
-                                 strlen(cmd_val),
-                                 STR_MAX_LEN,
-                                 params->addr);
+    inbuilt_storage_write_string_to_storage(cmd_val,
+                                            STR_MAX_LEN,
+                                            params->addr);
     *(params->refresh_flag) = 1;
 
     char msg[STR_MAX_LEN * 2 + 1] = {0};
@@ -153,10 +152,10 @@ void cmd::aux::output_config(uint32_t addr, const char *topic)
     strcpy(msg, topic);
 
     char config_val[STR_MAX_LEN + 1] = {0};
-    inbuilt_storage_read_string(config_val,
-                                sizeof(config_val),
-                                STR_MAX_LEN,
-                                addr);
+    inbuilt_storage_read_string_from_storage(config_val,
+                                             sizeof(config_val),
+                                             STR_MAX_LEN,
+                                             addr);
     strcat(msg, config_val);
 
     cmd::aux::output_msg(msg);
