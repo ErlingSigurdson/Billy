@@ -46,6 +46,8 @@
     #define THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
 #endif
 
+#define ASCII_CODE_HIGHEST 127
+
 
 /************** FUNCTION PROTOTYPES *************/
 
@@ -58,10 +60,17 @@ namespace inbuilt_storage {
         void init(uint32_t emulated_eeprom_size);
     #endif
 
-    // Read a string.
+    // Read a string from a storage and write it to a buffer.
     void read_string_from_storage(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr);
 
-    // Write a string.
+    // Read a string from a storage and write it to a buffer.
+    /* This overload uses buf_size check based on a preliminary
+     * counting of valid bytes to be read from a storage, not on
+     * a max string length contraint. Use with caution.
+     */
+    void read_string_from_storage(char *buf, size_t buf_size, uint32_t addr);
+
+    // Write a string to a storage.
     void write_string_to_storage(const char *str, uint32_t str_max_len, uint32_t addr);
 }
 

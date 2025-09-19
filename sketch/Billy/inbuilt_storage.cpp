@@ -55,6 +55,42 @@ void inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, uint3
     }
 }
 
+void inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, uint32_t addr)
+{
+    if (buf == nullptr) {
+        return;
+    }
+
+    size_t bytes_to_read = 0;
+    uint32_t _addr = addr;
+    char c = 0;
+    while (true) {
+        c = EEPROM.read(_addr);
+
+        if (c == '\0') {
+            ++bytes_to_read;
+            break;
+        }
+
+        if (c > ASCII_CODE_HIGHEST) {
+            break;
+        }
+
+        ++bytes_to_read;
+        ++_addr;
+    }
+
+    if (buf_size < bytes_to_read) {
+        Serial.println("Error reading from inbuilt storage.");
+        return;
+    }
+
+    size_t i = 0;
+    for (; i < bytes_to_read; ++i, ++addr) {
+        buf[i] = EEPROM.read(addr);
+    }
+}
+
 void inbuilt_storage::write_string_to_storage(const char *str, uint32_t str_max_len, uint32_t addr)
 {
     if (str == nullptr) {
