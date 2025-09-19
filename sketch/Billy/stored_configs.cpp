@@ -74,10 +74,10 @@ void stored_configs_read(stored_configs_t *stored_configs)
     }
 
     for (uint32_t i = 0; i < INBUILT_STORAGE_ITEM_LIST_LEN; ++i) {
-        inbuilt_storage_read_string_from_storage(stored_configs_str[i],
-                                                 sizeof(stored_configs_str[i]),
-                                                 STR_MAX_LEN,
-                                                 stored_configs_addr[i]);
+        inbuilt_storage::read_string_from_storage(stored_configs_str[i],
+                                                  sizeof(stored_configs_str[i]),
+                                                  STR_MAX_LEN,
+                                                  stored_configs_addr[i]);
     }
 
 

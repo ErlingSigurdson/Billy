@@ -230,7 +230,7 @@ void setup()
     /* In contrast to AVR-based devices, ESP32 and ESP8266 SoCs'
      * inbuilt storage must be initialized before use.
      */
-    inbuilt_storage_init(INBUILT_STORAGE_SIZE);
+    inbuilt_storage::init(INBUILT_STORAGE_SIZE);
 
     // Read the stored configs from an inbuilt storage into the struct.
     stored_configs_t stored_configs;

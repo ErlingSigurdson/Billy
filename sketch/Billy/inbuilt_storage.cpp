@@ -33,13 +33,13 @@
  * for AVR devices just lacks the respective method.
  */
 #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
-void inbuilt_storage_init(uint32_t emulated_eeprom_size)
+void inbuilt_storage::init(uint32_t emulated_eeprom_size)
 {
     EEPROM.begin(emulated_eeprom_size);
 }
 #endif
 
-void inbuilt_storage_read_string_from_storage(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr)
+void inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr)
 {
     if (buf == nullptr) {
         return;
@@ -55,7 +55,7 @@ void inbuilt_storage_read_string_from_storage(char *buf, size_t buf_size, uint32
     }
 }
 
-void inbuilt_storage_write_string_to_storage(const char *str, uint32_t str_max_len, uint32_t addr)
+void inbuilt_storage::write_string_to_storage(const char *str, uint32_t str_max_len, uint32_t addr)
 {
     if (str == nullptr) {
         return;

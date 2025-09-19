@@ -49,18 +49,21 @@
 
 /************** FUNCTION PROTOTYPES *************/
 
-/* Storage initialization. Necessary for ESP32, ESP8266 and STM32. Not to be used with AVR devices.
- * Conditional compilation is used because the EEPROM.h variant for AVR devices just lacks the respective method.
- */
-#ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
-    void inbuilt_storage_init(uint32_t emulated_eeprom_size);
-#endif
+namespace inbuilt_storage {
 
-// Read a string.
-void inbuilt_storage_read_string_from_storage(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr);
+    /* Storage initialization. Necessary for ESP32, ESP8266 and STM32. Not to be used with AVR devices.
+     * Conditional compilation is used because the EEPROM.h variant for AVR devices just lacks the respective method.
+     */
+    #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
+        void init(uint32_t emulated_eeprom_size);
+    #endif
 
-// Write a string.
-void inbuilt_storage_write_string_to_storage(const char *str, uint32_t str_max_len, uint32_t addr);
+    // Read a string.
+    void read_string_from_storage(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr);
+
+    // Write a string.
+    void write_string_to_storage(const char *str, uint32_t str_max_len, uint32_t addr);
+}
 
 
 #endif  // Include guards.
