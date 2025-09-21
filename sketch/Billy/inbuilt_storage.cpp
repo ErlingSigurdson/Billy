@@ -3,13 +3,12 @@
 /**
  * Filename: inbuilt_storage.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  Reading and writing strings to and from an inbuilt storage
- *           using EEPROM.h library.
+ * Purpose:  Writing and reading strings to and from
+ *           an inbuilt storage using EEPROM.h library.
  *           Intended for use with the Arduino framework.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:    AVR devices use inbuilt EEPROM.
- *           ESP32, ESP8266 and STM32 emulate EEPROM
- *           in their inbuilt flash memory.
+ * Notes:    AVR devices use an inbuilt EEPROM.
+ *           ESP32, ESP8266 and STM32 devices emulate EEPROM in a flash memory.
  */
 
 
@@ -29,41 +28,63 @@
 
 /******************* FUNCTIONS ******************/
 
-/* Conditional compilation is used because the EEPROM.h variant
- * for AVR devices just lacks the respective method.
+/* A conditional compilation is used because the EEPROM.h
+ * variant for AVR devices lacks the respective method.
  */
 #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
-void inbuilt_storage::init(uint32_t emulated_eeprom_size)
+bool inbuilt_storage::init(uint32_t emulated_eeprom_size)
 {
-    EEPROM.begin(emulated_eeprom_size);
+    if (EEPROM.begin(emulated_eeprom_size)) {
+        return true;
+    } else {
+        Serial.println("Inbuilt storage: storage initialization error.");
+        return false;
+    }
 }
 #endif
 
-void inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, uint32_t str_max_len, uint32_t addr)
+int32_t inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, size_t str_max_len, uint32_t addr)
 {
     if (buf == nullptr) {
-        return;
+        Serial.println("Inbuilt storage: nullptr error.");
+        return INBUILT_STORAGE_ERR_NULLPTR;
     }
 
     if (buf_size < str_max_len + 1) {
-        Serial.println("Error reading from inbuilt storage.");
-        return;
+        Serial.println("Inbuilt storage: buffer size error.");
+        return INBUILT_STORAGE_ERR_SIZE;
     }
 
-    for (uint32_t i = 0; buf[i] != '\0' && i < str_max_len; ++i, ++addr) {
+    size_t i = 0;
+    while (true) {
         buf[i] = EEPROM.read(addr);
+
+        if (buf[i] == '\0') {
+            break;
+        }
+
+        if (i == str_max_len) {
+            buf[i] = '\0';
+            break;
+        }
+
+        ++i;
+        ++addr;
     }
+
+    return static_cast<int32_t>(i);
 }
 
-void inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, uint32_t addr)
+int32_t inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, uint32_t addr)
 {
     if (buf == nullptr) {
-        return;
+        Serial.println("Inbuilt storage: nullptr error.");
+        return INBUILT_STORAGE_ERR_NULLPTR;
     }
 
     size_t bytes_to_read = 0;
     uint32_t _addr = addr;
-    char c = 0;
+    int32_t c = 0;
     while (true) {
         c = EEPROM.read(_addr);
 
@@ -72,8 +93,10 @@ void inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, uint3
             break;
         }
 
-        if (c > ASCII_CODE_HIGHEST) {
-            break;
+        if (c < '\0' || c > ASCII_CODE_HIGHEST) {
+            Serial.println("Inbuilt storage: invalid byte read error.");
+            //break;
+            return INBUILT_STORAGE_ERR_BYTE;
         }
 
         ++bytes_to_read;
@@ -81,37 +104,43 @@ void inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, uint3
     }
 
     if (buf_size < bytes_to_read) {
-        Serial.println("Error reading from inbuilt storage.");
-        return;
+        Serial.println("Inbuilt storage: buffer size error.");
+        return INBUILT_STORAGE_ERR_SIZE;
     }
 
     size_t i = 0;
     for (; i < bytes_to_read; ++i, ++addr) {
         buf[i] = EEPROM.read(addr);
     }
+
+    return static_cast<int32_t>(i);
 }
 
-void inbuilt_storage::write_string_to_storage(const char *str, uint32_t str_max_len, uint32_t addr)
+int32_t inbuilt_storage::write_string_to_storage(const char *str, size_t str_max_len, uint32_t addr)
 {
     if (str == nullptr) {
-        return;
+        Serial.println("Inbuilt storage: nullptr error.");
+        return INBUILT_STORAGE_ERR_NULLPTR;
     }
 
     size_t str_len = strlen(str);
     if (str_len > str_max_len) {
-        Serial.println("Error reading from inbuilt storage.");
-        return;
+        Serial.println("Inbuilt storage: string length error.");
+        return INBUILT_STORAGE_ERR_SIZE;
     }
 
-    for (uint32_t i = 0; str[i] != '\0'; ++i, ++addr) {
+    size_t i = 0;
+    for (; str[i] != '\0'; ++i, ++addr) {
         EEPROM.write(addr, str[i]);
     }
     EEPROM.write(addr, '\0');
 
-    /* Conditional compilation is used because the EEPROM.h variant
-     * for AVR devices just lacks the respective method.
+    /* A conditional compilation is used because the EEPROM.h
+     * variant for AVR devices lacks the respective method.
      */
     #ifdef THIS_IS_ESP32_OR_ESP8266_OR_STM32_PRESUMABLY
         EEPROM.commit();
     #endif
+
+    return static_cast<int32_t>(i);
 }
