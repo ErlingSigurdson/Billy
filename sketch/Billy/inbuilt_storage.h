@@ -10,9 +10,14 @@
  * Notes:    AVR devices use inbuilt EEPROM.
  *           ESP32, ESP8266 and STM32 devices emulate EEPROM in flash memory.
  *
+ *           EEPROM.length() method isn't exposed for AVR devices,
+ *           therefore its use is restricted to ESP32, ESP8266 and STM32
+ *           devices and thus its calls are placed within conditional
+ *           compilation directives.
+ *
  *           Portability note for STM32 devices
  *           Check if the Arduino core you're using exposes EEPROM.commit()
- *           method. If it's unavailable, remove its call from the code.
+ *           method. If it's unavailable, remove its calls from the code.
  */
 
 
@@ -32,6 +37,9 @@
 
 /*--- Misc ---*/
 
+// Comment out to prevent Serial.println() calls that output error messages.
+#define INBUILT_STORAGE_VERBOSE_MODE
+
 // Function return codes.
 #define INBUILT_STORAGE_ERR_NULLPTR            -1
 #define INBUILT_STORAGE_ERR_ADDR_OUT_OF_BOUNDS -2
@@ -41,9 +49,6 @@
 
 // In a particular context all non-ASCII values are considered to be garbage values.
 #define INBUILT_STORAGE_HIGHEST_ASCII_CODE 127
-
-// Comment out to prevent Serial.println() calls that output error messages.
-#define INBUILT_STORAGE_ERROR_OUTPUT_MODE
 
 
 /************** FUNCTION PROTOTYPES *************/
@@ -95,7 +100,7 @@ namespace inbuilt_storage {
      * Returns: number of bytes written if successful (including null terminator),
      * negative integer code otherwise (see the preprocessor macros list).
      *
-     * This overload omits the string length check. Use with caution.
+     * This overload omits a max string length check. Use with caution.
      */
     int32_t write_string_to_storage(const char *str,  size_t addr);
 }

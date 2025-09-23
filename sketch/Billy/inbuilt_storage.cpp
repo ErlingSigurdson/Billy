@@ -7,7 +7,7 @@
  *           inbuilt storage using EEPROM.h library.
  *           Intended for use with the Arduino framework.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:    
+ * Notes:
  */
 
 
@@ -46,7 +46,7 @@
         if (EEPROM.begin(emulated_eeprom_size)) {
             return true;
         } else {
-            #ifdef INBUILT_STORAGE_ERROR_OUTPUT_MODE
+            #ifdef INBUILT_STORAGE_VERBOSE_MODE
                 Serial.println("Inbuilt storage error: storage initialization failed.");
             #endif
             return false;
@@ -57,21 +57,24 @@
 int32_t inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, size_t str_max_len, size_t addr)
 {
     if (buf == nullptr) {
-        #ifdef INBUILT_STORAGE_ERROR_OUTPUT_MODE
-            Serial.println("Inbuilt storage error: nullptr detected.");
+        #ifdef INBUILT_STORAGE_VERBOSE_MODE
+            Serial.println("Inbuilt storage error: null pointer detected.");
         #endif
         return INBUILT_STORAGE_ERR_NULLPTR;
     }
 
     #if defined ARDUINO_ARCH_ESP32 || defined ARDUINO_ARCH_ESP8266 || defined ARDUINO_ARCH_STM32
         size_t storage_size = EEPROM.length();
-        if (addr + buf_size > storage_size) {
+        if (addr + (str_max_len + 1) > storage_size) {
+            #ifdef INBUILT_STORAGE_VERBOSE_MODE
+                Serial.println("Inbuilt storage error: address is out of bounds.");
+            #endif
             return INBUILT_STORAGE_ERR_ADDR_OUT_OF_BOUNDS;
         }
     #endif
 
     if (buf_size < str_max_len + 1) {
-        #ifdef INBUILT_STORAGE_ERROR_OUTPUT_MODE
+        #ifdef INBUILT_STORAGE_VERBOSE_MODE
             Serial.println("Inbuilt storage error: insufficient buffer size.");
         #endif
         return INBUILT_STORAGE_ERR_ARR_SIZE;
@@ -96,18 +99,11 @@ int32_t inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, si
 int32_t inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, size_t addr)
 {
     if (buf == nullptr) {
-        #ifdef INBUILT_STORAGE_ERROR_OUTPUT_MODE
-            Serial.println("Inbuilt storage error: nullptr detected.");
+        #ifdef INBUILT_STORAGE_VERBOSE_MODE
+            Serial.println("Inbuilt storage error: null pointer detected.");
         #endif
         return INBUILT_STORAGE_ERR_NULLPTR;
     }
-
-    #if defined ARDUINO_ARCH_ESP32 || defined ARDUINO_ARCH_ESP8266 || defined ARDUINO_ARCH_STM32
-        size_t storage_size = EEPROM.length();
-        if (addr + buf_size > storage_size) {
-            return INBUILT_STORAGE_ERR_ADDR_OUT_OF_BOUNDS;
-        }
-    #endif
 
     size_t bytes_to_read = 0;
     size_t _addr = addr;
@@ -115,28 +111,38 @@ int32_t inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, si
     while (true) {
         c = EEPROM.read(_addr);
 
+        // In this context any non-ASCII value is considered to be a garbage value.
         if (c > INBUILT_STORAGE_HIGHEST_ASCII_CODE) {
-            #ifdef INBUILT_STORAGE_ERROR_OUTPUT_MODE
+            #ifdef INBUILT_STORAGE_VERBOSE_MODE
                 Serial.println("Inbuilt storage error: invalid byte read.");
             #endif
             return INBUILT_STORAGE_ERR_INVALID_BYTE;
         }
 
-        if (c == '\0') {
-            ++bytes_to_read;
-            break;
-        }
+        ++bytes_to_read;
+        ++_addr;
 
         if (bytes_to_read > buf_size) {
-            #ifdef INBUILT_STORAGE_ERROR_OUTPUT_MODE
+            #ifdef INBUILT_STORAGE_VERBOSE_MODE
                 Serial.println("Inbuilt storage error: insufficient buffer size.");
             #endif
             return INBUILT_STORAGE_ERR_ARR_SIZE;
         }
 
-        ++bytes_to_read;
-        ++_addr;
+        if (c == '\0') {
+            break;
+        }
     }
+
+    #if defined ARDUINO_ARCH_ESP32 || defined ARDUINO_ARCH_ESP8266 || defined ARDUINO_ARCH_STM32
+        size_t storage_size = EEPROM.length();
+        if (addr + bytes_to_read > storage_size) {
+            #ifdef INBUILT_STORAGE_VERBOSE_MODE
+                Serial.println("Inbuilt storage error: address is out of bounds.");
+            #endif
+            return INBUILT_STORAGE_ERR_ADDR_OUT_OF_BOUNDS;
+        }
+    #endif
 
     size_t i = 0;
     for (; i < bytes_to_read; ++i, ++addr) {
@@ -149,8 +155,8 @@ int32_t inbuilt_storage::read_string_from_storage(char *buf, size_t buf_size, si
 int32_t inbuilt_storage::write_string_to_storage(const char *str, size_t str_max_len, size_t addr)
 {
     if (str == nullptr) {
-        #ifdef INBUILT_STORAGE_ERROR_OUTPUT_MODE
-            Serial.println("Inbuilt storage error: nullptr detected.");
+        #ifdef INBUILT_STORAGE_VERBOSE_MODE
+            Serial.println("Inbuilt storage error: null pointer detected.");
         #endif
         return INBUILT_STORAGE_ERR_NULLPTR;
     }
@@ -164,7 +170,7 @@ int32_t inbuilt_storage::write_string_to_storage(const char *str, size_t str_max
 
     size_t str_len = strlen(str);
     if (str_len > str_max_len) {
-        #ifdef INBUILT_STORAGE_ERROR_OUTPUT_MODE
+        #ifdef INBUILT_STORAGE_VERBOSE_MODE
             Serial.println("Inbuilt storage error: string is too long.");
         #endif
         return INBUILT_STORAGE_ERR_ARR_SIZE;
@@ -192,15 +198,16 @@ int32_t inbuilt_storage::write_string_to_storage(const char *str, size_t str_max
 int32_t inbuilt_storage::write_string_to_storage(const char *str, size_t addr)
 {
     if (str == nullptr) {
-        #ifdef INBUILT_STORAGE_ERROR_OUTPUT_MODE
-            Serial.println("Inbuilt storage error: nullptr detected.");
+        #ifdef INBUILT_STORAGE_VERBOSE_MODE
+            Serial.println("Inbuilt storage error: null pointer detected.");
         #endif
         return INBUILT_STORAGE_ERR_NULLPTR;
     }
 
     #if defined ARDUINO_ARCH_ESP32 || defined ARDUINO_ARCH_ESP8266 || defined ARDUINO_ARCH_STM32
+        size_t str_len = strlen(str);
         size_t storage_size = EEPROM.length();
-        if (addr + (strlen(str) + 1) > storage_size) {
+        if (addr + (str_len + 1) > storage_size) {
             return INBUILT_STORAGE_ERR_ADDR_OUT_OF_BOUNDS;
         }
     #endif
