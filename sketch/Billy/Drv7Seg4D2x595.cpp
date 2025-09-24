@@ -3,8 +3,9 @@
 /**
  * Filename: Drv7Seg4D2x595.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose: A class for shifting 2-byte data into 2 daisy-chained 74HC595 ICs.
- *          Intended for use with the ESP32 or ESP8266 Arduino core.
+ * Purpose:  A class for shifting 2-byte data into 2 daisy-chained 74HC595 ICs.
+ *           Usually used to drive a multiplexed 4-digit 7-segment display.
+ *           Intended for use with the ESP32 or ESP8266 Arduino core.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */
@@ -93,7 +94,8 @@ int32_t Drv7Seg4D2x595::shift_out(uint8_t ubyte, uint8_t lbyte)
 
             delay(this->ghosting_prevention_delay);
             digitalWrite(this->latch_pin, LOW);
-            shiftOut(this->data_pin, this->clock_pin, MSBFIRST, 0);
+            // Single byte is enough in this case since it's guaranteed to produce a blank output.
+            shiftOut(this->data_pin, this->clock_pin, MSBFIRST, DRV7SEG4D2X595_BLANK_DIGIT);
             digitalWrite(this->latch_pin, HIGH);
             break;
 
@@ -105,7 +107,8 @@ int32_t Drv7Seg4D2x595::shift_out(uint8_t ubyte, uint8_t lbyte)
 
             delay(this->ghosting_prevention_delay);
             digitalWrite(this->latch_pin, LOW);
-            SPI.transfer(0);
+            // Single byte is enough in this case since it's guaranteed to produce a blank output.
+            SPI.transfer(DRV7SEG4D2X595_BLANK_DIGIT);
             digitalWrite(this->latch_pin, HIGH);
             break;
 
