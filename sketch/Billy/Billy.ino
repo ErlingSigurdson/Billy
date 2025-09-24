@@ -49,7 +49,7 @@
     defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
     defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
     #include "SegMap595.h"
-    #include "Drv7seg4d2x595.h"
+    #include "Drv7Seg4D2x595.h"
     #include "SimpleCounter.h"
 #endif
 
@@ -568,15 +568,16 @@ void loop()
             digit_2 |= dot_bit_pos_mask;
         }
 
-        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D1), digit_1);
-        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D2), digit_2);
-        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D3), digit_3);
-        Drv7seg4d2x595.shift_out((1 << DRV7SEG4D2X595_D4), digit_4);
+        driver7seg.shift_out((1 << DRV7SEG4D2X595_D1), digit_1);
+        driver7seg.shift_out((1 << DRV7SEG4D2X595_D2), digit_2);
+        driver7seg.shift_out((1 << DRV7SEG4D2X595_D3), digit_3);
+        driver7seg.shift_out((1 << DRV7SEG4D2X595_D4), digit_4);
 
         // Optional digital load toggling aligned with the timer.
         static bool digital_load_toggle_flag = 0;
         char modifiable_buf[STR_MAX_LEN + 1] = CMD_PREFIX CMD_1 "TOGGLE";
-        if (SimpleCounter.minutes % 5 == 0 && SimpleCounter.seconds == 0) {  // Toggles every five minutes.
+        uint32_t period = 5;  // Toggles every five minutes.
+        if (SimpleCounter.minutes % period == 0 && SimpleCounter.seconds == 0) {
             if (digital_load_toggle_flag) {
                 cmd::handler::set_load_digital(modifiable_buf,
                                                DIGITAL_OUTPUT_PIN,
