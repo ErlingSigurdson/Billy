@@ -50,7 +50,7 @@ class Drv7Seg4D2x595 {
 
         // Initialize the driver to use custom assigned SPI pins.
         void init_spi(uint32_t mosi_pin, uint32_t latch_pin, uint32_t sck_pin,
-                      uint32_t ghosting_prevention_delay = 2); 
+                      uint32_t ghosting_prevention_delay = 2);
 
         /* Shift 2-byte data into 2 daisy-chained 74HC595 ICs.
          * Returns: negative integer if the driver is uninitialized, zero otherwise.
