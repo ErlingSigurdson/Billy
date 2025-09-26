@@ -60,15 +60,15 @@
 /*--- Safety checks ---*/
 
 #if (INBUILT_STORAGE_ITEM_LIST_LEN) <= 0
-    #error "Inbuilt storage error: item list length must be > 0."
+    #error "Inbuilt storage config error: item list length must be a positive integer."
 #endif
 
 #if (INBUILT_STORAGE_DEFAULT_BLOCK_SIZE) <= 0
-    #error "Inbuilt storage error: block size must be > 0."
+    #error "Inbuilt storage config error: block size must be a positive integer."
 #endif
 
 #if INBUILT_STORAGE_ADDR(INBUILT_STORAGE_ITEM_LIST_LEN) > (INBUILT_STORAGE_SIZE)
-    #error "Inbuilt storage error: items exceed the defined storage size."
+    #error "Inbuilt storage config error: insufficient defined storage size."
 #endif
 
 
