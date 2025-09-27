@@ -75,10 +75,10 @@ void cmd::aux::output_msg(const char *msg)
     esp_tcp_billy::server_send_msg(msg);
 
     #if defined ESP32 && defined BTCLASSIC_USED
-        char config_val[STR_MAX_LEN + 1] = {0};
+        char config_val[BILLY_STR_MAX_LEN + 1] = {0};
         inbuilt_storage::read_string_from_storage(config_val,
                                                   sizeof(config_val),
-                                                  STR_MAX_LEN,
+                                                  BILLY_STR_MAX_LEN,
                                                   INBUILT_STORAGE_ADDR_BTCLASSIC_FLAG);
         if (cstring_utils::are_equal(config_val, "ON")) {
             esp32_btclassic_billy::send_msg(msg);
@@ -132,11 +132,11 @@ void cmd::aux::set_config(set_config_params_t *params)
     }
 
     inbuilt_storage::write_string_to_storage(cmd_val,
-                                             STR_MAX_LEN,
+                                             BILLY_STR_MAX_LEN,
                                              params->addr);
     *(params->refresh_flag) = 1;
 
-    char msg[STR_MAX_LEN * 2 + 1] = {0};
+    char msg[BILLY_STR_MAX_LEN * 2 + 1] = {0};
     strcpy(msg, params->topic);
 
     if (params->echo_val) {
@@ -148,13 +148,13 @@ void cmd::aux::set_config(set_config_params_t *params)
 
 void cmd::aux::output_config(uint32_t addr, const char *topic)
 {
-    char msg[STR_MAX_LEN * 2 + 1] = {0};
+    char msg[BILLY_STR_MAX_LEN * 2 + 1] = {0};
     strcpy(msg, topic);
 
-    char config_val[STR_MAX_LEN + 1] = {0};
+    char config_val[BILLY_STR_MAX_LEN + 1] = {0};
     inbuilt_storage::read_string_from_storage(config_val,
                                               sizeof(config_val),
-                                              STR_MAX_LEN,
+                                              BILLY_STR_MAX_LEN,
                                               addr);
     strcat(msg, config_val);
 
@@ -248,7 +248,7 @@ void cmd::handler::set_load_PWM(const char *cmd, uint32_t pin)
         return;
     }
 
-    char msg[STR_MAX_LEN * 2 + 1] = "PWM duty cycle is set to ";
+    char msg[BILLY_STR_MAX_LEN * 2 + 1] = "PWM duty cycle is set to ";
     strcat(msg, cmd_val);
 
     cmd::aux::set_output_PWM(pin, duty_cycle, msg);
@@ -347,7 +347,7 @@ void cmd::handler::set_WiFi_autoreconnect_flag(char *cmd, bool *refresh_flag)
 // Command #9
 void cmd::handler::output_local_server_IP()
 {
-    char msg[STR_MAX_LEN * 2 + 1] = {0};
+    char msg[BILLY_STR_MAX_LEN * 2 + 1] = {0};
     String current_IP = esp_wifi_billy::get_devices_current_ip();
     strcpy(msg, "Current local IP address is: ");
     strcat(msg, current_IP.c_str());
@@ -573,7 +573,7 @@ void cmd::handler::all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint3
 // Command #24
 void cmd::handler::output_version()
 {
-    char msg[STR_MAX_LEN * 4] = "\n" \
+    char msg[BILLY_STR_MAX_LEN * 4] = "\n" \
                                 "\"Billy\" firmware version: " VERSION "\n" \
                                 LINK_MESSAGE "\n" \
                                 LINK_GITHUB "\n" \
@@ -614,7 +614,7 @@ void cmd::handler::RGB_output_color(char *cmd)
     uint32_t ret_val = RGB_LED_output_color(cmd_val);
 
     if (ret_val) {
-        char msg[STR_MAX_LEN * 2 + 1] = {0};
+        char msg[BILLY_STR_MAX_LEN * 2 + 1] = {0};
         strcpy(msg, "Outputting RGB color ");
         strcat(msg, cmd_val);
         strcat(msg, ".");

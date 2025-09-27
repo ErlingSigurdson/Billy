@@ -45,7 +45,7 @@
     ESP8266WebServer HTTP_server(HTTP_PORT);
 #endif
 
-char ESP_HTTP_buf[STR_MAX_LEN + 1] = {0};
+char ESP_HTTP_buf[BILLY_STR_MAX_LEN + 1] = {0};
 
 
 /******************* FUNCTIONS ******************/
@@ -81,10 +81,10 @@ void esp_http_billy::handle_not_found()
 
 void esp_http_billy::handle_ctrl()
 {
-    char cmd_1[STR_MAX_LEN + 1] = CMD_1;  // Digital output command.
+    char cmd_1[BILLY_STR_MAX_LEN + 1] = CMD_1;  // Digital output command.
     cmd_1[strlen(cmd_1) - 1] = '\0';      // Remove an equality sign.
 
-    char cmd_2[STR_MAX_LEN + 1] = CMD_2;  // PWM output command.
+    char cmd_2[BILLY_STR_MAX_LEN + 1] = CMD_2;  // PWM output command.
     cmd_2[strlen(cmd_2) - 1] = '\0';      // Remove an equality sign.
 
     if (HTTP_server.hasArg(cmd_1)) {  // Digital output command was received.
@@ -93,12 +93,12 @@ void esp_http_billy::handle_ctrl()
             return;
         }
 
-        if (HTTP_server.arg(cmd_1).length() > STR_MAX_LEN) {
+        if (HTTP_server.arg(cmd_1).length() > BILLY_STR_MAX_LEN) {
             HTTP_server.send(200, "text/plain", "Command buffer overflow.");
             return;
         }
 
-        char val[STR_MAX_LEN + 1] = {0};
+        char val[BILLY_STR_MAX_LEN + 1] = {0};
         strcpy(val, HTTP_server.arg(cmd_1).c_str());
 
         bool val_is_loaddigital_on  = (cstring_utils::are_equal(val, "ON"));
@@ -130,7 +130,7 @@ void esp_http_billy::handle_ctrl()
             return;
         }
 
-        char val[STR_MAX_LEN + 1] = {0};
+        char val[BILLY_STR_MAX_LEN + 1] = {0};
         strcpy(val, HTTP_server.arg(cmd_2).c_str());
 
         for (uint32_t i = 0; i < (uint32_t)strlen(val); ++i) {

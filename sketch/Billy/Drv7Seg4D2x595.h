@@ -106,17 +106,17 @@ class Drv7Seg4D2x595 {
         int32_t shift_out(uint8_t ubyte, uint8_t lbyte);
 
     private:
-        int32_t variant;
-        uint32_t data_pin;
-        uint32_t latch_pin;
-        uint32_t clock_pin;
+        int32_t  _variant;
+        uint32_t _data_pin;
+        uint32_t _latch_pin;
+        uint32_t _clock_pin;
 
         /* A duration (in milliseconds) of a tiny pause that prevents the so-called
          * "ghosting" of characters being output to a multiplexed 7-segment display.
          *
          * Usually 2 milliseconds is enough.
          */
-        uint32_t ghosting_prevention_delay;
+        uint32_t _ghosting_prevention_delay;
 };
 
 

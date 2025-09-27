@@ -29,18 +29,18 @@
 
 // Struct for holding values read from an inbuilt storage.
 typedef struct stored_configs_t {
-    char WiFi_SSID[STR_MAX_LEN + 1];
-    char WiFi_pswd[STR_MAX_LEN + 1];
+    char WiFi_SSID[BILLY_STR_MAX_LEN + 1];
+    char WiFi_pswd[BILLY_STR_MAX_LEN + 1];
     bool WiFi_RSSI_output_flag;
     bool WiFi_autoreconnect_flag;
     uint32_t local_server_port;
     bool IoT_flag;
-    char IoT_server_IP[STR_MAX_LEN + 1];
+    char IoT_server_IP[BILLY_STR_MAX_LEN + 1];
     uint32_t IoT_server_port;
-    char IoT_req_msg[STR_MAX_LEN + 1];
+    char IoT_req_msg[BILLY_STR_MAX_LEN + 1];
     uint32_t IoT_req_period;
     bool BTClassic_flag;
-    char BTClassic_dev_name[STR_MAX_LEN + 1];
+    char BTClassic_dev_name[BILLY_STR_MAX_LEN + 1];
 } stored_configs_t;
 
 

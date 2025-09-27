@@ -312,7 +312,7 @@ void loop()
     /* Main command buffer. All strings sent to Billy by an end user,
      * regardless of the interface, end up here. All checks are performed afterwards.
      */
-    char main_buf[STR_MAX_LEN + 1] = {0};
+    char main_buf[BILLY_STR_MAX_LEN + 1] = {0};
 
     // Command reception subroutines.
     receive::hw_uart(main_buf);
@@ -575,7 +575,7 @@ void loop()
 
         // Optional digital load toggling aligned with the timer.
         static bool digital_load_toggle_flag = 0;
-        char modifiable_buf[STR_MAX_LEN + 1] = CMD_PREFIX CMD_1 "TOGGLE";
+        char modifiable_buf[BILLY_STR_MAX_LEN + 1] = CMD_PREFIX CMD_1 "TOGGLE";
         uint32_t period = 5;  // Toggles every five minutes.
         if (SimpleCounter.minutes % period == 0 && SimpleCounter.seconds == 0) {
             if (digital_load_toggle_flag) {
@@ -693,10 +693,10 @@ void wireless_interface_setup::BTClassic(stored_configs_t *stored_configs)
 void receive::hw_uart(char *buf)
 {
     uint32_t HW_UART_bytes_read = hw_uart::read_line(buf,
-                                                     STR_MAX_LEN,
+                                                     BILLY_STR_MAX_LEN,
                                                      CONN_TIMEOUT,
                                                      HW_UART_READ_SLOWDOWN);
-    if (HW_UART_bytes_read > STR_MAX_LEN) {
+    if (HW_UART_bytes_read > BILLY_STR_MAX_LEN) {
         buf[0] = '\0';
         cmd::handler::err_len();
     }
@@ -706,9 +706,9 @@ void receive::tcp_local(char *buf)
 {
     if (esp_tcp_billy::server_get_client()) {
         uint32_t TCP_server_bytes_read = esp_tcp_billy::server_read_line(buf,
-                                                                  STR_MAX_LEN,
+                                                                  BILLY_STR_MAX_LEN,
                                                                   CONN_TIMEOUT);
-        if (TCP_server_bytes_read > STR_MAX_LEN) {
+        if (TCP_server_bytes_read > BILLY_STR_MAX_LEN) {
             buf[0] = '\0';
             cmd::handler::err_len();
         }
@@ -732,16 +732,16 @@ void receive::tcp_iot(char *buf, stored_configs_t *stored_configs)
             esp_tcp_billy::client_send_msg(stored_configs->IoT_req_msg);
 
             uint32_t TCP_client_bytes_read = esp_tcp_billy::client_read_line(buf,
-                                                                      STR_MAX_LEN,
+                                                                      BILLY_STR_MAX_LEN,
                                                                       CONN_TIMEOUT);
 
-            if (TCP_client_bytes_read > 0 && TCP_client_bytes_read < STR_MAX_LEN) {
+            if (TCP_client_bytes_read > 0 && TCP_client_bytes_read < BILLY_STR_MAX_LEN) {
                 cstring_utils::nullify_first_cr_or_lf(buf);
                 Serial.print("Message received from remote server: ");
                 Serial.println(buf);
             }
 
-            if (TCP_client_bytes_read > STR_MAX_LEN) {
+            if (TCP_client_bytes_read > BILLY_STR_MAX_LEN) {
                 buf[0] = '\0';
                 cmd::handler::err_len();
             }
@@ -754,7 +754,7 @@ void receive::tcp_iot(char *buf, stored_configs_t *stored_configs)
 void receive::http(char *buf)
 {
     esp_http_billy::handle_client_in_loop();
-    esp_http_billy::copy_buf(buf, STR_MAX_LEN);
+    esp_http_billy::copy_buf(buf, BILLY_STR_MAX_LEN);
 }
 
 void receive::btclassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected)
@@ -769,11 +769,11 @@ void receive::btclassic(char *buf, stored_configs_t *stored_configs, bool *BTCla
         if (stored_configs->BTClassic_flag && esp32_btclassic_billy::check_connection()) {
             *BTClassic_was_connected = true;
             uint32_t BTClassic_bytes_read = esp32_btclassic_billy::read_line(buf,
-                                                                      STR_MAX_LEN,
+                                                                      BILLY_STR_MAX_LEN,
                                                                       CONN_TIMEOUT,
                                                                       BTCLASSIC_READ_SLOWDOWN);
 
-            if (BTClassic_bytes_read > STR_MAX_LEN) {
+            if (BTClassic_bytes_read > BILLY_STR_MAX_LEN) {
                 buf[0] = '\0';
                 cmd::handler::err_len();
             }

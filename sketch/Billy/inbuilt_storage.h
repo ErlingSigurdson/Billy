@@ -56,7 +56,6 @@
 namespace inbuilt_storage {
 
     /* Initialize storage.
-     *
      * Returns: true if successful, false otherwise.
      *
      * Necessary for ESP32, ESP8266 and STM32 devices. Not to be used with AVR devices
@@ -70,14 +69,12 @@ namespace inbuilt_storage {
     #endif
 
     /* Read a string from storage and write it to a buffer.
-     *
      * Returns: number of bytes read if successful (including null terminator),
      * negative integer code otherwise (see the preprocessor macros list).
      */
     int32_t read_string_from_storage(char *buf, size_t buf_size, size_t str_max_len, size_t addr);
 
     /* Read a string from storage and write it to a buffer.
-     *
      * Returns: number of bytes read if successful (including null terminator),
      * negative integer code otherwise (see the preprocessor macros list).
      *
@@ -89,14 +86,12 @@ namespace inbuilt_storage {
     int32_t read_string_from_storage(char *buf, size_t buf_size, size_t addr);
 
     /* Write a string to storage.
-     *
      * Returns: number of bytes written if successful (including null terminator),
      * negative integer code otherwise (see the preprocessor macros list).
      */
     int32_t write_string_to_storage(const char *str, size_t str_max_len, size_t addr);
 
     /* Write a string to storage.
-     *
      * Returns: number of bytes written if successful (including null terminator),
      * negative integer code otherwise (see the preprocessor macros list).
      *

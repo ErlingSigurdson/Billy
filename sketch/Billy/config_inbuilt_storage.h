@@ -20,7 +20,7 @@
 /*--- Includes ---*/
 
 // Project configs.
-#include "config_general.h"  // For STR_MAX_LEN.
+#include "config_general.h"  // For BILLY_STR_MAX_LEN.
 
 
 /*--- Basic values ---*/
@@ -29,7 +29,7 @@
                                            * with the number of addresses defined below.
                                            */
 #define INBUILT_STORAGE_SIZE 2048
-#define INBUILT_STORAGE_DEFAULT_BLOCK_SIZE ((STR_MAX_LEN) + 1)
+#define INBUILT_STORAGE_DEFAULT_BLOCK_SIZE ((BILLY_STR_MAX_LEN) + 1)
 
 
 /*--- Config strings addresses ---*/

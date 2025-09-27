@@ -23,21 +23,21 @@
 
 /*************** GLOBAL VARIABLES ***************/
 
-SegMap595Class SegMap595;
+SegMap595 segmap595;
 
 
 /******************* FUNCTIONS ******************/
 
 /*--- Constructor ---*/
 
-SegMap595Class::SegMap595Class()
+SegMap595::SegMap595()
 {
 }
 
 
 /*--- Misc functions ---*/
 
-int32_t SegMap595Class::init(const char *map_str)
+int32_t SegMap595::init(const char *map_str)
 {
     this->status = check_map_str(map_str);
 
@@ -56,14 +56,29 @@ int32_t SegMap595Class::init(const char *map_str)
     return this->status;
 }
 
-uint32_t SegMap595Class::check_map_str(const char *map_str)
+int32_t SegMap595::check_map_str(const char *map_str)
 {
-    if (strlen(map_str) != SEGMAP595_SEG_NUM) {
+    if (map_str == nullptr) {
+        return SEGMAP595_STATUS_ERR_NULLPTR;
+    }
+
+    size_t str_len = strlen(map_str);
+    if (str_len != SEGMAP595_SEG_NUM) {
         return this->status = SEGMAP595_STATUS_ERR_MAP_STR_LEN;
     }
 
     strncpy(this->map_str, map_str, SEGMAP595_SEG_NUM);
 
+    constexpr int32_t ascii_code_diff = 'a' - 'A';
+    int32_t i = 0;
+    for (size_t j = 0; str[j] != '\0'; ++j) {
+        if (this->map_str[i] >= 'a' && this->map_str[i] <= 'g') {
+            str[j] -= ascii_code_diff;
+            ++i;
+        }
+    }
+
+    constexpr int32_t ascii_code_diff = 'a' - 'A';
     for (uint32_t i = 0; i < SEGMAP595_SEG_NUM; ++i) {
         if (this->map_str[i] >= 'a' && this->map_str[i] <= 'g') {
             this->map_str[i] -= SEGMAP595_UPPERCASE_TO_LOWERCASE_ACII_CODE_MARGIN;
@@ -88,7 +103,7 @@ uint32_t SegMap595Class::check_map_str(const char *map_str)
     return this->status = SEGMAP595_STATUS_OK;
 }
 
-uint32_t SegMap595Class::read_map_str()
+int32_t SegMap595::read_map_str()
 {
     uint32_t bit_pos_set = 0;
 
@@ -109,7 +124,7 @@ uint32_t SegMap595Class::read_map_str()
     }
 }
 
-void SegMap595Class::map_characters()
+void SegMap595::map_characters()
 {
     for (uint32_t i = 0; i < SEGMAP595_CHAR_NUM; ++i) {
         for (uint32_t j = 0; j < SEGMAP595_SEG_NUM; ++j) {
@@ -122,7 +137,7 @@ void SegMap595Class::map_characters()
     }
 }
 
-uint32_t SegMap595Class::get_dot_bit_pos()
+uint32_t SegMap595::get_dot_bit_pos()
 {
     return this->bit_pos[0];  /* Dot (represented by the @ sign) is the first character whose position
                                * is determined when a segment string gets analyzed.

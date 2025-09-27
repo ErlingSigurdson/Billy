@@ -6,20 +6,29 @@
  * Purpose:  A class for mapping a 74HC595 IC's outputs and
  *           a 7-segment display's segments.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:    The init method takes a single argument: a string that must reflect the order of the connections made
-             between the parallel outputs of the 74HC595 and the segment control pins of the 7-segment display.
-             The string must consist of exactly 7 characters: @, A, B, C, D, E, F and G. Every character corresponds
-             to a single segment (@ stands for a dot). The character order must correspond to the order
-             of the connections, that is, the first (leftmost) character in the string corresponds to the 7th bit
-             of the IC's parallel output (Q7 output), the second character corresponds to the 6th bit (Q6 output), etc.
-
-             Uppercase characters may be substituted for their lowercase counterparts. Any other characters are invalid.
-             Duplicating characters in the string is illegal.
-
-             If the string is valid, mapped character bytes (bytes which correspond to intelligible symbols to be
-             output on the 7-segment display) will be placed to the member array named mapped_characters
-             in the ascending order (from 0 to Z). Dot bit will be cleared in all mapped character bytes, therefore you
-             will have to set this bit in your implementation if necessary (get_dot_bit_pos method can be helpful).
+ * Notes:    The init method takes a single argument: a string that must
+ *           reflect the order of the connections made between the parallel
+ *           outputs of the 74HC595 and the segment control pins of the
+ *           7-segment display. The string must consist of exactly 7
+ *           characters: @, A, B, C, D, E, F and G. Every character
+ *           corresponds to a single segment (@ stands for a dot). The
+ *           character order must correspond to the order of the
+ *           connections, that is, the first (leftmost) character in the
+ *           string corresponds to the 7th bit of the IC's parallel output
+ *           (Q7 output), the second character corresponds to the 6th bit
+ *           (Q6 output), etc.
+ *
+ *           Uppercase characters may be substituted for their lowercase
+ *           counterparts. Any other characters are invalid. Duplicating
+ *           characters in a string is illegal.
+ *
+ *           If the string is valid, mapped character bytes (bytes which
+ *           correspond to intelligible symbols to be output on a
+ *           7-segment display) will be placed to the member array named
+ *           mapped_characters in the ascending order (from 0 to Z). Dot
+ *           bit will be cleared in all mapped character bytes, therefore
+ *           you will have to set this bit in your implementation if
+ *           necessary (get_dot_bit_pos method can be helpful).
  */
 
 
@@ -46,12 +55,13 @@
 
 #define SEGMAP595_UPPERCASE_TO_LOWERCASE_ACII_CODE_MARGIN 32
 
-#define SEGMAP595_STATUS_OK                      0
 #define SEGMAP595_STATUS_INIT                    -1
-#define SEGMAP595_STATUS_ERR_MAP_STR_LEN         1
-#define SEGMAP595_STATUS_ERR_MAP_STR_CHAR        2
-#define SEGMAP595_STATUS_ERR_MAP_STR_DUPLICATION 3
-#define SEGMAP595_STATUS_ERR_BIT_POS_SET         4
+#define SEGMAP595_STATUS_ERR_NULLPTR             -2
+#define SEGMAP595_STATUS_ERR_MAP_STR_LEN         -3
+#define SEGMAP595_STATUS_ERR_MAP_STR_CHAR        -4
+#define SEGMAP595_STATUS_ERR_MAP_STR_DUPLICATION -5
+#define SEGMAP595_STATUS_ERR_BIT_POS_SET         -6
+#define SEGMAP595_STATUS_OK                       0
 
 // @ABCDEFG, @ is for dot.
 #define SEGMAP595_MAP_ALPHABETICAL_0 0b01111110
@@ -152,22 +162,30 @@
 
 /****************** DATA TYPES ******************/
 
-class SegMap595Class {
+class SegMap595 {
     public:
         char map_str[SEGMAP595_SEG_NUM + 1] = {0};
-        int32_t status = SEGMAP595_STATUS_INIT;
         uint8_t mapped_characters[SEGMAP595_CHAR_NUM] = {0};
 
-        SegMap595Class();
+        SegMap595();
         int32_t init(const char *map_str);
         uint32_t get_dot_bit_pos();
+        int32_t get_status();
 
     private:
+        int32_t status = SEGMAP595_STATUS_INIT;
         uint8_t mapped_alphabetical[SEGMAP595_CHAR_NUM] = {SEGMAP595_MAP_ALPHABETICAL_ALL_CHARS};
         uint32_t bit_pos[SEGMAP595_SEG_NUM] = {0};
 
-        uint32_t check_map_str(const char *map_str);
-        uint32_t read_map_str();
+        /* Check passed map string validity and, if it's valid, copy its contents to a member string.
+         * Returns: negative integer if an error occured, zero if successful. 
+         */
+        int32_t check_map_str(const char *map_str);
+
+        /* Check passed map string validity and, if it's valid, copy its contents to a member string.
+         * Returns: negative integer if an error occured, zero if successful. 
+         */        
+        int32_t read_map_str();
         void map_characters();
 };
 

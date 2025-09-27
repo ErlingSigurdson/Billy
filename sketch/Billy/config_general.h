@@ -186,7 +186,7 @@
 
 /*--- Misc ---*/
 
-#define STR_MAX_LEN 100
+#define BILLY_STR_MAX_LEN 100
 #define CONN_TIMEOUT 8000
 #define CONN_SHUTDOWN_DOWNTIME 100
 
