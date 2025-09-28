@@ -3,32 +3,37 @@
 /**
  * Filename: SegMap595.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  A class for mapping a 74HC595 IC's outputs and
- *           a 7-segment display's segments.
+ * Purpose:  A class for mapping a 74HC595 IC outputs
+ *           and a 7-segment display segments.
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Notes:    The init method takes a single argument: a string that must
- *           reflect the order of the connections made between the parallel
- *           outputs of the 74HC595 and the segment control pins of the
- *           7-segment display. The string must consist of exactly 7
- *           characters: @, A, B, C, D, E, F and G. Every character
- *           corresponds to a single segment (@ stands for a dot). The
- *           character order must correspond to the order of the
- *           connections, that is, the first (leftmost) character in the
- *           string corresponds to the 7th bit of the IC's parallel output
+ * Notes:    The init method takes a single argument - a map string, that is,
+ *           a C-style (null-terminated) string that must reflect the order
+ *           of connections made between parallel outputs of a 74HC595
+ *           and segment control pins of a 7-segment display.
+ *
+ *           The map string must consist of exactly 8 characters: @, A, B, C, D,
+ *           E, F and G. Every character corresponds to a single segment
+ *           (@ stands for a dot). The first (leftmost) character in the
+ *           map string corresponds to the 7th bit of the IC's parallel output
  *           (Q7 output), the second character corresponds to the 6th bit
  *           (Q6 output), etc.
  *
  *           Uppercase characters may be substituted for their lowercase
  *           counterparts. Any other characters are invalid. Duplicating
- *           characters in a string is illegal.
+ *           characters in the map string is illegal.
  *
- *           If the string is valid, mapped character bytes (bytes which
- *           correspond to intelligible symbols to be output on a
- *           7-segment display) will be placed to the member array named
- *           mapped_characters in the ascending order (from 0 to Z). Dot
- *           bit will be cleared in all mapped character bytes, therefore
- *           you will have to set this bit in your implementation if
- *           necessary (get_dot_bit_pos method can be helpful).
+ *           If the map string is valid, mapped characters (bytes which
+ *           correspond to intelligible symbols to be output on a 7-segment
+ *           display) will be placed to the member array named mapped_characters
+ *           in the ascending order (from 0 to Z).
+ *
+ *           The dot bit will be cleared in all mapped character bytes,
+ *           therefore you will have to set this bit in your implementation
+ *           if necessary (get_dot_bit_pos method can be helpful).
+ *
+ *           Characters get mapped on the assumption of a common-cathode
+ *           7-segment display. Bits must be inverted if a common-anode
+ *           display is used.
  */
 
 
@@ -47,14 +52,13 @@
 
 /*--- Misc ---*/
 
-#define SEGMAP595_SEG_NUM  8
+#define SEGMAP595_SEG_NUM  8   // Including a dot segment.
 #define SEGMAP595_CHAR_NUM 31
 
 #define SEGMAP595_MSB          7
 #define SEGMAP595_ONLY_MSB_SET (1 << SEGMAP595_MSB)
 
-#define SEGMAP595_UPPERCASE_TO_LOWERCASE_ACII_CODE_MARGIN 32
-
+// Function return codes.
 #define SEGMAP595_STATUS_INIT                    -1
 #define SEGMAP595_STATUS_ERR_NULLPTR             -2
 #define SEGMAP595_STATUS_ERR_MAP_STR_LEN         -3
@@ -63,7 +67,11 @@
 #define SEGMAP595_STATUS_ERR_BIT_POS_SET         -6
 #define SEGMAP595_STATUS_OK                       0
 
-// @ABCDEFG, @ is for dot.
+/* Bytes formed as if a map string is "@ABCDEFG" (@ is for dot).
+ * In reality the map string is highly unlikely to be like that,
+ * and alphabetically mapped bytes are just a set of default
+ * combinations used in the actual mapping process.  
+ */ 
 #define SEGMAP595_MAP_ALPHABETICAL_0 0b01111110
 #define SEGMAP595_MAP_ALPHABETICAL_1 0b00110000
 #define SEGMAP595_MAP_ALPHABETICAL_2 0b01101101
@@ -127,6 +135,9 @@
                                              SEGMAP595_MAP_ALPHABETICAL_Y, \
                                              SEGMAP595_MAP_ALPHABETICAL_Z
 
+/* Handy index aliases for referring to the mapped characters
+ * (custom formed bytes) within the resulting array.
+ */
 #define SEGMAP595_CHAR_0 0
 #define SEGMAP595_CHAR_1 1
 #define SEGMAP595_CHAR_2 2
@@ -164,35 +175,82 @@
 
 class SegMap595 {
     public:
-        char map_str[SEGMAP595_SEG_NUM + 1] = {0};
+        /*--- Variables ---*/
+
+        /* Resulting array.
+         * If a passed map string is valid and the characters are successfully mapped,
+         * this array will hold the mapped characters (custom formed bytes).
+         */ 
         uint8_t mapped_characters[SEGMAP595_CHAR_NUM] = {0};
 
+
+        /*--- Methods ---*/
+
+        // Default constructor.
         SegMap595();
+
+        /* "Load" a map string into an object.
+         * Returns: 0 if the passed map string is valid and the characters are successfully mapped,
+         * negative integer otherwise (see preprocessor macros list for possible values).
+         *
+         * Multiple calls for this method are valid, each call will lead to a fresh character mapping.
+         */
         int32_t init(const char *map_str);
-        uint32_t get_dot_bit_pos();
+
+        /* Get the mapping status (whether a passed map string was valid and the characters were successfully mapped).
+         * Returns: 0 if the passed map string was valid and the characters were successfully mapped,
+         * negative integer otherwise.
+         */
         int32_t get_status();
 
-    private:
-        int32_t status = SEGMAP595_STATUS_INIT;
-        uint8_t mapped_alphabetical[SEGMAP595_CHAR_NUM] = {SEGMAP595_MAP_ALPHABETICAL_ALL_CHARS};
-        uint32_t bit_pos[SEGMAP595_SEG_NUM] = {0};
-
-        /* Check passed map string validity and, if it's valid, copy its contents to a member string.
-         * Returns: negative integer if an error occured, zero if successful. 
+        /* Get the position of a bit that represents a dot segment.
+         * Returns: non-negative integer.
          */
-        int32_t check_map_str(const char *map_str);
+        uint32_t get_dot_bit_pos();
 
-        /* Check passed map string validity and, if it's valid, copy its contents to a member string.
-         * Returns: negative integer if an error occured, zero if successful. 
+        /* Get a pointer to an object's internal buffer that holds the passed map string.
+         * Returns: a pointer to the string if the passed map string was valid and the characters were successfully
+         * mapped, nullptr otherwise (although the buffer always has a valid address in memory, nullptr serves
+         * as an issue indicator).
+         */
+        const char* get_map_str();  
+
+    private:
+        /*--- Variables ---*/
+
+        // Internal buffer.
+        char     _map_str[SEGMAP595_SEG_NUM + 1] = {0};
+
+        // Mapping status. See preprocessor macros list for possible values. 
+        int32_t  _status = SEGMAP595_STATUS_INIT;
+
+        // Array of bytes formed as if a map string is "@ABCDEFG" (@ is for dot).
+        uint8_t  _mapped_alphabetical[SEGMAP595_CHAR_NUM] = {SEGMAP595_MAP_ALPHABETICAL_ALL_CHARS};
+
+        // Array of values which indicate the respective bit position number for every display segment.
+        uint32_t _bit_pos[SEGMAP595_SEG_NUM] = {0};
+
+
+        /*--- Methods ---*/
+
+        /* Check a passed map string validity and, if it's valid, copy its contents to an internal buffer.
+         * Returns: 0 if the passed map string is valid, negative integer otherwise
+         * (see preprocessor macros list for possible values).
+         */
+        int32_t  check_map_str(const char *map_str);
+
+        /* Indicate bit positions for every display segment.
+         * Returns: 0 if all bit positions are indicated, negative integer otherwise
+         * (see preprocessor macros list for possible values).
          */        
-        int32_t read_map_str();
-        void map_characters();
+        int32_t  read_map_str();
+        void     map_characters();
 };
 
 
 /*************** GLOBAL VARIABLES ***************/
 
-extern SegMap595Class SegMap595;
+extern SegMap595 segmap595;
 
 
 #endif  // Include guards.
