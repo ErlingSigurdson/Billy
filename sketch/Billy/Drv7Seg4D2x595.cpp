@@ -39,7 +39,7 @@ Drv7Seg4D2x595 driver7seg;
 
 Drv7Seg4D2x595::Drv7Seg4D2x595()
 {
-    this->_variant = DRV7SEG4D2X595_VARIANT_UNINITIALIZED;
+    _variant = DRV7SEG4D2X595_VARIANT_UNINITIALIZED;
 }
 
 

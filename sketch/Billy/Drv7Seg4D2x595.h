@@ -78,7 +78,10 @@
 
 // Function return codes.
 #define DRV7SEG4D2X595_SHIFTING_PREVENTED -1
-#define DRV7SEG4D2X595_SHIFTING_COMMENCED  0
+#define DRV7SEG4D2X595_SHIFTING_COMMENCED  0  /* The success of shifting can't be verified programmatically,
+                                               * but this return code indicates that the attempt to start
+                                               * shifting was begun.
+                                               */
 
 #define DRV7SEG4D2X595_BLANK_DIGIT 0b00000000
 
@@ -87,6 +90,8 @@
 
 class Drv7Seg4D2x595 {
     public:
+        /*--- Methods ---*/
+        
         Drv7Seg4D2x595();
 
         // Initialize the driver to use bit-banging with assigned pins.
@@ -106,6 +111,8 @@ class Drv7Seg4D2x595 {
         int32_t shift_out(uint8_t ubyte, uint8_t lbyte);
 
     private:
+        /*--- Variables ---*/
+        
         int32_t  _variant;
         uint32_t _data_pin;
         uint32_t _latch_pin;
