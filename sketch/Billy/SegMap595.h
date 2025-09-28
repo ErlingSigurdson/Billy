@@ -70,8 +70,8 @@
 /* Bytes formed as if a map string is "@ABCDEFG" (@ is for dot).
  * In reality the map string is highly unlikely to be like that,
  * and alphabetically mapped bytes are just a set of default
- * combinations used in the actual mapping process.  
- */ 
+ * combinations used in the actual mapping process.
+ */
 #define SEGMAP595_MAP_ALPHABETICAL_0 0b01111110
 #define SEGMAP595_MAP_ALPHABETICAL_1 0b00110000
 #define SEGMAP595_MAP_ALPHABETICAL_2 0b01101101
@@ -180,7 +180,7 @@ class SegMap595 {
         /* Resulting array.
          * If a passed map string is valid and the characters are successfully mapped,
          * this array will hold the mapped characters (custom formed bytes).
-         */ 
+         */
         uint8_t mapped_characters[SEGMAP595_CHAR_NUM] = {0};
 
 
@@ -213,7 +213,7 @@ class SegMap595 {
          * mapped, nullptr otherwise (although the buffer always has a valid address in memory, nullptr serves
          * as an issue indicator).
          */
-        const char* get_map_str();  
+        const char* get_map_str();
 
     private:
         /*--- Variables ---*/
@@ -221,7 +221,7 @@ class SegMap595 {
         // Internal buffer.
         char     _map_str[SEGMAP595_SEG_NUM + 1] = {0};
 
-        // Mapping status. See preprocessor macros list for possible values. 
+        // Mapping status. See preprocessor macros list for possible values.
         int32_t  _status = SEGMAP595_STATUS_INIT;
 
         // Array of bytes formed as if a map string is "@ABCDEFG" (@ is for dot).
@@ -242,7 +242,7 @@ class SegMap595 {
         /* Indicate bit positions for every display segment.
          * Returns: 0 if all bit positions are indicated, negative integer otherwise
          * (see preprocessor macros list for possible values).
-         */        
+         */
         int32_t  read_map_str();
         void     map_characters();
 };
