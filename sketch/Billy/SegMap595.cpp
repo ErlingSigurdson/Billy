@@ -3,8 +3,8 @@
 /**
  * Filename: SegMap595.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  A class for mapping a 74HC595 IC outputs
- *           and a 7-segment display segments.
+ * Purpose:  A class for mapping the outputs of a 74HC595 IC
+ *           to the segments of a 7-segment display.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:
  */

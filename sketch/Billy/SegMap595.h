@@ -3,8 +3,8 @@
 /**
  * Filename: SegMap595.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  A class for mapping a 74HC595 IC outputs
- *           and a 7-segment display segments.
+ * Purpose:  A class for mapping the outputs of a 74HC595 IC
+ *           to the segments of a 7-segment display.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:    The init method takes a single argument - a map string, that is,
  *           a C-style (null-terminated) string that must reflect the order
