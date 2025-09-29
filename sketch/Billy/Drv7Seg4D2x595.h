@@ -78,7 +78,7 @@
 
 // Function return codes.
 #define DRV7SEG4D2X595_SHIFTING_PREVENTED -1
-#define DRV7SEG4D2X595_SHIFTING_COMMENCED  0  /* The success of shifting can't be verified programmatically,
+#define DRV7SEG4D2X595_SHIFTING_COMMENCED  0  /* The success of shifting cannot be verified programmatically,
                                                * but this return code indicates that the attempt to start
                                                * shifting was begun.
                                                */

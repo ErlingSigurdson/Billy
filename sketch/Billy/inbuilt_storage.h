@@ -3,8 +3,8 @@
 /**
  * Filename: inbuilt_storage.h
  * ----------------------------------------------------------------------------|---------------------------------------|
- * Purpose:  Writing and reading strings to and from
- *           inbuilt storage using EEPROM.h library.
+ * Purpose:  Writing and reading C-style (null-terminated) strings
+ *           to and from inbuilt storage using the EEPROM.h library.
  *           Intended for use with the Arduino framework.
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Notes:    AVR devices use inbuilt EEPROM.
