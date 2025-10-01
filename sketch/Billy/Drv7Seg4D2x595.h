@@ -91,7 +91,7 @@
 class Drv7Seg4D2x595 {
     public:
         /*--- Methods ---*/
-        
+
         Drv7Seg4D2x595();
 
         // Initialize the driver to use bit-banging with assigned pins.
@@ -112,7 +112,7 @@ class Drv7Seg4D2x595 {
 
     private:
         /*--- Variables ---*/
-        
+
         int32_t  _variant;
         uint32_t _data_pin;
         uint32_t _latch_pin;
