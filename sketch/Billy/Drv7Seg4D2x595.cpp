@@ -69,16 +69,18 @@ void Drv7Seg4D2x595::init_spi(uint32_t latch_pin, uint32_t ghosting_prevention_d
     SPI.begin();
 }
 
-void Drv7Seg4D2x595::init_spi(uint32_t mosi_pin, uint32_t latch_pin, uint32_t sck_pin,
-                              uint32_t ghosting_prevention_delay)
-{
-    _variant = DRV7SEG4D2X595_VARIANT_SPI;
-    _latch_pin = latch_pin;
-    _ghosting_prevention_delay = ghosting_prevention_delay;
+#ifdef ARDUINO_ARCH_ESP32
+    void Drv7Seg4D2x595::init_spi(uint32_t mosi_pin, uint32_t latch_pin, uint32_t sck_pin,
+                                  uint32_t ghosting_prevention_delay)
+    {
+        _variant = DRV7SEG4D2X595_VARIANT_SPI;
+        _latch_pin = latch_pin;
+        _ghosting_prevention_delay = ghosting_prevention_delay;
 
-    pinMode(_latch_pin, OUTPUT);
-    SPI.begin(sck_pin, -1, mosi_pin, -1);
-}
+        pinMode(_latch_pin, OUTPUT);
+        SPI.begin(sck_pin, -1, mosi_pin, -1);
+    }
+#endif
 
 int32_t Drv7Seg4D2x595::shift_out(uint8_t ubyte, uint8_t lbyte)
 {
