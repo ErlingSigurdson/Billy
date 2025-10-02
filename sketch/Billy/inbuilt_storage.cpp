@@ -38,9 +38,11 @@
 /******************* FUNCTIONS ******************/
 
 /* Conditional compilation is used because the EEPROM.h
- * variant for AVR devices lacks the respective method.
+ * variant for AVR devices lacks the EEPROM.begin() method.
+ * and the ESP32 and STM32 Arduino cores define that method's
+ * return type as bool.
  */
-#if defined ARDUINO_ARCH_ESP32 || defined ARDUINO_ARCH_ESP8266 || defined ARDUINO_ARCH_STM32
+#if defined ARDUINO_ARCH_ESP32 || defined ARDUINO_ARCH_STM32
     bool inbuilt_storage::init(uint32_t emulated_eeprom_size)
     {
         if (EEPROM.begin(emulated_eeprom_size)) {
@@ -51,6 +53,21 @@
             #endif
             return false;
         }
+    }
+#endif
+
+/* Conditional compilation is used because the EEPROM.h
+ * variant for AVR devices lacks the EEPROM.begin() method,
+ * and the ESP8266 Arduino core defines that method's
+ * return type as void, not bool.
+ */
+#ifdef ARDUINO_ARCH_ESP8266
+    void inbuilt_storage::init(uint32_t emulated_eeprom_size)
+    {
+        EEPROM.begin(emulated_eeprom_size);
+
+        // void return type makes it unnecessary, but it's still added for readability.
+        return;
     }
 #endif
 

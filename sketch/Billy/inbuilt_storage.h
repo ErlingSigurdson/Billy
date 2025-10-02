@@ -62,10 +62,24 @@ namespace inbuilt_storage {
      * Call it just once before you start using the storage.
      *
      * Conditional compilation is used because the EEPROM.h
-     * variant for AVR devices lacks the respective method.
+     * variant for AVR devices lacks the EEPROM.begin() method.
+     * and the ESP32 and STM32 Arduino cores define that method's
+     * return type as bool.
      */
-    #if defined ARDUINO_ARCH_ESP32 || defined ARDUINO_ARCH_ESP8266 || defined ARDUINO_ARCH_STM32
+    #if defined ARDUINO_ARCH_ESP32 || ARDUINO_ARCH_STM32
         bool init(uint32_t emulated_eeprom_size);
+    #endif
+
+    /* Initialize storage.
+     * Returns: true if successful, false otherwise.
+     *
+     * Conditional compilation is used because the EEPROM.h
+     * variant for AVR devices lacks the EEPROM.begin() method,
+     * and the ESP8266 Arduino core defines that method's
+     * return type as void, not bool.
+     */
+    #ifdef ARDUINO_ARCH_ESP8266
+        void init(uint32_t emulated_eeprom_size);
     #endif
 
     /* Read a string from storage and write it to a buffer.
