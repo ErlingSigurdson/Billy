@@ -211,8 +211,8 @@ void setup()
 
     // Pin configuration and setting the digital outputs to respective initial digital levels.
     if (DIGITAL_OUTPUT_PIN > 0) {
-        pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
         digitalWrite(DIGITAL_OUTPUT_PIN, !DIGITAL_OUTPUT_ACTIVE_STATE);
+        pinMode(DIGITAL_OUTPUT_PIN, OUTPUT);
     }
 
     if (PWM_OUTPUT_PIN > 0) {
