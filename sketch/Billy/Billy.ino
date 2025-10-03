@@ -544,7 +544,7 @@ void loop()
     Serial.flush();
 
 
-    /*--- Drive a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
+    /*--- Driving a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
 
     #if defined DRV7SEG4D2X595_BIT_BANGING      || \
         defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
