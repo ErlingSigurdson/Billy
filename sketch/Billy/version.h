@@ -18,7 +18,7 @@
 
 /*--- Misc ---*/
 
-#define VERSION "v.1.4.7-development"
+#define VERSION "v.1.4.8"
 
 #define LINK_MESSAGE "Check for the manual and full details here:"
 #define LINK_GITHUB  "https://github.com/ErlingSigurdson/Billy"
