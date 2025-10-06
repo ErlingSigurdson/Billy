@@ -23,6 +23,10 @@
 
 /*--- Includes ---*/
 
+// Include guards.
+#ifndef BILLY_H
+#define BILLY_H
+
 // Local modules.
 #include "cmd.h"
 #include "hw_uart.h"
@@ -76,33 +80,41 @@
 
 /*--- Wireless connectivity setup functions ---*/
 
-namespace wireless_interface_setup {
-    bool WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout);
-    void BTClassic(stored_configs_t *stored_configs);
-}
+namespace billy {
+
+    namespace main {
+        void in_setup();
+        void in_loop();
+    }
+
+    namespace wireless_interface_setup {
+        bool WiFi(stored_configs_t *stored_configs, uint32_t conn_attempt_timeout);
+        void BTClassic(stored_configs_t *stored_configs);
+    }
 
 
-/*--- Command reception functions ---*/
+    /*--- Command reception functions ---*/
 
-namespace receive {
-    // Put a data received by hardware UART into the buffer.
-    void hw_uart(char *buf);
+    namespace cmd_receive {
+        // Put a data received by hardware UART into the buffer.
+        void hw_uart(char *buf);
 
-    // Put a data received by a local TCP server from a client into the buffer.
-    void tcp_local(char *buf);
+        // Put a data received by a local TCP server from a client into the buffer.
+        void tcp_local(char *buf);
 
-    /* A local TCP client sends a request to a remote server and reads a response,
-     * which is then put into the buffer.
-     */
-    void tcp_iot(char *buf, stored_configs_t *stored_configs);
+        /* A local TCP client sends a request to a remote server and reads a response,
+         * which is then put into the buffer.
+         */
+        void tcp_iot(char *buf, stored_configs_t *stored_configs);
 
-    /* A local HTTP server handles HTTP requests and reads a data
-     * from a request body, which is then put into the buffer.
-     */
-    void http(char *buf);
+        /* A local HTTP server handles HTTP requests and reads a data
+         * from a request body, which is then put into the buffer.
+         */
+        void http(char *buf);
 
-    // Put a data received by a Bluetooth Classic slave device from a master device into the buffer.
-    void btclassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected);
+        // Put a data received by a Bluetooth Classic slave device from a master device into the buffer.
+        void btclassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected);
+    }
 }
 
 
@@ -110,7 +122,7 @@ namespace receive {
 
 /*--- Basic functions ---*/
 
-void setup()
+void billy::main::in_setup()
 {
     /*--- Hardware UART startup ---*/
 
@@ -280,7 +292,7 @@ void setup()
     hw_uart::flush();
 }
 
-void loop()
+void billy::main::in_loop()
 {
     /*--- Interaction with an inbuilt storage ---*/
 
@@ -315,16 +327,16 @@ void loop()
     char main_buf[BILLY_STR_MAX_LEN + 1] = {0};
 
     // Command reception subroutines.
-    receive::hw_uart(main_buf);
-    receive::tcp_local(main_buf);
-    receive::tcp_iot(main_buf, &stored_configs);
-    receive::http(main_buf);
+    cmd_receive::hw_uart(main_buf);
+    cmd_receive::tcp_local(main_buf);
+    cmd_receive::tcp_iot(main_buf, &stored_configs);
+    cmd_receive::http(main_buf);
 
     /* Another call for the connected() method of the BluetoothSerial class
      * caused an RTOS crash, hence the additional flag was introduced.
      */
     bool BTClassic_was_connected = 0;
-    receive::btclassic(main_buf, &stored_configs, &BTClassic_was_connected);
+    cmd_receive::btclassic(main_buf, &stored_configs, &BTClassic_was_connected);
 
 
     /*--- Command handling ---*/
@@ -690,7 +702,7 @@ void wireless_interface_setup::BTClassic(stored_configs_t *stored_configs)
 
 /*--- Command reception functions ---*/
 
-void receive::hw_uart(char *buf)
+void cmd_receive::hw_uart(char *buf)
 {
     uint32_t HW_UART_bytes_read = hw_uart::read_line(buf,
                                                      BILLY_STR_MAX_LEN,
@@ -702,7 +714,7 @@ void receive::hw_uart(char *buf)
     }
 }
 
-void receive::tcp_local(char *buf)
+void cmd_receive::tcp_local(char *buf)
 {
     if (esp_tcp_billy::server_get_client()) {
         uint32_t TCP_server_bytes_read = esp_tcp_billy::server_read_line(buf,
@@ -715,7 +727,7 @@ void receive::tcp_local(char *buf)
     }
 }
 
-void receive::tcp_iot(char *buf, stored_configs_t *stored_configs)
+void cmd_receive::tcp_iot(char *buf, stored_configs_t *stored_configs)
 {
     if (stored_configs->IoT_req_period == 0) {
         stored_configs->IoT_req_period = IOT_DEFAULT_REQ_PERIOD;  // Divide by zero prevention.
@@ -751,13 +763,13 @@ void receive::tcp_iot(char *buf, stored_configs_t *stored_configs)
     }
 }
 
-void receive::http(char *buf)
+void cmd_receive::http(char *buf)
 {
     esp_http_billy::handle_client_in_loop();
     esp_http_billy::copy_buf(buf, BILLY_STR_MAX_LEN);
 }
 
-void receive::btclassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected)
+void cmd_receive::btclassic(char *buf, stored_configs_t *stored_configs, bool *BTClassic_was_connected)
 {
     // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)buf;
@@ -780,3 +792,6 @@ void receive::btclassic(char *buf, stored_configs_t *stored_configs, bool *BTCla
         }
     #endif
 }
+
+
+#endif  // Include guards.
