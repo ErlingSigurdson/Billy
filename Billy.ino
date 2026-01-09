@@ -33,11 +33,11 @@
 #include "src/stored_configs.h"
 #include "src/cstring_utils.h"
 
-#if defined ESP32 && defined BTCLASSIC_USED
+#if defined(ARDUINO_ARCH_ESP32) && defined BTCLASSIC_USED
     #include "src/esp32_btclassic_billy.h"
 #endif
 
-#if defined ESP32 && defined BLE_USED
+#if defined(ARDUINO_ARCH_ESP32) && defined BLE_USED
     #include "src/esp32_ble_billy.h"
 #endif
 
@@ -405,7 +405,7 @@ void loop()
     esp_tcp_billy::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
 
     // Bluetooth Classic disconnection.
-    #if defined ESP32 && defined BTCLASSIC_USED
+    #if defined(ARDUINO_ARCH_ESP32) && defined BTCLASSIC_USED
         if (BTClassic_was_connected) {
             esp32_btclassic_billy::disconnect(CONN_SHUTDOWN_DOWNTIME);
         }
@@ -519,7 +519,7 @@ void wireless_interface_setup::BTClassic(stored_configs_t *stored_configs)
     // Dummy statements to prevent warnings connected to a conditional compilation (unused parameter).
     (void)stored_configs;
 
-    #if defined ESP32 && defined BTCLASSIC_USED
+    #if defined(ARDUINO_ARCH_ESP32) && defined BTCLASSIC_USED
         Serial.println("");
 
         // Check for Bluetooth Classic functionality flag.
@@ -613,7 +613,7 @@ void receive::btclassic(char *buf, stored_configs_t *stored_configs, bool *BTCla
     (void)stored_configs;
     (void)BTClassic_was_connected;
 
-    #if defined ESP32 && defined BTCLASSIC_USED
+    #if defined(ARDUINO_ARCH_ESP32) && defined BTCLASSIC_USED
         *BTClassic_was_connected = false;  // Just in case.
         if (stored_configs->BTClassic_flag && esp32_btclassic_billy::check_connection()) {
             *BTClassic_was_connected = true;

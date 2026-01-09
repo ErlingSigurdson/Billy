@@ -24,11 +24,11 @@
 #include "cstring_utils.h"
 #include "version.h"
 
-#if defined ESP32 && defined BTCLASSIC_USED
+#if defined(ARDUINO_ARCH_ESP32) && defined BTCLASSIC_USED
     #include "esp32_btclassic_billy.h"
 #endif
 
-#if defined ESP32 && defined BLE_USED
+#if defined(ARDUINO_ARCH_ESP32) && defined BLE_USED
     #include "esp32_ble_billy.h"
 #endif
 
@@ -74,7 +74,7 @@ void cmd::aux::output_msg(const char *msg)
     Serial.println(msg);
     esp_tcp_billy::server_send_msg(msg);
 
-    #if defined ESP32 && defined BTCLASSIC_USED
+    #if defined(ARDUINO_ARCH_ESP32) && defined BTCLASSIC_USED
         char config_val[BILLY_STR_MAX_LEN + 1] = {0};
         inbuilt_storage::read_string_from_storage(config_val,
                                                   sizeof(config_val),
@@ -481,7 +481,7 @@ void cmd::handler::set_BTClassic_flag(char *cmd,
     (void)setup_BTClassic_ptr;
     (void)refresh_flag;
 
-    #if defined ESP32 && defined BTCLASSIC_USED
+    #if defined(ARDUINO_ARCH_ESP32) && defined BTCLASSIC_USED
         static char *cmd_val = strstr(cmd, "=") + 1;  /* Needs to be calculated just once
                                                        * because subsequent commands won't be different.
                                                        */
@@ -520,7 +520,7 @@ void cmd::handler::set_BTClassic_dev_name(const char *cmd,
     (void)setup_BTClassic_ptr;
     (void)refresh_flag;
 
-    #if defined ESP32 && defined BTCLASSIC_USED
+    #if defined(ARDUINO_ARCH_ESP32) && defined BTCLASSIC_USED
         set_config_params_t params = {cmd,
                                       INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME,
                                       ANY_CHAR,
@@ -542,7 +542,7 @@ void cmd::handler::set_BTClassic_dev_name(const char *cmd,
 // Command #22
 void cmd::handler::output_BTClassic_dev_name()
 {
-    #if defined ESP32 && defined BTCLASSIC_USED
+    #if defined(ARDUINO_ARCH_ESP32) && defined BTCLASSIC_USED
         cmd::aux::output_config(INBUILT_STORAGE_ADDR_BTCLASSIC_DEV_NAME,
                               "Current Bluetooth Classic device name is: ");
     #else
@@ -560,7 +560,7 @@ void cmd::handler::all_conn_rst(bool (*setup_WiFi_ptr)(stored_configs_t *, uint3
     esp_tcp_billy::clients_disconnect(CONN_SHUTDOWN_DOWNTIME);
     esp_tcp_billy::server_stop(CONN_SHUTDOWN_DOWNTIME);
 
-    #if defined ESP32 && defined BTCLASSIC_USED
+    #if defined(ARDUINO_ARCH_ESP32) && defined BTCLASSIC_USED
         esp32_btclassic_billy::stop(CONN_SHUTDOWN_DOWNTIME);
     #endif
 
