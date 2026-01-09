@@ -78,59 +78,6 @@
 #endif
 
 
-/*--- Driving a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
-
-/* If you wish to control a 7-segment 4-digit display using two daisy-chained 74HC595 ICs,
- * uncomment one of the following #define directives.
- */
-// Bit-banging version.
-//#define DRV7SEG4D2X595_BIT_BANGING
-
-// SPI version, default MOSI and SCK pins.
-//#define DRV7SEG4D2X595_SPI_DEFAULT_PINS
-
-// SPI version, custom MOSI and SCK pins.
-//#define DRV7SEG4D2X595_SPI_CUSTOM_PINS
-
-// DO NOT TOUCH. These directives make sure that only one variant will be enabled.
-#ifdef DRV7SEG4D2X595_BIT_BANGING
-    #undef DRV7SEG4D2X595_SPI_DEFAULT_PINS
-    #undef DRV7SEG4D2X595_SPI_CUSTOM_PINS
-#endif
-
-#ifdef DRV7SEG4D2X595_SPI_DEFAULT_PINS
-    #undef DRV7SEG4D2X595_SPI_CUSTOM_PINS
-#endif
-
-#if defined DRV7SEG4D2X595_BIT_BANGING || \
-    defined DRV7SEG4D2X595_SPI_DEFAULT_PINS || \
-    defined DRV7SEG4D2X595_SPI_CUSTOM_PINS
-
-    // Set the following macros appropriately.
-    #define DRV7SEG4D2X595_SEG_STR                   "ED@CGAFB"  /* The string that must reflect the order
-                                                                  * of the connections made between the parallel outputs
-                                                                  * of a 74HC595 IC and the segment control pins
-                                                                  * of a 7-segment display.
-                                                                  */
-    #define DRV7SEG4D2X595_LATCH_PIN                 27
-    #define DRV7SEG4D2X595_D1                        7           // 1st display digit control bit.
-    #define DRV7SEG4D2X595_D2                        5           // 2st display digit control bit.
-    #define DRV7SEG4D2X595_D3                        3           // 3st display digit control bit.
-    #define DRV7SEG4D2X595_D4                        1           // 4st display digit control bit.
-    #define DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY 4
-
-    #ifdef DRV7SEG4D2X595_BIT_BANGING
-        #define DRV7SEG4D2X595_DATA_PIN              16
-        #define DRV7SEG4D2X595_CLOCK_PIN             14
-    #endif
-
-    #ifdef DRV7SEG4D2X595_SPI_CUSTOM_PINS
-        #define DRV7SEG4D2X595_MOSI_PIN              23
-        #define DRV7SEG4D2X595_SCK_PIN               19
-    #endif
-#endif
-
-
 /*--- Hardware UART ---*/
 
 // Hardware UART baud rate.

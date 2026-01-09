@@ -45,14 +45,6 @@
     #include "src/rgb_led.h"
 #endif
 
-#if defined DRV7SEG4D2X595_BIT_BANGING      || \
-    defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
-    defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
-    #include "src/SegMap595.h"
-    #include "src/Drv7Seg4D2x595.h"
-    #include "src/SimpleCounter.h"
-#endif
-
 // Project configs.
 #include "config_general.h"
 #include "src/config_cmd.h"
@@ -136,79 +128,6 @@ void setup()
         Serial.println("Warning! No Wi-Fi indicator LED output pin specified.");
     }
 
-    #if defined DRV7SEG4D2X595_BIT_BANGING
-        #if DRV7SEG4D2X595_DATA_PIN  == DIGITAL_OUTPUT_PIN     || \
-            DRV7SEG4D2X595_DATA_PIN  == PWM_OUTPUT_PIN         || \
-            DRV7SEG4D2X595_DATA_PIN  == WIFI_INDICATOR_LED_PIN || \
-            DRV7SEG4D2X595_LATCH_PIN == DIGITAL_OUTPUT_PIN     || \
-            DRV7SEG4D2X595_LATCH_PIN == PWM_OUTPUT_PIN         || \
-            DRV7SEG4D2X595_LATCH_PIN == WIFI_INDICATOR_LED_PIN || \
-            DRV7SEG4D2X595_CLOCK_PIN == DIGITAL_OUTPUT_PIN     || \
-            DRV7SEG4D2X595_CLOCK_PIN == PWM_OUTPUT_PIN         || \
-            DRV7SEG4D2X595_CLOCK_PIN == WIFI_INDICATOR_LED_PIN
-
-            Serial.println("");
-            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs");
-            Serial.println("coincide with either a digital output pin, a PWM output pin");
-            Serial.println("or a Wi-Fi indicator LED control pin.");
-            Serial.println("It can, and most probably will, interfere with the output.");
-        #endif
-    #endif
-
-    #if defined DRV7SEG4D2X595_SPI_CUSTOM_PINS
-        #if DRV7SEG4D2X595_MOSI_PIN  == DIGITAL_OUTPUT_PIN     || \
-            DRV7SEG4D2X595_MOSI_PIN  == PWM_OUTPUT_PIN         || \
-            DRV7SEG4D2X595_MOSI_PIN  == WIFI_INDICATOR_LED_PIN || \
-            DRV7SEG4D2X595_LATCH_PIN == DIGITAL_OUTPUT_PIN     || \
-            DRV7SEG4D2X595_LATCH_PIN == PWM_OUTPUT_PIN         || \
-            DRV7SEG4D2X595_LATCH_PIN == WIFI_INDICATOR_LED_PIN || \
-            DRV7SEG4D2X595_SCK_PIN   == DIGITAL_OUTPUT_PIN     || \
-            DRV7SEG4D2X595_SCK_PIN   == PWM_OUTPUT_PIN         || \
-            DRV7SEG4D2X595_SCK_PIN   == WIFI_INDICATOR_LED_PIN
-
-            Serial.println("");
-            Serial.println("Warning! One or more of the pins assigned to control the daisy-chained 74HC595 ICs");
-            Serial.println("coincide with either a digital output pin, a PWM output pin");
-            Serial.println("or a Wi-Fi indicator LED control pin.");
-            Serial.println("It can, and most probably will, interfere with the output.");
-        #endif
-    #endif
-
-    #if defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
-        #if DRV7SEG4D2X595_LATCH_PIN  == DIGITAL_OUTPUT_PIN     || \
-            DRV7SEG4D2X595_LATCH_PIN  == PWM_OUTPUT_PIN         || \
-            DRV7SEG4D2X595_LATCH_PIN  == WIFI_INDICATOR_LED_PIN
-
-            Serial.println("");
-            Serial.println("Warning! The latch pin assigned to control the daisy-chained 74HC595 ICs");
-            Serial.println("coincide with either a digital output pin, a PWM output pin");
-            Serial.println("or a Wi-Fi indicator LED control pin.");
-            Serial.println("It can, and most probably will, interfere with the output.");
-        #endif
-    #endif
-
-    #if defined DRV7SEG4D2X595_BIT_BANGING
-        #if DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
-            DRV7SEG4D2X595_DATA_PIN  == DRV7SEG4D2X595_CLOCK_PIN || \
-            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_CLOCK_PIN
-
-            Serial.println("");
-            Serial.println("Warning! Some of the pins assigned to control the daisy-chained 74HC595 ICs"
-                           "coincide with each other. It can, and most probably will, interfere with the output.");
-        #endif
-    #endif
-
-    #if defined DRV7SEG4D2X595_SPI_CUSTOM_PINS
-        #if DRV7SEG4D2X595_MOSI_PIN  == DRV7SEG4D2X595_LATCH_PIN || \
-            DRV7SEG4D2X595_MOSI_PIN  == DRV7SEG4D2X595_SCK_PIN   || \
-            DRV7SEG4D2X595_LATCH_PIN == DRV7SEG4D2X595_SCK_PIN
-
-            Serial.println("");
-            Serial.println("Warning! Some of the pins assigned to control the daisy-chained 74HC595 ICs"
-                           "coincide with each other. It can, and most probably will, interfere with the output.");
-        #endif
-    #endif
-
     // Pin configuration and setting the digital outputs to respective initial digital levels.
     if (DIGITAL_OUTPUT_PIN > 0) {
         digitalWrite(DIGITAL_OUTPUT_PIN, !DIGITAL_OUTPUT_ACTIVE_STATE);
@@ -247,30 +166,6 @@ void setup()
 
     #ifdef RGB_LED
         RGB_LED_init(RED_PIN, GREEN_PIN, BLUE_PIN, IS_COMMON_ANODE);
-    #endif
-
-
-    /*--- Initialize the objects that drive a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
-
-    #if defined DRV7SEG4D2X595_BIT_BANGING      || \
-        defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
-        defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
-
-        SegMap595.init(DRV7SEG4D2X595_SEG_STR);
-    #endif
-
-    #ifdef DRV7SEG4D2X595_BIT_BANGING
-        driver7seg.init_bb(DRV7SEG4D2X595_DATA_PIN, DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_CLOCK_PIN,
-                           DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
-    #endif
-
-    #ifdef DRV7SEG4D2X595_SPI_CUSTOM_PINS
-        driver7seg.init_spi(DRV7SEG4D2X595_MOSI_PIN, DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_SCK_PIN,
-                            DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
-    #endif
-
-    #ifdef DRV7SEG4D2X595_SPI_DEFAULT_PINS
-        driver7seg.init_spi(DRV7SEG4D2X595_LATCH_PIN, DRV7SEG4D2X595_GHOSTING_PREVENTION_DELAY);
     #endif
 
 
@@ -542,52 +437,6 @@ void loop()
     }
 
     Serial.flush();
-
-
-    /*--- Driving a 7-segment 4-digit display using 2 daisy-chained 74HC595 ICs ---*/
-
-    #if defined DRV7SEG4D2X595_BIT_BANGING      || \
-        defined DRV7SEG4D2X595_SPI_CUSTOM_PINS  || \
-        defined DRV7SEG4D2X595_SPI_DEFAULT_PINS
-
-        SimpleCounter.update();
-
-        uint32_t minutes_tens = SimpleCounter.minutes / 10;
-        uint32_t minutes_ones = SimpleCounter.minutes % 10;
-        uint32_t seconds_tens = SimpleCounter.seconds / 10;
-        uint32_t seconds_ones = SimpleCounter.seconds % 10;
-
-        uint8_t digit_1 = SegMap595.mapped_characters[minutes_tens];
-        uint8_t digit_2 = SegMap595.mapped_characters[minutes_ones];
-        uint8_t digit_3 = SegMap595.mapped_characters[seconds_tens];
-        uint8_t digit_4 = SegMap595.mapped_characters[seconds_ones];
-
-        if (SimpleCounter.seconds % 2) {
-            uint32_t dot_bit_pos = SegMap595.get_dot_bit_pos();
-            uint8_t dot_bit_pos_mask = 1 << dot_bit_pos;
-            digit_2 |= dot_bit_pos_mask;
-        }
-
-        driver7seg.shift_out((1 << DRV7SEG4D2X595_D1), digit_1);
-        driver7seg.shift_out((1 << DRV7SEG4D2X595_D2), digit_2);
-        driver7seg.shift_out((1 << DRV7SEG4D2X595_D3), digit_3);
-        driver7seg.shift_out((1 << DRV7SEG4D2X595_D4), digit_4);
-
-        // Optional digital load toggling aligned with the timer.
-        static bool digital_load_toggle_flag = 0;
-        char modifiable_buf[BILLY_STR_MAX_LEN + 1] = CMD_PREFIX CMD_1 "TOGGLE";
-        uint32_t period = 5;  // Toggles every five minutes.
-        if (SimpleCounter.minutes % period == 0 && SimpleCounter.seconds == 0) {
-            if (digital_load_toggle_flag) {
-                cmd::handler::set_load_digital(modifiable_buf,
-                                               DIGITAL_OUTPUT_PIN,
-                                               DIGITAL_OUTPUT_ACTIVE_STATE);
-                digital_load_toggle_flag = 0;
-            }
-        } else {
-            digital_load_toggle_flag = 1;
-        }
-    #endif
 }
 
 
