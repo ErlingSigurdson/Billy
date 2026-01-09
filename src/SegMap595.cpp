@@ -15,7 +15,7 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "src/SegMap595.h"
+#include "SegMap595.h"
 
 // Relevant standard libraries.
 #include <cstring>

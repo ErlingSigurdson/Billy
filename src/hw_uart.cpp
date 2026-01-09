@@ -15,7 +15,7 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "src/hw_uart.h"
+#include "hw_uart.h"
 
 // Arduino core header file.
 #include <Arduino.h>

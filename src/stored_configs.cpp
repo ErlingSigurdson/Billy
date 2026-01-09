@@ -1,7 +1,7 @@
 /*************** FILE DESCRIPTION ***************/
 
 /**
- * Filename: stored_configs_t
+ * Filename: stored_configs.cpp
  * ----------------------------------------------------------------------------|---------------------------------------|
  * Purpose:  Data type for config values stored in an inbuilt storage.
  * ----------------------------------------------------------------------------|---------------------------------------|
@@ -14,14 +14,14 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "src/stored_configs.h"
+#include "stored_configs.h"
 
 // Local modules.
-#include "src/inbuilt_storage.h"
-#include "src/cstring_utils.h"
+#include "inbuilt_storage.h"
+#include "cstring_utils.h"
 
 // Project configs.
-#include "src/config_inbuilt_storage.h"
+#include "config_inbuilt_storage.h"
 
 // Arduino core header file.
 #include <Arduino.h>

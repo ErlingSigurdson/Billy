@@ -14,7 +14,7 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "src/SimpleCounter.h"
+#include "SimpleCounter.h"
 
 // Arduino core header file.
 #include <Arduino.h>

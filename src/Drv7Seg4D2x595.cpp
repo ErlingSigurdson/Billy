@@ -16,10 +16,10 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "src/Drv7Seg4D2x595.h"
+#include "Drv7Seg4D2x595.h"
 
 // Project configs.
-#include "src/config_general.h"
+#include "../config_general.h"
 
 // Arduino core header file.
 #include <Arduino.h>

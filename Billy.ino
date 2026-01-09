@@ -54,7 +54,7 @@
 #endif
 
 // Project configs.
-#include "src/config_general.h"
+#include "config_general.h"
 #include "src/config_cmd.h"
 #include "src/config_inbuilt_storage.h"
 

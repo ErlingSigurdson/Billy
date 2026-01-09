@@ -19,7 +19,7 @@
 /*--- Includes ---*/
 
 // Project configs.
-#include "src/config_general.h"
+#include "../config_general.h"
 
 // Arduino core header file.
 #include <cstdint>

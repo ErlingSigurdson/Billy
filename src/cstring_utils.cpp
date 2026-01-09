@@ -15,7 +15,7 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "src/cstring_utils.h"
+#include "cstring_utils.h"
 
 // Relevant standard libraries.
 #include <cstring>
