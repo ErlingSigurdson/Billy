@@ -96,7 +96,7 @@ Say, an IoT server receives "turn load ON" command from your web browser and pre
 in a response to Billy's next request. Billy receives the string and puts it into a buffer to check for valid commands,
 as it would do with a message received over any other communication channel.
 
-[Here you can find an example code for a Linux server that works in a described fashion](https://github.com/ErlingSigurdson/server0451/tree/main)
+[Here you can find an example code for a Linux server that works in a described fashion](https://github.com/ErlingSigurdson/server0451)
 written in C language. It's been written with an interaction with Billy and similar devices in mind.
 
 ### Storing configs
