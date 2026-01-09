@@ -15,7 +15,7 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "esp_tcp_billy.h"
+#include "src/esp_tcp_billy.h"
 
 // Arduino core header file.
 #include <Arduino.h>

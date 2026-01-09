@@ -15,10 +15,10 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "esp32_btclassic_billy.h"
+#include "src/esp32_btclassic_billy.h"
 
 // Project configs.
-#include "config_general.h"
+#include "src/config_general.h"
 
 // Arduino core header file.
 #include <Arduino.h>

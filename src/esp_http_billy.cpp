@@ -15,14 +15,14 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "esp_http_billy.h"
+#include "src/esp_http_billy.h"
 
 // Local modules.
-#include "cstring_utils.h"
+#include "src/cstring_utils.h"
 
 // Project configs.
-#include "config_general.h"
-#include "config_cmd.h"
+#include "src/config_general.h"
+#include "src/config_cmd.h"
 
 // Arduino core header file.
 #include <Arduino.h>

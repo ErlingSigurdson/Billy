@@ -20,7 +20,7 @@
 /*--- Includes ---*/
 
 // Project configs.
-#include "config_general.h"  // For BILLY_STR_MAX_LEN.
+#include "src/config_general.h"  // For BILLY_STR_MAX_LEN.
 
 
 /*--- Basic values ---*/

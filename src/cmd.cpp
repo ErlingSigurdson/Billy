@@ -14,31 +14,31 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "cmd.h"
+#include "src/cmd.h"
 
 // Local modules.
-#include "esp_wifi_billy.h"
-#include "esp_tcp_billy.h"
-#include "inbuilt_storage.h"
-#include "stored_configs.h"
-#include "cstring_utils.h"
-#include "version.h"
+#include "src/esp_wifi_billy.h"
+#include "src/esp_tcp_billy.h"
+#include "src/inbuilt_storage.h"
+#include "src/stored_configs.h"
+#include "src/cstring_utils.h"
+#include "src/version.h"
 
 #if defined ESP32 && defined BTCLASSIC_USED
-    #include "esp32_btclassic_billy.h"
+    #include "src/esp32_btclassic_billy.h"
 #endif
 
 #if defined ESP32 && defined BLE_USED
-    #include "esp32_ble_billy.h"
+    #include "src/esp32_ble_billy.h"
 #endif
 
 #ifdef RGB_LED
-    #include "rgb_led.h"
+    #include "src/rgb_led.h"
 #endif
 
 // Project configs.
-#include "config_general.h"
-#include "config_inbuilt_storage.h"
+#include "src/config_general.h"
+#include "src/config_inbuilt_storage.h"
 
 // Arduino core header file.
 #include <Arduino.h>

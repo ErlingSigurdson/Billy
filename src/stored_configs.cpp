@@ -14,14 +14,14 @@
 /*--- Includes ---*/
 
 // This source file's own header file.
-#include "stored_configs.h"
+#include "src/stored_configs.h"
 
 // Local modules.
-#include "inbuilt_storage.h"
-#include "cstring_utils.h"
+#include "src/inbuilt_storage.h"
+#include "src/cstring_utils.h"
 
 // Project configs.
-#include "config_inbuilt_storage.h"
+#include "src/config_inbuilt_storage.h"
 
 // Arduino core header file.
 #include <Arduino.h>

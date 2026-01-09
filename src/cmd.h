@@ -28,7 +28,7 @@
 /*--- Includes ---*/
 
 // Local modules.
-#include "stored_configs.h"
+#include "src/stored_configs.h"
 
 // Arduino core header file.
 #include <Arduino.h>
