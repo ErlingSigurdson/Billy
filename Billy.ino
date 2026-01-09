@@ -112,7 +112,7 @@ void setup()
     /*--- Pin setup ---*/
 
     // Check the assigned pins.
-    if (DIGITAL_OUTPUT_PIN <= 0 && PWM_OUTPUT_PIN <= 0) {
+    if (DIGITAL_OUTPUT_PIN < 0 && PWM_OUTPUT_PIN < 0) {
         Serial.println("");
         Serial.println("Warning! No output pins specified.");
     } else if ((DIGITAL_OUTPUT_PIN > 0 || PWM_OUTPUT_PIN > 0) && (DIGITAL_OUTPUT_PIN == PWM_OUTPUT_PIN)) {
@@ -123,7 +123,7 @@ void setup()
         Serial.println("for the digital and the PWM outputs.");
     }
 
-    if (WIFI_INDICATOR_LED_PIN <= 0) {
+    if (WIFI_INDICATOR_LED_PIN < 0) {
         Serial.println("");
         Serial.println("Warning! No Wi-Fi indicator LED output pin specified.");
     }
