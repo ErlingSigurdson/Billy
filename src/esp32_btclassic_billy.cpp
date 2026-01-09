@@ -24,7 +24,7 @@
 #include <Arduino.h>
 
 // Conditional compilation.
-#if defined ESP32 && defined BTCLASSIC_USED
+#if defined ARDUINO_ARCH_ESP32 && defined BTCLASSIC_USED
 
 // Additional Arduino libraries.
 #include <BluetoothSerial.h>
