@@ -16,6 +16,9 @@
 #define CONFIG_GENERAL_H
 
 
+/*--- Mode ---*/
+
+
 /*--- Bluetooth Classic ---*/
 
 /* Uncomment the following #define directive if your ESP32 module
