@@ -42,6 +42,39 @@
 #endif
 
 
+/*--- GPIO ---*/
+
+// Assign load control pins.
+#ifdef MODE_DIGITAL_CTRL
+    #define DIGITAL_OUTPUT_PIN 2
+    
+    /* Choose between an uninverted (load turned ON on a high ouput level, default)
+     * and an inverted (load turned ON on a low outpt level) digital control.
+     * The latter is handy if your load is driven by a PNP transistor, for example.
+     */
+    //#define INVERTED_DIGITAL_OUTPUT
+    #ifndef INVERTED_DIGITAL_OUTPUT
+        #define DIGITAL_OUTPUT_ACTIVE_STATE 1
+    #else
+        #define DIGITAL_OUTPUT_ACTIVE_STATE 0
+    #endif
+#endif
+
+#ifdef MODE_PWM_CTRL
+    #define PWM_OUTPUT_PIN 0
+#endif
+
+#ifdef MODE_RGB_CTRL
+    #define RED_PIN         16
+    #define GREEN_PIN       17
+    #define BLUE_PIN        18
+    #define IS_COMMON_ANODE true
+#endif
+
+// Assign indicator LED control pin.
+#define WIFI_INDICATOR_LED_PIN 2
+
+
 /*--- Bluetooth Classic ---*/
 
 /* Uncomment the following #define directive if your ESP32 module
@@ -72,36 +105,7 @@
 //#define BLE_USED
 
 
-/*--- GPIO ---*/
 
-// Assign load control pins.
-#define DIGITAL_OUTPUT_PIN 2
-#define PWM_OUTPUT_PIN 0
-
-// Assign indicator LED control pin.
-#define WIFI_INDICATOR_LED_PIN 2
-
-/* Choose between an uninverted (load turned ON at a high logic level, default)
- * and an inverted (load turned ON at a low logic level) digital control.
- * The latter is handy if your load is driven by a PNP transistor, for example.
- */
-//#define INVERTED_DIGITAL_OUTPUT
-#ifndef INVERTED_DIGITAL_OUTPUT
-    #define DIGITAL_OUTPUT_ACTIVE_STATE 1
-#else
-    #define DIGITAL_OUTPUT_ACTIVE_STATE 0
-#endif
-
-
-/*--- RGB LED control ---*/
-
-#define RGB_LED
-#ifdef RGB_LED
-    #define RED_PIN         16
-    #define GREEN_PIN       17
-    #define BLUE_PIN        18
-    #define IS_COMMON_ANODE 1
-#endif
 
 
 /*--- Hardware UART ---*/
