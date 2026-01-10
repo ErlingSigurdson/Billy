@@ -16,7 +16,30 @@
 #define CONFIG_GENERAL_H
 
 
-/*--- Mode ---*/
+/*--- Mode selection ---*/
+
+// Pick one, uncomment or delete the others.
+#define MODE_DIGITAL_CTRL
+//#define MODE_PWM_CTRL
+//#define MODE_RGB_CTRL
+
+// Don't touch this...
+#ifdef MODE_DIGITAL_CTRL
+    #undef MODE_PWM_CTRL
+    #undef MODE_RGB_CTRL
+#endif
+
+// ...and this...
+#ifdef MODE_PWM_CTRL
+    #undef MODE_DIGITAL_CTRL
+    #undef MODE_RGB_CTRL
+#endif
+
+// ...and this.
+#ifdef MODE_RGB_CTRL
+    #undef MODE_DIGITAL_CTRL
+    #undef MODE_PWM_CTRL
+#endif
 
 
 /*--- Bluetooth Classic ---*/
