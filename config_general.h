@@ -47,7 +47,7 @@
 // Assign load control pins.
 #ifdef MODE_DIGITAL_CTRL
     #define DIGITAL_OUTPUT_PIN 2
-    
+
     /* Choose between an uninverted (load turned ON on a high ouput level, default)
      * and an inverted (load turned ON on a low outpt level) digital control.
      * The latter is handy if your load is driven by a PNP transistor, for example.
